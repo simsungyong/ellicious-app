@@ -21,7 +21,7 @@ const stackFactory = (initialRoute, customConfig) =>
 export default createBottomTabNavigator({
   Home: {
     screen: stackFactory(Home, {
-      title: "Home",
+      title: "Ellicious",
       headerRight: <MessagesLink />,
       headerLeft : <AlarmsLink/>
     }),

@@ -7,6 +7,7 @@ import MyPick from "../screens/Tabs/MyPick";
 import Profile from "../screens/Tabs/Profile";
 import MessagesLink from "../components/MessagesLink";
 import { View } from "react-native";
+import AlarmsLink from "../components/AlarmsLink";
 
 const stackFactory = (initialRoute, customConfig) =>
   createStackNavigator({
@@ -21,8 +22,10 @@ export default createBottomTabNavigator({
   Home: {
     screen: stackFactory(Home, {
       title: "Home",
-      headerRight: <MessagesLink />
-    })
+      headerRight: <MessagesLink />,
+      headerLeft : <AlarmsLink/>
+    }),
+    
   },
   Search: {
     screen: stackFactory(Search, {

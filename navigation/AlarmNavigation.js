@@ -1,5 +1,5 @@
 import { createStackNavigator } from "react-navigation-stack";
-import Alarm from "../screens/Alarm/Alarm";
+import Alarms from "../screens/Alarm/Alarms";
 
 export default createStackNavigator({
   Alarms

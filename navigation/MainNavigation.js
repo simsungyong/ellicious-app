@@ -3,7 +3,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import TabNavigation from "./TabNavigation";
 import PhotoNavigation from "./PhotoNavigation";
 import MessageNavigation from "./MessageNavigation";
-import AlarmNavigation from "./MessageNavigation";
+import AlarmNavigation from "./AlarmNavigation";
 
 
 const MainNavigation = createStackNavigator(

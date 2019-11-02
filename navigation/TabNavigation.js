@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "react-navigation-tabs"
 import { createStackNavigator } from 'react-navigation-stack';
 import Home from "../screens/Tabs/Home";
 import Search from "../screens/Tabs/Search";
-import Notifications from "../screens/Tabs/Notifications";
+import MyPick from "../screens/Tabs/MyPick";
 import Profile from "../screens/Tabs/Profile";
 import MessagesLink from "../components/MessagesLink";
 import { View } from "react-native";
@@ -35,14 +35,14 @@ export default createBottomTabNavigator({
         tabBarOnPress: ({ navigation }) => navigation.navigate("PhotoNavigation")
     }
   },
-  Notifications: {
-    screen: stackFactory(Notifications, {
-      title: "Notifications"
-    })
-  },
   Profile: {
     screen: stackFactory(Profile, {
       title: "Profile"
+    })
+  },
+  MyPick: {
+    screen: stackFactory(MyPick, {
+      title: "MyPick"
     })
   }
 });

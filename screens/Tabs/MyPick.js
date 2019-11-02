@@ -11,6 +11,6 @@ const Text = styled.Text``;
 
 export default () => (
   <View>
-    <Text>Notifications</Text>
+    <Text>콕 집기</Text>
   </View>
 );

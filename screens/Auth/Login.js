@@ -123,7 +123,7 @@ export default ({ navigation }) => {
                 returnKeyType="send"
                 onSubmitEditing={handleLogin}
                 autoCorrect={false}
-                label={"Email"}
+                label="Email"
               /> 
             <AuthInput
                 {...emailInput}
@@ -131,7 +131,7 @@ export default ({ navigation }) => {
                 returnKeyType="send"
                 onSubmitEditing={handleLogin}
                 autoCorrect={false}
-                label={"Password"}
+                label="Password"
               /> 
         </InfoCon>
         <Middle/>

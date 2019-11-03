@@ -40,12 +40,9 @@ class FloatingLabelInput extends Component {
   }
 }
 
-
 const Container = styled.View`
   margin-bottom: 10px;
 `;
-
-
 
 class AuthInputClass extends Component {
   state = {
@@ -53,13 +50,14 @@ class AuthInputClass extends Component {
   };
 
   handleTextChange = (newText) => this.setState({ value: newText });
-
+  
   render() {
+    const {label} = this.props;
     return (
       <View style={{ flex: 1, padding: 30 }}>
         <StatusBar hidden />
         <FloatingLabelInput
-          label="Email"
+          label={label}
           value={this.state.value}
           onChangeText={this.handleTextChange}
         />
@@ -74,6 +72,7 @@ const AuthInput = ({
     autoCapitalize = "none",
     returnKeyType = "done",
     onChange,
+    label,
     onSubmitEditing = () => null,
     autoCorrect = true
   }) => (
@@ -86,12 +85,14 @@ const AuthInput = ({
         onSubmitEditing={onSubmitEditing}
         autoCorrect={autoCorrect}
         value={value}
+        label={label}
       />
     </Container>
   );
 
 AuthInput.propTypes = {
   value: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   keyboardType: PropTypes.oneOf([
     "default",
     "number-pad",

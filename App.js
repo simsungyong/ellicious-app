@@ -16,7 +16,7 @@ import NavController from "./components/NavController";
 import { AuthProvider } from "./AuthContext";
 
 
-//AsyncStorage.clear();
+AsyncStorage.clear();
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);

@@ -1,8 +1,8 @@
-import React from "react";
+import React, {Component} from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import constants from "../constants";
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, StyleSheet } from "react-native";
 import { Facebook, TINT_COLOR } from './Color'
 
 const Touchable = styled.TouchableOpacity``;
@@ -25,7 +25,7 @@ const Text = styled.Text`
 const FacebookButton = ({ text, onPress, loading = false }) => (
   <Touchable disabled={loading} onPress={onPress}>
     <Container>
-      {loading ? <ActivityIndicator color={"white"} /> : <Text>{text}</Text>} 
+        {loading ? <ActivityIndicator color={"white"} /> : <Text>{text}</Text>} 
     </Container>
   </Touchable>
 );

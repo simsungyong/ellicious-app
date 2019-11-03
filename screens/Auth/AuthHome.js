@@ -51,9 +51,21 @@ const Image = styled.Image`
   margin-left : 30px;
 `; /* 로고 이미지 크기 비율 설정 */
 
+const Text = styled.Text`
+  color: ${TINT_COLOR};
+  margin-top: 20px;
+  font-weight: 600;
+  margin-right : 10px;
+`;
+
 const Touchable = styled.TouchableOpacity``;
 
-const LoginLink = styled.View``;
+const SignUpCon = styled.View`
+  flex-direction : row;
+`;
+
+const LoginLink = styled.View`
+`;
 
 const LoginLinkText = styled.Text`
   color: ${TINT_COLOR};
@@ -81,11 +93,14 @@ export default ({ navigation }) => (
         text={"Login"}
         onPress={() => navigation.navigate("Login")}
       />
-      <Touchable onPress={() => navigation.navigate("Signup")}>
-        <LoginLink>
-          <LoginLinkText>Create New Account</LoginLinkText>
-        </LoginLink>
-      </Touchable>
+      <SignUpCon>
+       <Text>계정이 없으신가요?</Text>
+        <Touchable onPress={() => navigation.navigate("Signup")}>
+            <LoginLink>
+              <LoginLinkText>회원가입</LoginLinkText>
+            </LoginLink>
+        </Touchable>
+      </SignUpCon>
     </ButtonContainer>
     <Bottom/>
   </Container>

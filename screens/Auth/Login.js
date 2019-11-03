@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { TouchableWithoutFeedback, Keyboard } from "react-native";
+import { TouchableWithoutFeedback, Keyboard, Image } from "react-native";
 import AuthButton from "../../components/AuthButton";
-import FacebookButton from "../../components/FacebookButton";
-import GoogleButton from "../../components/GoogleButton";
 import AuthInput from "../../components/AuthInput";
 import useInput from "../../hooks/useInput";
 import { Alert } from "react-native";
@@ -11,6 +9,7 @@ import { useMutation } from "react-apollo-hooks";
 import { LOG_IN } from "./AuthQueries";
 import {BG_COLOR, PointPink, TINT_COLOR} from "../../components/Color"
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { SocialIcon } from 'react-native-elements';
 
 const Container = styled.View`
   justify-content: center;
@@ -22,19 +21,18 @@ const Container = styled.View`
 const TitleCon = styled.View`
   justify-content: center;
   align-items: center;
-  flex : 4;
+  flex : 4.5;
 `;
 
 const Title = styled.Text `
-    font-Family: "elli";
-    font-Size : 60px;
-    justifyContent: space-around;
-    color: ${PointPink};
+  font-Family: "elli";
+  font-Size : 60px;
+  justifyContent: space-around;
+  color: ${PointPink};
+  margin-top : 10px;
 `;
 
 const InfoCon = styled.View`
-  justify-content: center;
-  align-items: center;
   flex : 2;
 `;
 
@@ -49,8 +47,8 @@ flex : 2;
 `;
 
 const OtherLoginCon = styled.View`
-  justify-content: center;
   flex-direction : row;
+  margin-top : 10px;
 `;
 const OtherCon = styled.View`
 justify-content: center;
@@ -66,7 +64,7 @@ const LoginLink = styled.View``;
 
 const LoginLinkText = styled.Text`
   color: ${TINT_COLOR};
-  margin-top: 20px;
+  margin-top: 10px;
   font-weight: 500;
   margin-left: 8px;
 `;
@@ -112,49 +110,52 @@ export default ({ navigation }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Container>
-    <TitleCon>
-        <Title>Ellicious</Title>
-    </TitleCon>
-    <InfoCon>
-       <AuthInput
-            {...emailInput}
-            placeholder="Email"
-            keyboardType="email-address"
-            returnKeyType="send"
-            onSubmitEditing={handleLogin}
-            autoCorrect={false}
-          /> 
-        <AuthInput
-            {...emailInput}
-            placeholder="Password"
-            keyboardType="email-address"
-            returnKeyType="send"
-            onSubmitEditing={handleLogin}
-            autoCorrect={false}
-          />
-    </InfoCon>
-    <Middle/>
-    <LoginButtonCon>
-        <AuthButton loading={loading} onPress={handleLogin} text="Log In" />
-        <OtherLoginCon>
-            <FacebookButton loading={loading} onPress={handleLogin} text="Facebook" />
-            <GoogleButton loading={loading} onPress={handleLogin} text="Google" />
-          </OtherLoginCon>
-    </LoginButtonCon>
-    <OtherCon>
-        <Touchable onPress={() => navigation.navigate("Signup")}>
-            <LoginLink>
-                <LoginLinkText>SingUp</LoginLinkText>
-            </LoginLink>
-        </Touchable>
-        <Touchable onPress={() => navigation.navigate("Signup")}>
-            <LoginLink>
-                <LoginLinkText>ID&Password 찾기</LoginLinkText> 
-            </LoginLink>
-        </Touchable>
-    </OtherCon>
-    <Bottom/>
-</Container>
+        <TitleCon>
+          <Image
+            style={{height:'60%',width:'60%',resizeMode:'contain'}}
+            source={{uri:'http://db.cvinfo.co.kr/data/bbsData/brand_1473215144.jpg'}}/>
+          <Title>Ellicious</Title>
+        </TitleCon>
+        <InfoCon>
+          <AuthInput
+                {...emailInput}
+                keyboardType="email-address"
+                returnKeyType="send"
+                onSubmitEditing={handleLogin}
+                autoCorrect={false}
+                label={"Email"}
+              /> 
+            <AuthInput
+                {...emailInput}
+                keyboardType="email-address"
+                returnKeyType="send"
+                onSubmitEditing={handleLogin}
+                autoCorrect={false}
+                label={"Password"}
+              /> 
+        </InfoCon>
+        <Middle/>
+        <LoginButtonCon>
+            <AuthButton loading={loading} onPress={handleLogin} text="Login" />
+            <OtherLoginCon>
+              <SocialIcon type="facebook" onPress={() => {alert('Facebook Login');}} />
+              <SocialIcon type="google" onPress={() => {alert('Google Login');}} />
+            </OtherLoginCon>
+        </LoginButtonCon>
+        <OtherCon>
+            <Touchable onPress={() => navigation.navigate("Signup")}>
+                <LoginLink>
+                    <LoginLinkText>회원가입</LoginLinkText>
+                </LoginLink>
+            </Touchable>
+            <Touchable onPress={() => navigation.navigate("Signup")}>
+                <LoginLink>
+                    <LoginLinkText>ID&Password 찾기</LoginLinkText> 
+                </LoginLink>
+            </Touchable>
+        </OtherCon>
+        <Bottom/>
+      </Container>
     </TouchableWithoutFeedback>
   );
 };

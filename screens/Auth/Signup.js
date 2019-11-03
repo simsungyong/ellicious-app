@@ -9,8 +9,6 @@ import { useMutation } from "react-apollo-hooks";
 import { LOG_IN, CREATE_ACCOUNT } from "./AuthQueries";
 
 const View = styled.View`
-  justify-content: center;
-  align-items: center;
   flex: 1;
 `;
 
@@ -86,7 +84,7 @@ export default ({ navigation }) => {
           returnKeyType="send"
           autoCorrect={false}
         />
-        <AuthButton loading={loading} onPress={handleSingup} text="Sign up" />
+        <AuthButton loading={loading} onPress={handleSingup} text="회원가입" />
       </View>
     </TouchableWithoutFeedback>
   );

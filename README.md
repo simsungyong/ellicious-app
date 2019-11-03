@@ -10,4 +10,3 @@ Screens:
 - [ ] Photo Detail
 - [ ] Photo Comments (Challenge)
 - [ ] Photo Likes (Challenge)
-영민이 와쓰요

@@ -6,6 +6,9 @@ import PropTypes from "prop-types";
 import Swiper from "react-native-swiper";
 import { gql } from "apollo-boost";
 import constants from "../constants";
+import { useMutation } from "react-apollo-hooks";
+import styles from "../styles";
+
 
 const Container = styled.View`
   margin-bottom: 40px;
@@ -45,7 +48,25 @@ const CommentCount = styled.Text`
 
 
 
-const Post = ({user, location, files}) => {
+const Post = ({
+    user, 
+    location, 
+    files=[],
+    likeCount: likeCountProp,
+    caption,
+    comments=[],
+    isLiked: isLikedProp,
+    navigation,
+    isPicked: isPickedProp,
+    pickCount,
+    rating}) => {
+        const [isLiked, setIsLiked] = useState(isLikedProp);
+        const [likeCount, setLikeCount] = useState(likeCountProp);
+        //const toggleLikeMutaton = useMutation(TOGGLE_LIKE, {
+        //variables: {
+        //postId: id
+        //}
+    //});
     return (
         <Container>
             <Header>
@@ -61,7 +82,9 @@ const Post = ({user, location, files}) => {
                     </HeaderUserContainer>
                 </Touchable>
             </Header>
-            <Swiper style={{height: constants.height/2.7}}>
+            <Swiper 
+                showsPagination={false}
+                style={{height: constants.height/2.7}}>
                 {files.map(file=>(
                     <Image
                         style={{width: constants.width, height:constants.height/2.7}}
@@ -69,9 +92,57 @@ const Post = ({user, location, files}) => {
                         source={{uri: file.url}}/>
                 ))}
             </Swiper>
-        </Container>
-    );
-}
+            <InfoContainer>
+        <IconsContainer>
+          <Touchable onPress={null}>
+            <IconContainer>
+              <Ionicons
+                size={24}
+                color={isLiked ? styles.redColor : styles.blackColor}
+                name={
+                  Platform.OS === "ios"
+                    ? isLiked
+                      ? "ios-heart"
+                      : "ios-heart-empty"
+                    : isLiked
+                    ? "md-heart"
+                    : "md-heart-empty"
+                }
+              />
+            </IconContainer>
+          </Touchable>
+          <Touchable>
+            <IconContainer>
+              <Ionicons
+                color={styles.blackColor}
+                size={24}
+                name={Platform.OS === "ios" ? "ios-text" : "md-text"}
+              />
+            </IconContainer>
+          </Touchable>
+          <Touchable>
+            <IconContainer>
+              <Ionicons
+                color={styles.blackColor}
+                size={24}
+                name={Platform.OS === "ios" ? "ios-search" : "md-search"}
+              />
+            </IconContainer>
+          </Touchable>
+        </IconsContainer>
+        <Touchable>
+          <Bold>{likeCount === 1 ? "1 like" : `${likeCount} likes`}</Bold>
+        </Touchable>
+        <Caption>
+          <Bold>{user.username}</Bold> {caption}
+        </Caption>
+        <Touchable>
+          <CommentCount>See all {comments.length} comments</CommentCount>
+        </Touchable>
+      </InfoContainer>
+    </Container>
+  );
+};
 
 Post.propTypes = {
     id: PropTypes.string.isRequired,

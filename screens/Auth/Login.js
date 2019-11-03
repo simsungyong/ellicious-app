@@ -124,15 +124,7 @@ export default ({ navigation }) => {
                 onSubmitEditing={handleLogin}
                 autoCorrect={false}
                 label="Email"
-              /> 
-            <AuthInput
-                {...emailInput}
-                keyboardType="email-address"
-                returnKeyType="send"
-                onSubmitEditing={handleLogin}
-                autoCorrect={false}
-                label="Password"
-              /> 
+              />  
         </InfoCon>
         <Middle/>
         <LoginButtonCon>

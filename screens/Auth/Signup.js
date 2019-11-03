@@ -36,7 +36,10 @@ export default ({ navigation }) => {
       return Alert.alert("That email is invalid");
     }
     if (fName === "") {
-      return Alert.alert("I need your name");
+      return Alert.alert("I need first name");
+    }
+    if (lName === "") {
+      return Alert.alert("I need last name");
     }
     if (username === "") {
       return Alert.alert("Invalid username");

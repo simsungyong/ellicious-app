@@ -71,6 +71,7 @@ const LoginLinkText = styled.Text`
 
 export default ({ navigation }) => {
   const emailInput = useInput(navigation.getParam("email", ""));
+  
   const [loading, setLoading] = useState(false);
   const [requestSecretMutation] = useMutation(LOG_IN, {
     variables: {
@@ -123,6 +124,7 @@ export default ({ navigation }) => {
                 returnKeyType="send"
                 onSubmitEditing={handleLogin}
                 autoCorrect={false}
+                placeholder="Email"
                 label="Email"
               />  
         </InfoCon>

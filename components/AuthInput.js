@@ -1,15 +1,15 @@
 import React, { Component } from "react";
-import { View, StatusBar, TextInput, Text, Animated } from 'react-native';
+import { View, StatusBar, Text, Animated } from 'react-native';
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import constants from "../constants";
 import {PointPink, TINT_COLOR} from './Color'
-
+/*
 class FloatingLabelInput extends Component {
   state = {
     isFocused: false,
   };
-
+  
   componentWillMount() {
     this._animatedIsFocused = new Animated.Value(this.props.value === '' ? 0 : 1);
   }
@@ -25,7 +25,8 @@ class FloatingLabelInput extends Component {
   }
 
   render() {
-    const { label, ...props } = this.props;
+    const { label, value, ...props } = this.props;
+    console.log(value);
     const labelStyle = {
       position: 'absolute',
       left: 0,
@@ -54,14 +55,13 @@ class FloatingLabelInput extends Component {
           onBlur={this.handleBlur}
           blurOnSubmit
         />
+        
       </View>
     );
   }
 }
 
-const Container = styled.View`
-  margin-bottom: 10px;
-`;
+
 
 class AuthInputClass extends Component {
   state = {
@@ -84,23 +84,39 @@ class AuthInputClass extends Component {
     );
   }
 }
+*/
+const Container = styled.View`
+  margin-bottom: 10px;
+`;
+
+const TextInput = styled.TextInput`
+  width: ${constants.width / 1.7};
+  padding: 10px;
+  background-color: ${props => props.theme.greyColor};
+  border: 0.5px solid ${props => props.theme.darkGreyColor};
+  border-radius: 4px;
+`;
+
 
 const AuthInput = ({
     value,
+    placeholder,
     keyboardType = "default",
-    autoCapitalize = false,
+    autoCapitalize = "none",
     returnKeyType = "done",
     onChange,
     label,
     onSubmitEditing = () => null,
     autoCorrect = true
   }) => (
+    
     <Container>
-      <AuthInputClass
+      <TextInput
         onChangeText={onChange}
         keyboardType={keyboardType}
         returnKeyType={returnKeyType}
         autoCapitalize={autoCapitalize}
+        placeholder={placeholder}
         onSubmitEditing={onSubmitEditing}
         autoCorrect={autoCorrect}
         value={value}

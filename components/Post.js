@@ -14,6 +14,12 @@ export const TOGGLE_LIKE = gql`
     toggleLike(postId: $postId)
   }
 `;
+
+export const TOGGLE_PICK = gql`
+  mutation togglePick($postId: String!) {
+    togglePick(postId: $postId)
+  }
+`;
 const Container = styled.View`
   margin-bottom: 40px;
 `;
@@ -74,22 +80,49 @@ const Post = ({
     isLiked: isLikedProp,
     navigation,
     isPicked: isPickedProp,
-    pickCount,
+    pickCount: pickCountProp,
     rating}) => {
         const [isLiked, setIsLiked] = useState(isLikedProp);
         const [likeCount, setLikeCount] = useState(likeCountProp);
+        const [isPicked, setIsPicked] = useState(isPickedProp);
+        const [pickCount, setPickCount] = useState(pickCountProp);
         const toggleLikeMutaton = useMutation(TOGGLE_LIKE, {
         variables: {
         postId: id
-        }
-    });
+        }});
+
+        const togglePickMutation = useMutation(TOGGLE_PICK, {
+          variables:{
+            postId: id
+          }
+        });
 
     const handleLike = async () =>{
+      if(isLiked === true){
+        setLikeCount(l=>l-1);
+      }else{
+        setLikeCount(l=>l+1);
+      }
       setIsLiked(p => !p);
       try{
         await toggleLikeMutaton();
       }catch (e){}
     };
+
+    const handlePick = async () =>{
+      if(isPicked === true){
+        setPickCount(l=>l-1);
+      }else{
+        setPickCount(l=>l+1);
+      }
+      setIsPicked(p => !p);
+      try{
+        await togglePickMutation();
+      }catch (e){}
+    };
+
+
+
 
     return (
         <Container>

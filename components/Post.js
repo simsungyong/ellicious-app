@@ -8,6 +8,8 @@ import { gql } from "apollo-boost";
 import constants from "../constants";
 import { useMutation } from "react-apollo-hooks";
 import styles from "../styles";
+import moment from "moment";
+
 
 export const TOGGLE_LIKE = gql`
   mutation toggelLike($postId: String!) {
@@ -93,11 +95,13 @@ const Post = ({
     navigation,
     isPicked: isPickedProp,
     pickCount: pickCountProp,
+    createdAt,
     rating}) => {
         const [isLiked, setIsLiked] = useState(isLikedProp);
         const [likeCount, setLikeCount] = useState(likeCountProp);
         const [isPicked, setIsPicked] = useState(isPickedProp);
         const [pickCount, setPickCount] = useState(pickCountProp);
+
         const [toggleLikeMutaton] = useMutation(TOGGLE_LIKE, {
         variables: {
         postId: id
@@ -108,7 +112,10 @@ const Post = ({
             postId: id
           }
         });
+      
+    const time=moment(createdAt).startOf().fromNow();
 
+    
     const handleLike = async () =>{
       if(isLiked === true){
         setLikeCount(l=>l-1);
@@ -156,6 +163,8 @@ const Post = ({
           <Bold size={30}>{storeName}</Bold>
           <Rating>별점 : {rating}</Rating>
         </Touchable>
+          
+  
       </StoreCon>
 
       <Swiper 
@@ -217,6 +226,7 @@ const Post = ({
         <Touchable>
           <CommentCount>See all {comments.length} comments</CommentCount>
         </Touchable>
+        <CommentCount>{time}</CommentCount>
       </InfoCon>
     </BottomCon>
   </Container>

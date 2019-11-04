@@ -38,6 +38,7 @@ export default function App() {
         cache,
         request: async operation=>{//request는 매요청마다 가로채서 토큰을 가져온다.
           const token = await AsyncStorage.getItem("jwt");
+          
           return operation.setContext({
             headers: { Authorization: `Bearer ${token}`}
           });

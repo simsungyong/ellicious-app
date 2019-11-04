@@ -86,12 +86,12 @@ const Post = ({
         const [likeCount, setLikeCount] = useState(likeCountProp);
         const [isPicked, setIsPicked] = useState(isPickedProp);
         const [pickCount, setPickCount] = useState(pickCountProp);
-        const toggleLikeMutaton = useMutation(TOGGLE_LIKE, {
+        const [toggleLikeMutaton] = useMutation(TOGGLE_LIKE, {
         variables: {
         postId: id
         }});
 
-        const togglePickMutation = useMutation(TOGGLE_PICK, {
+        const [togglePickMutation] = useMutation(TOGGLE_PICK, {
           variables:{
             postId: id
           }
@@ -118,7 +118,9 @@ const Post = ({
       setIsPicked(p => !p);
       try{
         await togglePickMutation();
-      }catch (e){}
+      }catch (e){
+        console.log(e);
+      }
     };
 
 

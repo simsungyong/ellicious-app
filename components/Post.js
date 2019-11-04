@@ -171,7 +171,7 @@ const Post = ({
 
       <BottomCon>
         <IconsCon>
-        <Touchable onPress={null}>
+        <Touchable onPress={handleLike}>
           <IconCon>
             <Ionicons
               size={24}

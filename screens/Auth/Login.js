@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Component } from "react";
 import styled from "styled-components";
 import { TouchableWithoutFeedback, Keyboard, Image } from "react-native";
 import AuthButton from "../../components/AuthButton";
@@ -33,6 +33,8 @@ const Title = styled.Text `
 `;
 
 const InfoCon = styled.View`
+  justify-content: center;
+  align-items: center;
   flex : 2;
 `;
 
@@ -118,15 +120,14 @@ export default ({ navigation }) => {
           <Title>Ellicious</Title>
         </TitleCon>
         <InfoCon>
-          <AuthInput
-                {...emailInput}
-                keyboardType="email-address"
-                returnKeyType="send"
-                onSubmitEditing={handleLogin}
-                autoCorrect={false}
-                placeholder="Email"
-                label="Email"
-              />  
+        <AuthInput
+            {...emailInput}
+            placeholder="Email"
+            keyboardType="email-address"
+            returnKeyType="send"
+            onSubmitEditing={handleLogin}
+            autoCorrect={false}
+          /> 
         </InfoCon>
         <Middle/>
         <LoginButtonCon>

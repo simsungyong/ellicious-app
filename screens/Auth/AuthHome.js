@@ -48,7 +48,6 @@ const View = styled.View`
 `;
 
 const Image = styled.Image`
-  margin-left : 30px;
 `; /* 로고 이미지 크기 비율 설정 */
 
 const Text = styled.Text`
@@ -82,10 +81,10 @@ export default ({ navigation }) => (
   <Container>
     <Top/>
     <TitleCon>
-      <Subtitle>It's so</Subtitle>
-      <View>
-        <Title>Ellicious</Title>
-      </View>
+      <Image 
+        style={{height:'100%',width:'100%',resizeMode:'contain'}}
+        source={{uri:'https://user-images.githubusercontent.com/52433798/68116995-87ed2900-ff3f-11e9-8b01-3cbb7dacea60.png'}}
+      />
     </TitleCon>
     <Middle/>
     <ButtonContainer>

@@ -1,7 +1,7 @@
 # ellcious iOS & Android App
 
 Screens: 
-- [X] Home
+- [ ] Home
 - [ ] Search
 - [ ] Upload
 - [ ] Notifications (Challenge)

@@ -5,6 +5,7 @@ import { AppLoading } from "expo";
 import * as Font from 'expo-font';
 import {Asset} from 'expo-asset';
 import { AsyncStorage } from "react-native";
+import { Alert } from "react-native";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { persistCache } from "apollo-cache-persist";
 import ApolloClient from "apollo-boost";

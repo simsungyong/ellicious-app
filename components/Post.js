@@ -113,7 +113,7 @@ const Post = ({
           }
         });
       
-    const time=moment(createdAt).startOf().fromNow();
+    const time=moment(createdAt).startOf('hour').fromNow();
 
     
     const handleLike = async () =>{

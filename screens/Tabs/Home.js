@@ -42,9 +42,6 @@ const FEED_QUERY = gql`
   }
 `;
 
-
-
-
 const View = styled.View`
   justify-content: center;
   align-items: center;
@@ -52,8 +49,6 @@ const View = styled.View`
 `;
 
 const Text = styled.Text``;
-
-
 
 export default () => {
   const [refreshing, setRefreshing] = useState(false);

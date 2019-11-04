@@ -5,11 +5,11 @@ import PropTypes from "prop-types";
 import constants from "../constants";
 import {PointPink, TINT_COLOR} from './Color'
 
-const FloatingLabelInput = ({label, value, onChangeText})=>{
+const FloatingLabelInput = ({label, onChangeText,value})=>{
   
   const [focus, setFocus] = useState(false);
   const [animation, setAnimation] = useState(new Animated.Value(0));
-
+  console.log(label);
   const handleFocus = () => setFocus(true);
   const handleBlur = () => setFocus( false );
 
@@ -48,6 +48,8 @@ const FloatingLabelInput = ({label, value, onChangeText})=>{
           onBlur={handleBlur}
           blurOnSubmit
           autoCapitalize='none'
+          label={label}
+          value={value}
         />
         
       </View>
@@ -58,10 +60,7 @@ const FloatingLabelInput = ({label, value, onChangeText})=>{
 
 
 const AuthInputClass =({value,label,onChangeText}) => {
-  //const handleTextChange = (newText) => setValue({ value: newText });
   
-    //const label = props.label;
-    
     return (
       <View style={{ flex: 1, padding: 30 }}>
         <StatusBar hidden />
@@ -89,7 +88,7 @@ const AuthInput = ({
     autoCapitalize = "none",
     returnKeyType = "done",
     onChange,
-    label,
+    label=null,
     onSubmitEditing = () => null,
     autoCorrect = true
   }) => (

@@ -19,24 +19,28 @@ export const TOGGLE_PICK = gql`
     togglePick(postId: $postId)
   }
 `;
+
 const Container = styled.View`
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 `;
+
 const Header = styled.View`
+  background-color : #f5b3b3;
   padding: 15px;
   flex-direction: row;
   align-items: center;
+  flex: 2;
 `;
-const Touchable = styled.TouchableOpacity``;
-
-const StoreContainer = styled.View`
-  margin-left: 10px;
-  margin-top: 20px;
-  align-items:center;
-`;
-
 const HeaderUserContainer = styled.View`
   margin-left: 10px;
+`;
+
+const Touchable = styled.TouchableOpacity``;
+
+const StoreCon = styled.View`
+  background-color : #f5d2b3;
+  flex : 4;
+  align-items:center;
 `;
 const Bold = styled.Text`
   font-weight: 500;
@@ -47,16 +51,27 @@ const Location = styled.Text`
 const Rating = styled.Text`
   font-size: 12px;
 `;
-const IconsContainer = styled.View`
-  flex-direction: row;
-  margin-bottom: 5px;
-`;
-const IconContainer = styled.View`
-  margin-right: 10px;
-`;
-const InfoContainer = styled.View`
+
+const BottomCon = styled.View`
+  background-color : #d1f5b3;
+  flex : 3;
   padding: 10px;
 `;
+
+const IconsCon = styled.View`
+  background-color : #b3e0f5;
+  flex: 1;
+  flex-direction: row;
+`;
+
+const IconCon = styled.View`
+  margin-right: 10px;
+`;
+const InfoCon=styled.View`
+  background-color : #cab3f5;
+  flex : 2;
+`;
+
 const Caption = styled.Text`
   margin: 5px 0px;
 `;
@@ -64,8 +79,6 @@ const CommentCount = styled.Text`
   opacity: 0.5;
   font-size: 13px;
 `;
-
-
 
 const Post = ({
     user, 
@@ -122,76 +135,79 @@ const Post = ({
       }
     };
 
-
-
-
     return (
-        <Container>
-            <Header>
-                <Touchable>
-                    <Image 
-                    style={{height: 40, width: 40, borderRadius:20}}
-                    source={{uri: user.avatar}}/>
-                </Touchable>
-                <Touchable>
-                    <HeaderUserContainer>
-                        <Bold>{user.username}</Bold>
-                        <Location>{storeLocation}</Location>
-                    </HeaderUserContainer>
-                    <StoreContainer>
-                        <Bold size={40}>{storeName}</Bold>
-                        <Rating>별점 : {rating}</Rating>
-                    </StoreContainer>
-                </Touchable>
-            </Header>
-            <Swiper 
-                showsPagination={false}
-                style={{height: constants.height/2.7}}>
-                {files.map(file=>(
-                    <Image
-                        style={{width: constants.width, height:constants.height/2.7}}
-                        key={file.id}
-                        source={{uri: file.url}}/>
-                ))}
-            </Swiper>
-            <InfoContainer>
-        <IconsContainer>
-          <Touchable onPress={handleLike}>
-            <IconContainer>
-              <Ionicons
-                size={24}
-                color={isLiked ? styles.redColor : styles.blackColor}
-                name={
-                  Platform.OS === "ios"
-                    ? isLiked
-                      ? "ios-heart"
-                      : "ios-heart-empty"
-                    : isLiked
-                    ? "md-heart"
+      <Container>
+      <Header>
+        <Touchable>
+          <Image 
+            style={{height: 40, width: 40, borderRadius:20}}
+            source={{uri: user.avatar}}/>
+        </Touchable>
+        <Touchable>
+          <HeaderUserContainer>
+            <Bold>{user.username}</Bold>
+            <Location>{storeLocation}</Location>
+          </HeaderUserContainer>
+        </Touchable>
+      </Header>
+
+      <StoreCon>
+        <Touchable>
+          <Bold size={30}>{storeName}</Bold>
+          <Rating>별점 : {rating}</Rating>
+        </Touchable>
+      </StoreCon>
+
+      <Swiper 
+        showsPagination={false}
+        style={{height: constants.height/2.7}}>
+          {files.map(file=>(
+          <Image
+            style={{width: constants.width, height:constants.height/2.7}}
+            key={file.id}
+          source={{uri: file.url}}/>
+        ))}
+      </Swiper>
+
+      <BottomCon>
+        <IconsCon>
+        <Touchable onPress={null}>
+          <IconCon>
+            <Ionicons
+              size={24}
+              color={isLiked ? styles.redColor : styles.blackColor}
+              name={
+                Platform.OS === "ios"
+                  ? isLiked
+                    ? "ios-heart"
+                    : "ios-heart-empty"
+                  : isLiked
+                  ? "md-heart"
                     : "md-heart-empty"
-                }
-              />
-            </IconContainer>
-          </Touchable>
-          <Touchable>
-            <IconContainer>
-              <Ionicons
-                color={styles.blackColor}
-                size={24}
-                name={Platform.OS === "ios" ? "ios-text" : "md-text"}
-              />
-            </IconContainer>
-          </Touchable>
-          <Touchable>
-            <IconContainer>
-              <Ionicons
-                color={styles.blackColor}
-                size={24}
-                name={Platform.OS === "ios" ? "ios-search" : "md-search"}
-              />
-            </IconContainer>
-          </Touchable>
-        </IconsContainer>
+              }
+            />
+          </IconCon>
+        </Touchable>
+        <Touchable>
+          <IconCon>
+            <Ionicons
+              color={styles.blackColor}
+              size={24}
+              name={Platform.OS === "ios" ? "ios-text" : "md-text"}
+            />
+          </IconCon>
+        </Touchable>
+        <Touchable>
+          <IconCon>
+            <Ionicons
+              color={styles.blackColor}
+              size={24}
+              name={Platform.OS === "ios" ? "ios-search" : "md-search"}
+            />
+          </IconCon>
+        </Touchable>
+      </IconsCon>
+      <InfoCon>
         <Touchable>
           <Bold>{likeCount === 1 ? "1 like" : `${likeCount} likes`}</Bold>
         </Touchable>
@@ -201,8 +217,9 @@ const Post = ({
         <Touchable>
           <CommentCount>See all {comments.length} comments</CommentCount>
         </Touchable>
-      </InfoContainer>
-    </Container>
+      </InfoCon>
+    </BottomCon>
+  </Container>
   );
 };
 

@@ -267,7 +267,8 @@ const Post = ({
 
 
 
-    return (<Container>
+    return (
+    <Container>
       <Header>
         <Touchable>
           <Image 

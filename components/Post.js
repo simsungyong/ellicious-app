@@ -67,7 +67,7 @@ const Post = ({
     storeLocation,
     storeName, 
     files=[],
-
+    id,
     likeCount: likeCountProp,
     caption,
     comments=[],

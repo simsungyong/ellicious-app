@@ -4,7 +4,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import constants from "../constants";
 import {PointPink, TINT_COLOR} from './Color'
-
+/*
 class FloatingLabelInput extends Component {
   state = {
     isFocused: false,
@@ -84,7 +84,7 @@ class AuthInputClass extends Component {
     );
   }
 }
-
+*/
 const Container = styled.View`
   margin-bottom: 10px;
 `;

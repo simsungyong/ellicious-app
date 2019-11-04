@@ -4,7 +4,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import constants from "../constants";
 import {PointPink, TINT_COLOR} from './Color'
-/*
+
 class FloatingLabelInput extends Component {
   state = {
     isFocused: false,
@@ -84,17 +84,9 @@ class AuthInputClass extends Component {
     );
   }
 }
-*/
+
 const Container = styled.View`
   margin-bottom: 10px;
-`;
-
-const TextInput = styled.TextInput`
-  width: ${constants.width / 1.7};
-  padding: 10px;
-  background-color: ${props => props.theme.greyColor};
-  border: 0.5px solid ${props => props.theme.darkGreyColor};
-  border-radius: 4px;
 `;
 
 
@@ -111,7 +103,7 @@ const AuthInput = ({
   }) => (
     
     <Container>
-      <TextInput
+      <AuthInputClass
         onChangeText={onChange}
         keyboardType={keyboardType}
         returnKeyType={returnKeyType}

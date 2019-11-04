@@ -7,7 +7,7 @@ import AuthNavigation from "../navigation/AuthNavigation";
 export default () => {
  const isLoggedIn = useIsLoggedIn();
   return (
-    <View style={{ flex: "1" }}>
+    <View style={{ flex: 1 }}>
         {isLoggedIn ? <MainNavigation /> : <AuthNavigation />}
     </View>
   );

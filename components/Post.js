@@ -10,7 +10,17 @@ import { useMutation } from "react-apollo-hooks";
 import styles from "../styles";
 
 const Touchable = styled.TouchableOpacity``;
+export const TOGGLE_LIKE = gql`
+  mutation toggelLike($postId: String!) {
+    toggleLike(postId: $postId)
+  }
+`;
 
+export const TOGGLE_PICK = gql`
+  mutation togglePick($postId: String!) {
+    togglePick(postId: $postId)
+  }
+`;
 const Container = styled.View`
   margin-bottom: 30px;
 `;

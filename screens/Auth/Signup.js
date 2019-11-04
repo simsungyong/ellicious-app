@@ -7,11 +7,12 @@ import useInput from "../../hooks/useInput";
 import { Alert } from "react-native";
 import { useMutation } from "react-apollo-hooks";
 import { LOG_IN, CREATE_ACCOUNT } from "./AuthQueries";
-import { TINT_COLOR, PointPink } from '../../components/Color'
+import { TINT_COLOR, PointPink, BG_COLOR } from '../../components/Color'
 import { SocialIcon } from 'react-native-elements';
 
 const Container = styled.View`
   flex: 1;
+  background-color : ${BG_COLOR}
 `;
 const View = styled.View`
   justify-content: center;
@@ -20,15 +21,17 @@ const View = styled.View`
 `;
 const Title = styled.View`
   flex:1;
+  
 `;
 const Text = styled.Text`
   margin-left : 20px;
-  font-Size : 50px;
+  font-Size : 40px;
   color: ${TINT_COLOR};
   margin-bottom : 5px;
 `;
 const InfoCon = styled.View`
   justify-content: center;
+  align-items: center;
   flex : 5;
 `;
 
@@ -41,8 +44,8 @@ const OtherSignUP = styled.View`
 
 const styles = StyleSheet.create({
   lineStyle:{
-        borderWidth: 0.5,
-        borderColor: TINT_COLOR,
+        borderWidth: 1,
+        borderColor: '#919191',
         margin:10,
    }
  });
@@ -132,10 +135,10 @@ export default ({ navigation }) => {
             autoCorrect={false}
             label = "User Name"
           />
-          </InfoCon>
-          <View>
+        </InfoCon>
+        <View>
           <AuthButton loading={loading} onPress={handleSingup} text="회원가입" />
-          </View>
+        </View>
         <OtherSignUP>
           <SocialIcon type="facebook" onPress={() => {alert('Facebook Login');}} />
           <SocialIcon type="google" onPress={() => {alert('Google Login');}} />
@@ -145,3 +148,8 @@ export default ({ navigation }) => {
     </TouchableWithoutFeedback>
   );
 };
+
+/* 
+          
+
+*/

@@ -12,17 +12,18 @@ import { useLogIn } from "../../AuthContext";
 
 const Container = styled.View`
   flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+const View= styled.View`
+  flex:1;
 `;
 const InfoCon = styled.View`
   justify-content: center;
-  flex : 5;
+  flex : 2;
 `;
-
-
-const View = styled.View`
-  justify-content: center;
-  align-items: center;
-  flex: 1;
+const Middle = styled.View`
+  flex:5;
 `;
 
 export default ({ navigation }) => {
@@ -60,19 +61,21 @@ export default ({ navigation }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Container>
-      <View>
-        <InfoCon>
+      <View/>
+      <InfoCon>
         <AuthInput
           {...confirmInput}
-          placeholder="Secret"
+          //placeholder="Secret"
           returnKeyType="send"
           onSubmitEditing={handleConfirm}
           autoCorrect={false}
           label="confirm code"
         />
+      </InfoCon>
+      <View>
         <AuthButton loading={loading} onPress={handleConfirm} text="Confirm" />
-        </InfoCon>
-      </View>
+      </View> 
+      <View/>
       </Container>
     </TouchableWithoutFeedback>
   );

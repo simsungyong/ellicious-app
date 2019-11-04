@@ -43,7 +43,7 @@ const FloatingLabelInput = ({label, onChangeText,value})=>{
         </ Animated.Text>
         <TextInput
           onChangeText={onChangeText}
-          style={{ height: 26, fontSize: 20, color: TINT_COLOR, borderBottomWidth: 1.5, borderBottomColor: PointPink }}
+          style={{ height: 26,width: constants.width/1.5, fontSize: 20, color: TINT_COLOR, borderBottomWidth: 1, borderBottomColor: PointPink }}
           onFocus={handleFocus}
           onBlur={handleBlur}
           blurOnSubmit
@@ -60,7 +60,7 @@ const FloatingLabelInput = ({label, onChangeText,value})=>{
 const AuthInputClass =({value,label,onChangeText}) => {
   
     return (
-      <View style={{ flex: 1, padding: 30 }}>
+      <View style={{padding: 8 }}> 
         <StatusBar hidden />
         <FloatingLabelInput
           label={label}
@@ -70,14 +70,10 @@ const AuthInputClass =({value,label,onChangeText}) => {
       </View>
     );
   }
-
+//padding으로 입력창 사이 간격 조절
 
 const Container = styled.View`
-  margin-bottom: 5px;
 `;
-
-
-
 
 const AuthInput = ({
     value,

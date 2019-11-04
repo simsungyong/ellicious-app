@@ -12,7 +12,6 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { SocialIcon } from 'react-native-elements';
 
 const Container = styled.View`
-  justify-content: center;
   flex: 1;
   background-color : ${BG_COLOR}
   padding: 10px;
@@ -34,6 +33,8 @@ const Title = styled.Text `
 
 const InfoCon = styled.View`
   flex : 2;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Middle = styled.View`

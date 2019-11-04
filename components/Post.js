@@ -19,6 +19,13 @@ const Header = styled.View`
   align-items: center;
 `;
 const Touchable = styled.TouchableOpacity``;
+
+const StoreContainer = styled.View`
+  margin-left: 10px;
+  margin-top: 20px;
+  align-items:center;
+`;
+
 const HeaderUserContainer = styled.View`
   margin-left: 10px;
 `;
@@ -26,6 +33,9 @@ const Bold = styled.Text`
   font-weight: 500;
 `;
 const Location = styled.Text`
+  font-size: 12px;
+`;
+const Rating = styled.Text`
   font-size: 12px;
 `;
 const IconsContainer = styled.View`
@@ -50,7 +60,8 @@ const CommentCount = styled.Text`
 
 const Post = ({
     user, 
-    location, 
+    storeLocation,
+    storeName, 
     files=[],
     likeCount: likeCountProp,
     caption,
@@ -78,8 +89,12 @@ const Post = ({
                 <Touchable>
                     <HeaderUserContainer>
                         <Bold>{user.username}</Bold>
-                        <Location>{location}</Location>
+                        <Location>{storeLocation}</Location>
                     </HeaderUserContainer>
+                    <StoreContainer>
+                        <Bold size={30}>{storeName}</Bold>
+                        <Rating>별점 : {rating}</Rating>
+                    </StoreContainer>
                 </Touchable>
             </Header>
             <Swiper 

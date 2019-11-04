@@ -14,7 +14,8 @@ const FEED_QUERY = gql`
       id
       caption
       rating
-      location
+      storeLocation
+      storeName
       user {
         id
         avatar

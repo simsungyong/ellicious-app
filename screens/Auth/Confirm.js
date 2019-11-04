@@ -10,6 +10,15 @@ import { LOG_IN, CONFIRM_SECRET } from "./AuthQueries";
 import { useLogIn } from "../../AuthContext";
 
 
+const Container = styled.View`
+  flex: 1;
+`;
+const InfoCon = styled.View`
+  justify-content: center;
+  flex : 5;
+`;
+
+
 const View = styled.View`
   justify-content: center;
   align-items: center;
@@ -50,16 +59,21 @@ export default ({ navigation }) => {
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <Container>
       <View>
+        <InfoCon>
         <AuthInput
           {...confirmInput}
           placeholder="Secret"
           returnKeyType="send"
           onSubmitEditing={handleConfirm}
           autoCorrect={false}
+          label="confirm code"
         />
         <AuthButton loading={loading} onPress={handleConfirm} text="Confirm" />
+        </InfoCon>
       </View>
+      </Container>
     </TouchableWithoutFeedback>
   );
 };

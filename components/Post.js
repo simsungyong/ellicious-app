@@ -9,7 +9,11 @@ import constants from "../constants";
 import { useMutation } from "react-apollo-hooks";
 import styles from "../styles";
 
-
+export const TOGGLE_LIKE = gql`
+  mutation toggelLike($postId: String!) {
+    toggleLike(postId: $postId)
+  }
+`;
 const Container = styled.View`
   margin-bottom: 40px;
 `;
@@ -63,6 +67,7 @@ const Post = ({
     storeLocation,
     storeName, 
     files=[],
+
     likeCount: likeCountProp,
     caption,
     comments=[],
@@ -73,11 +78,19 @@ const Post = ({
     rating}) => {
         const [isLiked, setIsLiked] = useState(isLikedProp);
         const [likeCount, setLikeCount] = useState(likeCountProp);
-        //const toggleLikeMutaton = useMutation(TOGGLE_LIKE, {
-        //variables: {
-        //postId: id
-        //}
-    //});
+        const toggleLikeMutaton = useMutation(TOGGLE_LIKE, {
+        variables: {
+        postId: id
+        }
+    });
+
+    const handleLike = async () =>{
+      setIsLiked(p => !p);
+      try{
+        await toggleLikeMutaton();
+      }catch (e){}
+    };
+
     return (
         <Container>
             <Header>
@@ -92,7 +105,7 @@ const Post = ({
                         <Location>{storeLocation}</Location>
                     </HeaderUserContainer>
                     <StoreContainer>
-                        <Bold size={30}>{storeName}</Bold>
+                        <Bold size={40}>{storeName}</Bold>
                         <Rating>별점 : {rating}</Rating>
                     </StoreContainer>
                 </Touchable>
@@ -109,7 +122,7 @@ const Post = ({
             </Swiper>
             <InfoContainer>
         <IconsContainer>
-          <Touchable onPress={null}>
+          <Touchable onPress={handleLike}>
             <IconContainer>
               <Ionicons
                 size={24}

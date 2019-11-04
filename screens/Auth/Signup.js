@@ -1,18 +1,51 @@
 import React, { useState }  from "react";
 import styled from "styled-components";
-import { TouchableWithoutFeedback, Keyboard } from "react-native";
+import { TouchableWithoutFeedback, Keyboard, StyleSheet } from "react-native";
 import AuthButton from "../../components/AuthButton";
 import AuthInput from "../../components/AuthInput";
 import useInput from "../../hooks/useInput";
 import { Alert } from "react-native";
 import { useMutation } from "react-apollo-hooks";
 import { LOG_IN, CREATE_ACCOUNT } from "./AuthQueries";
+import { TINT_COLOR, PointPink } from '../../components/Color'
+import { SocialIcon } from 'react-native-elements';
 
+const Container = styled.View`
+  flex: 1;
+`;
 const View = styled.View`
   justify-content: center;
   align-items: center;
-  flex: 1;
+  flex : 1;
 `;
+const Title = styled.View`
+  flex:1;
+`;
+const Text = styled.Text`
+  margin-left : 20px;
+  font-Size : 50px;
+  color: ${TINT_COLOR};
+  margin-bottom : 5px;
+`;
+const InfoCon = styled.View`
+  justify-content: center;
+  flex : 5;
+`;
+
+const OtherSignUP = styled.View`
+  flex-direction : row;
+  margin-top : 10px;
+  justify-content: center;
+  flex:1;
+`;
+
+const styles = StyleSheet.create({
+  lineStyle:{
+        borderWidth: 0.5,
+        borderColor: TINT_COLOR,
+        margin:10,
+   }
+ });
 
 export default ({ navigation }) => {
   const fNameInput = useInput("");
@@ -64,33 +97,51 @@ export default ({ navigation }) => {
     }
   };
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View>
-        <AuthInput
-          {...fNameInput}
-          placeholder="First name"
-          autoCapitalize="words"
-        />
-        <AuthInput
-          {...lNameInput}
-          placeholder="Last name"
-          autoCapitalize="words"
-        />
-        <AuthInput
-          {...emailInput}
-          placeholder="Email"
-          keyboardType="email-address"
-          returnKeyType="send"
-          autoCorrect={false}
-        />
-        <AuthInput
-          {...usernameInput}
-          placeholder="Username"
-          returnKeyType="send"
-          autoCorrect={false}
-        />
-        <AuthButton loading={loading} onPress={handleSingup} text="회원가입" />
-      </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}> 
+      <Container>
+        <View/>
+        <Title>
+          <Text>회원가입</Text>
+          <View style = {styles.lineStyle} />
+        </Title>
+        <InfoCon>
+          <AuthInput
+            {...fNameInput}
+            /*placeholder="First name"*/
+            autoCapitalize="words"
+            label = "이름"
+          />
+          <AuthInput
+            {...lNameInput}
+            placeholder="Last name"
+            autoCapitalize="words"
+            label = "성"
+          />
+          <AuthInput
+            {...emailInput}
+            placeholder="Email"
+            keyboardType="email-address"
+            returnKeyType="send"
+            autoCorrect={false}
+            label = "Email"
+          />
+          <AuthInput
+            {...usernameInput}
+            placeholder="Username"
+            returnKeyType="send"
+            autoCorrect={false}
+            label = "User Name"
+          />
+          </InfoCon>
+          <View>
+          <AuthButton loading={loading} onPress={handleSingup} text="회원가입" />
+          </View>
+        <OtherSignUP>
+          <SocialIcon type="facebook" onPress={() => {alert('Facebook Login');}} />
+          <SocialIcon type="google" onPress={() => {alert('Google Login');}} />
+        </OtherSignUP>
+        <View/>
+      </Container>
     </TouchableWithoutFeedback>
   );
 };

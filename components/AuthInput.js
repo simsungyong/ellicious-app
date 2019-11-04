@@ -43,7 +43,7 @@ const FloatingLabelInput = ({label, value, onChangeText})=>{
         </ Animated.Text>
         <TextInput
           onChangeText={onChangeText}
-          style={{ height: 26, fontSize: 20, color: TINT_COLOR, borderBottomWidth: 1, borderBottomColor: PointPink }}
+          style={{ height: 26, fontSize: 20, color: TINT_COLOR, borderBottomWidth: 1.5, borderBottomColor: PointPink }}
           onFocus={handleFocus}
           onBlur={handleBlur}
           blurOnSubmit
@@ -54,8 +54,6 @@ const FloatingLabelInput = ({label, value, onChangeText})=>{
     );
   
 }
-
-
 
 const AuthInputClass =({value,label,onChangeText}) => {
   //const handleTextChange = (newText) => setValue({ value: newText });
@@ -76,7 +74,7 @@ const AuthInputClass =({value,label,onChangeText}) => {
 
 
 const Container = styled.View`
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 `;
 
 

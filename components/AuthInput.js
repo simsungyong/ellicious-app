@@ -1,45 +1,37 @@
-/*
-import React, { Component, Component } from "react";
-import { View, StatusBar, Text, Animated } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { View, StatusBar, TextInput, Animated } from 'react-native';
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import constants from "../constants";
 import {PointPink, TINT_COLOR} from './Color'
 
-class FloatingLabelInput extends Component {
-  state = {
-    isFocused: false,
-  };
+const FloatingLabelInput = ({label, value, onChangeText})=>{
   
-  componentWillMount() {
-    this._animatedIsFocused = new Animated.Value(this.props.value === '' ? 0 : 1);
-  }
+  const [focus, setFocus] = useState(false);
+  const [animation, setAnimation] = useState(new Animated.Value(0));
 
-  handleFocus = () => this.setState({ isFocused: true });
-  handleBlur = () => this.setState({ isFocused: false });
+  const handleFocus = () => setFocus(true);
+  const handleBlur = () => setFocus( false );
 
-  componentDidUpdate() {
-    Animated.timing(this._animatedIsFocused, {
-      toValue: (this.state.isFocused || this.props.value !== '') ? 1 : 0,
+  useEffect( ()=>{
+    Animated.timing(animation, {
+      toValue: (focus|| value !== '') ? 1 : 0,
       duration: 200,
     }).start();
-  }
+  },[focus]);
 
-  render() {
-    const { label, value, ...props } = this.props;
-    console.log(value);
-    const labelStyle = {
+  const labelStyle = {
       position: 'absolute',
       left: 0,
-      top: this._animatedIsFocused.interpolate({
+      top: animation.interpolate({
         inputRange: [0, 1],
         outputRange: [18, 0],
       }),
-      fontSize: this._animatedIsFocused.interpolate({
+      fontSize: animation.interpolate({
         inputRange: [0, 1],
         outputRange: [20, 14],
       }),
-      color: this._animatedIsFocused.interpolate({
+      color: animation.interpolate({
         inputRange: [0, 1],
         outputRange: ['#aaa', PointPink],
       }),
@@ -50,50 +42,49 @@ class FloatingLabelInput extends Component {
           {label}
         </ Animated.Text>
         <TextInput
-          {...props}
+          onChangeText={onChangeText}
           style={{ height: 26, fontSize: 20, color: TINT_COLOR, borderBottomWidth: 1, borderBottomColor: PointPink }}
-          onFocus={this.handleFocus}
-          onBlur={this.handleBlur}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           blurOnSubmit
+          autoCapitalize='none'
         />
         
       </View>
     );
-  }
+  
 }
 
 
 
-class AuthInputClass extends Component {
-  state = {
-    value: '',
-  };
-
-  handleTextChange = (newText) => this.setState({ value: newText });
+const AuthInputClass =({value,label,onChangeText}) => {
+  //const handleTextChange = (newText) => setValue({ value: newText });
   
-  render() {
-    const {label} = this.props;
+    //const label = props.label;
+    
     return (
       <View style={{ flex: 1, padding: 30 }}>
         <StatusBar hidden />
         <FloatingLabelInput
           label={label}
-          value={this.state.value}
-          onChangeText={this.handleTextChange}
+          value={value}
+          onChangeText={onChangeText}
         />
       </View>
     );
   }
-}
+
 
 const Container = styled.View`
   margin-bottom: 10px;
 `;
 
 
+
+
 const AuthInput = ({
     value,
-    placeholder,
+    //placeholder,
     keyboardType = "default",
     autoCapitalize = "none",
     returnKeyType = "done",
@@ -109,7 +100,7 @@ const AuthInput = ({
         keyboardType={keyboardType}
         returnKeyType={returnKeyType}
         autoCapitalize={autoCapitalize}
-        placeholder={placeholder}
+       // placeholder={placeholder}
         onSubmitEditing={onSubmitEditing}
         autoCorrect={autoCorrect}
         value={value}
@@ -121,70 +112,6 @@ const AuthInput = ({
 AuthInput.propTypes = {
   value: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  keyboardType: PropTypes.oneOf([
-    "default",
-    "number-pad",
-    "decimal-pad",
-    "numeric",
-    "email-address",
-    "phone-pad"
-  ]),
-  autoCapitalize: PropTypes.oneOf(["none", "sentences", "words", "characters"]),
-  onChange: PropTypes.func.isRequired,
-  returnKeyType: PropTypes.oneOf(["done", "go", "next", "search", "send"]),
-  onSubmitEditing: PropTypes.func,
-  autoCorrect: PropTypes.bool
-};
-
-export default AuthInput;
-*/
-
-
-import React from "react";
-import styled from "styled-components";
-import PropTypes from "prop-types";
-import constants from "../constants";
-
-
-const Container = styled.View`
-  margin-bottom: 10px;
-`;
-
-const TextInput = styled.TextInput`
-  width: ${constants.width / 1.5};
-  padding: 10px;
-  background-color: ${props => props.theme.greyColor};
-  border: 0.5px solid ${props => props.theme.darkGreyColor};
-  border-radius: 4px;
-`;
-
-const AuthInput = ({
-    placeholder,
-    value,
-    keyboardType = "default",
-    autoCapitalize = "none",
-    returnKeyType = "done",
-    onChange,
-    onSubmitEditing = () => null,
-    autoCorrect = true
-  }) => (
-    <Container>
-      <TextInput
-        onChangeText={onChange}
-        keyboardType={keyboardType}
-        returnKeyType={returnKeyType}
-        placeholder={placeholder}
-        autoCapitalize={autoCapitalize}
-        onSubmitEditing={onSubmitEditing}
-        autoCorrect={autoCorrect}
-        value={value}
-      />
-    </Container>
-  );
-
-AuthInput.propTypes = {
-  placeholder: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
   keyboardType: PropTypes.oneOf([
     "default",
     "number-pad",

@@ -5,3 +5,4 @@ export const mainPink = "#F5A9A9";
 export const PointPink = "#d45353"
 export const Google = "#dc4a38";
 export const Facebook ="#3b5998"
+export const StarColor = "#ffd363";

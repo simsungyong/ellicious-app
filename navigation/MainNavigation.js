@@ -11,11 +11,11 @@ const MainNavigation = createStackNavigator(
     TabNavigation,
     PhotoNavigation,
     MessageNavigation,
-    AlarmNavigation
+    AlarmNavigation,
   },
   {
     headerMode: "none",
-    mode: "modal"
+    mode:"modal"
   }
 );
 

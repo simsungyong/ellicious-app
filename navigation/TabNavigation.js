@@ -35,7 +35,7 @@ export default createBottomTabNavigator({
   Add: {
     screen: View,
     navigationOptions: {
-        tabBarOnPress: ({ navigation }) => navigation.navigate("PhotoNavigation")
+        tabBarOnPress: ({ navigation }) => navigation.navigate("PhotoNavigation"),
     }
   },
   Profile: {

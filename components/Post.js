@@ -9,6 +9,7 @@ import constants from "../constants";
 import { useMutation } from "react-apollo-hooks";
 import styles from "../styles";
 import moment from "moment";
+import { withNavigation } from "react-navigation";
 
 
 export const TOGGLE_LIKE = gql`
@@ -208,7 +209,7 @@ const Post = ({
         </Touchable>
         <Touchable>
           <IconCon>
-            <Ionicons
+            <Ionicons 
               color={styles.blackColor}
               size={24}
               name={Platform.OS === "ios" ? "ios-search" : "md-search"}
@@ -223,15 +224,15 @@ const Post = ({
         <Caption>
           <Bold>{user.username}</Bold> {caption}
         </Caption>
-        <Touchable>
-          <CommentCount>{comments.length >=1 ? (`See all ${comments.length} comments`) : null}</CommentCount>
+        <Touchable >
+          <CommentCount >{comments.length >=1 ? (`See all ${comments.length} comments`) :null}</CommentCount>
         </Touchable>
         <Touchable>
         <Caption>
         {comments.length >= 1 ?(
         <Image 
             style={{height: 20, width: 20, borderRadius:20}}
-            source={{uri: user.avatar}}/>) : null}<Bold>{comments.length >= 1 ? comments[0].user.username: null }</Bold> {comments.length >= 1 ? comments[0].text :null}
+            source={{uri: user.avatar}}/>) : null}<Bold>{comments.length >= 1 ? comments[comments.length-1].user.username: null }</Bold> {comments.length >= 1 ? comments[comments.length-1].text :null}
         </Caption>
         </Touchable>
         <CommentCount>{time}</CommentCount>

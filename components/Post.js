@@ -224,7 +224,15 @@ const Post = ({
           <Bold>{user.username}</Bold> {caption}
         </Caption>
         <Touchable>
-          <CommentCount>See all {comments.length} comments</CommentCount>
+          <CommentCount>{comments.length >=1 ? (`See all ${comments.length} comments`) : null}</CommentCount>
+        </Touchable>
+        <Touchable>
+        <Caption>
+        {comments.length >= 1 ?(
+        <Image 
+            style={{height: 20, width: 20, borderRadius:20}}
+            source={{uri: user.avatar}}/>) : null}<Bold>{comments.length >= 1 ? comments[0].user.username: null }</Bold> {comments.length >= 1 ? comments[0].text :null}
+        </Caption>
         </Touchable>
         <CommentCount>{time}</CommentCount>
       </InfoCon>

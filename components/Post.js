@@ -84,6 +84,7 @@ const InfoCon=styled.View`
 `;
 
 const Caption = styled.Text`
+
 `;
 
 const CommentCount = styled.Text`
@@ -254,25 +255,29 @@ const Post = ({
           <Caption>{caption}</Caption>
         </CaptionCon>
       </InfoCon>
-    
-    <CommentCon>
+
         <Touchable>
-          <CommentCount>{comments.length >=1 ? (`댓글 ${comments.length}개 모두 보기`) : null}</CommentCount>
+          {comments.length >=1 ? (
+            <CommentCount>
+            {`-댓글 ${comments.length}개 모두 보기 `}
+            </CommentCount>
+            ) : null}
         </Touchable>
         <Touchable>
-        <Caption>
-          {comments.length >= 1 ?(
-            <Image 
-              style={{height: 20, width: 20, borderRadius:20}}
-              source={{uri: user.avatar}}/>
-          ) : null}
-            <Bold>{comments.length >= 1 ? comments[0].user.username: null }</Bold> 
-            {comments.length >= 1 ? comments[0].text :null}
-        </Caption>
+        {comments.length >= 1 ?(
+          <Caption>
+            {comments.length >= 1 ?(
+                <Image 
+                  style={{height: 20, width: 20, borderRadius:20}}
+                  source={{uri: user.avatar}}/> 
+            ) : null}
+              <Bold>{comments.length >= 1 ? (comments[0].user.username): null }</Bold> 
+              {comments.length >= 1 ?( comments[0].text) :null}
+          </Caption>) : null}
         </Touchable>
-      </CommentCon>
       <CommentCount>{time}</CommentCount>
     </BottomCon>
+
   </Card>
   );
 };

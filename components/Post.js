@@ -9,13 +9,8 @@ import constants from "../constants";
 import { useMutation } from "react-apollo-hooks";
 import styles from "../styles";
 import moment from "moment";
-<<<<<<< HEAD
-import { withNavigation } from "react-navigation";
-
-=======
 import {TINT_COLOR, StarColor} from '../components/Color';
 import {Card} from 'native-base'
->>>>>>> 45e41820c23ba5173ff34d720e5e03f44b3fb1aa
 
 export const TOGGLE_LIKE = gql`
   mutation toggelLike($postId: String!) {

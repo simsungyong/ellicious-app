@@ -272,7 +272,7 @@ const Post = ({
                   source={{uri: user.avatar}}/> 
             ) : null}
               <Bold>{comments.length >= 1 ? (comments[0].user.username): null }</Bold> 
-              {comments.length >= 1 ?( comments[0].text) :null}
+              {comments.length >= 1 ?( ` ${comments[0].text}`) :null}
           </Caption>) : null}
         </Touchable>
       <CommentCount>{time}</CommentCount>

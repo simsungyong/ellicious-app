@@ -1,179 +1,65 @@
-const Container = styled.View`
-  margin-bottom: 40px;
-`;
-const Header = styled.View`
-  padding: 15px;
-  flex-direction: row;
-  align-items: center;
-`;
-const Touchable = styled.TouchableOpacity``;
-
-const StoreContainer = styled.View`
-  margin-left: 10px;
-  margin-top: 20px;
-  align-items:center;
-`;
-
-const HeaderUserContainer = styled.View`
-  margin-left: 10px;
-`;
-const Bold = styled.Text`
-  font-weight: 500;
-`;
-const Location = styled.Text`
-  font-size: 12px;
-`;
-const Rating = styled.Text`
-  font-size: 12px;
-`;
-const IconsContainer = styled.View`
-  flex-direction: row;
-  margin-bottom: 5px;
-`;
-const IconContainer = styled.View`
-  margin-right: 10px;
-`;
-const InfoContainer = styled.View`
-  padding: 10px;
-`;
-const Caption = styled.Text`
-  margin: 5px 0px;
-`;
-const CommentCount = styled.Text`
-  opacity: 0.5;
-  font-size: 13px;
-`;
-
-
-
-<Header>
-                <Touchable>
-                    <Image 
-                    style={{height: 40, width: 40, borderRadius:20}}
-                    source={{uri: user.avatar}}/>
-                </Touchable>
-                <Touchable>
-                    <HeaderUserContainer>
-                        <Bold>{user.username}</Bold>
-                        <Location>{storeLocation}</Location>
-                    </HeaderUserContainer>
-                    <StoreContainer>
-                        <Bold size={30}>{storeName}</Bold>
-                        <Rating>별점 : {rating}</Rating>
-                    </StoreContainer>
-                </Touchable>
-            </Header>
-            <Swiper 
-                showsPagination={false}
-                style={{height: constants.height/2.7}}>
-                {files.map(file=>(
-                    <Image
-                        style={{width: constants.width, height:constants.height/2.7}}
-                        key={file.id}
-                        source={{uri: file.url}}/>
-                ))}
-            </Swiper>
-
-            <InfoContainer> -->BottomCon
-        <IconsContainer>
-          <Touchable onPress={null}>
-            <IconContainer>
-              <Ionicons
-                size={24}
-                color={isLiked ? styles.redColor : styles.blackColor}
-                name={
-                  Platform.OS === "ios"
-                    ? isLiked
-                      ? "ios-heart"
-                      : "ios-heart-empty"
-                    : isLiked
-                    ? "md-heart"
-                    : "md-heart-empty"
-                }
-              />
-            </IconContainer>
-          </Touchable>
-          <Touchable>
-            <IconContainer>
-              <Ionicons
-                color={styles.blackColor}
-                size={24}
-                name={Platform.OS === "ios" ? "ios-text" : "md-text"}
-              />
-            </IconContainer>
-          </Touchable>
-          <Touchable>
-            <IconContainer>
-              <Ionicons
-                color={styles.blackColor}
-                size={24}
-                name={Platform.OS === "ios" ? "ios-search" : "md-search"}
-              />
-            </IconContainer>
-          </Touchable>
-        </IconsContainer>
-        <Touchable>
-          <Bold>{likeCount === 1 ? "1 like" : `${likeCount} likes`}</Bold>
-        </Touchable>
-        <Caption>
-          <Bold>{user.username}</Bold> {caption}
-        </Caption>
-        <Touchable>
-          <CommentCount>See all {comments.length} comments</CommentCount>
-        </Touchable>
-      </InfoContainer>
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState } from "react";
 import { Image, Platform } from "react-native";
 import styled from "styled-components";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, FontAwesome, EvilIcons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 import Swiper from "react-native-swiper";
 import { gql } from "apollo-boost";
 import constants from "../constants";
 import { useMutation } from "react-apollo-hooks";
 import styles from "../styles";
+import moment from "moment";
+import {TINT_COLOR, StarColor} from '../components/Color';
 
-const Touchable = styled.TouchableOpacity``;
-
+export const TOGGLE_LIKE = gql`
+  mutation toggelLike($postId: String!) {
+    toggleLike(postId: $postId)
+  }
+`;
 export const TOGGLE_PICK = gql`
   mutation togglePick($postId: String!) {
     togglePick(postId: $postId)
   }
 `;
+
+const Touchable = styled.TouchableOpacity``;
+
 const Container = styled.View`
   margin-bottom: 30px;
+  flex : 1;
 `;
 
 const Header = styled.View`
-  background-color : #f5b3b3;
-  padding: 15px;
+  padding: 5px;
   flex-direction: row;
   align-items: center;
-  flex: 2;
+  background-color : #f5b3b3;
 `;
+
 const HeaderUserContainer = styled.View`
   margin-left: 10px;
 `;
 
 const StoreCon = styled.View`
+  padding: 10px;
   background-color : #f5d2b3;
-  flex : 4;
-  align-items:center;
 `;
+
+const StoreInfo = styled.View`
+  background-color : #b3b6f5;
+  align-items: center;
+`;
+const StoreName = styled.Text`
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom : 5px;
+  color : ${TINT_COLOR};
+`;
+
 const Bold = styled.Text`
-  font-weight: 500;
+  font-weight: 600;
+  margin-bottom : 5px;
+  font-size : 15px;
 `;
 const Location = styled.Text`
   font-size: 12px;
@@ -183,9 +69,8 @@ const Rating = styled.Text`
 `;
 
 const BottomCon = styled.View`
-  background-color : #d1f5b3;
-  flex : 3;
   padding: 10px;
+  background-color : #d1f5b3;
 `;
 
 const IconsCon = styled.View`
@@ -195,7 +80,7 @@ const IconsCon = styled.View`
 `;
 
 const IconCon = styled.View`
-  margin-right: 10px;
+  margin-right: 13px;
 `;
 const InfoCon=styled.View`
   background-color : #cab3f5;
@@ -203,13 +88,16 @@ const InfoCon=styled.View`
 `;
 
 const Caption = styled.Text`
-  margin: 5px 0px;
+ margin-left : 5px;
 `;
 const CommentCount = styled.Text`
   opacity: 0.5;
   font-size: 13px;
 `;
-
+const CaptionCon = styled.View`
+  flex-direction: row;
+  margin-bottom : 5px;
+`;
 
 const Post = ({
     user, 
@@ -224,22 +112,27 @@ const Post = ({
     navigation,
     isPicked: isPickedProp,
     pickCount: pickCountProp,
+    createdAt,
     rating}) => {
         const [isLiked, setIsLiked] = useState(isLikedProp);
         const [likeCount, setLikeCount] = useState(likeCountProp);
         const [isPicked, setIsPicked] = useState(isPickedProp);
         const [pickCount, setPickCount] = useState(pickCountProp);
-        const toggleLikeMutaton = useMutation(TOGGLE_LIKE, {
+
+        const [toggleLikeMutaton] = useMutation(TOGGLE_LIKE, {
         variables: {
         postId: id
         }});
 
-        const togglePickMutation = useMutation(TOGGLE_PICK, {
+        const [togglePickMutation] = useMutation(TOGGLE_PICK, {
           variables:{
             postId: id
           }
         });
+      
+    const time=moment(createdAt).startOf('hour').fromNow();
 
+    
     const handleLike = async () =>{
       if(isLiked === true){
         setLikeCount(l=>l-1);
@@ -261,33 +154,40 @@ const Post = ({
       setIsPicked(p => !p);
       try{
         await togglePickMutation();
-      }catch (e){}
+      }catch (e){
+        console.log(e);
+      }
     };
 
-
-
-
     return (
-    <Container>
+      <Container>
       <Header>
         <Touchable>
           <Image 
             style={{height: 40, width: 40, borderRadius:20}}
-            source={{uri: user.avatar}}/>
+            source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}/>
         </Touchable>
-        <Touchable>
-          <HeaderUserContainer>
+       
+        <HeaderUserContainer>
+          <Touchable>
             <Bold>{user.username}</Bold>
-            <Location>{storeLocation}</Location>
-          </HeaderUserContainer>
-        </Touchable>
+          </Touchable>
+        </HeaderUserContainer>
       </Header>
 
       <StoreCon>
-        <Touchable>
-          <Bold size={30}>{storeName}</Bold>
-          <Rating>별점 : {rating}</Rating>
-        </Touchable>
+        <StoreInfo>
+          <Touchable>
+            <StoreName>{storeName}</StoreName>
+          </Touchable>
+            <Rating>
+              <FontAwesome
+                color={styles.StarColor}
+                size={24}
+                name={"star"}
+              />
+            </Rating>
+        </StoreInfo>
       </StoreCon>
 
       <Swiper 
@@ -303,10 +203,10 @@ const Post = ({
 
       <BottomCon>
         <IconsCon>
-        <Touchable onPress={null}>
+        <Touchable onPress={handleLike}>
           <IconCon>
             <Ionicons
-              size={24}
+              size={28}
               color={isLiked ? styles.redColor : styles.blackColor}
               name={
                 Platform.OS === "ios"
@@ -322,18 +222,18 @@ const Post = ({
         </Touchable>
         <Touchable>
           <IconCon>
-            <Ionicons
-              color={styles.blackColor}
-              size={24}
-              name={Platform.OS === "ios" ? "ios-text" : "md-text"}
+            <EvilIcons
+              color={styles.TINT_COLOR}
+              size={33}
+              name={Platform.OS === "ios" ? "comment" : "md-text"}
             />
           </IconCon>
         </Touchable>
         <Touchable>
           <IconCon>
             <Ionicons
-              color={styles.blackColor}
-              size={24}
+              color={styles.TINT_COLOR}
+              size={28}
               name={Platform.OS === "ios" ? "ios-search" : "md-search"}
             />
           </IconCon>
@@ -341,14 +241,26 @@ const Post = ({
       </IconsCon>
       <InfoCon>
         <Touchable>
-          <Bold>{likeCount === 1 ? "1 like" : `${likeCount} likes`}</Bold>
+          <Bold>{likeCount === 1 ? "좋아요 1개" : `좋아요 ${likeCount}개`}</Bold>
         </Touchable>
-        <Caption>
-          <Bold>{user.username}</Bold> {caption}
-        </Caption>
+        <CaptionCon>
+          <Touchable>
+            <Bold>{user.username}</Bold>
+          </Touchable>
+          <Caption>{caption}</Caption>
+        </CaptionCon>
         <Touchable>
-          <CommentCount>See all {comments.length} comments</CommentCount>
+          <CommentCount>{comments.length >=1 ? (`댓글 ${comments.length}개 모두 보기`) : null}</CommentCount>
         </Touchable>
+        <Touchable>
+        <Caption>
+        {comments.length >= 1 ?(
+        <Image 
+            style={{height: 20, width: 20, borderRadius:20}}
+            source={{uri: user.avatar}}/>) : null}<Bold>{comments.length >= 1 ? comments[0].user.username: null }</Bold> {comments.length >= 1 ? comments[0].text :null}
+        </Caption>
+        </Touchable>
+        <CommentCount>{time}</CommentCount>
       </InfoCon>
     </BottomCon>
   </Container>

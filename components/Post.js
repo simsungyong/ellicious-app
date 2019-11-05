@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Image, Platform } from "react-native";
+import { Image, Platform, StyleSheet } from "react-native";
 import styled from "styled-components";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, FontAwesome, EvilIcons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 import Swiper from "react-native-swiper";
 import { gql } from "apollo-boost";
@@ -9,8 +9,13 @@ import constants from "../constants";
 import { useMutation } from "react-apollo-hooks";
 import styles from "../styles";
 import moment from "moment";
+<<<<<<< HEAD
 import { withNavigation } from "react-navigation";
 
+=======
+import {TINT_COLOR, StarColor} from '../components/Color';
+import {Card} from 'native-base'
+>>>>>>> 45e41820c23ba5173ff34d720e5e03f44b3fb1aa
 
 export const TOGGLE_LIKE = gql`
   mutation toggelLike($postId: String!) {
@@ -23,30 +28,44 @@ export const TOGGLE_PICK = gql`
   }
 `;
 
+const Touchable = styled.TouchableOpacity``;
+
 const Container = styled.View`
-  margin-bottom: 30px;
+  margin-bottom: 10px;
+  flex : 1;
+  background-color : #ffffff
 `;
 
 const Header = styled.View`
-  background-color : #f5b3b3;
-  padding: 15px;
+  padding: 5px;
   flex-direction: row;
   align-items: center;
-  flex: 2;
 `;
+
 const HeaderUserContainer = styled.View`
   margin-left: 10px;
 `;
 
-const Touchable = styled.TouchableOpacity``;
-
 const StoreCon = styled.View`
-  background-color : #f5d2b3;
-  flex : 4;
-  align-items:center;
+  padding : 5px;
 `;
+
+const StoreInfo = styled.View`
+  align-items: center;
+  margin-bottom:10px;
+`;
+const StoreName = styled.Text`
+  font-size: 30px;
+  font-weight: 800;
+  margin-bottom : 5px;
+  color : ${TINT_COLOR};
+`;
+
 const Bold = styled.Text`
-  font-weight: 500;
+  font-weight: 600;
+  margin-bottom : 5px;
+  font-size : 15px;
+  margin-right : 5px;
 `;
 const Location = styled.Text`
   font-size: 12px;
@@ -56,29 +75,34 @@ const Rating = styled.Text`
 `;
 
 const BottomCon = styled.View`
-  background-color : #d1f5b3;
-  flex : 3;
   padding: 10px;
 `;
 
 const IconsCon = styled.View`
-  background-color : #b3e0f5;
-  flex: 1;
   flex-direction: row;
 `;
 
 const IconCon = styled.View`
-  margin-right: 10px;
+  margin-right: 13px;
 `;
 const InfoCon=styled.View`
-  background-color : #cab3f5;
-  flex : 2;
 `;
 
 const Caption = styled.Text`
-  margin: 5px 0px;
 `;
+
 const CommentCount = styled.Text`
+  opacity: 0.5;
+  font-size: 13px;
+`;
+const CaptionCon = styled.View`
+  flex-direction: row;
+`;
+const CommentCon = styled.View`
+  margin-bottom : 5px;
+`;
+
+const Text=styled.Text`
   opacity: 0.5;
   font-size: 13px;
 `;
@@ -144,28 +168,35 @@ const Post = ({
     };
 
     return (
-      <Container>
+      <Card>
       <Header>
         <Touchable>
           <Image 
             style={{height: 40, width: 40, borderRadius:20}}
-            source={{uri: user.avatar}}/>
+            source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}/>
         </Touchable>
-        <Touchable>
-          <HeaderUserContainer>
+       
+        <HeaderUserContainer>
+          <Touchable>
             <Bold>{user.username}</Bold>
-            <Location>{storeLocation}</Location>
-          </HeaderUserContainer>
-        </Touchable>
+          </Touchable>
+          <Text>서울시 노원구 공릉동</Text>
+        </HeaderUserContainer>
       </Header>
 
       <StoreCon>
-        <Touchable>
-          <Bold size={30}>{storeName}</Bold>
-          <Rating>별점 : {rating}</Rating>
-        </Touchable>
-          
-  
+        <StoreInfo>
+          <Touchable>
+            <StoreName>{storeName}</StoreName>
+          </Touchable>
+            <Rating>
+              <FontAwesome
+                color={styles.StarColor}
+                size={24}
+                name={"star"}
+              />
+            </Rating>
+        </StoreInfo>
       </StoreCon>
 
       <Swiper 
@@ -184,7 +215,7 @@ const Post = ({
         <Touchable onPress={handleLike}>
           <IconCon>
             <Ionicons
-              size={24}
+              size={28}
               color={isLiked ? styles.redColor : styles.blackColor}
               name={
                 Platform.OS === "ios"
@@ -200,18 +231,18 @@ const Post = ({
         </Touchable>
         <Touchable>
           <IconCon>
-            <Ionicons
-              color={styles.blackColor}
-              size={24}
-              name={Platform.OS === "ios" ? "ios-text" : "md-text"}
+            <EvilIcons
+              color={styles.TINT_COLOR}
+              size={33}
+              name={Platform.OS === "ios" ? "comment" : "md-text"}
             />
           </IconCon>
         </Touchable>
         <Touchable>
           <IconCon>
-            <Ionicons 
-              color={styles.blackColor}
-              size={24}
+            <Ionicons
+              color={styles.TINT_COLOR}
+              size={28}
               name={Platform.OS === "ios" ? "ios-search" : "md-search"}
             />
           </IconCon>
@@ -219,26 +250,35 @@ const Post = ({
       </IconsCon>
       <InfoCon>
         <Touchable>
-          <Bold>{likeCount === 1 ? "1 like" : `${likeCount} likes`}</Bold>
+          <Bold>{likeCount === 1 ? "좋아요 1개" : `좋아요 ${likeCount}개`}</Bold>
         </Touchable>
-        <Caption>
-          <Bold>{user.username}</Bold> {caption}
-        </Caption>
-        <Touchable >
-          <CommentCount >{comments.length >=1 ? (`See all ${comments.length} comments`) :null}</CommentCount>
+        <CaptionCon>
+          <Touchable>
+            <Bold>{user.username}</Bold>
+          </Touchable>
+          <Caption>{caption}</Caption>
+        </CaptionCon>
+      </InfoCon>
+    
+    <CommentCon>
+        <Touchable>
+          <CommentCount>{comments.length >=1 ? (`댓글 ${comments.length}개 모두 보기`) : null}</CommentCount>
         </Touchable>
         <Touchable>
         <Caption>
-        {comments.length >= 1 ?(
-        <Image 
-            style={{height: 20, width: 20, borderRadius:20}}
-            source={{uri: user.avatar}}/>) : null}<Bold>{comments.length >= 1 ? comments[comments.length-1].user.username: null }</Bold> {comments.length >= 1 ? comments[comments.length-1].text :null}
+          {comments.length >= 1 ?(
+            <Image 
+              style={{height: 20, width: 20, borderRadius:20}}
+              source={{uri: user.avatar}}/>
+          ) : null}
+            <Bold>{comments.length >= 1 ? comments[0].user.username: null }</Bold> 
+            {comments.length >= 1 ? comments[0].text :null}
         </Caption>
         </Touchable>
-        <CommentCount>{time}</CommentCount>
-      </InfoCon>
+      </CommentCon>
+      <CommentCount>{time}</CommentCount>
     </BottomCon>
-  </Container>
+  </Card>
   );
 };
 

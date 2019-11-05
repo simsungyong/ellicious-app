@@ -83,7 +83,7 @@ export default ({ navigation }) => (
     <TitleCon>
       <Image 
         style={{height:'100%',width:'100%',resizeMode:'contain'}}
-        source={{uri:'https://user-images.githubusercontent.com/52433798/68116995-87ed2900-ff3f-11e9-8b01-3cbb7dacea60.png'}}
+        source={{uri:'https://user-images.githubusercontent.com/52433798/68202438-17114400-0007-11ea-9e3c-31ef780daeef.png'}}
       />
     </TitleCon>
     <Middle/>

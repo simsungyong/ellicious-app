@@ -5986,6 +5986,11 @@ toidentifier@1.0.0:
   resolved "https://registry.yarnpkg.com/toidentifier/-/toidentifier-1.0.0.tgz#7e1be3470f1e77948bc43d94a3c8f4d7752ba553"
   integrity sha512-yaOH/Pk/VEhBWWTlhI+qXxDFXlejDGcQipMlyxda9nthulaxLZUNcUqFxokp0vcYnvteJln5FNQDRrxj3YcbVw==
 
+top-bar-nav@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/top-bar-nav/-/top-bar-nav-1.2.2.tgz#879a66c66669e7e654d990f6734e387a276d90af"
+  integrity sha512-zDW4UTpBbIbrUUembT9NPuexhVq5X4QCwo4WL2ZRBpuDOq7EmgOJHmffxdWcJukacJYoW7ijwaPIccQGe/+NpA==
+
 trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"

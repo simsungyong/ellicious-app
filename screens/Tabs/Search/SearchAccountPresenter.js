@@ -7,26 +7,24 @@ import { useQuery } from "react-apollo-hooks";
 import Loader from "../../../components/Loader";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "../../../styles";
+import constants from "../../../constants";
+import TopBarNav from 'top-bar-nav';
 
-import SquarePhoto from "../../../components/SquarePhoto";
+import SearchAccountBox from "../../../components/SearchAccountBox";
 
-
-const SEARCH = gql`
+const SEARCH_USER = gql`
   query search($term: String!) {
-    searchPost(term: $term) {
+    searchUser(term: $term) {
       id
-      files {
-        id
-        url
-      }
-      likeCount
+      username
+      firstName
     }
   }
 `;
 
-const SearchPresenter = ({ term, shouldFetch }) => {
+const SearchAccountPresenter = ({ term, shouldFetch }) => {
   const [refreshing, setRefreshing] = useState(false);
-  const { data, loading, refetch } = useQuery(SEARCH, {
+  const { data, loading, refetch } = useQuery(SEARCH_USER, {
     variables: {
       term
     },
@@ -52,18 +50,18 @@ const SearchPresenter = ({ term, shouldFetch }) => {
           <Loader />
         ) : (
           data &&
-          data.searchPost &&
-          data.searchPost.map(post => 
-            <SquarePhoto key={post.id} {...post} />
+          data.searchUser &&
+          data.searchUser.map(user => 
+            <SearchAccountBox key={user.id} {...user} />
           )
         )}
       </ScrollView>
     );
 };
 
-SearchPresenter.propTypes = {
+SearchAccountPresenter.propTypes = {
   term: PropTypes.string.isRequired,
   shouldFetch: PropTypes.bool.isRequired
 };
 
-export default SearchPresenter;
+export default SearchAccountPresenter;

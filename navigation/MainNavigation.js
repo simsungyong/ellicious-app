@@ -4,6 +4,7 @@ import TabNavigation from "./TabNavigation";
 import PhotoNavigation from "./PhotoNavigation";
 import MessageNavigation from "./MessageNavigation";
 import AlarmNavigation from "./AlarmNavigation";
+import { stackStyles } from "./config";
 
 
 const MainNavigation = createStackNavigator(
@@ -14,6 +15,11 @@ const MainNavigation = createStackNavigator(
     AlarmNavigation,
   },
   {
+    defaultNavigationOptions: {
+      headerStyle:{
+        ...stackStyles
+      }
+    },
     headerMode: "none",
     mode:"modal"
   }

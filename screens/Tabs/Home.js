@@ -7,41 +7,17 @@ import Loader from "../../components/Loader";
 import { useQuery } from "react-apollo-hooks";
 import Post from "../../components/Post";
 import {BG_COLOR} from "../../components/Color";
+import { POST_FRAGMENT } from "../../fragments";
 
 
 const FEED_QUERY = gql`
   {
     seeFeed {
-      id
-      caption
-      rating
-      storeLocation
-      storeName
-      user {
-        id
-        avatar
-        username
-      }
-      files {
-        id
-        url
-      }
-      likeCount
-      isLiked
-      isPicked
-      pickCount
-      comments {
-        id
-        text
-        user {
-          id
-          username
-        }
-      }
-      createdAt
+      ...PostParts
     }
   }
-`;
+  ${POST_FRAGMENT}
+`;      
 
 const View = styled.View`
   justify-content: center;

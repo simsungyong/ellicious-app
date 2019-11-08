@@ -12,6 +12,7 @@ import { View } from "react-native";
 import NavIcon from "../components/NavIcons";
 import AlarmsLink from "../components/AlarmsLink";
 import { stackStyles } from "./config";
+import CommentDetail from "../screens/CommentDetail";
 import styles from "../styles";
 
 const stackFactory = (initialRoute, customConfig) =>
@@ -23,13 +24,20 @@ const stackFactory = (initialRoute, customConfig) =>
     Detail: {
       screen: Detail,
       navigationOptions: {
-      headerTintColor: styles.blackColor,
       title: "Photo"
       }
-    }
-  },
+    },
+  CommentDetail: {
+    screen: CommentDetail,
+    navigationOptions: ({ navigation }) => ({
+      title: "댓 글"
+    })
+  }
+},
   {
     defaultNavigationOptions: {
+        headerBackTitle: null,
+        headerTintColor: styles.blackColor,
         headerStyle: { ...stackStyles }
     }
   });

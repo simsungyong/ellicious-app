@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, Platform, StyleSheet } from "react-native";
+import { Image, Platform, StyleSheet,TextInput } from "react-native";
 import styled from "styled-components";
 import { Ionicons, FontAwesome, EvilIcons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
@@ -11,6 +11,7 @@ import styles from "../styles";
 import moment from "moment";
 import {TINT_COLOR, StarColor} from '../components/Color';
 import {Card} from 'native-base'
+import { withNavigation } from "react-navigation";
 
 export const TOGGLE_LIKE = gql`
   mutation toggelLike($postId: String!) {
@@ -118,10 +119,13 @@ const Post = ({
     pickCount: pickCountProp,
     createdAt,
     rating}) => {
+        const avatar = user.avatar;
+        const username = user.username;
         const [isLiked, setIsLiked] = useState(isLikedProp);
         const [likeCount, setLikeCount] = useState(likeCountProp);
         const [isPicked, setIsPicked] = useState(isPickedProp);
         const [pickCount, setPickCount] = useState(pickCountProp);
+        
 
         const [toggleLikeMutaton] = useMutation(TOGGLE_LIKE, {
         variables: {
@@ -225,7 +229,7 @@ const Post = ({
             />
           </IconCon>
         </Touchable>
-        <Touchable>
+        <Touchable onPress={()=>navigation.navigate("CommentDetail",{caption, avatar, username, postId: id})}>
           <IconCon>
             <EvilIcons
               color={styles.TINT_COLOR}
@@ -256,7 +260,7 @@ const Post = ({
         </CaptionCon>
       </InfoCon>
 
-        <Touchable>
+        <Touchable onPress={()=>navigation.navigate("CommentDetail",{postId: id})}>
           {comments.length >=1 ? (
             <CommentCount>
             {`-댓글 ${comments.length}개 모두 보기 `}
@@ -275,6 +279,8 @@ const Post = ({
               {comments.length >= 1 ?( ` ${comments[0].text}`) :null}
           </Caption>) : null}
         </Touchable>
+        
+        
       <CommentCount>{time}</CommentCount>
     </BottomCon>
 
@@ -304,6 +310,7 @@ Post.propTypes = {
       PropTypes.shape({
         id: PropTypes.string.isRequired,
         text: PropTypes.string.isRequired,
+        headComment: PropTypes.string,
         user: PropTypes.shape({
           id: PropTypes.string.isRequired,
           username: PropTypes.string.isRequired
@@ -319,4 +326,4 @@ Post.propTypes = {
     })
   };
 
-  export default Post;
+  export default withNavigation(Post);

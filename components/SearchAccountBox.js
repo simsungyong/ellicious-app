@@ -12,7 +12,7 @@ const Header = styled.View`
 `;
 
 const SearchAccountBox = ({ navigation, username, firstName, avatar, id }) => (
-  <TouchableOpacity onPress={() => navigation.navigate("Profile", { id })}>
+  <TouchableOpacity onPress={() => navigation.navigate("UserDetail", { id, username })}>
     <Header>
       <Image 
         style={{height: 40, width: 40, borderRadius:20}}

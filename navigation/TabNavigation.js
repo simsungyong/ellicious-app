@@ -14,6 +14,7 @@ import AlarmsLink from "../components/AlarmsLink";
 import { stackStyles } from "./config";
 import CommentDetail from "../screens/CommentDetail";
 import styles from "../styles";
+import UserDetail from "../screens/UserDetail";
 
 const stackFactory = (initialRoute, customConfig) =>
   createStackNavigator({
@@ -27,13 +28,19 @@ const stackFactory = (initialRoute, customConfig) =>
       title: "Photo"
       }
     },
-  CommentDetail: {
-    screen: CommentDetail,
-    navigationOptions: ({ navigation }) => ({
-      title: "댓 글"
-    })
-  }
-},
+    CommentDetail: {
+      screen: CommentDetail,
+      navigationOptions: ({ navigation }) => ({
+        title: "댓 글"
+      })
+    },
+    UserDetail: {
+      screen: UserDetail,
+      navigationOptions: ({ navigation }) => ({
+        title: navigation.getParam("username")
+      })
+    }
+  },
   {
     defaultNavigationOptions: {
         headerBackTitle: null,

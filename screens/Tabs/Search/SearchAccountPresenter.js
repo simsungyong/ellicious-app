@@ -18,6 +18,7 @@ const SEARCH_USER = gql`
       id
       username
       firstName
+      avatar
     }
   }
 `;

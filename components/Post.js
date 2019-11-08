@@ -170,14 +170,22 @@ const Post = ({
     return (
       <Card>
       <Header>
-        <Touchable>
+        <Touchable
+            onPress={() =>
+              navigation.navigate("UserDetail", { id: user.id, username })
+            }
+          >
           <Image 
             style={{height: 40, width: 40, borderRadius:20}}
             source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}/>
         </Touchable>
        
         <HeaderUserContainer>
-          <Touchable>
+          <Touchable
+            onPress={() =>
+              navigation.navigate("UserDetail", { id: user.id, username })
+            }
+          >
             <Bold>{user.username}</Bold>
           </Touchable>
           <Text>서울시 노원구 공릉동</Text>
@@ -234,7 +242,7 @@ const Post = ({
             <EvilIcons
               color={styles.TINT_COLOR}
               size={33}
-              name={Platform.OS === "ios" ? "comment" : "md-text"}
+              name={Platform.OS === "ios" ? "comment" : "comment"}
             />
           </IconCon>
         </Touchable>

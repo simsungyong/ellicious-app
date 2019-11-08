@@ -23,6 +23,7 @@ export const POST_FRAGMENT = gql`
     comments {
       id
       text
+      headComment
       user {
         id
         username
@@ -31,3 +32,45 @@ export const POST_FRAGMENT = gql`
     createdAt
   }
 `;
+export const USER_FRAGMENT = gql`
+  fragment UserParts on User {
+    id
+    avatar
+    username
+    fullName
+    isFollowing
+    isSelf
+    bio
+    followingCount
+    followersCount
+    postsCount
+    posts {
+      ...PostParts
+    }
+  }
+  ${POST_FRAGMENT}
+`;
+
+export const POST_COMMENT = gql`
+  fragment CommentParts on Comment {
+    id
+    user{
+      id
+      username
+      avatar
+    }
+    post{
+      id
+      user{
+        id
+        username
+        avatar
+      }
+      caption
+      createdAt
+    }
+    text
+    headComment
+    createdAt
+  }
+`

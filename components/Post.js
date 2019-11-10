@@ -237,7 +237,7 @@ const Post = ({
             />
           </IconCon>
         </Touchable>
-        <Touchable onPress={()=>navigation.navigate("CommentDetail",{caption, avatar, username, postId: id})}>
+        <Touchable onPress={()=>navigation.navigate("CommentDetail",{caption, avatar, username, postId: id, focusing: true})}>
           <IconCon>
             <EvilIcons
               color={styles.TINT_COLOR}
@@ -268,7 +268,7 @@ const Post = ({
         </CaptionCon>
       </InfoCon>
 
-        <Touchable onPress={()=>navigation.navigate("CommentDetail",{postId: id})}>
+        <Touchable onPress={()=>navigation.navigate("CommentDetail",{caption, avatar, username, postId: id, focusing: false})}>
           {comments.length >=1 ? (
             <CommentCount>
             {`-댓글 ${comments.length}개 모두 보기 `}
@@ -318,7 +318,6 @@ Post.propTypes = {
       PropTypes.shape({
         id: PropTypes.string.isRequired,
         text: PropTypes.string.isRequired,
-        headComment: PropTypes.string,
         user: PropTypes.shape({
           id: PropTypes.string.isRequired,
           username: PropTypes.string.isRequired
@@ -326,7 +325,6 @@ Post.propTypes = {
       })
     ).isRequired,
     caption: PropTypes.string.isRequired,
-    location: PropTypes.string,
     createdAt: PropTypes.string.isRequired,
     category: PropTypes.shape({
         id: PropTypes.string.isRequired,

@@ -7,31 +7,28 @@ import useInput from "../hooks/useInput";
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { ScrollView, Text,Image,TextInput,KeyboardAvoidingView, Keyboard, Alert } from "react-native";
 import { POST_COMMENT } from "../fragments";
-import CommentInput from "../components/CommentInput";
+import CommentInput from "../components/SubComment";
 import PostOfComment from '../components/PostOfComment';
 
 const InfoCon=styled.View`
     flex:1;
 `;
-const Touchable = styled.TouchableOpacity``;
+const Touchable = styled.TouchableOpacity`
+    flex:1;
+    `;
 
 const CaptionCon = styled.View`
-  flex-direction: row;
   flex:1;
 `;
 const CommentBox =styled.View`
-    
-    justify-content: flex-end;
+    flex-direction:row;
     margin-bottom: 5px;
 `
 const Caption = styled.Text`
 `;
 
-const Reply = styled.Text`
-  font-weight: 300;
-  margin-bottom : 5px;
-  font-size : 15px;
-  margin-right : 5px;
+const Reply = styled.TextInput`
+  flex:1;
 `;
 
 const Bold = styled.Text`
@@ -43,8 +40,8 @@ const Bold = styled.Text`
 
 
 const GET_COMMENTS = gql`
-    query seeComment($postId: String!){
-        seeComment(postId: $postId){
+    query seeComment($postId: String!, $headComment: String){
+        seeComment(postId: $postId, headComment: $headComment){
             ...CommentParts
         }
     }
@@ -57,19 +54,15 @@ const GET_COMMENTS = gql`
 
 export default ({navigation})=>{
     const {loading, data} = useQuery(GET_COMMENTS, {
-        variables: { postId: navigation.getParam("postId")}
+        variables: { postId: navigation.getParam("postId"), headComment: null}
     });
-
-    const [isReply, setIsReply] = useState(true);
+    const focusing = navigation.getParam("focusing")
     const caption = navigation.getParam("caption");
     const textInput = useInput("");
+    //const caption = navigation.getParam("caption");
     const avatar = navigation.getParam("avatar");
     const username = navigation.getParam("username");
-   
-    const handleClick =()=>setIsReply(true);
-
     return (
-            
                 <InfoCon>
                 <ScrollView scrollEnabled={false}>
                 <CaptionCon>
@@ -79,35 +72,26 @@ export default ({navigation})=>{
                             <Bold>{username}</Bold>
                             <Text>{caption}</Text>
                 </CaptionCon>
-            {loading ? (
-                <Loader/>
-            ) : (
-                data.seeComment.map(comment=>
-                    <CaptionCon key={comment.id}>
-                        <Touchable>
-                            <Bold>{comment.user.username}</Bold>
-                        </Touchable>
-                        <Caption>{comment.text}</Caption>
-                        <Touchable onPress={handleClick}>
-                            <Reply>답글달기</Reply>
-                        </Touchable>
-                    </CaptionCon>)
-               // data && data.seeComment && data.seeComment.map(comment=><PostOfComment key={comment.id}{...comment}/>)
-            )}
-
-        
-        <CommentBox>
-                <CommentInput
+                <CommentBox>
+                <TextInput
                     {...textInput}
                      returnKeyType="send"
                      //onSubmitEditing={handleLogin}
-                     autoFocus={isReply}
+                     autoFocus={focusing}
                      placeholder="Comment"
                      />
                 <Touchable>
                     <Bold>Reply</Bold>
                 </Touchable>
-        </CommentBox>
+                </CommentBox>
+            {loading ? (
+                <Loader/>
+            ) : (
+                data && data.seeComment && data.seeComment.filter(comment=>comment.headComment==null).map(comment=><PostOfComment 
+                    key={comment.id}{...comment}
+                    />)
+            )}
+        
         <KeyboardSpacer/>
         </ScrollView>  
         </InfoCon>

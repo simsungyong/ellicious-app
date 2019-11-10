@@ -23,10 +23,10 @@ export const POST_FRAGMENT = gql`
     comments {
       id
       text
-      headComment
       user {
         id
         username
+        avatar
       }
     }
     createdAt
@@ -58,16 +58,24 @@ export const POST_COMMENT = gql`
     }
     post{
       id
+    }
+    text
+    headComment{
+      id
+      text
       user{
-        id
         username
         avatar
       }
-      caption
-      createdAt
     }
-    text
-    headComment
+    childComment{
+      id
+      text
+      user{
+        username
+        avatar
+      }
+    }
     createdAt
   }
 `

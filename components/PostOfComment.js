@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Image, Platform, StyleSheet,Text } from "react-native";
+import { Image, ScrollView, StyleSheet, View, TextInput} from "react-native";
+import { useQuery } from "react-apollo-hooks";
 import styled from "styled-components";
 import { Ionicons, FontAwesome, EvilIcons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
@@ -11,7 +12,9 @@ import styles from "../styles";
 import moment from "moment";
 import {TINT_COLOR, StarColor} from './Color';
 import {Card} from 'native-base'
+import { POST_COMMENT } from "../fragments";
 import { withNavigation } from "react-navigation";
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 import Modal, {
     ModalTitle,
     ModalContent,
@@ -28,10 +31,7 @@ const Bold = styled.Text`
 `;
 
 const Reply = styled.Text`
-  font-weight: 300;
-  margin-bottom : 5px;
-  font-size : 15px;
-  margin-right : 5px;
+  
 `;
 
 const Caption = styled.Text`
@@ -47,26 +47,36 @@ const CaptionCon = styled.View`
   flex-direction: row;
 `;
 
+const GET_SUBCOMMENTS = gql`
+    query seeComment($postId: String!, $headComment: String){
+        seeComment(postId: $postId, headComment: $headComment){
+            ...CommentParts
+        }
+    }
+    ${POST_COMMENT}
+`;
+
 
 const PostOfComment = ({
-    id, 
+    id,
+    headComment,
+    post,
     text,
     user,
-    getHeadComment,
-    headComment,
     likeCount: likeCountProp,
     isLiked: isLikedProp,
     navigation,
     createdAt,
     }) => {
-        const avatar = user.avatar;
-        const username = user.username;
+
+        const {loading, data} = useQuery(GET_SUBCOMMENTS, {
+         variables: { postId: post.id, headComment: id}
+        });
         const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
+       
+
         
-        
-        const handleReply = ()=>{
-            setbottomModalAndTitle(true);
-        }
+       
 
         return (
         <AllView>
@@ -75,14 +85,38 @@ const PostOfComment = ({
                 <Bold>{user.username}</Bold>
             </Touchable>
             <Caption>{text}</Caption>
-            <Touchable onPress={getHeadComment(headComment)}>
-                <Reply>답글달기</Reply>
-            </Touchable>
+            <Touchable onPress={()=>setbottomModalAndTitle(true)}>
+                <Reply>reply</Reply>
+            </Touchable>  
+            </CaptionCon>
+
+            <Modal.BottomModal
+            visible={bottomModalAndTitle}
+            onTouchOutside={() => setbottomModalAndTitle(false)}
+            height={0.7}
+            width={1}
+            onSwipeOut={() => setbottomModalAndTitle(false)}
+            modalTitle={
+            <ModalTitle
+              title="댓글"
+              hasTitleBar
+            />
+          }
+        >
+          <ModalContent>
+          <ScrollView scrollEnabled={false}>
+            <TextInput
+              returnKeyType="send"
+              autoFocus={true}
+              placeholder="Comment"
+            />
+            <KeyboardSpacer/>
+          </ScrollView>
+          </ModalContent>
+        </Modal.BottomModal>
+        
             
 
-           
-                
-            </CaptionCon>
         </AllView>
         )
     }
@@ -90,9 +124,30 @@ const PostOfComment = ({
 
 
 PostOfComment.propTypes = {
-    getHeadComment: PropTypes.func,
     id: PropTypes.string.isRequired,
-    headComment: PropTypes.string,
+    childComment: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired,
+        user: PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          username: PropTypes.string.isRequired,
+          avatar: PropTypes.string.isRequired
+        }).isRequired
+      })
+    ),
+    headComment: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired,
+        user: PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          username: PropTypes.string.isRequired,
+          avatar: PropTypes.string.isRequired
+        }).isRequired
+    }),
+    post: PropTypes.shape({
+      id:PropTypes.string.isRequired
+    }).isRequired,
     user: PropTypes.shape({
       id: PropTypes.string.isRequired,
       avatar: PropTypes.string,

@@ -125,7 +125,6 @@ const Post = ({
         const [likeCount, setLikeCount] = useState(likeCountProp);
         const [isPicked, setIsPicked] = useState(isPickedProp);
         const [pickCount, setPickCount] = useState(pickCountProp);
-        
 
         const [toggleLikeMutaton] = useMutation(TOGGLE_LIKE, {
         variables: {

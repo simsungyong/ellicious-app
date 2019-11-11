@@ -56,26 +56,25 @@ export const POST_COMMENT = gql`
       username
       avatar
     }
+    headComment{
+      id
+    }
     post{
       id
     }
     text
-    headComment{
-      id
-      text
-      user{
-        username
-        avatar
-      }
-    }
-    childComment{
-      id
-      text
-      user{
-        username
-        avatar
-      }
-    }
+    
     createdAt
   }
 `
+
+/*
+
+childComment{
+  id
+  text
+  user{
+    username
+    avatar
+  }
+}*/

@@ -11,7 +11,7 @@ import { useMutation } from "react-apollo-hooks";
 import styles from "../styles";
 import moment from "moment";
 import {TINT_COLOR, StarColor} from './Color';
-import {Card} from 'native-base'
+import Loader from '../components/Loader'
 import { POST_COMMENT } from "../fragments";
 import { withNavigation } from "react-navigation";
 import KeyboardSpacer from 'react-native-keyboard-spacer';
@@ -21,6 +21,9 @@ import Modal, {
     ModalFooter,
     ModalButton,
   } from 'react-native-modals';
+import CommentInput from './CommentInput';
+
+
 
 const Touchable = styled.TouchableOpacity``;
 const Bold = styled.Text`
@@ -47,7 +50,7 @@ const CaptionCon = styled.View`
   flex-direction: row;
 `;
 
-const GET_SUBCOMMENTS = gql`
+const GET_COMMENTS = gql`
     query seeComment($postId: String!, $headComment: String){
         seeComment(postId: $postId, headComment: $headComment){
             ...CommentParts
@@ -69,14 +72,14 @@ const PostOfComment = ({
     createdAt,
     }) => {
 
-        const {loading, data} = useQuery(GET_SUBCOMMENTS, {
+        const {loading, data} = useQuery(GET_COMMENTS, {
          variables: { postId: post.id, headComment: id}
         });
         const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
-       
-
-        
-       
+        const navi = ()=>{
+          setbottomModalAndTitle(false);
+          navigation.navigate("UserDetail", { id: user.id, username:user.username });
+        }
 
         return (
         <AllView>
@@ -103,20 +106,33 @@ const PostOfComment = ({
             />
           }
         >
-          <ModalContent>
-          <ScrollView scrollEnabled={false}>
+        <ModalContent>
+          <CaptionCon>
+          <Touchable
+            onPress={navi}
+          >
+          <Image 
+            style={{height: 40, width: 40, borderRadius:20}}
+            source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}/>
+        </Touchable>
+           <Touchable>
+                <Bold>{user.username}</Bold>
+            </Touchable>
+            <Caption>{text}</Caption>
+            </CaptionCon>
+            { loading ? (<Loader/>) : (
+              data && data.seeComment && data.seeComment.map(comment=>
+              <CommentInput
+                key={comment.id}{...comment}/>)
+            )}
             <TextInput
               returnKeyType="send"
               autoFocus={true}
               placeholder="Comment"
             />
             <KeyboardSpacer/>
-          </ScrollView>
           </ModalContent>
         </Modal.BottomModal>
-        
-            
-
         </AllView>
         )
     }
@@ -159,4 +175,4 @@ PostOfComment.propTypes = {
     createdAt: PropTypes.string.isRequired
   };
 
-  export default PostOfComment;
+  export default withNavigation(PostOfComment);

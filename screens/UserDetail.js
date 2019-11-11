@@ -17,6 +17,36 @@ const GET_USER = gql`
         isSelf
         isFollowing
         bio
+        posts {
+          id
+          caption
+          rating
+          isPicked
+          isLiked
+          storeLocation
+          storeName
+          user {
+            id
+            avatar
+            username
+          }
+          files {
+            id
+            url
+          }
+          likeCount
+          pickCount
+          comments {
+            id
+            text
+            user {
+              id
+              username
+              avatar
+            }
+          }
+          createdAt
+        }
       }
     }
   }

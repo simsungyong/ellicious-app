@@ -19,6 +19,7 @@ const SEARCH_USER = gql`
       username
       firstName
       avatar
+      isSelf
     }
   }
 `;
@@ -41,7 +42,7 @@ const SearchAccountPresenter = ({ term, shouldFetch }) => {
       setRefreshing(false);
     }
   };
-
+  
   return (
       <ScrollView refreshControl={
           <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />

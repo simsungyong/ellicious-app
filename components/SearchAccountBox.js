@@ -11,8 +11,12 @@ const Header = styled.View`
   align-items: center;
 `;
 
-const SearchAccountBox = ({ navigation, username, firstName, avatar, id }) => (
-  <TouchableOpacity onPress={() => navigation.navigate("UserDetail", { id, username })}>
+const SearchAccountBox = ({ navigation, username, firstName, avatar, id, isSelf }) => (
+  <TouchableOpacity onPress={() => {
+    isSelf ? 
+      navigation.navigate("Profile")
+      :
+      navigation.navigate("UserDetail", { id, username }) } } >
     <Header>
       <Image 
         style={{height: 40, width: 40, borderRadius:20}}
@@ -29,7 +33,8 @@ SearchAccountBox.propTypes = {
   id: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
   firstName: PropTypes.string,
-  avatar: PropTypes.string
+  avatar: PropTypes.string,
+  isSelf: PropTypes.bool
 };
 
 export default withNavigation(SearchAccountBox);

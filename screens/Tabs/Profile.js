@@ -17,6 +17,34 @@ export const MyProfile = gql`
         isSelf
         isFollowing
         bio
+        posts {
+          id
+          caption
+          rating
+          storeLocation
+          storeName
+          user {
+            id
+            avatar
+            username
+          }
+          files {
+            id
+            url
+          }
+          likeCount
+          pickCount
+          comments {
+            id
+            text
+            user {
+              id
+              username
+              avatar
+            }
+          }
+          createdAt
+        }
       }
     }
   }

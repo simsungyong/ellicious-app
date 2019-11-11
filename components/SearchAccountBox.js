@@ -20,27 +20,8 @@ const Profile = styled.View`
 `;
 
 const SearchAccountBox = ({ navigation, username, firstName, avatar, id, isSelf }) => (
-<<<<<<< HEAD
-  isSelf ?
-    null
-    :
-    <TouchableOpacity onPress={() => { navigation.navigate("UserDetail", { id, username }) } } >
-      <Header>
-        <Image
-          style={{height: 40, width: 40, borderRadius:20}}
-          source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}/>
-        <View>
-          <Text>{ username }</Text>
-          <Text>{ firstName }</Text>
-        </View>
-      </Header>
-    </TouchableOpacity>
-=======
   <TouchableOpacity onPress={() => {
-    isSelf ? 
-      navigation.navigate("Profile")
-      :
-      navigation.navigate("UserDetail", { id, username }) } } >
+    navigation.navigate("UserDetail", { id, username }) } } >
     <Header>
       <Profile>
         <Image 
@@ -54,7 +35,6 @@ const SearchAccountBox = ({ navigation, username, firstName, avatar, id, isSelf 
       </View>
     </Header>
   </TouchableOpacity>
->>>>>>> 997238eed72599f67faf084f598c7e2558b48a95
 );
 
 SearchAccountBox.propTypes = {

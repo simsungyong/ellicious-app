@@ -5,7 +5,8 @@ import { withNavigation } from "react-navigation";
 import styled from "styled-components";
 
 
-const Touchable = styled.TouchableOpacity``;
+const Touchable = styled.TouchableOpacity`
+flex-direction: row;`;
 
 
 const HeaderUserContainer = styled.View`
@@ -43,16 +44,15 @@ const CommentInput=({
 })=>{
     return(
         <AllView>
-          <HeaderUserContainer>
-          <Touchable>
-          <Image 
-            style={{height: 20, width: 20, borderRadius:20}}
-            source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}/>
-            <Bold>{user.username}</Bold>
-        </Touchable>
-        </HeaderUserContainer>
-        <Caption>{text}</Caption>
-    
+          <CaptionCon>
+            <Touchable>
+              <Image 
+                style={{height: 20, width: 20, borderRadius:20}}
+                source={{uri: user.avatar}}/>
+                <Bold>{user.username}</Bold>
+            </Touchable>
+            <Caption>{text}</Caption>
+            </CaptionCon> 
         </AllView>
     )
 }

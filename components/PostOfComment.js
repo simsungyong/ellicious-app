@@ -25,7 +25,8 @@ import CommentInput from './CommentInput';
 
 
 
-const Touchable = styled.TouchableOpacity``;
+const Touchable = styled.TouchableOpacity`
+flex-direction: row;`;
 const Bold = styled.Text`
   font-weight: 600;
   margin-bottom : 5px;
@@ -84,7 +85,10 @@ const PostOfComment = ({
         return (
         <AllView>
             <CaptionCon>
-            <Touchable>
+            <Touchable onPress={navi}>
+              <Image 
+                style={{height: 20, width: 20, borderRadius:20}}
+                source={{uri: user.avatar}}/>
                 <Bold>{user.username}</Bold>
             </Touchable>
             <Caption>{text}</Caption>
@@ -101,7 +105,7 @@ const PostOfComment = ({
             onSwipeOut={() => setbottomModalAndTitle(false)}
             modalTitle={
             <ModalTitle
-              title="댓글"
+              title="댓글" 
               hasTitleBar
             />
           }
@@ -113,10 +117,9 @@ const PostOfComment = ({
           >
           <Image 
             style={{height: 40, width: 40, borderRadius:20}}
-            source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}/>
-        </Touchable>
-           <Touchable>
-                <Bold>{user.username}</Bold>
+            source={{uri: user.avatar}}/>
+        
+              <Bold>{user.username}</Bold>
             </Touchable>
             <Caption>{text}</Caption>
             </CaptionCon>

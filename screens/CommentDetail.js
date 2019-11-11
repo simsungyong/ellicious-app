@@ -5,9 +5,8 @@ import Loader from "../components/Loader";
 import styled from "styled-components";
 import useInput from "../hooks/useInput";
 import KeyboardSpacer from 'react-native-keyboard-spacer';
-import { ScrollView, Text,Image,TextInput,KeyboardAvoidingView, Keyboard, Alert } from "react-native";
+import { ScrollView, Text,Image,TextInput,RefreshControl } from "react-native";
 import { POST_COMMENT } from "../fragments";
-import CommentInput from "../components/SubComment";
 import PostOfComment from '../components/PostOfComment';
 
 const InfoCon=styled.View`
@@ -49,22 +48,35 @@ const GET_COMMENTS = gql`
 `;
 
 
-
-
-
 export default ({navigation})=>{
-    const {loading, data} = useQuery(GET_COMMENTS, {
-        variables: { postId: navigation.getParam("postId"), headComment: null}
+    const [refreshing, setRefreshing] = useState(false);
+    const {loading, data, refetch} = useQuery(GET_COMMENTS, {
+        variables: { postId: navigation.getParam("postId"), headComment:null}
     });
     const focusing = navigation.getParam("focusing")
     const caption = navigation.getParam("caption");
     const textInput = useInput("");
-    //const caption = navigation.getParam("caption");
     const avatar = navigation.getParam("avatar");
     const username = navigation.getParam("username");
+
+    console.log(data);
+    const refresh = async() =>{
+        try{
+          setRefreshing(true);
+          await refetch();
+          
+        }catch (e){
+          console.log(e);
+        }finally{
+          setRefreshing(false);
+        }
+      };
+    
+    
     return (
                 <InfoCon>
-                <ScrollView scrollEnabled={false}>
+                <ScrollView scrollEnabled={true} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh}/>
+        }>
                 <CaptionCon>
                     <Image 
                             style={{height: 20, width: 20, borderRadius:20}}
@@ -87,7 +99,7 @@ export default ({navigation})=>{
             {loading ? (
                 <Loader/>
             ) : (
-                data && data.seeComment && data.seeComment.filter(comment=>comment.headComment==null).map(comment=><PostOfComment 
+                data && data.seeComment && data.seeComment.filter(comment=>comment.headComment == null).map(comment=><PostOfComment 
                     key={comment.id}{...comment}
                     />)
             )}

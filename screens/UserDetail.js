@@ -14,15 +14,15 @@ const GET_USER = gql`
         avatar
         username
         firstName
-        isSelf
+        lastName
+        fullName
         isFollowing
+        isSelf
         bio
         posts {
           id
           caption
           rating
-          isPicked
-          isLiked
           storeLocation
           storeName
           user {
@@ -35,6 +35,8 @@ const GET_USER = gql`
             url
           }
           likeCount
+          isLiked
+          isPicked
           pickCount
           comments {
             id
@@ -56,6 +58,7 @@ export default ({ navigation }) => {
   const { loading, data } = useQuery(GET_USER, {
     variables: { id: navigation.getParam("id") }
   });
+
   return (
     <ScrollView>
       {loading ? (

@@ -132,6 +132,8 @@ UserProfile.propTypes = {
   avatar: PropTypes.string,
   username: PropTypes.string,
   firstName: PropTypes.string,
+  lastName: PropTypes.string,
+  fullName: PropTypes.string,
   isFollowing: PropTypes.bool,
   isSelf: PropTypes.bool,
   bio: PropTypes.string,
@@ -151,8 +153,8 @@ UserProfile.propTypes = {
             url: PropTypes.string.isRequired
           })
         ).isRequired,
-        isLiked: PropTypes.bool.isRequired,
-        isPicked: PropTypes.bool.isRequired,
+        isLiked: PropTypes.bool,
+        isPicked: PropTypes.bool,
         rating: PropTypes.number.isRequired,
         comments: PropTypes.arrayOf(
           PropTypes.shape({
@@ -166,11 +168,14 @@ UserProfile.propTypes = {
         ).isRequired,
         caption: PropTypes.string.isRequired,
         storeLocation: PropTypes.string,
+        storeName: PropTypes.string,
+        likeCount: PropTypes.number,
+        pickCount: PropTypes.number,
         createdAt: PropTypes.string.isRequired,
-        category: PropTypes.shape({
-            id: PropTypes.string.isRequired,
-            categoryName: PropTypes.string.isRequired
-        })
+        // category: PropTypes.shape({
+        //     id: PropTypes.string.isRequired,
+        //     categoryName: PropTypes.string.isRequired
+        // })
     })
   )
 };

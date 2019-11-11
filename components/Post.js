@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Image, Platform, StyleSheet,TextInput } from "react-native";
 import styled from "styled-components";
-import { Ionicons, FontAwesome, EvilIcons } from "@expo/vector-icons";
+import { Ionicons, EvilIcons, FontAwesome } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 import Swiper from "react-native-swiper";
 import { gql } from "apollo-boost";
@@ -9,7 +9,7 @@ import constants from "../constants";
 import { useMutation } from "react-apollo-hooks";
 import styles from "../styles";
 import moment from "moment";
-import {TINT_COLOR, StarColor} from '../components/Color';
+import { IconColor, StarColor, TINT_COLOR, mainPink } from '../components/Color';
 import {Card} from 'native-base'
 import { withNavigation } from "react-navigation";
 
@@ -26,20 +26,40 @@ export const TOGGLE_PICK = gql`
 
 const Touchable = styled.TouchableOpacity``;
 
-const Container = styled.View`
-  margin-bottom: 10px;
+const Container =styled.View`
   flex : 1;
-  background-color : #ffffff
+  flex-direction : row;=
 `;
-
-const Header = styled.View`
-  padding: 5px;
-  flex-direction: row;
+const SubCon = styled.View`
+  padding : 5px;
+  justify-content: center;
   align-items: center;
+  background-color : ${mainPink}
+`;
+const IconsCon = styled.View`
+  margin-top : 3px;
+`;
+const View=styled.View`
+  flex : 1;
 `;
 
-const HeaderUserContainer = styled.View`
-  margin-left: 10px;
+const IconCon = styled.View`
+  flex-direction : row;
+  justify-content: center;
+  align-items: center;
+  margin-top : 3px;
+`;
+
+const Main = styled.View`
+  flex : 6;
+  padding : 5px;
+`;
+
+const Bold = styled.Text`
+  font-weight: 600;
+  margin-bottom : 5px;
+  font-size : 15px;
+  margin-right : 5px;
 `;
 
 const StoreCon = styled.View`
@@ -54,38 +74,16 @@ const StoreName = styled.Text`
   font-size: 30px;
   font-weight: 800;
   margin-bottom : 5px;
+  margin-top : 5px;
   color : ${TINT_COLOR};
-`;
-
-const Bold = styled.Text`
-  font-weight: 600;
-  margin-bottom : 5px;
-  font-size : 15px;
-  margin-right : 5px;
-`;
-const Location = styled.Text`
-  font-size: 12px;
 `;
 const Rating = styled.Text`
   font-size: 12px;
-`;
-
-const BottomCon = styled.View`
-  padding: 10px;
-`;
-
-const IconsCon = styled.View`
-  flex-direction: row;
-`;
-
-const IconCon = styled.View`
-  margin-right: 13px;
 `;
 const InfoCon=styled.View`
 `;
 
 const Caption = styled.Text`
-
 `;
 
 const CommentCount = styled.Text`
@@ -95,14 +93,8 @@ const CommentCount = styled.Text`
 const CaptionCon = styled.View`
   flex-direction: row;
 `;
-const CommentCon = styled.View`
-  margin-bottom : 5px;
-`;
 
-const Text=styled.Text`
-  opacity: 0.5;
-  font-size: 13px;
-`;
+//<Bold>{likeCount === 1 ? "좋아요 1개" : `좋아요 ${likeCount}개`}</Bold>
 
 const Post = ({
     user, 
@@ -125,7 +117,6 @@ const Post = ({
         const [likeCount, setLikeCount] = useState(likeCountProp);
         const [isPicked, setIsPicked] = useState(isPickedProp);
         const [pickCount, setPickCount] = useState(pickCountProp);
-        
 
         const [toggleLikeMutaton] = useMutation(TOGGLE_LIKE, {
         variables: {
@@ -167,132 +158,126 @@ const Post = ({
       }
     };
 
+    /* const starRating = async () => {
+      if(rating == 1){
+        
+      }
+    } */
+
     return (
       <Card>
-      <Header>
-        <Touchable
-            onPress={() =>
-              navigation.navigate("UserDetail", { id: user.id, username })
-            }
-          >
-          <Image 
-            style={{height: 40, width: 40, borderRadius:20}}
-            source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}/>
-        </Touchable>
-       
-        <HeaderUserContainer>
-          <Touchable
-            onPress={() =>
-              navigation.navigate("UserDetail", { id: user.id, username })
-            }
-          >
-            <Bold>{user.username}</Bold>
-          </Touchable>
-          <Text>서울시 노원구 공릉동</Text>
-        </HeaderUserContainer>
-      </Header>
-
-      <StoreCon>
-        <StoreInfo>
-          <Touchable>
-            <StoreName>{storeName}</StoreName>
-          </Touchable>
-            <Rating>
-              <FontAwesome
-                color={styles.StarColor}
-                size={24}
-                name={"star"}
-              />
-            </Rating>
-        </StoreInfo>
-      </StoreCon>
-
-      <Swiper 
-        showsPagination={false}
-        style={{height: constants.height/2.7}}>
-          {files.map(file=>(
-          <Image
-            style={{width: constants.width, height:constants.height/2.7}}
-            key={file.id}
-          source={{uri: file.url}}/>
-        ))}
-      </Swiper>
-
-      <BottomCon>
-        <IconsCon>
-        <Touchable onPress={handleLike}>
-          <IconCon>
-            <Ionicons
-              size={28}
-              color={isLiked ? styles.redColor : styles.blackColor}
-              name={
-                Platform.OS === "ios"
-                  ? isLiked
-                    ? "ios-heart"
-                    : "ios-heart-empty"
-                  : isLiked
-                  ? "md-heart"
-                    : "md-heart-empty"
+        <Container>
+          <SubCon>
+            <Touchable
+              onPress={() =>
+                navigation.navigate("UserDetail", { id: user.id, username })
               }
-            />
-          </IconCon>
-        </Touchable>
-        <Touchable onPress={()=>navigation.navigate("CommentDetail",{caption, avatar, username, postId: id, focusing: true})}>
-          <IconCon>
-            <EvilIcons
-              color={styles.TINT_COLOR}
-              size={33}
-              name={Platform.OS === "ios" ? "comment" : "comment"}
-            />
-          </IconCon>
-        </Touchable>
-        <Touchable>
-          <IconCon>
-            <Ionicons
-              color={styles.TINT_COLOR}
-              size={28}
-              name={Platform.OS === "ios" ? "ios-search" : "md-search"}
-            />
-          </IconCon>
-        </Touchable>
-      </IconsCon>
-      <InfoCon>
-        <Touchable>
-          <Bold>{likeCount === 1 ? "좋아요 1개" : `좋아요 ${likeCount}개`}</Bold>
-        </Touchable>
-        <CaptionCon>
-          <Touchable>
-            <Bold>{user.username}</Bold>
-          </Touchable>
-          <Caption>{caption}</Caption>
-        </CaptionCon>
-      </InfoCon>
+            >
+            <Image 
+              style={{height: 45, width: 45, borderRadius:20}}
+              source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}/>
+            </Touchable>
+            <IconsCon>
+              <Touchable onPress={handleLike}>
+                <IconCon>
+                  <Ionicons
+                    size={28}
+                    color={isLiked ? styles.redColor : IconColor}
+                    name={
+                      Platform.OS === "ios"
+                        ? isLiked
+                          ? "ios-heart"
+                          : "ios-heart-empty"
+                        : isLiked
+                        ? "md-heart"
+                          : "md-heart-empty"
+                    }
+                  />
+                </IconCon>
+              </Touchable>
+              <Touchable onPress={()=>navigation.navigate("CommentDetail",{caption, avatar, username, postId: id, focusing: true})}>
+                <IconCon>
+                  <EvilIcons
+                    color={IconColor}
+                    size={33}
+                    name={Platform.OS === "ios" ? "comment" : "comment"}
+                  />
+                </IconCon>
+              </Touchable>
+              <Touchable>
+                <IconCon>
+                  <EvilIcons
+                    color={IconColor}
+                    size={33}
+                    name={Platform.OS === "ios" ? "search" : "search"}
+                  />
+                </IconCon>
+              </Touchable>
+            </IconsCon>
+            <View/>
+          </SubCon>
 
-        <Touchable onPress={()=>navigation.navigate("CommentDetail",{caption, avatar, username, postId: id, focusing: false})}>
-          {comments.length >=1 ? (
-            <CommentCount>
-            {`-댓글 ${comments.length}개 모두 보기 `}
-            </CommentCount>
-            ) : null}
-        </Touchable>
-        <Touchable>
-        {comments.length >= 1 ?(
-          <Caption>
-            {comments.length >= 1 ?(
-                <Image 
-                  style={{height: 20, width: 20, borderRadius:20}}
-                  source={{uri: user.avatar}}/> 
-            ) : null}
-              <Bold>{comments.length >= 1 ? (comments[0].user.username): null }</Bold> 
-              {comments.length >= 1 ?( ` ${comments[0].text}`) :null}
-          </Caption>) : null}
-        </Touchable>
-        
-        
-      <CommentCount>{time}</CommentCount>
-    </BottomCon>
+          <Main>
+            <Swiper 
+              showsPagination={false}
+              style={{height: constants.height/2.7}}>
+                {files.map(file=>(
+                <Image
+                  style={{width: constants.width, height:constants.height/2.7}}
+                  key={file.id}
+                source={{uri: file.url}}/>
+              ))}
+            </Swiper>
+            <StoreCon>
+              <StoreInfo>
+                <Touchable>
+                  <StoreName>{storeName}</StoreName>
+                </Touchable>
+                <Rating>
+                  <FontAwesome
+                    color={StarColor}
+                    size={25}
+                    name={"star"}
+                  />
+                </Rating>
+              </StoreInfo>
+            </StoreCon>
 
-  </Card>
+            <InfoCon>
+              <CaptionCon>
+              <Touchable
+                onPress={() =>
+                  navigation.navigate("UserDetail", { id: user.id, username })
+                }
+              >
+                  <Bold>{user.username}</Bold>
+                </Touchable>
+                <Caption>{caption}</Caption>
+              </CaptionCon>
+            </InfoCon>
+            <Touchable onPress={()=>navigation.navigate("CommentDetail",{caption, avatar, username, postId: id, focusing: false})}>
+              {comments.length >=1 ? (
+                <CommentCount>
+                {`댓글 ${comments.length}개 모두 보기 `}
+                </CommentCount>
+                ) : null}
+            </Touchable>
+            <Touchable>
+              {comments.length >= 1 ?(
+                <Caption>
+                  {comments.length >= 1 ?(
+                      <Image 
+                        style={{height: 20, width: 20, borderRadius:20}}
+                        source={{uri: user.avatar}}/> 
+                  ) : null}
+                    <Bold>{comments.length >= 1 ? (comments[0].user.username): null }</Bold> 
+                    {comments.length >= 1 ?( ` ${comments[0].text}`) :null}
+                </Caption>) : null}
+            </Touchable>
+            <CommentCount>{time}</CommentCount>
+          </Main>
+        </Container>
+      </Card>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { useState  } from "react";
-import { ScrollView, RefreshControl, Platform, View, Text} from "react-native";
+import { ScrollView, RefreshControl, Platform, View, Text, StyleSheet} from "react-native";
 import SearchBar from "../../../components/SearchBar";
 import SearchPresenter from "./SearchPresenter";
 import SearchAccountPresenter from "./SearchAccountPresenter";
@@ -8,6 +8,7 @@ import TopBarNav from 'top-bar-nav';
 import styled from "styled-components";
 import styles from "../../../styles";
 import constants from "../../../constants";
+import { PointPink, mainPink } from "../../../components/Color";
 
 const ButtonContainer = styled.View`
   padding-vertical: 5px;
@@ -93,12 +94,21 @@ export default class extends React.Component {
           // labelStyle={styles.labelStyle}
           // underlineStyle={styles.underlineStyle}
           // imageStyle={styles.imageStyle}
-          headerStyle={{ paddingTop: 10 }}
-          sidePadding={40}
+          headerStyle={{ paddingTop: 20 }}
+          //sidePadding={40}
           inactiveOpacity={1}
           fadeLabels={true}
+          underlineStyle={Style.underlineStyle}
         />
       </View>
     )
   }
 }
+
+const Style = StyleSheet.create ({
+  underlineStyle: {
+    height: 3.6,
+    backgroundColor: mainPink,
+    width: constants.width / 2
+  }
+})

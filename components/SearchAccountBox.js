@@ -10,8 +10,17 @@ const Header = styled.View`
   flex-direction: row;
   align-items: center;
 `;
+const Bold = styled.Text`
+  font-weight: 600;
+  margin-bottom : 5px;
+  font-size : 15px;
+`;
+const Profile = styled.View`
+  margin-right : 5px;
+`;
 
 const SearchAccountBox = ({ navigation, username, firstName, avatar, id, isSelf }) => (
+<<<<<<< HEAD
   isSelf ?
     null
     :
@@ -26,6 +35,26 @@ const SearchAccountBox = ({ navigation, username, firstName, avatar, id, isSelf 
         </View>
       </Header>
     </TouchableOpacity>
+=======
+  <TouchableOpacity onPress={() => {
+    isSelf ? 
+      navigation.navigate("Profile")
+      :
+      navigation.navigate("UserDetail", { id, username }) } } >
+    <Header>
+      <Profile>
+        <Image 
+          style={{height: 40, width: 40, borderRadius:20}}
+          source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}
+          />
+      </Profile>
+      <View>
+        <Bold>{ username }</Bold>
+        <Text>{ firstName }</Text>
+      </View>
+    </Header>
+  </TouchableOpacity>
+>>>>>>> 997238eed72599f67faf084f598c7e2558b48a95
 );
 
 SearchAccountBox.propTypes = {

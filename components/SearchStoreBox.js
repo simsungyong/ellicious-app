@@ -10,17 +10,27 @@ const Header = styled.View`
   flex-direction: row;
   align-items: center;
 `;
+const Bold = styled.Text`
+  font-weight: 600;
+  margin-bottom : 5px;
+  font-size : 15px;
+`;
+const Profile = styled.View`
+  margin-right : 5px;
+`;
 
 const SearchStoreBox = ({ navigation, storeName, storeLocation, id }) => (
   <TouchableOpacity onPress={() => navigation.navigate("Profile", { id })}>
     <Header>
-      <Image 
-        style={{height: 40, width: 40, borderRadius:20}}
-        source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}/>
-      <View>
-        <Text>{ storeName }</Text>
-        <Text>{ (storeLocation.length >= 30) ? `${storeLocation.substring(0, 27)}...` : storeLocation }</Text>
-      </View>
+      <Profile>
+        <Image 
+          style={{height: 40, width: 40, borderRadius:20}}
+          source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}/>
+        </Profile>
+        <View>
+          <Bold>{ storeName }</Bold>
+          <Text>{ (storeLocation.length >= 30) ? `${storeLocation.substring(0, 27)}...` : storeLocation }</Text>
+        </View>
     </Header>
   </TouchableOpacity>
 );

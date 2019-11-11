@@ -85,7 +85,6 @@ const InfoCon=styled.View`
 `;
 
 const Caption = styled.Text`
-
 `;
 
 const CommentCount = styled.Text`

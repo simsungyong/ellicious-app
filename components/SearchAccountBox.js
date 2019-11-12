@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, Image, Text, View } from "react-native";
+import { TouchableOpacity, Image, Text } from "react-native";
 import { withNavigation } from "react-navigation";
 import PropTypes from "prop-types";
 import constants from "../constants";
@@ -9,6 +9,8 @@ import FollowButton from './FollowButton';
 const Container = styled.View`
   flex : 1;
   flex-direction: row;
+`;
+const UserInfo = styled.View`
 `;
 
 const Header = styled.View`
@@ -24,6 +26,14 @@ const Bold = styled.Text`
 const Profile = styled.View`
   margin-right : 5px;
 `;
+const View = styled.View`
+  flex : 1;
+`;
+const Button = styled.View`
+  margin-right : 10px;
+  alignItems: center;
+  justifyContent: center;
+`;
 
 const SearchAccountBox = ({ navigation, username, firstName, avatar, id, isSelf }) => (
   <Container>
@@ -36,13 +46,16 @@ const SearchAccountBox = ({ navigation, username, firstName, avatar, id, isSelf 
             source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}
             />
         </Profile>
-        <View>
+        <UserInfo>
           <Bold>{ username }</Bold>
           <Text>{ firstName }</Text>
-        </View>
+        </UserInfo>
       </Header>
     </TouchableOpacity>
-    <FollowButton/>
+    <View/>
+    <Button>
+      <FollowButton/>
+    </Button>
   </Container>
 );
 

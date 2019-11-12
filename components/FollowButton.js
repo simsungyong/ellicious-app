@@ -1,33 +1,31 @@
 import React, {Component} from 'react';
-import {
-    TouchableOpacity,
-    Text,
-    StyleSheet,
-  } from 'react-native';
-import mainPink from "./Color"
-  
+import {TouchableOpacity,Text} from 'react-native';
+import {mainPink} from "./Color";
+import styled from "styled-components";
+
+const Button = styled.View`
+    alignItems: center;
+    justifyContent: center;
+    borderRadius: 5;
+    background-color : ${mainPink}
+    width : 70;
+    height : 30;
+`;
+
   export default class CustomButton extends Component{
     constructor(props){
       super(props);
     }
-  
+
     render(){
       return (
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.title}>Follow</Text>
+        <TouchableOpacity>
+            <Button>
+                <Text>Following</Text>
+            </Button>
         </TouchableOpacity>
       )
     }
   }
   
-  const styles = StyleSheet.create({
-    button: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: mainPink,
-    },
-    title: {
-      fontSize: 15,
-    },
-  });
+ 

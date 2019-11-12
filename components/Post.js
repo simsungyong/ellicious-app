@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, Platform, StyleSheet,TextInput } from "react-native";
+import { Image, Platform, StyleSheet,TextInput, Alert } from "react-native";
 import styled from "styled-components";
 import { Ionicons, EvilIcons, FontAwesome, AntDesign } from "@expo/vector-icons";
 import PropTypes from "prop-types";
@@ -186,7 +186,9 @@ const Post = ({
               <CommentCount>{time}</CommentCount>
             </UserInfo>
             <View/>
-            <Touchable onPress={handlePick}>
+            <Touchable 
+              onPress={handlePick}
+            >
             <AntDesign
               color={isPicked ? PointPink : TINT_COLOR }
               size={20}

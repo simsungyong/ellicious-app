@@ -1,5 +1,5 @@
 const options = {
-    uri: "http://192.168.0.135:4000"
+    uri: "http://3.134.176.171:4000"
 
 }
 export default options;

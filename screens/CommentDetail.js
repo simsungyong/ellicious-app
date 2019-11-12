@@ -9,36 +9,42 @@ import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { ScrollView, Text,Image,TextInput,RefreshControl, KeyboardAvoidingView } from "react-native";
 import { POST_COMMENT } from "../fragments";
 import PostOfComment from '../components/PostOfComment';
-import styles from "../styles";
+import { LightGrey, CommentsBox, mainPink } from "../components/Color";
+import constants from "../constants";
 
 const InfoCon=styled.View`
-    flex:1;
+  flex:1;
+  margin-top : 8px;
 `;
-const Touchable = styled.TouchableOpacity`
-    flex:1;
-    `;
+const Touchable = styled.TouchableOpacity``;
 
 const CaptionCon = styled.View`
   flex:1;
+  flex-direction: row;
+  alignItems: center;
 `;
 const CommentBox =styled.View`
-    flex-direction:row;
-    margin-bottom: 5px;
-`
-const Caption = styled.Text`
+  flex-direction:row;
+  margin-bottom: 10px;
+  alignItems: center;
+  margin-left : 5px;
+  margin-right : 5px;
 `;
-
-const Reply = styled.TextInput`
-  flex:1;
-`;
-
 const Bold = styled.Text`
   font-weight: 600;
-  margin-bottom : 5px;
   font-size : 15px;
   margin-right : 5px;
 `;
-
+const TextBox = styled.View`
+  background-color : ${CommentsBox};
+  border-radius: 4px;
+  justifyContent: center;
+  padding : 5px;
+  width: ${constants.width / 1.32};
+  margin-right : 5px;
+  margin-left : 5px;
+  height : 30;
+`;
 
 const GET_COMMENTS = gql`
     query seeComment($postId: String!, $headComment: String){
@@ -111,44 +117,49 @@ export default ({navigation})=>{
       }
     };*/
     
-    
-    return (  
-                <InfoCon>
-                  <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
-                <ScrollView scrollEnabled={true} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh}/>
+    return (
+      <InfoCon>
+        <ScrollView 
+          scrollEnabled={true} 
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={refresh}/>
         }>
-                <CaptionCon>
-                    <Image 
-                            style={{height: 20, width: 20, borderRadius:20}}
-                            source={{uri: avatar}}/>
-                            <Bold>{username}</Bold>
-                            <Text>{caption}</Text>
-                </CaptionCon>
-                <CommentBox>
-                <TextInput
-                    {...textInput}
-                     autoCorrect={false}
-                     returnKeyType="send"
-                     //onSubmitEditing={handleComment}
-                     autoFocus={focusing}
-                     placeholder="Comment"
-                     />
-                <Touchable>
-                    <Bold>Reply</Bold>
-                </Touchable>
-                </CommentBox>
+          <CaptionCon>
+            <Image 
+              style={{height: 20, width: 20, borderRadius:10}}
+              source={{uri: avatar}}/>
+            <Bold>{username}</Bold>
+            <Text>{caption}</Text>
+          </CaptionCon>
+
+          <CommentBox>
+            <Image 
+                style={{height: 30, width: 30, borderRadius:15}}
+                source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}/>
+            <TextBox>
+              <TextInput
+                {...textInput}
+                returnKeyType="send"
+                //onSubmitEditing={handleLogin}
+                autoFocus={focusing}
+                placeholder="Comment"
+              />
+            </TextBox>
+            <Touchable>
+              <Bold>Reply</Bold>
+            </Touchable>
+          </CommentBox>
             {loading ? (
-                <Loader/>
+              <Loader/>
             ) : (
-                data && data.seeComment && data.seeComment.filter(comment=>comment.headComment == null).map(comment=><PostOfComment 
-                    key={comment.id}{...comment}
-                    />)
+              data && data.seeComment && data.seeComment.filter(comment=>comment.headComment == null).map(comment=>
+              <PostOfComment 
+              key={comment.id}{...comment}
+              />)
             )}
-        
-        
+          <KeyboardSpacer/>
         </ScrollView>  
-        </KeyboardAvoidingView>
-        </InfoCon>
+      </InfoCon>
     )
 }
 

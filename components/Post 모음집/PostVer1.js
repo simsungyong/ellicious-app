@@ -5,11 +5,11 @@ import { Ionicons, EvilIcons, FontAwesome } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 import Swiper from "react-native-swiper";
 import { gql } from "apollo-boost";
-import constants from "../constants";
+import constants from "../../constants";
 import { useMutation } from "react-apollo-hooks";
-import styles from "../styles";
+import styles from "../../styles";
 import moment from "moment";
-import { IconColor, StarColor, TINT_COLOR, mainPink } from '../components/Color';
+import { IconColor, StarColor, TINT_COLOR, mainPink } from '../Color';
 import {Card} from 'native-base'
 import { withNavigation } from "react-navigation";
 
@@ -28,19 +28,29 @@ const Touchable = styled.TouchableOpacity``;
 
 const Container =styled.View`
   flex : 1;
-  flex-direction : row;=
 `;
+
 const SubCon = styled.View`
   padding : 5px;
   justify-content: center;
   align-items: center;
-  background-color : ${mainPink}
+  
 `;
 const IconsCon = styled.View`
   margin-top : 3px;
 `;
 const View=styled.View`
   flex : 1;
+`;
+
+const Header = styled.View`
+  padding: 5px;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const HeaderUserContainer = styled.View`
+  margin-left: 10px;
 `;
 
 const IconCon = styled.View`
@@ -80,8 +90,6 @@ const StoreName = styled.Text`
 const Rating = styled.Text`
   font-size: 12px;
 `;
-const InfoCon=styled.View`
-`;
 
 const Caption = styled.Text`
 `;
@@ -93,6 +101,11 @@ const CommentCount = styled.Text`
 const CaptionCon = styled.View`
   flex-direction: row;
 `;
+
+const Info = styled.View`
+  flex-direction: row;
+`;
+
 
 //<Bold>{likeCount === 1 ? "좋아요 1개" : `좋아요 ${likeCount}개`}</Bold>
 
@@ -117,7 +130,6 @@ const Post = ({
         const [likeCount, setLikeCount] = useState(likeCountProp);
         const [isPicked, setIsPicked] = useState(isPickedProp);
         const [pickCount, setPickCount] = useState(pickCountProp);
-        
 
         const [toggleLikeMutaton] = useMutation(TOGGLE_LIKE, {
         variables: {
@@ -168,16 +180,53 @@ const Post = ({
     return (
       <Card>
         <Container>
-          <SubCon>
-            <Touchable
+        <Header>
+          <Touchable
               onPress={() =>
                 navigation.navigate("UserDetail", { id: user.id, username })
               }
             >
             <Image 
-              style={{height: 45, width: 45, borderRadius:20}}
+              style={{height: 40, width: 40, borderRadius:20}}
               source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}/>
+          </Touchable>
+        
+          <HeaderUserContainer>
+            <Touchable
+              onPress={() =>
+                navigation.navigate("UserDetail", { id: user.id, username })
+              }
+            >
+              <Bold>{user.username}</Bold>
             </Touchable>
+          </HeaderUserContainer>
+        </Header>
+        <Swiper 
+          showsPagination={false}
+          style={{height: constants.height/2.7}}>
+            {files.map(file=>(
+              <Image
+                style={{width: constants.width, height:constants.height/2.7}}
+                key={file.id}
+                source={{uri: file.url}}/>
+            ))}
+        </Swiper>
+        <StoreCon>
+              <StoreInfo>
+                <Touchable>
+                  <StoreName>{storeName}</StoreName>
+                </Touchable>
+                <Rating>
+                  <FontAwesome
+                    color={StarColor}
+                    size={25}
+                    name={"star"}
+                  />
+                </Rating>
+              </StoreInfo>
+            </StoreCon>
+        <Info>
+          <SubCon>
             <IconsCon>
               <Touchable onPress={handleLike}>
                 <IconCon>
@@ -219,32 +268,7 @@ const Post = ({
           </SubCon>
 
           <Main>
-            <Swiper 
-              showsPagination={false}
-              style={{height: constants.height/2.7}}>
-                {files.map(file=>(
-                <Image
-                  style={{width: constants.width, height:constants.height/2.7}}
-                  key={file.id}
-                source={{uri: file.url}}/>
-              ))}
-            </Swiper>
-            <StoreCon>
-              <StoreInfo>
-                <Touchable>
-                  <StoreName>{storeName}</StoreName>
-                </Touchable>
-                <Rating>
-                  <FontAwesome
-                    color={StarColor}
-                    size={25}
-                    name={"star"}
-                  />
-                </Rating>
-              </StoreInfo>
-            </StoreCon>
-
-            <InfoCon>
+            <View>
               <CaptionCon>
               <Touchable
                 onPress={() =>
@@ -255,7 +279,7 @@ const Post = ({
                 </Touchable>
                 <Caption>{caption}</Caption>
               </CaptionCon>
-            </InfoCon>
+            </View>
             <Touchable onPress={()=>navigation.navigate("CommentDetail",{caption, avatar, username, postId: id, focusing: false})}>
               {comments.length >=1 ? (
                 <CommentCount>
@@ -277,6 +301,7 @@ const Post = ({
             </Touchable>
             <CommentCount>{time}</CommentCount>
           </Main>
+         </Info>
         </Container>
       </Card>
   );

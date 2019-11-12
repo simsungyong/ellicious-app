@@ -1,5 +1,9 @@
 Arguments: 
+<<<<<<< HEAD
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add ellicious-app
+=======
   /usr/local/bin/node /Users/yong/.yarn/bin/yarn.js add native-customized-image-picker
+>>>>>>> 9d2b238ed3c3ecd6fa0ebb7cc1b31001825ae4d5
 
 PATH: 
   /Users/yong/.yarn/bin:/Users/yong/.config/yarn/global/node_modules/.bin:/anaconda3/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/yong/.yarn/bin:/Users/yong/.config/yarn/global/node_modules/.bin:/anaconda3/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/Users/yong/Library/Android/sdk/platform-tools:/Users/yong/Library/Android/sdk/platform-tools
@@ -14,6 +18,15 @@ Platform:
   darwin x64
 
 Trace: 
+<<<<<<< HEAD
+  Error: https://registry.yarnpkg.com/ellicious-app: Not found
+      at Request.params.callback [as _callback] (C:\Program Files (x86)\Yarn\lib\cli.js:66035:18)
+      at Request.self.callback (C:\Program Files (x86)\Yarn\lib\cli.js:140564:22)
+      at Request.emit (events.js:198:13)
+      at Request.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:141536:10)
+      at Request.emit (events.js:198:13)
+      at IncomingMessage.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:141458:12)
+=======
   Error: https://registry.yarnpkg.com/native-customized-image-picker: Not found
       at Request.params.callback [as _callback] (/Users/yong/.yarn/lib/cli.js:66830:18)
       at Request.self.callback (/Users/yong/.yarn/lib/cli.js:140464:22)
@@ -21,6 +34,7 @@ Trace:
       at Request.<anonymous> (/Users/yong/.yarn/lib/cli.js:141436:10)
       at Request.emit (events.js:198:13)
       at IncomingMessage.<anonymous> (/Users/yong/.yarn/lib/cli.js:141358:12)
+>>>>>>> 9d2b238ed3c3ecd6fa0ebb7cc1b31001825ae4d5
       at Object.onceWrapper (events.js:286:20)
       at IncomingMessage.emit (events.js:203:15)
       at endReadableNT (_stream_readable.js:1145:12)

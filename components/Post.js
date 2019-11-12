@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, Platform, StyleSheet,TextInput, Alert } from "react-native";
+import { Image, Platform,TextInput, Alert } from "react-native";
 import styled from "styled-components";
 import { Ionicons, EvilIcons, FontAwesome, AntDesign } from "@expo/vector-icons";
 import PropTypes from "prop-types";
@@ -9,7 +9,7 @@ import constants from "../constants";
 import { useMutation } from "react-apollo-hooks";
 import styles from "../styles";
 import moment from "moment";
-import { IconColor, StarColor, TINT_COLOR, mainPink, PointPink, LightGrey, BG_COLOR } from '../components/Color';
+import { IconColor, StarColor, TINT_COLOR, Grey, PointPink, LightGrey, BG_COLOR } from '../components/Color';
 import {Card} from 'native-base'
 import { withNavigation } from "react-navigation";
 import Hr from "hr-native";
@@ -239,7 +239,7 @@ const Post = ({
 
           <Hr 
             lineStyle={{
-              backgroundColor : LightGrey
+              backgroundColor : Grey
             }}
           />
 

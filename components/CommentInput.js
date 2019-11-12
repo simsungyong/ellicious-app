@@ -5,25 +5,23 @@ import { withNavigation } from "react-navigation";
 import styled from "styled-components";
 
 
-const Touchable = styled.TouchableOpacity`
-flex-direction: row;`;
+const Touchable = styled.TouchableOpacity``;
 
-
-const HeaderUserContainer = styled.View`
-  margin-left: 10px;
+const Container = styled.View`
+`;
+const CaptionCon = styled.View`
+  flex-direction: row; 
+  alignItems: center;
+  margin-left : 15px;
+  margin-top : 5px;
 `;
 
 const Caption = styled.Text`
-`;
-const AllView = styled.View`
 `;
 
 const CommentCount = styled.Text`
   opacity: 0.5;
   font-size: 13px;
-`;
-const CaptionCon = styled.View`
-  flex-direction: row;
 `;
 
 const Bold = styled.Text`
@@ -43,17 +41,14 @@ const CommentInput=({
     navigation
 })=>{
     return(
-        <AllView>
+        <Container>
           <CaptionCon>
             <Touchable>
-              <Image 
-                style={{height: 20, width: 20, borderRadius:20}}
-                source={{uri: user.avatar}}/>
                 <Bold>{user.username}</Bold>
             </Touchable>
             <Caption>{text}</Caption>
             </CaptionCon> 
-        </AllView>
+        </Container>
     )
 }
 

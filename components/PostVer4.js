@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Image, Platform, StyleSheet,TextInput, Alert } from "react-native";
+import { Image, Platform, StyleSheet,TextInput } from "react-native";
 import styled from "styled-components";
-import { Ionicons, EvilIcons, FontAwesome, AntDesign } from "@expo/vector-icons";
+import { Ionicons, EvilIcons, FontAwesome } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 import Swiper from "react-native-swiper";
 import { gql } from "apollo-boost";
@@ -9,7 +9,7 @@ import constants from "../constants";
 import { useMutation } from "react-apollo-hooks";
 import styles from "../styles";
 import moment from "moment";
-import { IconColor, StarColor, TINT_COLOR, mainPink, PointPink, LightGrey, BG_COLOR } from '../components/Color';
+import { IconColor, StarColor, TINT_COLOR, mainPink, PointPink, LightGrey } from '../components/Color';
 import {Card} from 'native-base'
 import { withNavigation } from "react-navigation";
 import Hr from "hr-native";
@@ -29,10 +29,7 @@ const Touchable = styled.TouchableOpacity``;
 
 const Container =styled.View`
   flex : 1;
-  background-color : ${BG_COLOR};
 `;
-//Container Background color -->선택사항 상의해보고 변경하기
-
 const Header =styled.View`
   padding: 5px;
   flex-direction: row;
@@ -185,16 +182,6 @@ const Post = ({
               </Touchable>
               <CommentCount>{time}</CommentCount>
             </UserInfo>
-            <View/>
-            <Touchable 
-              onPress={handlePick}
-            >
-            <AntDesign
-              color={isPicked ? PointPink : TINT_COLOR }
-              size={20}
-              name={isPicked ? "pushpin" : "pushpino" }
-            />
-            </Touchable>
           </Header>
           <Swiper 
             showsPagination={false}

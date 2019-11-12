@@ -17,22 +17,24 @@ import { withNavigation } from "react-navigation";
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
 import CommentInput from './CommentInput';
-import {LightGrey} from '../components/Color'
+import {Grey,LightGrey} from '../components/Color'
 
 const Touchable = styled.TouchableOpacity`
   margin-bottom:3px;
 `;
 const Container = styled.View`
-  margin-left : 20;
+  margin-left : 5px;;
 `;
 const CaptionsCon = styled.View`
   flex-direction: row;
-  margin-bottom : 5px;
+  margin-top : 5px;
+  
 `;
 const User = styled.View``;
 
 const CommentsCon = styled.View`
   flex-direction : column;
+  flex : 1;
 `;
 const Comments = styled.View`
   background-color : ${LightGrey};
@@ -44,6 +46,7 @@ const Comments = styled.View`
 `;
 const ReplyCon = styled.View`
   alignItems: flex-end;
+  margin-right : 5px;
 `;
 const Caption = styled.Text``;
 const Bold = styled.Text`
@@ -52,13 +55,18 @@ const Bold = styled.Text`
   font-size : 15px;
   margin-right : 5px;
 `;
-const Reply = styled.Text``;
+const Reply = styled.Text`
+  color : ${Grey};
+`;
 /*
 const CommentCount = styled.Text`
   opacity: 0.5;
   font-size: 13px;
 `;
 */
+const TextInputCon=styled.View`
+ margin-left : 15px;
+`;
 
 const GET_COMMENTS = gql`
     query seeComment($postId: String!, $headComment: String){
@@ -105,7 +113,7 @@ const PostOfComment = ({
                 </Comments>
                 <ReplyCon>
                   <Touchable onPress={()=>setbottomModalAndTitle(true)}>
-                    <Reply> Reply</Reply>
+                    <Reply>Reply</Reply>
                   </Touchable>
                 </ReplyCon>
               </CommentsCon> 
@@ -125,26 +133,32 @@ const PostOfComment = ({
             }
           >
             <ModalContent>
-              <Comments>
-                <Touchable onPress={navi}>
-                  <Image 
-                    style={{height: 40, width: 40, borderRadius:20}}
-                    source={{uri: user.avatar}}/>
+              <CaptionsCon>
+                <User>
+                  <Touchable onPress={navi}>
                     <Bold>{user.username}</Bold>
-                </Touchable>
-                <Caption>{text}</Caption>
-              </Comments>
+                  </Touchable>
+                </User>
+
+                <CommentsCon>
+                  <Comments>
+                    <Caption>{text}</Caption>
+                  </Comments>
+                </CommentsCon> 
+              </CaptionsCon>
 
                 { loading ? (<Loader/>) : (
                   data && data.seeComment && data.seeComment.map(comment=>
                   <CommentInput
                     key={comment.id}{...comment}/>)
                 )}
-                <TextInput
-                  returnKeyType="send"
-                  autoFocus={true}
-                  placeholder="Comment"
-                />
+                <TextInputCon>
+                  <TextInput
+                    returnKeyType="send"
+                    autoFocus={true}
+                    placeholder="Comment"
+                  />
+                </TextInputCon>
                 <KeyboardSpacer/>
             </ModalContent>
           </Modal.BottomModal>

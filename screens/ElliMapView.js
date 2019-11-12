@@ -23,21 +23,9 @@ const Text = styled.Text``;
 
 export default ({navigation}) => {
   const [loading, setIsLoading] = useState(false);
-  const photo = navigation.getParam("photo");
-  const handleSelected = () => {
-    navigation.navigate("Map");
-  };
   return(
     <View>
-        <Container>
-          <Image
-            source={{ uri: photo.uri }}
-            style={{ height: 80, width: 80, marginRight: 30 }}
-          />
-          </Container>
-          <Button onPress={handleSelected}>
-              <Text>go amp</Text>
-          </Button>
+        <Text>Map</Text>
     </View>
   );
 }

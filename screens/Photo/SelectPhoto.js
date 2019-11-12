@@ -7,21 +7,22 @@ import Loader from "../../components/Loader";
 import constants from "../../constants";
 import styles from '../../styles';
 
-
 const View = styled.View`
   flex: 1;
 `;
 
 const Button = styled.TouchableOpacity`
-  width: 100px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
   position: absolute;
   right: 5px;
   top: 15px;
-  background-color: ${styles.blueColor};
+  background-color: #F5A9BC;
   justify-content: center;
   align-items: center;
-  border-radius: 5px;
+  border-radius: 30px;
+  border-width:2;
+  border-color: #fff;
 `;
 
 
@@ -30,21 +31,24 @@ const Text = styled.Text`
   font-weight: 600;
   `;
 
-export default () => {
+export default ({navigation}) => {
   const [loading, setLoading] = useState(true);
   const [hasPermission, setHasPermission] = useState(false);
-  const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState([]);
   const [allPhotos, setAllPhotos] = useState();
 
-  const changeSelected = photo => {
+  const changeSelected = (photo) => {
     setSelected(photo);
+    //console.log(selected);
   };
   const getPhotos = async () => {
     try {
       const { assets } = await MediaLibrary.getAssetsAsync({
         sortBy:[[MediaLibrary.SortBy.creationTime, false]]
       });
+      
       const [firstPhoto] = assets;
+      
       setSelected(firstPhoto);
       setAllPhotos(assets);
     } catch (e) {
@@ -90,7 +94,7 @@ return(
               />
 
               <Button onPress={handleSelected}>
-                <Text>Select Photo</Text>
+                <Text>다음</Text>
               </Button>
 
               <ScrollView
@@ -107,8 +111,8 @@ return(
                     <Image
                       source={{ uri: photo.uri }}
                       style={{
-                        width: constants.width / 3,
-                        height: constants.height / 6,
+                        width: constants.width / 4,
+                        height: constants.height / 8,
                         opacity: photo.id === selected.id ? 0.5 : 1
                       }}
                     />

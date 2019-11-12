@@ -2,6 +2,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import { createMaterialTopTabNavigator} from "react-navigation-tabs"
 import SelectPhoto from "../screens/Photo/SelectPhoto";
 import TakePhoto from "../screens/Photo/TakePhoto";
+import ElliMapView from '../screens/ElliMapView';
 import UploadPhoto from "../screens/Photo/UploadPhoto";
 import styles from '../styles';
 import { stackStyles } from "./config";
@@ -11,7 +12,7 @@ const PhotoTabs = createMaterialTopTabNavigator(
     Take:{
       screen: TakePhoto,
       navigationOptions:{
-        tabBarLabel:"Take"
+        tabBarLabel:"Take",
       }
     },
     Select:{
@@ -19,15 +20,14 @@ const PhotoTabs = createMaterialTopTabNavigator(
       navigationOptions:{
         tabBarLabel:"Select"
       }
-    },
-    
+    }
   },
   {
     tabBarPosition: "bottom",
     tabBarOptions: {
       indicatorStyle:{
         backgroundColor: styles.blackColor,
-        marginBottom:70
+        marginBottom:65
       },
       labelStyle:{
         color: styles.blackColor,
@@ -45,12 +45,30 @@ export default createStackNavigator({
   Tabs : {
     screen: PhotoTabs,
     navigationOptions:{
-      header: null
+      title:"사 진",
+      headerBackTitle: "뒤로"
     }
   },
-  UploadPhoto
-},{
+  Upload: {
+    screen: UploadPhoto,
+    navigationOptions:{
+      title: "게시물 올리기",
+      headerBackTitle:"뒤로"
+    }
+  },
+  Map: {
+    screen: ElliMapView,
+    navigationOptions:{
+      title: "방문한 맛집은?"
+      
+    }
+  }
+},
+{
   defaultNavigationOptions:{
-    headerStyle:{...stackStyles}
+    headerStyle:{
+      ...stackStyles
+    },
+    headerTintColor:styles.blackColor
   }
 });

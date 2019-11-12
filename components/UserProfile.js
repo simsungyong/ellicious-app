@@ -8,6 +8,7 @@ import { Platform } from "@unimodules/core";
 import constants from "../constants";
 import SquarePhoto from "./SquarePhoto";
 import Post from "./Post";
+import MapViews from "./MapViews";
 
 const ProfileHeader = styled.View`
   padding: 20px;
@@ -115,14 +116,22 @@ const UserProfile = ({
           </Button>
         </TouchableOpacity>
       </ButtonContainer>
-      {posts &&
+      {isGrid ? (
+        posts && posts.map(p =>
+          <SquarePhoto key={p.id} {...p} />
+        )
+      ) : (
+        <MapViews />
+      )}
+      {/* {posts &&
         posts.map(p =>
           isGrid ? (
             <SquarePhoto key={p.id} {...p} />
           ) : (
-            <Post key={p.id} {...p} />
+            <Text>Hello</Text>
+            // <Post key={p.id} {...p} />
           )
-        )}
+        )} */}
     </View>
   )
 };

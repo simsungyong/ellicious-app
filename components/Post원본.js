@@ -77,10 +77,6 @@ const BottomCon = styled.View`
 const IconsCon = styled.View`
   flex-direction: row;
 `;
-
-const IconCon = styled.View`
-  margin-right: 13px;
-`;
 const InfoCon=styled.View`
 `;
 

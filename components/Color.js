@@ -7,4 +7,4 @@ export const Google = "#dc4a38";
 export const Facebook ="#3b5998"
 export const StarColor = "#ffd363";
 export const IconColor = "#3d3d3d";
-export const LightGrey = "#dedede"
+export const LightGrey = "#dedede";

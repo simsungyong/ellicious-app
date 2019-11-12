@@ -186,7 +186,7 @@ const Post = ({
               <CommentCount>{time}</CommentCount>
             </UserInfo>
             <View/>
-            <Touchable onPress={handleLike}>
+            <Touchable onPress={handlePick}>
             <AntDesign
               color={isPicked ? PointPink : TINT_COLOR }
               size={20}

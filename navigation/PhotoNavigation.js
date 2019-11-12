@@ -3,18 +3,54 @@ import { createMaterialTopTabNavigator} from "react-navigation-tabs"
 import SelectPhoto from "../screens/Photo/SelectPhoto";
 import TakePhoto from "../screens/Photo/TakePhoto";
 import UploadPhoto from "../screens/Photo/UploadPhoto";
+import styles from '../styles';
+import { stackStyles } from "./config";
 
 const PhotoTabs = createMaterialTopTabNavigator(
   {
-    SelectPhoto,
-    TakePhoto
+    Take:{
+      screen: TakePhoto,
+      navigationOptions:{
+        tabBarLabel:"Take"
+      }
+    },
+    Select:{
+      screen: SelectPhoto,
+      navigationOptions:{
+        tabBarLabel:"Select"
+      }
+    },
+    
   },
   {
-    tabBarPosition: "bottom"
+    tabBarPosition: "bottom",
+    tabBarOptions: {
+      indicatorStyle:{
+        backgroundColor: styles.blackColor,
+        marginBottom:70
+      },
+      labelStyle:{
+        color: styles.blackColor,
+        fontWeight:"600"
+      },
+      style:{
+        paddingBottom:20,
+        ...stackStyles
+      }
+    }
   }
 );
 
 export default createStackNavigator({
-  PhotoTabs,
+  Tabs : {
+    screen: PhotoTabs,
+    navigationOptions:{
+      header: null
+    }
+  },
   UploadPhoto
+},{
+  defaultNavigationOptions:{
+    headerStyle:{...stackStyles}
+  }
 });

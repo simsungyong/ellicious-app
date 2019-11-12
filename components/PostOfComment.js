@@ -85,16 +85,16 @@ const PostOfComment = ({
         return (
         <AllView>
             <CaptionCon>
-            <Touchable onPress={navi}>
-              <Image 
-                style={{height: 20, width: 20, borderRadius:20}}
-                source={{uri: user.avatar}}/>
-                <Bold>{user.username}</Bold>
-            </Touchable>
-            <Caption>{text}</Caption>
-            <Touchable onPress={()=>setbottomModalAndTitle(true)}>
-                <Reply>reply</Reply>
-            </Touchable>  
+              <Touchable onPress={navi}>
+                <Image 
+                  style={{height: 20, width: 20, borderRadius:20}}
+                  source={{uri: user.avatar}}/>
+                  <Bold>{user.username}</Bold>
+              </Touchable>
+              <Caption>{text}</Caption>
+              <Touchable onPress={()=>setbottomModalAndTitle(true)}>
+                  <Reply>reply</Reply>
+              </Touchable>  
             </CaptionCon>
 
             <Modal.BottomModal

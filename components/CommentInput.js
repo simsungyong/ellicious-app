@@ -5,25 +5,21 @@ import { withNavigation } from "react-navigation";
 import styled from "styled-components";
 
 
-const Touchable = styled.TouchableOpacity`
-flex-direction: row;`;
+const Touchable = styled.TouchableOpacity``;
 
-
-const HeaderUserContainer = styled.View`
-  margin-left: 10px;
+const AllView = styled.View`
+  flex-direction: row;  
+  background-color : blue;
+`;
+const CaptionCon = styled.View`
 `;
 
 const Caption = styled.Text`
-`;
-const AllView = styled.View`
 `;
 
 const CommentCount = styled.Text`
   opacity: 0.5;
   font-size: 13px;
-`;
-const CaptionCon = styled.View`
-  flex-direction: row;
 `;
 
 const Bold = styled.Text`

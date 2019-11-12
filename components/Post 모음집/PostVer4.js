@@ -5,11 +5,11 @@ import { Ionicons, EvilIcons, FontAwesome } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 import Swiper from "react-native-swiper";
 import { gql } from "apollo-boost";
-import constants from "../constants";
+import constants from "../../constants";
 import { useMutation } from "react-apollo-hooks";
-import styles from "../styles";
+import styles from "../../styles";
 import moment from "moment";
-import { IconColor, StarColor, TINT_COLOR, mainPink, PointPink, LightGrey } from '../components/Color';
+import { IconColor, StarColor, TINT_COLOR, mainPink, PointPink, LightGrey } from '../Color';
 import {Card} from 'native-base'
 import { withNavigation } from "react-navigation";
 import Hr from "hr-native";

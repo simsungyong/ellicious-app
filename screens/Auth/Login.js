@@ -134,6 +134,7 @@ export default ({ navigation }) => {
         <LoginButtonCon>
             <AuthButton loading={loading} onPress={handleLogin} text="Login" />
             <OtherLoginCon>
+              <SocialIcon type="facebook" onPress={() => {alert('facebook Login');}} />
               <SocialIcon type="google" onPress={() => {alert('Google Login');}} />
             </OtherLoginCon>
         </LoginButtonCon>

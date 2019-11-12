@@ -2,7 +2,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import { createMaterialTopTabNavigator} from "react-navigation-tabs"
 import SelectPhoto from "../screens/Photo/SelectPhoto";
 import TakePhoto from "../screens/Photo/TakePhoto";
-import ElliMapView from '../screens/ElliMapView';
+import MapContainer from '../screens/MapContainer';
 import UploadPhoto from "../screens/Photo/UploadPhoto";
 import styles from '../styles';
 import { stackStyles } from "./config";
@@ -57,7 +57,7 @@ export default createStackNavigator({
     }
   },
   Map: {
-    screen: ElliMapView,
+    screen: MapContainer,
     navigationOptions:{
       title: "방문한 맛집은?"
       

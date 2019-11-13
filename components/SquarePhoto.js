@@ -3,6 +3,7 @@ import { TouchableOpacity, Image } from "react-native";
 import { withNavigation } from "react-navigation";
 import PropTypes from "prop-types";
 import constants from "../constants";
+import { red } from "ansi-colors";
 
 const SquarePhoto = ({ navigation, files = [], id }) => (
   <TouchableOpacity onPress={() => navigation.navigate("Detail", { id })}>

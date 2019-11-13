@@ -4,8 +4,8 @@ import SelectPhoto from "../screens/Photo/SelectPhoto";
 import TakePhoto from "../screens/Photo/TakePhoto";
 import ElliMapView from '../screens/ElliMapView';
 import UploadPhoto from "../screens/Photo/UploadPhoto";
-import styles from '../styles';
 import { stackStyles } from "./config";
+import { PointPink, TINT_COLOR } from "../components/Color";
 
 const PhotoTabs = createMaterialTopTabNavigator(
   {
@@ -26,11 +26,11 @@ const PhotoTabs = createMaterialTopTabNavigator(
     tabBarPosition: "bottom",
     tabBarOptions: {
       indicatorStyle:{
-        backgroundColor: styles.blackColor,
+        backgroundColor: PointPink,
         marginBottom:65
       },
       labelStyle:{
-        color: styles.blackColor,
+        color: PointPink,
         fontWeight:"600"
       },
       style:{
@@ -52,8 +52,8 @@ export default createStackNavigator({
   Upload: {
     screen: UploadPhoto,
     navigationOptions:{
-      title: "게시물 올리기",
-      headerBackTitle:"뒤로"
+      title: "New Post",
+      headerBackTitle:"뒤로",
     }
   },
   Map: {
@@ -69,6 +69,6 @@ export default createStackNavigator({
     headerStyle:{
       ...stackStyles
     },
-    headerTintColor:styles.blackColor
+    headerTintColor:TINT_COLOR
   }
 });

@@ -9,7 +9,7 @@ import constants from "../constants";
 import { useMutation } from "react-apollo-hooks";
 import styles from "../styles";
 import moment from "moment";
-import { IconColor, StarColor, TINT_COLOR, Grey, PointPink, LightGrey, BG_COLOR } from '../components/Color';
+import { IconColor, StarColor, TINT_COLOR, Grey, PointPink, BG_COLOR } from '../components/Color';
 import {Card} from 'native-base'
 import { withNavigation } from "react-navigation";
 import Hr from "hr-native";

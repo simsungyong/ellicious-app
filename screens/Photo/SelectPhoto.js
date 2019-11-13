@@ -1,33 +1,33 @@
 import React,{useState, useEffect} from "react";
 import {Image,ScrollView,TouchableOpacity} from 'react-native';
+import { EvilIcons } from "@expo/vector-icons";
 import * as Permissions from 'expo-permissions';
 import * as MediaLibrary from 'expo-media-library';
 import styled from "styled-components";
 import Loader from "../../components/Loader";
 import constants from "../../constants";
-import styles from '../../styles';
+import { mainPink, TINT_COLOR } from "../../components/Color";
 
 const View = styled.View`
   flex: 1;
 `;
-
 const Button = styled.TouchableOpacity`
   width: 50px;
   height: 50px;
   position: absolute;
   right: 5px;
   top: 15px;
-  background-color: #F5A9BC;
+  background-color: ${mainPink};
   justify-content: center;
   align-items: center;
   border-radius: 30px;
   border-width:2;
-  border-color: #fff;
+  border-color: white;
 `;
 
 
 const Text = styled.Text`
-  color: white;
+  color: ${TINT_COLOR};
   font-weight: 600;
   `;
 
@@ -88,37 +88,36 @@ return(
         <View>
           {hasPermission ? (
             <>
-              <Image
-                style={{ width: constants.width, height: constants.height / 2 }}
-                source={{ uri: selected.uri }}
-              />
 
+                <Image
+                  style={{ width: constants.width, height: constants.height / 2 }}
+                  source={{ uri: selected.uri }}
+                />
               <Button onPress={handleSelected}>
-                <Text>다음</Text>
+                <Text>Next</Text>
               </Button>
-
-              <ScrollView
-                contentContainerStyle={{
-                  flexDirection: "row",
-                  flexWrap: "wrap"
-                }}
-              >
-                {allPhotos.map(photo => (
-                  <TouchableOpacity
-                    key={photo.id}
-                    onPress={() => changeSelected(photo)}
-                  >
-                    <Image
-                      source={{ uri: photo.uri }}
-                      style={{
-                        width: constants.width / 4,
-                        height: constants.height / 8,
-                        opacity: photo.id === selected.id ? 0.5 : 1
-                      }}
-                    />
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
+                <ScrollView
+                  contentContainerStyle={{
+                    flexDirection: "row",
+                    flexWrap: "wrap"
+                  }}
+                >
+                  {allPhotos.map(photo => (
+                    <TouchableOpacity
+                      key={photo.id}
+                      onPress={() => changeSelected(photo)}
+                    >
+                      <Image
+                        source={{ uri: photo.uri }}
+                        style={{
+                          width: constants.width / 4,
+                          height: constants.height / 8,
+                          opacity: photo.id === selected.id ? 0.5 : 1
+                        }}
+                      />
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
             </>
           ) : null}
         </View>
@@ -126,3 +125,14 @@ return(
     </View>
   );
 };
+
+/* 
+<EvilIcons
+  color={PointPink }
+  size={20}
+  name={"check" }
+/>
+
+나중에 사진 선택에 check아이콘 넣고, 
+버튼에 next대신 선택한 사진 수 들어가게
+*/

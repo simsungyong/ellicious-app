@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, ScrollView, TextInput, Text } from "react-native";
+import { Image, ScrollView, TextInput } from "react-native";
 import { useQuery } from "react-apollo-hooks";
 import styled from "styled-components";
 import { Ionicons, FontAwesome, EvilIcons } from "@expo/vector-icons";
@@ -10,13 +10,14 @@ import constants from "../constants";
 import { useMutation } from "react-apollo-hooks";
 import styles from "../styles";
 import moment from "moment";
-import {LightPink, Grey} from './Color';
+import {TINT_COLOR, StarColor} from './Color';
 import Loader from '../components/Loader'
 import { POST_COMMENT } from "../fragments";
 import { withNavigation } from "react-navigation";
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
 import CommentInput from './CommentInput';
+import {Grey,LightGrey} from '../components/Color'
 
 const Touchable = styled.TouchableOpacity`
   margin-bottom:3px;
@@ -24,45 +25,6 @@ const Touchable = styled.TouchableOpacity`
 const Container = styled.View`
   margin-left : 5px;;
 `;
-
-const CaptionsCon = styled.View`
-  flex-direction: row;
-  margin-top : 5px;
-`;
-
-const Profile = styled.View`
-  margin-right : 5px;
-`;
-
-const CommentCon = styled.View`
-  flex : 1;
-`;
-
-const Comment = styled.View`
-  background-color : ${LightPink};
-  border-radius: 4px;
-  justifyContent: center;
-  padding : 5px;
-  margin-right : 5px;
-  height : 30;
-`;
-const Caption = styled.Text``;
-
-const ReplyCon = styled.View`
-  flex-direction: row;
-  justifyContent: space-between;
-  margin-right : 5px;
-`;
-const Bold = styled.Text`
-  font-weight: 600;
-  margin-bottom : 5px;
-  font-size : 15px;
-  margin-right : 5px;
-`;
-const Reply = styled.Text`
-  color : ${Grey};
-`;
-/*
 const CaptionsCon = styled.View`
   flex-direction: row;
   margin-top : 5px;
@@ -139,29 +101,22 @@ const PostOfComment = ({
         return (
           <Container>
             <CaptionsCon>
-              <Profile>
-                <Image 
-                  style={{height: 30, width: 30, borderRadius:15}}
-                  source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}
-                />
-              </Profile>
-
-              <CommentCon>
+              <User>
                 <Touchable onPress={navi}>
                   <Bold>{user.username}</Bold>
                 </Touchable>
+              </User>
 
-                <Comment>
+              <CommentsCon>
+                <Comments>
                   <Caption>{text}</Caption>
-                </Comment>
-
+                </Comments>
                 <ReplyCon>
-                  <Text>-시간전</Text>
                   <Touchable onPress={()=>setbottomModalAndTitle(true)}>
                     <Reply>Reply</Reply>
                   </Touchable>
                 </ReplyCon>
-              </CommentCon>
+              </CommentsCon> 
             </CaptionsCon>
 
           <Modal.BottomModal
@@ -179,29 +134,17 @@ const PostOfComment = ({
           >
             <ModalContent>
               <CaptionsCon>
-                <Profile>
-                  <Image 
-                    style={{height: 40, width: 40, borderRadius:20}}
-                    source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}
-                  />
-                </Profile>
-
-                <CommentCon>
+                <User>
                   <Touchable onPress={navi}>
                     <Bold>{user.username}</Bold>
                   </Touchable>
+                </User>
 
-                  <Comment>
+                <CommentsCon>
+                  <Comments>
                     <Caption>{text}</Caption>
-                  </Comment>
-
-                  <ReplyCon>
-                    <Text>-시간전</Text>
-                    <Touchable onPress={()=>setbottomModalAndTitle(true)}>
-                      <Reply>Reply</Reply>
-                    </Touchable>
-                  </ReplyCon>
-                </CommentCon>
+                  </Comments>
+                </CommentsCon> 
               </CaptionsCon>
 
                 { loading ? (<Loader/>) : (

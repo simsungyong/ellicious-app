@@ -10,3 +10,4 @@ export const IconColor = "#3d3d3d";
 export const CommentsBox = "#e6e6e6";
 export const LightGrey = "#f0f0f0";
 export const Grey = "#575757";
+export const LightPink = "#fff2f2";

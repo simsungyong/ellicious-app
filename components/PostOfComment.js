@@ -52,6 +52,7 @@ const ReplyCon = styled.View`
   flex-direction: row;
   justifyContent: space-between;
   margin-right : 5px;
+  margin-left : 7px;
 `;
 const Bold = styled.Text`
   font-weight: 600;

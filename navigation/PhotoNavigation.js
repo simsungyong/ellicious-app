@@ -52,7 +52,7 @@ export default createStackNavigator({
   Upload: {
     screen: UploadPhoto,
     navigationOptions:{
-      title: "게시물 올리기",
+      title: "New Post",
       headerBackTitle:"뒤로"
     }
   },

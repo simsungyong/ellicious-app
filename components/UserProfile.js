@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, View, TouchableOpacity, Text } from "react-native";
+import { Image, TouchableOpacity, Text } from "react-native";
 import styled from "styled-components";
 import { Ionicons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
@@ -9,51 +9,66 @@ import constants from "../constants";
 import SquarePhoto from "./SquarePhoto";
 import Post from "./Post";
 import MapViews from "./MapViews";
+import FollowButton from '../components/FollowButton'
+import Hr from "hr-native";
 
-const ProfileHeader = styled.View`
-  padding: 20px;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+const Container = styled.View`
+  flex : 1
 `;
-const HeaderColumn = styled.View``;
-
-const ProfileStats = styled.View`
+const PostCon = styled.View`
   flex-direction: row;
 `;
+const Profile = styled.View`
+  padding : 5px;
+  flex : 1;
+`;
+const Top = styled.View`
+  flex : 1;
+  flex-direction: row;
+`;
+const ProfileImage = styled.View``;
 
-const Stat = styled.View`
-  align-items: center;
-  margin-left: 40px;
+const NameCon = styled.View`
+  flex : 1;
+  alignItems: center;
+  justifyContent: center;
+  
+`;
+const NameBox = styled.View`
+  flex-direction: row;
+  margin-bottom : 5px;
+  margin-left : 10px;
+  alignItems: center;
+  justifyContent: center;
+`;
+const View = styled.View`
+  flex : 1;
+`;
+const Bottom = styled.View`
+  flex-direction: row;
+`;
+
+const FollowCon = styled.View`
+  margin-top : 10px;
+  alignItems: center;
+  justifyContent: center;
+
+`;
+
+const BioCon = styled.View`
+  alignItems: flex-end;
+  flex : 1;
 `;
 
 const Bold = styled.Text`
   font-weight: 600;
+  font-size : 20;
 `;
 
-const StatName = styled.Text`
-  margin-top: 5px;
-  font-size: 12px;
-  color: ${styles.darkGreyColor};
-`;
-
-const ProfileMeta = styled.View`
-  margin-top: 10px;
-  padding-horizontal: 20px;
-`;
-
-const Bio = styled.Text``;
-
-const ButtonContainer = styled.View`
-  flex-direction: row;
-  margin-top: 30px;
-  padding-vertical: 5px;
-  border: 1px solid ${styles.lightGreyColor};
-`;
-
-const Button = styled.View`
-  width: ${constants.width / 2};
-  align-items: center;
+const Following = styled.View``;
+const Follower = styled.View``;
+const Bio = styled.Text`
+  font-size : 15;
 `;
 
 const UserProfile = ({
@@ -69,70 +84,51 @@ const UserProfile = ({
   const [isGrid, setIsGrid] = useState(true);
   const toggleGrid = () => setIsGrid(i => !i);
   return (
-    <View>
-      <ProfileHeader>
-        <Image
-          style={{ height: 80, width: 80, borderRadius: 40 }}
-          source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}
-        />
-        <HeaderColumn>
-          {/* <ProfileStats>
-            <Stat>
-              <Bold>{postsCount}</Bold>
-              <StatName>Posts</StatName>
-            </Stat>
-            <Stat>
-              <Bold>{followersCount}</Bold>
-              <StatName>Followers</StatName>
-            </Stat>
-            <Stat>
-              <Bold>{followingCount}</Bold>
-              <StatName>Following</StatName>
-            </Stat>
-          </ProfileStats> */}
-        </HeaderColumn>
-      </ProfileHeader>
-      <ProfileMeta>
-        <Bold>{username}</Bold>
-        <Bio>{bio}</Bio>
-      </ProfileMeta>
-      <ButtonContainer>
-        <TouchableOpacity onPress={toggleGrid}>
-          <Button>
-            <Ionicons
-              color={isGrid ? styles.black : styles.darkGreyColor}
-              size={32}
-              name={Platform.OS === "ios" ? "ios-grid" : "md-grid"}
-            />
-          </Button>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={toggleGrid}>
-          <Button>
-            <Ionicons
-              color={!isGrid ? styles.black : styles.darkGreyColor}
-              size={32}
-              name={Platform.OS === "ios" ? "ios-list" : "md-list"}
-            />
-          </Button>
-        </TouchableOpacity>
-      </ButtonContainer>
-      {isGrid ? (
-        posts && posts.map(p =>
-          <SquarePhoto key={p.id} {...p} />
-        )
-      ) : (
-        <MapViews />
-      )}
-      {/* {posts &&
-        posts.map(p =>
-          isGrid ? (
+    <Container>
+
+      <PostCon>
+        {isGrid ? (
+          posts && posts.map(p =>
             <SquarePhoto key={p.id} {...p} />
-          ) : (
-            <Text>Hello</Text>
-            // <Post key={p.id} {...p} />
           )
-        )} */}
-    </View>
+        ) : (
+          <MapViews />
+        )}
+        <View/>
+      </PostCon>
+
+      <Profile>
+        <Top>
+          <ProfileImage>
+            <Image 
+              style={{height: 80, width: 80, borderRadius:30}}
+              source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}/>
+          </ProfileImage>
+        
+          <NameCon>
+            <NameBox>
+              <Bold>{username}</Bold>
+              <View/>
+              <FollowButton/>
+            </NameBox>
+          </NameCon>
+        </Top>
+
+        <Bottom>
+          <FollowCon>
+            <Following>
+              <Text>Following : 100</Text>
+            </Following>
+            <Follower>
+            <Text>Follower : 100</Text>
+            </Follower>
+          </FollowCon>
+          <BioCon>
+            <Bio>HelloWold!</Bio>
+          </BioCon>
+        </Bottom>
+      </Profile>
+    </Container>
   )
 };
 

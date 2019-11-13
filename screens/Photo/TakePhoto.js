@@ -8,13 +8,13 @@ import constants from "../../constants";
 import Loader from "../../components/Loader";
 import { Platform } from "@unimodules/core";
 import * as MediaLibrary from 'expo-media-library';
-import styles from "../../styles";
+import { mainPink } from "../../components/Color";
 
 
 const View = styled.View`
-flex: 1;
-justify-content: center;
-align-items: center;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Icon = styled.View``;
@@ -23,7 +23,7 @@ const Button = styled.View`
   width: 80;
   height: 80;
   border-radius: 40px;
-  border: 10px solid ${styles.lightGreyColor};
+  border: 10px solid ${mainPink};
 `;
 
 

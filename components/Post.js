@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Image, Platform,TextInput, Alert } from "react-native";
 import styled from "styled-components";
-import { Ionicons, EvilIcons, FontAwesome, AntDesign } from "@expo/vector-icons";
+import { Ionicons, EvilIcons, FontAwesome, AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 import Swiper from "react-native-swiper";
 import { gql } from "apollo-boost";
@@ -9,7 +9,7 @@ import constants from "../constants";
 import { useMutation } from "react-apollo-hooks";
 import styles from "../styles";
 import moment from "moment";
-import { IconColor, StarColor, TINT_COLOR, Grey, PointPink, BG_COLOR } from '../components/Color';
+import { IconColor, StarColor, TINT_COLOR, Grey, PointPink, BG_COLOR, LightGrey, Line, LightPink } from '../components/Color';
 import {Card} from 'native-base'
 import { withNavigation } from "react-navigation";
 import Hr from "hr-native";
@@ -29,7 +29,6 @@ const Touchable = styled.TouchableOpacity``;
 
 const Container =styled.View`
   flex : 1;
-  background-color : ${BG_COLOR};
 `;
 //Container Background color -->선택사항 상의해보고 변경하기
 
@@ -50,8 +49,6 @@ const CommentCount = styled.Text`
 
 const StoreInfo = styled.View`
   align-items: center;
-  margin-bottom:10px;
-  margin-top : 10px;
   padding : 5px;
 `;
 const StoreName = styled.Text`
@@ -60,14 +57,18 @@ const StoreName = styled.Text`
   margin-bottom : 5px;
   color : ${TINT_COLOR};
 `;
+const Store = styled.View`
+  margin-top : 10px;
+  margin-bottom : 10px;
+  align-items: center;
+`;
 const Rating = styled.Text`
   font-size: 12px;
 `;
 
 const CaptionCon = styled.View`
   flex-direction: row;
-  margin-bottom : 15px;
-  padding : 5px;
+  padding : 10px;
 `;
 
 const Bold = styled.Text`
@@ -77,6 +78,7 @@ const Bold = styled.Text`
   margin-right : 5px;
 `;
 const Text = styled.Text`
+  margin-left : 5px;
 `;
 const View = styled.View`
   flex : 1;
@@ -84,6 +86,13 @@ const View = styled.View`
 `;
 
 const LikeComments = styled.View`
+  flex-direction: row;
+  padding : 5px;
+  margin-right : 5px;
+  justifyContent : flex-end;
+  margin-top : 10px;
+`;
+const LikeCommentIcon = styled.View`
   flex-direction: row;
   padding : 5px;
   justifyContent: space-between;
@@ -96,6 +105,10 @@ const IconCon = styled.View`
   flex : 1;
   align-items: center;
   
+`;
+
+const Caption = styled.Text`
+  font-size : 15px;
 `;
 
 const Post = ({
@@ -171,8 +184,8 @@ const Post = ({
               }
             >
               <Image 
-                style={{height: 40, width: 40, borderRadius:20}}
-                source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}/>
+                style={{height: 40, width: 40, borderRadius:15}}
+                source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}/>
             </Touchable>
         
             <UserInfo>
@@ -186,67 +199,83 @@ const Post = ({
               <CommentCount>{time}</CommentCount>
             </UserInfo>
             <View/>
-            <Touchable 
-              onPress={handlePick}
-            >
-            <AntDesign
-              color={isPicked ? PointPink : TINT_COLOR }
-              size={20}
-              name={isPicked ? "pushpin" : "pushpino" }
-            />
+            <Touchable>
+              <IconCon>
+                <MaterialCommunityIcons
+                  color={IconColor}
+                  size={25}
+                  name={"dots-horizontal"}
+                />
+              </IconCon>
             </Touchable>
           </Header>
+
+          <CaptionCon>
+            <Caption>{caption}</Caption>
+          </CaptionCon>
+
           <Swiper 
             showsPagination={false}
-            style={{height: constants.height/2.7}}>
+            style={{height: constants.width/1}}>
               {files.map(file=>(
                 <Image
-                  style={{width: constants.width, height:constants.height/2.7}}
+                  style={{width: constants.width, height:constants.width/1}}
                   key={file.id}
                    source={{uri: file.url}}/>
               ))}
           </Swiper>
           <StoreInfo>
+            <Store>
             <Touchable>
               <StoreName>{storeName}</StoreName>
             </Touchable>
             <Rating>
               <FontAwesome
                 color={StarColor}
-                size={24}
+                size={28}
                 name={"star"}
               />
+              <FontAwesome
+                color={StarColor}
+                size={28}
+                name={"star"}
+              />
+              <FontAwesome
+              color={StarColor}
+              size={28}
+              name={"star"}
+            />
+            <FontAwesome
+                color={StarColor}
+                size={28}
+                name={"star"}
+              />
+              <FontAwesome
+                color={StarColor}
+                size={28}
+                name={"star-o"}
+              />
             </Rating>
+            </Store>
           </StoreInfo>
-          <CaptionCon>
-            <Touchable
-              onPress={() =>
-                navigation.navigate("UserDetail", { id: user.id, username })
-              }>
-              <Bold>{user.username}</Bold>
-            </Touchable>
-            <Text>{caption}</Text>
-          </CaptionCon>
+
           <LikeComments>
             <Text>{likeCount === 1 ? "좋아요 1개" : `좋아요 ${likeCount}개`}</Text>
-            <View/>
             <Touchable onPress={()=>navigation.navigate("CommentDetail",{caption, avatar, username, postId: id, focusing: false})}>
               {comments.length >=1 ? (
                 <Text> {`댓글 ${comments.length}개`}</Text>
                ) : null}
             </Touchable>
+            <Text>{pickCount === 1 ? "콕집기 1개" : `콕집기 ${pickCount}개`}</Text>
           </LikeComments>
 
           <Hr 
-            lineStyle={{
-              backgroundColor : Grey
-            }}
+            lineStyle={{ backgroundColor : Line }}
           />
 
-          <LikeComments>
+          <LikeCommentIcon>
           <Touchable onPress={handleLike}>
           <IconCon>
-            <Text>좋아요</Text>
             <Ionicons
               size={25}
               color={isLiked ? PointPink : IconColor }
@@ -260,29 +289,31 @@ const Post = ({
                     : "md-heart-empty"
               }
             />
+            <Text>좋아요</Text>
           </IconCon>
         </Touchable>
         <Touchable onPress={()=>navigation.navigate("CommentDetail",{caption, avatar, username, postId: id, focusing: true})}>
           <IconCon>
-            <Text>댓글</Text>
             <EvilIcons
               color={IconColor}
               size={30}
               name={Platform.OS === "ios" ? "comment" : "comment"}
             />
+            <Text>댓글</Text>
           </IconCon>
         </Touchable>
-        <Touchable>
+      
+        <Touchable onPress={handlePick}>
           <IconCon>
-            <Text>더보기</Text>
-            <Ionicons
-              color={IconColor}
-              size={25}
-              name={Platform.OS === "ios" ? "ios-search" : "md-search"}
+            <AntDesign
+              color={isPicked ? PointPink : TINT_COLOR }
+              size={20}
+              name={isPicked ? "pushpin" : "pushpino" }
             />
+            <Text>콕집기</Text>
           </IconCon>
         </Touchable>
-          </LikeComments>
+          </LikeCommentIcon>
         </Container>
       </Card>
   );

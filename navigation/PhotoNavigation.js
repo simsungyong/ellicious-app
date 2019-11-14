@@ -69,6 +69,9 @@ export default createStackNavigator({
     screen: MapContainer,
     navigationOptions:{
       title: "방문한 맛집은?",
+      headerBackTitle:null,
+
+      
     }
   }
 },

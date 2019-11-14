@@ -8,7 +8,9 @@ import {Icon} from 'native-base';
 
 
 
-
+const Text = styled.Text`
+  font-size:7px;
+`;
 const View = styled.View`
   background-color : ${BG_COLOR}
   flex: 1;
@@ -17,6 +19,13 @@ const View = styled.View`
 const TextBox = styled.Text`
   margin-left : 20px;
   font-Size : 20px;
+  color: #FE642E;
+  margin-bottom : 5px;
+`;
+
+const storeTextBox = styled.Text`
+  margin-left : 20px;
+  font-Size : 10px;
   color: #FE642E;
   margin-bottom : 5px;
 `;
@@ -55,14 +64,14 @@ const Button = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
 `;
-const Text = styled.Text``;
 
 export default ({navigation}) => {
   const [loading, setIsLoading] = useState(false);
   const photo = navigation.getParam("photo");
-  const handleSelected = () => {
-    navigation.navigate("Map");
-  };
+  const storeName = navigation.getParam("name");
+  const storeAdr = navigation.getParam("formatted_address");
+
+
   return(
     <View>
         <Container>
@@ -86,14 +95,16 @@ export default ({navigation}) => {
             <ImageBox>
               <TextBox>음식점</TextBox>
             </ImageBox>
+            <ImageBox>
+              <Text>{storeName}</Text>
+              <Text>{storeAdr}</Text>
+            </ImageBox>
               <TextCon alignItems="flex-end">
-                <TouchableOpacity onPress={()=>navigation.navigate("Map")}>
                 <Ionicons
                 color={IconColor}
                 size={25}
                 name={Platform.OS === "ios" ? "ios-restaurant" : "md-restaurant"}
               />
-              </TouchableOpacity>
               </TextCon>
           </Container>
           <Container>

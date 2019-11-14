@@ -74,7 +74,7 @@ export default ({navigation}) => {
   };
 
   const handleSelected = () => {
-    navigation.navigate("Upload", { photo: selected });
+    navigation.navigate("Map", { photo: selected });
   };
 
   useEffect(()=>{

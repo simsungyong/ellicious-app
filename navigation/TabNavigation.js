@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, Text, View } from "react-native";
 import { createBottomTabNavigator } from "react-navigation-tabs"
 import { createStackNavigator } from 'react-navigation-stack';
 import Home from "../screens/Tabs/Home";
@@ -8,13 +8,13 @@ import MyPick from "../screens/Tabs/MyPick";
 import Profile from "../screens/Tabs/Profile";
 import Detail from "../screens/Detail";
 import MessagesLink from "../components/MessagesLink";
-import { View } from "react-native";
 import NavIcon from "../components/NavIcons";
 import AlarmsLink from "../components/AlarmsLink";
 import { stackStyles } from "./config";
 import CommentDetail from "../screens/CommentDetail";
 import styles from "../styles";
 import UserDetail from "../screens/UserDetail";
+import { PointPink } from "../components/Color";
 import MapContainer from '../screens/Map/MapContainer';
 
 const stackFactory = (initialRoute, customConfig) =>
@@ -56,8 +56,15 @@ export default createBottomTabNavigator({
   Home: {
     screen: stackFactory(Home, {
       title: "Ellicious",
-      headerRight: <MessagesLink />,
-      headerLeft : <AlarmsLink/>,
+      //headerRight: <MessagesLink />,
+      //headerLeft : <AlarmsLink/>,
+      headerTitle : (
+        <View style = {{ alignItems : "flex-start", flex : 1, padding : 5,  marginLeft : 5}}>
+          <Text style = {{ fontFamily : 'elli', fontSize : 35 , color : PointPink}}>
+            Ellicious
+          </Text>
+        </View>
+      )
     }),
     navigationOptions: {
       tabBarIcon: ({ focused }) => (
@@ -96,7 +103,14 @@ export default createBottomTabNavigator({
   },
   Profile: {
     screen: stackFactory(Profile, {
-      title: "Profile"
+      title: "Profile",
+      headerTitle : (
+        <View style = {{ alignItems : "center", flex : 1}}>
+          <Text style = {{ fontFamily : 'elli', fontSize : 30 , color : PointPink}}>
+            Profile
+          </Text>
+        </View>
+      )
     }),
     navigationOptions: {
         tabBarIcon: ({ focused }) => (
@@ -109,7 +123,14 @@ export default createBottomTabNavigator({
   },
   MyPick: {
     screen: stackFactory(MyPick, {
-      title: "MyPick"
+      title: "MyPick",
+      headerTitle : (
+        <View style = {{ alignItems : "center", flex : 1}}>
+          <Text style = {{ fontFamily : 'elli', fontSize : 35 , color : PointPink}}>
+           MyPick
+          </Text>
+        </View>
+      )
     }),
     navigationOptions: {
         tabBarIcon: ({ focused }) => (

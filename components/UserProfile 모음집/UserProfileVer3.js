@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Image, View, TouchableOpacity, Text } from "react-native";
+import { Image, TouchableOpacity } from "react-native";
 import styled from "styled-components";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, AntDesign, Foundation } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 import styles from "../styles";
 import { Platform } from "@unimodules/core";
@@ -9,44 +9,68 @@ import constants from "../constants";
 import SquarePhoto from "./SquarePhoto";
 import Post from "./Post";
 import MapViews from "./MapViews";
+import FollowButton from '../components/FollowButton'
+import Hr from "hr-native";
+import { LightPink, Grey, IconColor, LightGrey, mainPink } from "./Color";
 
-const ProfileHeader = styled.View`
-  padding: 20px;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+const Container = styled.View`
+  flex : 1;
 `;
-const HeaderColumn = styled.View``;
-
-const ProfileStats = styled.View`
+const PostCon = styled.View`
   flex-direction: row;
+  height : ${constants.height /2}
+`;
+const Profile = styled.View`
+  flex-direction: row;
+  padding : 5px;
+  flex : 1;
+  alignItems: center;
+  justifyContent: center;
+  margin-top: 15px;
+`;
+const ProfileImage = styled.View`
+  alignItems: center;
+  justifyContent: center;
+  margin-left : 5px;
+`;
+const InfoCon = styled.View`
+  justifyContent: center;
+  flex : 1;
+`;
+const NameBox = styled.View`
+  flex-direction: row;
+  margin-bottom : 5px;
+  margin-left : 10px;
+`;
+const View = styled.View`
+  flex : 1;
 `;
 
-const Stat = styled.View`
-  align-items: center;
-  margin-left: 40px;
+const FollowCon = styled.View`
+  alignItems: center;
+  justifyContent: space-around;
+  flex-direction: row;
+  padding : 8px;
 `;
 
 const Bold = styled.Text`
   font-weight: 600;
+  font-size : 20;
+`;
+const Text = styled.Text`
+  color : ${Grey}
 `;
 
-const StatName = styled.Text`
-  margin-top: 5px;
-  font-size: 12px;
-  color: ${styles.darkGreyColor};
+const FollowPick = styled.View`
+  flex-direction: row;
+  alignItems: center;
+  justifyContent: center;
+  margin-left : 10px;
 `;
-
-const ProfileMeta = styled.View`
-  margin-top: 10px;
-  padding-horizontal: 20px;
-`;
-
-const Bio = styled.Text``;
 
 const ButtonContainer = styled.View`
   flex-direction: row;
-  margin-top: 30px;
+  margin-top: 20px;
   padding-vertical: 5px;
   border: 1px solid ${styles.lightGreyColor};
 `;
@@ -69,33 +93,40 @@ const UserProfile = ({
   const [isGrid, setIsGrid] = useState(true);
   const toggleGrid = () => setIsGrid(i => !i);
   return (
-    <View>
-      <ProfileHeader>
-        <Image
-          style={{ height: 80, width: 80, borderRadius: 40 }}
-          source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}
-        />
-        <HeaderColumn>
-          {/* <ProfileStats>
-            <Stat>
-              <Bold>{postsCount}</Bold>
-              <StatName>Posts</StatName>
-            </Stat>
-            <Stat>
-              <Bold>{followersCount}</Bold>
-              <StatName>Followers</StatName>
-            </Stat>
-            <Stat>
-              <Bold>{followingCount}</Bold>
-              <StatName>Following</StatName>
-            </Stat>
-          </ProfileStats> */}
-        </HeaderColumn>
-      </ProfileHeader>
-      <ProfileMeta>
-        <Bold>{username}</Bold>
-        <Bio>{bio}</Bio>
-      </ProfileMeta>
+    <Container>
+      <Profile>
+        <ProfileImage>
+            <Image 
+                style={{height: 90, width: 90, borderRadius:30}}
+                source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}/>
+        </ProfileImage>
+        <InfoCon>
+            <NameBox>
+              <Bold>{username}</Bold>
+              <Foundation 
+                name={"pencil"}
+                color={Grey}
+                size={10}
+              />
+            </NameBox>
+            <Hr
+              lineStyle={{
+                backgroundColor : mainPink
+              }}
+            />
+            <FollowCon>
+                <FollowPick>
+                    <Text>Following </Text>
+                    <Bold>100</Bold>
+                </FollowPick>
+                <FollowPick>
+                    <Text>Follower </Text>
+                    <Bold>100</Bold>
+                </FollowPick>
+            </FollowCon>
+        </InfoCon>
+      </Profile>
+      
       <ButtonContainer>
         <TouchableOpacity onPress={toggleGrid}>
           <Button>
@@ -116,23 +147,19 @@ const UserProfile = ({
           </Button>
         </TouchableOpacity>
       </ButtonContainer>
-      {isGrid ? (
-        posts && posts.map(p =>
-          <SquarePhoto key={p.id} {...p} />
-        )
-      ) : (
-        <MapViews />
-      )}
-      {/* {posts &&
-        posts.map(p =>
-          isGrid ? (
+
+      <PostCon>
+        {isGrid ? (
+          posts && posts.map(p =>
             <SquarePhoto key={p.id} {...p} />
-          ) : (
-            <Text>Hello</Text>
-            // <Post key={p.id} {...p} />
           )
-        )} */}
-    </View>
+        ) : (
+          <MapViews />
+        )}
+        <View/>
+      </PostCon>
+
+    </Container>
   )
 };
 

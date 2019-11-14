@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, TouchableOpacity } from "react-native";
+import { Image, TouchableOpacity, Text } from "react-native";
 import styled from "styled-components";
 import { Ionicons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
@@ -11,7 +11,6 @@ import Post from "./Post";
 import MapViews from "./MapViews";
 import FollowButton from '../components/FollowButton'
 import Hr from "hr-native";
-import { LightPink, Grey } from "./Color";
 
 const Container = styled.View`
   flex : 1;
@@ -40,10 +39,10 @@ const NameCon = styled.View`
 `;
 const NameBox = styled.View`
   flex-direction: row;
+  margin-bottom : 5px;
+  margin-left : 10px;
   alignItems: center;
   justifyContent: center;
-  background-color : ${LightPink}
-  height : 40px;
 `;
 const View = styled.View`
   flex : 1;
@@ -66,12 +65,7 @@ const BioCon = styled.View`
 
 const Bold = styled.Text`
   font-weight: 600;
-  font-size : 15;
-`;
-const BoldName = styled.Text`
-  font-weight: 600;
   font-size : 20;
-  margin-left : 5px;
 `;
 
 const Following = styled.View``;
@@ -79,16 +73,7 @@ const Follower = styled.View``;
 const Bio = styled.Text`
   font-size : 15;
 `;
-const Text = styled.Text`
-  color : ${Grey}
-`;
 
-const FollowPick = styled.View`
-  flex-direction: row;
-  alignItems: center;
-  justifyContent: center;
-  margin-left : 5px;
-`;
 const UserProfile = ({
   id,
   avatar,
@@ -125,22 +110,21 @@ const UserProfile = ({
         
           <NameCon>
             <NameBox>
-              <BoldName>{username}</BoldName>
+              <Bold>{username}</Bold>
               <View/>
+              <FollowButton/>
             </NameBox>
           </NameCon>
         </Top>
 
         <Bottom>
           <FollowCon>
-            <FollowPick>
-              <Text>Following </Text>
-              <Bold>100</Bold>
-            </FollowPick>
-            <FollowPick>
-              <Text>Follower </Text>
-              <Bold>100</Bold>
-            </FollowPick>
+            <Following>
+              <Text>Following : 100</Text>
+            </Following>
+            <Follower>
+            <Text>Follower : 100</Text>
+            </Follower>
           </FollowCon>
           <BioCon>
             <Bio>HelloWold!</Bio>

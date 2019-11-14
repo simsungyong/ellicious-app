@@ -60,9 +60,7 @@ const Text = styled.Text``;
 export default ({navigation}) => {
   const [loading, setIsLoading] = useState(false);
   const photo = navigation.getParam("photo");
-  const handleSelected = () => {
-    navigation.navigate("Map");
-  };
+  
   return(
     <View>
         <Container>

@@ -5,7 +5,8 @@ import {
     FlatList,
     ActivityIndicator,
     AppRegistry,
-    TextBase
+    TextBase,
+    TouchableOpacity
   } from 'react-native';
 import Loader from '../../components/Loader';
 import MapPresenter from './MapPresenter';
@@ -19,7 +20,8 @@ export default class MapContainer extends React.Component {
         loading : false,
         searchTerm:"",
         error:null,
-        searchResults:null
+        searchResults:null,
+        place_id:null
     };
     onSubmitEditing=async()=>{
         const {searchTerm} = this.state;
@@ -51,12 +53,15 @@ export default class MapContainer extends React.Component {
         }
         render(){
             const{loading, searchResults, searchTerm} = this.state;
-            return (<MapPresenter
+            return (
+            <View>
+                <MapPresenter
                 loading={loading}
                 searchResults={searchResults}
                 searchTerm={searchTerm}
                 onSubmitEditing={this.onSubmitEditing}
-                handleSearchUpdate={this.handleSearchUpdate}/>)
+                handleSearchUpdate={this.handleSearchUpdate}/>
+            </View>)
         }
     }
 

@@ -53,27 +53,6 @@ const stackFactory = (initialRoute, customConfig) =>
 
 /* 탭 내비게이션 메뉴 설정 */
 export default createBottomTabNavigator({
-  Profile: {
-    screen: stackFactory(Profile, {
-      title: "Profile",
-      headerTitle : (
-        <View style = {{ alignItems : "center", flex : 1}}>
-          <Text style = {{ fontFamily : 'elli', fontSize : 30 , color : PointPink}}>
-            Profile
-          </Text>
-        </View>
-      )
-    }),
-    navigationOptions: {
-        tabBarIcon: ({ focused }) => (
-            <NavIcon
-              focused={focused}
-              name={Platform.OS === "ios" ? "ios-person" : "md-person"}
-            />
-        )
-    }
-  },
-
   Home: {
     screen: stackFactory(Home, {
       title: "Ellicious",
@@ -122,7 +101,26 @@ export default createBottomTabNavigator({
       )
     }
   },
-  
+  Profile: {
+    screen: stackFactory(Profile, {
+      title: "Profile",
+      headerTitle : (
+        <View style = {{ alignItems : "center", flex : 1}}>
+          <Text style = {{ fontFamily : 'elli', fontSize : 30 , color : PointPink}}>
+            Profile
+          </Text>
+        </View>
+      )
+    }),
+    navigationOptions: {
+        tabBarIcon: ({ focused }) => (
+            <NavIcon
+              focused={focused}
+              name={Platform.OS === "ios" ? "ios-person" : "md-person"}
+            />
+        )
+    }
+  },
   MyPick: {
     screen: stackFactory(MyPick, {
       title: "MyPick",

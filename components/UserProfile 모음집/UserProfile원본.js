@@ -3,12 +3,12 @@ import { Image, View, TouchableOpacity, Text } from "react-native";
 import styled from "styled-components";
 import { Ionicons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
-import styles from "../styles";
+import styles from "../../styles";
 import { Platform } from "@unimodules/core";
-import constants from "../constants";
-import SquarePhoto from "./SquarePhoto";
-import Post from "./Post";
-import MapViews from "./MapViews";
+import constants from "../../constants";
+import SquarePhoto from "../SquarePhoto";
+import Post from "../Post";
+import MapViews from "../MapViews";
 
 const ProfileHeader = styled.View`
   padding: 20px;

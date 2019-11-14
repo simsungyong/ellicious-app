@@ -7,117 +7,57 @@ import {
     AppRegistry,
     TextBase
   } from 'react-native';
-import SearchBar from "../../components/SearchBar";
+import Loader from '../../components/Loader';
 import MapPresenter from './MapPresenter';
+import MapStore from './MapStore';
+import axios from 'axios';
+import {search} from '../../api';
 
 
-  export default class extends React.Component {
-    static navigationOptions = ({ navigation }) => ({
-        headerTitle: (
-          <SearchBar
-            value={navigation.getParam("term", "")}
-            onChange={navigation.getParam("onChange", () => null)}
-            onSubmit={navigation.getParam("onSubmit", () => null)}
-          />
-        )
-      });
-
-      constructor(props) {
-        super(props);
-        const { navigation } = props;
-        this.state = {
-          term: "",
-          shouldFetch: false
-        };
-        navigation.setParams({
-          term: this.state.term,
-          onChange: this.onChange,
-          onSubmit: this.onSubmit
-        });
-    }
-    onChange = text => {
-        const { navigation } = this.props;
-        navigation.setParams({
-          term: text
-        });
-        if(text.length == 0) {
-          this.setState({ term: text, shouldFetch: false });
-        } else this.setState({ term: text, shouldFetch: true });
+export default class MapContainer extends React.Component {
+    state={
+        loading : false,
+        searchTerm:"",
+        error:null,
+        searchResults:null
     };
-    onSubmit = () => {
-      
-    };
-
-    render(){
-        const { term, shouldFetch } = this.state;
-        
-        <MapPresenter term={ term } shouldFetch={ shouldFetch } />
-        return(
-            <View style={{ flex: 1, justifyContent: 'center'}}>
-            </View>
-        )
-    }
-    }
-
-    /*
-    state = {
-        region: {},
-    };
-
-    componentDidMount() {
-        this.getInitialState();
-    }
-
-    getInitialState() {
-        getLocation().then(
-            (data) => {
-                
-                this.setState({
-                    region: {
-                        latitude: data.latitude,
-                        longitude: data.longitude,
-                        latitudeDelta: 0.003,
-                        longitudeDelta: 0.003
-                    }
-                });
+    onSubmitEditing=async()=>{
+        const {searchTerm} = this.state;
+        if(searchTerm !==""){
+            let loading, searchResults, error;
+            this.setState({
+                loading:true
+            });
+            try{
+                ({
+                    data:{results: searchResults}}
+                    = await search.searchStore(searchTerm));
+                } catch{
+                    error:"can't search"
+                }finally{
+                    console.log(searchResults);
+                    this.setState({
+                        loading:false,
+                        searchResults,
+                        error
+                    });
+                }
             }
-        );
+        }
+        handleSearchUpdate = text=>{
+            this.setState({
+                searchTerm:text
+            })
+        }
+        render(){
+            const{loading, searchResults, searchTerm} = this.state;
+            return (<MapPresenter
+                loading={loading}
+                searchResults={searchResults}
+                searchTerm={searchTerm}
+                onSubmitEditing={this.onSubmitEditing}
+                handleSearchUpdate={this.handleSearchUpdate}/>)
+        }
     }
 
-    getCoordsFromName(loc) {
-        this.setState({
-            region: {
-                latitude: loc.lat,
-                longitude: loc.lng,
-                latitudeDelta: 0.003,
-                longitudeDelta: 0.003
-            }
-        });
-    }
-
-    onMapRegionChange(region) {
-       
-        this.setState({ region });
-    }
-
-    render() {
-        return (
-            <View style={{ flex: 1 }}>
-                <View style={{ flex: 1 }}>
-                    <MapInput notifyChange={(loc) => this.getCoordsFromName(loc)}
-                    />
-                </View>
-
-                {
-                    this.state.region['latitude'] ?
-                        <View style={{ flex: 4 }}>
-                            <MyMapView
-                                region={this.state.region}
-                                onRegionChange={(reg) => this.onMapRegionChange(reg)} />
-                        </View> : null}
-            </View>
-        );
-    }
-}
-
-export default MapContainer;*/
+    

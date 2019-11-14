@@ -14,7 +14,7 @@ import { stackStyles } from "./config";
 import CommentDetail from "../screens/CommentDetail";
 import styles from "../styles";
 import UserDetail from "../screens/UserDetail";
-import { PointPink } from "../components/Color";
+import { PointPink, TINT_COLOR } from "../components/Color";
 import MapContainer from '../screens/Map/MapContainer';
 
 const stackFactory = (initialRoute, customConfig) =>
@@ -26,7 +26,14 @@ const stackFactory = (initialRoute, customConfig) =>
     Detail: {
       screen: Detail,
       navigationOptions: {
-      title: "Photo"
+      title: "Photo",
+      headerTitle : (
+        <View style = {{ alignItems : "center", flex : 1, padding : 5,  marginLeft : 5}}>
+          <Text style = {{ fontSize : 20 , color : TINT_COLOR, fontWeight : "bold"}}>
+            Post
+          </Text>
+        </View>
+      )
       }
     },
     
@@ -56,8 +63,8 @@ export default createBottomTabNavigator({
   Home: {
     screen: stackFactory(Home, {
       title: "Ellicious",
-      //headerRight: <MessagesLink />,
-      //headerLeft : <AlarmsLink/>,
+      headerRight: <MessagesLink />,
+      headerLeft : <AlarmsLink/>,
       headerTitle : (
         <View style = {{ alignItems : "flex-start", flex : 1, padding : 5,  marginLeft : 5}}>
           <Text style = {{ fontFamily : 'elli', fontSize : 35 , color : PointPink}}>

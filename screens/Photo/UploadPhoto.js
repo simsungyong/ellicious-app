@@ -73,6 +73,7 @@ export default ({navigation}) => {
               height: 100, 
               width: 100, 
               marginRight: 30,
+              borderRadius:30
               }}
           />
           </ImageBox>

@@ -60,6 +60,19 @@ const stackFactory = (initialRoute, customConfig) =>
 
 /* 탭 내비게이션 메뉴 설정 */
 export default createBottomTabNavigator({
+  Add: {
+    screen: View,
+    navigationOptions: {
+        tabBarOnPress: ({ navigation }) => navigation.navigate("PhotoNavigation"),
+        tabBarIcon: ({ focused }) => (
+          <NavIcon
+            focused={focused}
+            size={28}
+            name={Platform.OS === "ios" ? "ios-add" : "md-add"}
+          />
+      )
+    }
+  },
   Home: {
     screen: stackFactory(Home, {
       title: "Ellicious",
@@ -95,19 +108,7 @@ export default createBottomTabNavigator({
       )
     }
   },
-  Add: {
-    screen: View,
-    navigationOptions: {
-        tabBarOnPress: ({ navigation }) => navigation.navigate("PhotoNavigation"),
-        tabBarIcon: ({ focused }) => (
-          <NavIcon
-            focused={focused}
-            size={28}
-            name={Platform.OS === "ios" ? "ios-add" : "md-add"}
-          />
-      )
-    }
-  },
+  
   Profile: {
     screen: stackFactory(Profile, {
       title: "Profile",

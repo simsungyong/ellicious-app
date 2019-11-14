@@ -6,27 +6,29 @@ import PropTypes from 'prop-types';
 import constants from "../../constants";
 import MapStore from './MapStore';
 import {Text, TouchableOpacity} from 'react-native'; //버튼
+import { LightGrey, Grey } from "../../components/Color";
 
 
 const Container = styled.View`
     flex:1;
 `;
 const Input = styled.TextInput`
-    background-color: rgba(255,255,255,0.4);
-    width: ${constants.width /1.6 };
+    width: ${constants.width /1.1 };
     border-radius: 20px;
     padding : 10px;
     text-align:center;
-
+    background-color : ${LightGrey};
+    border-radius: 10px;
 `;
 
 const InputContainer = styled.View`
-    align-items:center;
-    margin-vertical:20px;
+  align-items:center;
+  padding:7px;
+
 `;
 const SearchResults = styled.ScrollView`
-    margin-top: 20px;
-    `;
+  margin-top: 15px;
+`;
 
 const MapPresenter =({ 
   loading, 
@@ -43,7 +45,8 @@ const MapPresenter =({
           returnKeyType={"search"}
           placeholder={"음식점을 등록해 주세요"}
           onSubmitEditing={onSubmitEditing}
-          autoCorrect={false}/>
+          autoCorrect={false}
+        />
       </InputContainer>
       <SearchResults> 
         {loading ? <Loader/> : (

@@ -1,13 +1,13 @@
 import React,{useState, useEffect} from "react";
 import styled from "styled-components";
-import {Image,ScrollView,TouchableOpacity, TextInput, Platform,StyleSheet} from 'react-native';
-import { TINT_COLOR,IconColor, PointPink, BG_COLOR } from '../../components/Color';
-import { Ionicons} from "@expo/vector-icons";
+import {Text,Image,ScrollView,TouchableOpacity, TextInput, Platform,StyleSheet} from 'react-native';
+import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line } from '../../components/Color';
+import {FontAwesome} from "@expo/vector-icons";
 import Stars from 'react-native-stars';
 import {Icon} from 'native-base';
+import Hr from "hr-native";
 
-
-
+/*
 const Text = styled.Text`
   font-size:7px;
 `;
@@ -55,6 +55,8 @@ const styles = StyleSheet.create({
 const Container = styled.View`
   padding: 20px;
   flex-direction: row;
+  background-color : pink;
+  margin-bottom : 10px;
 `;
 
 const Button = styled.TouchableOpacity`
@@ -63,6 +65,70 @@ const Button = styled.TouchableOpacity`
   border-radius: 4px;
   align-items: center;
   justify-content: center;
+`;
+*/
+
+const Container = styled.View`
+  flex : 1;
+  padding : 10px;
+`;
+
+const Top = styled.View`
+  flex-direction: row;
+  margin-bottom : 10px;
+`;
+
+const ImageBox = styled.View`
+margin-left : 3px;
+`;
+const TextCon = styled.View``;
+
+const SubTitleCon = styled.View`
+  padding : 5px;
+  justifyContent: center;
+`;
+const SubTitle = styled.Text`
+  font-size : 25px
+  margin-right : 10px
+  color : ${PointPink}
+  font-weight : 200
+  ;
+`;
+
+const View = styled.View`
+  flex-direction: row;
+`;
+const Restaurant = styled.View`
+  alignItems: flex-end;
+  justifyContent: center;
+  margin-right : 5px
+  flex : 1
+`;
+const RestaurantCon = styled.View`
+  flex : 1
+  flex-direction: row;
+`;
+const RatingCon = styled.View`
+flex : 1
+flex-direction: row;
+`;
+const Rating = styled.View`
+  alignItems: flex-end;
+  justifyContent: center;
+  flex : 1
+
+`;
+const SubTitleConMI = styled.View`
+  padding : 5px;
+  justifyContent: center;
+`;
+const MoreInfoCon = styled.View`
+  flex : 6;
+`;
+const StoreName = styled.Text`
+  font-weight: 600;
+  margin-bottom : 5px;
+  font-size : 20px;
 `;
 
 export default ({navigation}) => {
@@ -73,60 +139,62 @@ export default ({navigation}) => {
 
 
   return(
-    <View>
-        <Container>
-          <ImageBox>
+    <Container>
+      <Top>
+        <ImageBox>
           <Image
             source={{ uri: photo.uri }}
             style={{ 
               height: 100, 
               width: 100, 
-              marginRight: 30,
-              borderRadius:30
-              }}
+              marginRight: 20,
+              borderRadius:20
+            }}
           />
-          </ImageBox>
-          <TextCon>
-            <TextInput
-              placeholder="글쓰기..."/>
-            </TextCon>
-          </Container>
-          <Container>
-            <ImageBox>
-              <TextBox>음식점</TextBox>
-            </ImageBox>
-            <ImageBox>
-              <Text>{storeName}</Text>
-              <Text>{storeAdr}</Text>
-            </ImageBox>
-              <TextCon alignItems="flex-end">
-                <Ionicons
-                color={IconColor}
-                size={25}
-                name={Platform.OS === "ios" ? "ios-restaurant" : "md-restaurant"}
-              />
-              </TextCon>
-          </Container>
-          <Container>
-            <ImageBox>
-              <TextBox>별점</TextBox>
-            </ImageBox>
-            <TextCon alignItems="flex-end">
-                <Stars
-                    default={4}
-                    count={5}
-                    half={true}
-                    starSize={5}
-                    fullStar={<Icon name={'star'} style={[styles.myStarStyle]}/>}
-                    emptyStar={<Icon name={'star-outline'} style={[styles.myStarStyle, styles.myEmptyStarStyle]}/>}
-                    halfStar={<Icon name={'star-half'} style={[styles.myStarStyle]}/>}
-                  />
-            </TextCon>
-          </Container>
-          <Container>
-          <TextBox>More Information</TextBox>
-          </Container>
-          
-    </View>
+        </ImageBox>
+
+        <TextCon>
+          <TextInput
+            placeholder="글쓰기..."/>
+        </TextCon>
+      </Top> 
+
+      <Hr lineStyle={{ backgroundColor : Line}} />
+
+      <RestaurantCon>
+        <SubTitleCon>
+          <SubTitle> 음식점 </SubTitle>
+        </SubTitleCon>
+        <Restaurant>
+          <StoreName>{storeName}</StoreName>
+        </Restaurant>
+      </RestaurantCon>
+
+      <Hr lineStyle={{ backgroundColor : Line}} />
+
+      <RatingCon>
+        <SubTitleCon>
+          <SubTitle> 별 점 </SubTitle>
+        </SubTitleCon>
+        <Rating>
+          <FontAwesome
+            color={StarColor}
+            size={28}
+            name={"star"}
+          />
+        </Rating> 
+      </RatingCon>   
+
+      <Hr lineStyle={{ backgroundColor : Line}} />
+
+      <MoreInfoCon>
+        <SubTitleConMI>
+          <SubTitle> More Information </SubTitle>
+        </SubTitleConMI>
+        <TextInput
+            placeholder="@직원 친절도"
+            style = {marginLeft=30} />
+      </MoreInfoCon>
+    </Container>
   );
 }

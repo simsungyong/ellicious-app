@@ -70,8 +70,6 @@ export default createStackNavigator({
     navigationOptions:{
       title: "방문한 맛집은?",
       headerBackTitle:null,
-
-      
     }
   }
 },

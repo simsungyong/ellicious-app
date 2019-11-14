@@ -5,13 +5,18 @@ import {TouchableWithoutFeedback} from 'react-native'; //버튼
 import {withNavigation} from 'react-navigation'; 
 import { ScrollView, RefreshControl, Platform, View, Text,TouchableOpacity, TextBase} from "react-native";
 
-
 const HContainer = styled.View`
     margin-bottom:20px;
     margin-horizontal:15px;
+`;
 
+const Bold = styled.Text`
+  font-weight: 600;
+  margin-bottom : 5px;
+  font-size : 20px;
+  margin-right : 5px;
+`;
 
-    `;
 const MapStore=({
     navigation,
     place_id,
@@ -21,7 +26,7 @@ const MapStore=({
 })=>(
     <TouchableOpacity onPress={()=>navigation.navigate("Upload",{photo,name,formatted_address})}>
     <HContainer>
-        <Text>{name}</Text>
+        <Bold>{name}</Bold>
         <Text>{formatted_address}</Text>
     </HContainer>
     </TouchableOpacity>

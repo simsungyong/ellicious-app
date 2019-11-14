@@ -15,6 +15,7 @@ import CommentDetail from "../screens/CommentDetail";
 import styles from "../styles";
 import UserDetail from "../screens/UserDetail";
 import { PointPink } from "../components/Color";
+import MapContainer from '../screens/Map/MapContainer';
 
 const stackFactory = (initialRoute, customConfig) =>
   createStackNavigator({
@@ -28,6 +29,7 @@ const stackFactory = (initialRoute, customConfig) =>
       title: "Photo"
       }
     },
+    
     CommentDetail: {
       screen: CommentDetail,
       navigationOptions: ({ navigation }) => ({

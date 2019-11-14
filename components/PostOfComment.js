@@ -241,8 +241,8 @@ PostOfComment.propTypes = {
     ),
     headComment: PropTypes.shape({
       id: PropTypes.string.isRequired,
-        text: PropTypes.string.isRequired,
-        user: PropTypes.shape({
+      text: PropTypes.string.isRequired,
+      user: PropTypes.shape({
           id: PropTypes.string.isRequired,
           username: PropTypes.string.isRequired,
           avatar: PropTypes.string.isRequired

@@ -15,46 +15,45 @@ export const MyProfile = gql`
         username
         firstName
         isSelf
-        isFollowing
         bio
-        posts {
+        following{
           id
-          caption
-          rating
-          storeLocation
-          storeName
-          user {
-            id
-            avatar
-            username
+        }
+        followers{
+          id
+        }
+      }
+      posts {
+        id
+        caption
+        rating
+        storeLocation
+        storeName
+        user {
+          id
           }
-          files {
-            id
-            url
+        files {
+          id
+          url
           }
-          likeCount
-          pickCount
-          comments {
-            id
-            text
-            user {
-              id
-              username
-              avatar
-            }
-          }
-          createdAt
+        likeCount
+        pickCount
+        }
+      categories{
+        id
+        }
+      picks{
+        id
         }
       }
     }
-  }
 `;
 
 export default ({ navigation }) => {
   const { loading, data } = useQuery(MyProfile);
   return (
     <ScrollView>
-      {loading ? <Loader /> : data && data.myProfile && <UserProfile {...data.myProfile.user} />}
+      {loading ? <Loader /> : data && data.myProfile && <UserProfile {...data.myProfile} />}
     </ScrollView>
   );
 };

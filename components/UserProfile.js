@@ -93,12 +93,17 @@ const UserProfile = ({
   id,
   avatar,
   username,
+  categories,
+  picks,
   firstName,
   isSelf,
   isFollowing,
+  followers,
+  following,
   bio,
   posts
 }) => {
+  
   const [isGrid, setIsGrid] = useState(true);
   const toggleGrid = () => setIsGrid(i => !i);
   return (
@@ -161,47 +166,41 @@ UserProfile.propTypes = {
   isFollowing: PropTypes.bool,
   isSelf: PropTypes.bool,
   bio: PropTypes.string,
-  // following: PropTypes.string.isRequired,
-  // followers: PropTypes.string.isRequired,
+  following: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      username: PropTypes.string
+    })
+  ),
+  followers: PropTypes.arrayOf(
+    PropTypes.shape({
+      id:PropTypes.string,
+      username: PropTypes.string
+    })
+  ),
   posts: PropTypes.arrayOf(
     PropTypes.shape({
         id: PropTypes.string.isRequired,
-        user: PropTypes.shape({
-          id: PropTypes.string.isRequired,
-          avatar: PropTypes.string,
-          username: PropTypes.string.isRequired
-        }).isRequired,
         files: PropTypes.arrayOf(
           PropTypes.shape({
             id: PropTypes.string.isRequired,
             url: PropTypes.string.isRequired
           })
         ).isRequired,
-        isLiked: PropTypes.bool,
-        isPicked: PropTypes.bool,
-        rating: PropTypes.number.isRequired,
-        comments: PropTypes.arrayOf(
-          PropTypes.shape({
-            id: PropTypes.string.isRequired,
-            text: PropTypes.string.isRequired,
-            user: PropTypes.shape({
-              id: PropTypes.string.isRequired,
-              username: PropTypes.string.isRequired
-            }).isRequired
-          })
-        ).isRequired,
-        caption: PropTypes.string.isRequired,
-        storeLocation: PropTypes.string,
-        storeName: PropTypes.string,
-        likeCount: PropTypes.number,
-        pickCount: PropTypes.number,
-        createdAt: PropTypes.string.isRequired,
-        // category: PropTypes.shape({
-        //     id: PropTypes.string.isRequired,
-        //     categoryName: PropTypes.string.isRequired
-        // })
     })
+  ),
+  categories: PropTypes.arrayOf(
+    PropTypes.shape({
+    id: PropTypes.string,
+    categoryName: PropTypes.string,
+  })
+  ),
+  picks: PropTypes.arrayOf(
+    PropTypes.shape({
+    id: PropTypes.string
+  })
   )
+
 };
 
 export default UserProfile;

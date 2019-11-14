@@ -11,7 +11,7 @@ import Post from "./Post";
 import MapViews from "./MapViews";
 import FollowButton from '../components/FollowButton'
 import Hr from "hr-native";
-import { LightPink, Grey } from "./Color";
+import { LightPink, Grey, TINT_COLOR } from "./Color";
 
 const Container = styled.View`
   flex : 1;
@@ -72,6 +72,7 @@ const BoldName = styled.Text`
   font-weight: 600;
   font-size : 20;
   margin-left : 5px;
+  color : ${TINT_COLOR}
 `;
 
 const Following = styled.View``;

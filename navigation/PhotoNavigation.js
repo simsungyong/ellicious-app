@@ -1,3 +1,5 @@
+import React from 'react';
+import {Text, View} from 'react-native';
 import { createStackNavigator } from "react-navigation-stack";
 import { createMaterialTopTabNavigator} from "react-navigation-tabs"
 import SelectPhoto from "../screens/Photo/SelectPhoto";
@@ -46,7 +48,14 @@ export default createStackNavigator({
     screen: PhotoTabs,
     navigationOptions:{
       title:"사 진",
-      headerBackTitle: "뒤로"
+      headerBackTitle: "뒤로",
+      headerTitle : (
+        <View style = {{ alignItems : "center", flex : 1, padding : 5,  marginLeft : 5}}>
+          <Text style = {{ fontSize : 25 , color : PointPink, fontWeight : "bold"}}>
+            사 진
+          </Text>
+        </View>
+      )
     }
   },
   Upload: {
@@ -61,8 +70,6 @@ export default createStackNavigator({
     navigationOptions:{
       title: "방문한 맛집은?",
       headerBackTitle:null,
-
-      
     }
   }
 },

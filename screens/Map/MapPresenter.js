@@ -5,7 +5,7 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import constants from "../../constants";
 import MapStore from './MapStore';
-import {Text} from 'react-native'; //버튼
+import {Text, TouchableOpacity} from 'react-native'; //버튼
 
 
 const Container = styled.View`
@@ -32,6 +32,7 @@ const MapPresenter =({
   loading, 
   searchTerm, 
   searchResults,
+  photo,
   onSubmitEditing,  
   handleSearchUpdate })=>(
     <Container>
@@ -47,16 +48,18 @@ const MapPresenter =({
       <SearchResults> 
         {loading ? <Loader/> : (
           <>
+          <TouchableOpacity>
           {searchResults ? (
               searchResults && searchResults.map(store=>(
                 <MapStore
+                  photo={photo}
                   key={store.place_id}
                   place_id={store.place_id}
                   name={store.name}
                   formatted_address={store.formatted_address}/>
-
               ))
             ) : null}
+            </TouchableOpacity>
           </>
         )}
       </SearchResults>

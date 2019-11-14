@@ -47,7 +47,7 @@ export default ({ navigation }) => {
       quality:1
     });
     const asset = await MediaLibrary.createAssetAsync(uri);
-    navigation.navigate("Upload", {photo: asset});
+    navigation.navigate("Map", {photo: asset});
     console.log(asset);
   }catch(e){
     console.log(e);

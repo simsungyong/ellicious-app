@@ -13,15 +13,18 @@ const HContainer = styled.View`
 
     `;
 const MapStore=({
+    navigation,
     place_id,
     name,
     formatted_address,
-    
+    photo
 })=>(
+    <TouchableOpacity onPress={()=>navigation.navigate("Upload",{photo,name,formatted_address})}>
     <HContainer>
         <Text>{name}</Text>
         <Text>{formatted_address}</Text>
     </HContainer>
+    </TouchableOpacity>
 );
 
 
@@ -34,4 +37,4 @@ MapStore.propTypes={
         lng: PropTypes.number.isRequired
     })*/
 }
-export default MapStore;
+export default withNavigation(MapStore);

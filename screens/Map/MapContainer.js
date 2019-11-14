@@ -16,13 +16,28 @@ import {search} from '../../api';
 
 
 export default class MapContainer extends React.Component {
-    state={
+    static navigationOptions = ({navigation})=>{
+        return{//navigation options은 항상 props들ㅇ이 같이 옴!
+            photo: navigation.getParam('photo')
+        };
+    };
+    constructor(props){
+        super(props);
+        const {
+            navigation:{
+                state: {
+                    params:{
+                        photo
+                    }}}} = props;
+    
+    this.state={
         loading : false,
         searchTerm:"",
         error:null,
         searchResults:null,
-        place_id:null
+        photo
     };
+}
     onSubmitEditing=async()=>{
         const {searchTerm} = this.state;
         if(searchTerm !==""){
@@ -52,16 +67,17 @@ export default class MapContainer extends React.Component {
             })
         }
         render(){
-            const{loading, searchResults, searchTerm} = this.state;
+            const{loading, searchResults, searchTerm, photo} = this.state;
             return (
-            <View>
+            
                 <MapPresenter
+                photo={photo}
                 loading={loading}
                 searchResults={searchResults}
                 searchTerm={searchTerm}
                 onSubmitEditing={this.onSubmitEditing}
                 handleSearchUpdate={this.handleSearchUpdate}/>
-            </View>)
+            );
         }
     }
 

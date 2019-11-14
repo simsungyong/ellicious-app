@@ -7,24 +7,21 @@ import { useQuery } from "react-apollo-hooks";
 import Loader from "../../../components/Loader";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "../../../styles";
-
-import SquarePhoto from "../../../components/SquarePhoto";
+import MessageRooms from "../../../constants/MessageRooms";
 
 
 const SEARCH = gql`
-  query search($term: String!) {
-    searchPost(term: $term) {
+  {
+    seeRooms {
       id
-      files {
-        id
-        url
+      participants {
+        username
       }
-      likeCount
     }
   }
 `;
 
-const SearchPresenter = ({ term, shouldFetch }) => {
+const MessagePresenter = ({ term, shouldFetch }) => {
   const [refreshing, setRefreshing] = useState(false);
   const { data, loading, refetch } = useQuery(SEARCH, {
     variables: {
@@ -42,28 +39,28 @@ const SearchPresenter = ({ term, shouldFetch }) => {
       setRefreshing(false);
     }
   };
-  
+  console.log(data)
   return (
-      <ScrollView refreshControl={
-          <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-        }
-      >
-        {loading ? (
-          <Loader />
-        ) : (
-          data &&
-          data.searchPost &&
-          data.searchPost.map(post => 
-            <SquarePhoto key={post.id} {...post} />
-          )
-        )}
-      </ScrollView>
-    );
+    <ScrollView refreshControl={
+        <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+      }
+    >
+      {loading ? (
+        <Loader />
+      ) : (
+        // data &&
+        // data.searchUser &&
+        // data.searchUser.map(user => 
+        //   <SearchAccountBox key={user.id} {...user} />
+        <Text>hello world</Text>
+      )}
+    </ScrollView>
+  );
 };
 
-SearchPresenter.propTypes = {
+MessagePresenter.propTypes = {
   term: PropTypes.string.isRequired,
   shouldFetch: PropTypes.bool.isRequired
 };
 
-export default SearchPresenter;
+export default MessagePresenter;

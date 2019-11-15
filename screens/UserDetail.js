@@ -9,62 +9,23 @@ import UserProfile from "../components/UserProfile";
 const GET_USER = gql`
   query seeUser($id: String!){
     seeUser(id: $id) {
-      user {
-        id
-        avatar
-        username
-        firstName
-        lastName
-        fullName
-        isFollowing
-        isSelf
-        bio
-        posts {
-          id
-          caption
-          rating
-          storeLocation
-          storeName
-          user {
-            id
-            avatar
-            username
-          }
-          files {
-            id
-            url
-          }
-          likeCount
-          isLiked
-          isPicked
-          pickCount
-          comments {
-            id
-            text
-            user {
-              id
-              username
-              avatar
-            }
-          }
-          createdAt
-        }
+      ...UserParts
       }
     }
-  }
+    ${USER_FRAGMENT}
 `;
 
 export default ({ navigation }) => {
   const { loading, data } = useQuery(GET_USER, {
     variables: { id: navigation.getParam("id") }
   });
-
+  console.log(data);
   return (
     <ScrollView>
       {loading ? (
         <Loader />
       ) : (
-        data && data.seeUser && <UserProfile {...data.seeUser.user} />
+        data && data.seeUser && <UserProfile {...data.seeUser} />
       )}
     </ScrollView>
   );

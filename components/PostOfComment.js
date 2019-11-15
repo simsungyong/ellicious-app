@@ -131,6 +131,8 @@ const PostOfComment = ({
         const {loading, data} = useQuery(GET_COMMENTS, {
          variables: { postId: post.id, headComment: id}
         });
+        console.log(data);
+
         const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
         const navi = ()=>{
           setbottomModalAndTitle(false);

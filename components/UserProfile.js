@@ -32,6 +32,26 @@ const ProfileImage = styled.View`
   
 `;
 
+
+
+const ProfileMeta = styled.View`
+  margin-top: 10px;
+  padding-horizontal: 20px;
+`;
+
+
+const ButtonContainer = styled.View`
+  flex-direction: row;
+  margin-top: 30px;
+  padding-vertical: 5px;
+  border: 1px solid ${styles.lightGreyColor};
+`;
+
+const Button = styled.View`
+  width: ${constants.width / 2};
+  align-items: center;
+`;
+
 const NameCon = styled.View`
   flex : 1;
   alignItems: center;
@@ -80,6 +100,7 @@ const Follower = styled.View``;
 const Bio = styled.Text`
   font-size : 15;
 `;
+
 const Text = styled.Text`
   color : ${Grey}
 `;
@@ -94,33 +115,53 @@ const UserProfile = ({
   id,
   avatar,
   username,
+  fullName,
   categories,
-  picks,
   firstName,
   isSelf,
-  isFollowing,
+  followersCount,
+  followingCount,
+  categoryCount,
   followers,
   following,
   bio,
   posts
 }) => {
-  
   const [isGrid, setIsGrid] = useState(true);
   const toggleGrid = () => setIsGrid(i => !i);
+  console.log(posts);
+
+
   return (
     <Container>
 
-      <PostCon>
-        {isGrid ? (
-          posts && posts.map(p =>
-            <SquarePhoto key={p.id} {...p} />
-          )
-        ) : (
-          <MapViews />
-        )}
-        <View/>
-      </PostCon>
-
+    <ButtonContainer>
+        <TouchableOpacity onPress={toggleGrid}>
+          <Button>
+            <Ionicons
+              color={isGrid ? styles.black : styles.darkGreyColor}
+              size={32}
+              name={Platform.OS === "ios" ? "ios-grid" : "md-grid"}
+            />
+          </Button>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={toggleGrid}>
+          <Button>
+            <Ionicons
+              color={!isGrid ? styles.black : styles.darkGreyColor}
+              size={32}
+              name={Platform.OS === "ios" ? "ios-list" : "md-list"}
+            />
+          </Button>
+        </TouchableOpacity>
+      </ButtonContainer>
+      {isGrid ? (
+        posts && posts.map(p =>
+          <SquarePhoto key={p.id} {...p} />
+        )
+      ) : (
+        <MapViews />
+      )}
       <Profile>
         <Top>
           <ProfileImage>
@@ -137,19 +178,20 @@ const UserProfile = ({
           </NameCon>
         </Top>
 
+
         <Bottom>
           <FollowCon>
             <FollowPick>
               <Text>Following </Text>
-              <Bold>100</Bold>
+              <Bold>{followingCount}</Bold>
             </FollowPick>
             <FollowPick>
               <Text>Follower </Text>
-              <Bold>100</Bold>
+              <Bold>{followersCount}</Bold>
             </FollowPick>
           </FollowCon>
           <BioCon>
-            <Bio>HelloWold!</Bio>
+            <Bio>{bio}</Bio>
           </BioCon>
         </Bottom>
       </Profile>
@@ -158,49 +200,51 @@ const UserProfile = ({
 };
 
 UserProfile.propTypes = {
-  id: PropTypes.string,
-  avatar: PropTypes.string,
-  username: PropTypes.string,
-  firstName: PropTypes.string,
-  lastName: PropTypes.string,
-  fullName: PropTypes.string,
-  isFollowing: PropTypes.bool,
-  isSelf: PropTypes.bool,
-  bio: PropTypes.string,
-  following: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-      username: PropTypes.string
-    })
-  ),
-  followers: PropTypes.arrayOf(
-    PropTypes.shape({
-      id:PropTypes.string,
-      username: PropTypes.string
-    })
-  ),
-  posts: PropTypes.arrayOf(
-    PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        files: PropTypes.arrayOf(
-          PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      avatar: PropTypes.string,
+      username: PropTypes.string.isRequired,
+      firstName: PropTypes.string,
+      lastName: PropTypes.string,
+      fullName: PropTypes.string.isRequired,
+      isSelf: PropTypes.bool.isRequired,
+      bio: PropTypes.string,
+      followersCount: PropTypes.number.isRequired,
+      followingCount: PropTypes.number.isRequired,
+      categoryCount: PropTypes.number.isRequired,
+      followers:PropTypes.arrayOf(
+        PropTypes.shape({
+          username:PropTypes.string.isRequired,
+          avatar:PropTypes.string,
+          isFollowing:PropTypes.bool.isRequired,
+        })
+      ),
+      following:PropTypes.arrayOf(
+        PropTypes.shape({
+          username:PropTypes.string.isRequired,
+          avatar:PropTypes.string,
+          isFollowing:PropTypes.bool.isRequired,
+        })
+      ),
+      posts: PropTypes.arrayOf(
+        PropTypes.shape({
             id: PropTypes.string.isRequired,
-            url: PropTypes.string.isRequired
-          })
-        ).isRequired,
+            likeCount: PropTypes.number.isRequired,
+            pickCount: PropTypes.number.isRequired,
+            commentCount: PropTypes.number.isRequired,
+            files: PropTypes.arrayOf(
+              PropTypes.shape({
+                id: PropTypes.string.isRequired,
+                url: PropTypes.string.isRequired
+              })
+            ).isRequired
+        })
+      ),
+    category: PropTypes.arrayOf(
+      PropTypes.shape({
+      id: PropTypes.string,
+      categoryName: PropTypes.string,
     })
-  ),
-  categories: PropTypes.arrayOf(
-    PropTypes.shape({
-    id: PropTypes.string,
-    categoryName: PropTypes.string,
-  })
-  ),
-  picks: PropTypes.arrayOf(
-    PropTypes.shape({
-    id: PropTypes.string
-  })
-  )
+    )
 
 };
 

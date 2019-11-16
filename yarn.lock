@@ -5149,11 +5149,6 @@ react-native-safe-area-view@^0.14.1, react-native-safe-area-view@^0.14.6:
   dependencies:
     debounce "^1.2.0"
 
-react-native-select-two@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/react-native-select-two/-/react-native-select-two-1.0.6.tgz#a96c9b1d2586597978a1536e06a1c0837d3783df"
-  integrity sha512-4VJ+2pzpVAJFOOTGBFsVTyGf3yMd7Ur43MziJZi+JGKJ03dew3Id02CYvbGtvxUZIECUSy0t0hvLTDl7vtSDwA==
-
 react-native-stars@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/react-native-stars/-/react-native-stars-1.1.6.tgz#b9e8f5dade7b90488acc39c9f07074551a31d652"

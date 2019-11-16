@@ -1,23 +1,26 @@
 import React,{useState, useEffect} from "react";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
-import {Text,Image,ScrollView,Modal,TouchableOpacity, TextInput,Picker, Platform,StyleSheet, TouchableHighlight,Button} from 'react-native';
+import {Text,Image,ScrollView,Modal,TouchableOpacity, TextInput,Picker, Platform,StyleSheet, TouchableHighlight} from 'react-native';
 import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line } from '../../components/Color';
 import {FontAwesome} from "@expo/vector-icons";
 import Stars from 'react-native-stars';
 import {Icon} from 'native-base';
 import Hr from "hr-native";
-import Select2 from 'react-native-select-two';
 import { useQuery } from "react-apollo-hooks";
 import { CATEGORY_FRAGMENT } from "../../fragments";
 import Loader from "../../components/Loader";
 
-
-const mockData = [
-  { id: 1, name: 'React Native Developer' },
-  { id: 2, name: 'Android Developer' },
-  { id: 3, name: 'iOS Developer' }
-];
+const UploadCon = styled.View`
+  alignItems: center;
+  justifyContent: center;
+`;
+const Button = styled.View`
+  width: 80;
+  height: 80;
+  border-radius: 40px;
+  border: 10px solid ${mainPink};
+`;
 
 const Container = styled.View`
   flex : 1;
@@ -93,7 +96,7 @@ const StoreAddress = styled.Text`
 
 const styles=StyleSheet.create({
   myStarStyle: {
-    color: 'yellow',
+    
     backgroundColor: 'transparent',
     textShadowColor: 'black',
     textShadowOffset: {width: 1, height: 1},
@@ -101,7 +104,6 @@ const styles=StyleSheet.create({
     //starSize:50
   },
   myEmptyStarStyle: {
-    color: 'white',
     //starSize:50
   }
 });
@@ -120,6 +122,7 @@ export default ({navigation}) => {
   const [starValue, setStarValue] = useState(2.5);
   const [isModalPick, setModalPick] = useState(false);
   const [selectCate, setSelectCate] = useState();
+  const [pickedName, setPickedName] = useState();
   const photo = navigation.getParam("photo");
   const storeName = navigation.getParam("name");
   const storeAdr = navigation.getParam("formatted_address");
@@ -128,10 +131,16 @@ export default ({navigation}) => {
     setModalPick(!p)
   }
 
-  const pickValue=(newValue)=>{
+  const nameValue = (newValue)=>{
+    setPickedName(newValue)
+  }
+  const pickValue=(newValue,categoryName)=>{
     setSelectCate(newValue);
+    nameValue(categoryName);
     togglePicker(isModalPick);
   }
+
+  
 
  
   
@@ -182,10 +191,10 @@ export default ({navigation}) => {
             spacing={8}
             count={5}
             //starSize={50}
-            fullStar = {<FontAwesome name={'star'} style={[styles.myStarStyle]}/>}
+            fullStar = {<FontAwesome name={'star'} size={35 }style={[styles.myStarStyle]}/>}
             //fullStar = {<Image source={require('../../assets/star.png')} style={{height:50,width:50}}/>}
-            emptyStar={<FontAwesome name={'star-o'} style={[styles.myStarStyle, styles.myEmptyStarStyle]}/>}
-            halfStar={<FontAwesome name={'star-half-full'} style={[styles.myStarStyle]}/>}/>
+            emptyStar={<FontAwesome name={'star-o'} size={35} style={[styles.myStarStyle, styles.myEmptyStarStyle]}/>}
+            halfStar={<FontAwesome name={'star-half-full'} size={35} style={[styles.myStarStyle]}/>}/>
         </Rating> 
       </RatingCon>   
       <Hr lineStyle={{ backgroundColor : Line}} />
@@ -196,7 +205,7 @@ export default ({navigation}) => {
         </SubTitleCon>
         <Restaurant>
           <TouchableOpacity onPress={()=>togglePicker(isModalPick)}>
-          <StoreName>{selectCate ? <Text>{selectCate}</Text> : 'select'}</StoreName>
+          <StoreName>{selectCate ? <Text>{pickedName}</Text> : 'select'}</StoreName>
           </TouchableOpacity>
         </Restaurant>
       </RatingCon>
@@ -210,6 +219,9 @@ export default ({navigation}) => {
             placeholder="@직원 친절도"
             style = {marginLeft=30} />
       </MoreInfoCon>
+      <UploadCon>
+        <Button/>
+      </UploadCon>
       
       
       <Modal visible={isModalPick} transparent={true} animationType="slide" onRequestClose={()=>console.log(cancle)}>
@@ -222,7 +234,7 @@ export default ({navigation}) => {
           position: 'absolute'}}>
             <Text style={{fontWeight:'bold', marginBottom:10}}>카테고리</Text>
             {data && data.seeCategory.map((value, index)=>{
-              return <TouchableHighlight key={index } onPress={()=>pickValue(value.id)} style={{paddingTop:4, paddingBottom:4}}>
+              return <TouchableHighlight key={index } onPress={()=>pickValue(value.id, value.categoryName)} style={{paddingTop:4, paddingBottom:4}}>
                 <Text>{value.categoryName}</Text>
               </TouchableHighlight>
             })}

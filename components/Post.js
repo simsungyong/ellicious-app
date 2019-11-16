@@ -13,6 +13,8 @@ import { IconColor, StarColor, TINT_COLOR, Grey, PointPink, BG_COLOR, LightGrey,
 import {Card} from 'native-base'
 import { withNavigation } from "react-navigation";
 import Hr from "hr-native";
+import Stars from 'react-native-stars';
+
 
 export const TOGGLE_LIKE = gql`
   mutation toggelLike($postId: String!) {
@@ -63,7 +65,6 @@ const Store = styled.View`
   align-items: center;
 `;
 const Rating = styled.Text`
-  font-size: 12px;
 `;
 
 const CaptionCon = styled.View`
@@ -245,7 +246,7 @@ const Post = ({
               size={28}
               name={"star"}
             />
-            <FontAwesome
+              <FontAwesome
                 color={StarColor}
                 size={28}
                 name={"star"}

@@ -29,9 +29,12 @@ const Top = styled.View`
   flex-direction: row;
 `;
 const ProfileImage = styled.View`
-  
+    
 `;
 
+const ImageCon = styled.View`
+flex-direction: row;
+`;
 
 
 const ProfileMeta = styled.View`
@@ -121,6 +124,7 @@ const UserProfile = ({
   isSelf,
   followersCount,
   followingCount,
+  postsCount,
   categoryCount,
   followers,
   following,
@@ -129,12 +133,10 @@ const UserProfile = ({
 }) => {
   const [isGrid, setIsGrid] = useState(true);
   const toggleGrid = () => setIsGrid(i => !i);
-  console.log(posts);
 
 
   return (
     <Container>
-
     <ButtonContainer>
         <TouchableOpacity onPress={toggleGrid}>
           <Button>
@@ -154,7 +156,9 @@ const UserProfile = ({
             />
           </Button>
         </TouchableOpacity>
+      
       </ButtonContainer>
+      <ImageCon>
       {isGrid ? (
         posts && posts.map(p =>
           <SquarePhoto key={p.id} {...p} />
@@ -162,6 +166,7 @@ const UserProfile = ({
       ) : (
         <MapViews />
       )}
+      </ImageCon>
       <Profile>
         <Top>
           <ProfileImage>
@@ -182,12 +187,21 @@ const UserProfile = ({
         <Bottom>
           <FollowCon>
             <FollowPick>
+              <Text>Full Name </Text>
+              <Bold>{fullName}</Bold>
+            </FollowPick>
+              
+            <FollowPick>
               <Text>Following </Text>
               <Bold>{followingCount}</Bold>
             </FollowPick>
             <FollowPick>
               <Text>Follower </Text>
               <Bold>{followersCount}</Bold>
+            </FollowPick>
+            <FollowPick>
+              <Text>게시물 </Text>
+              <Bold>{postsCount}</Bold>
             </FollowPick>
           </FollowCon>
           <BioCon>
@@ -208,6 +222,7 @@ UserProfile.propTypes = {
       fullName: PropTypes.string.isRequired,
       isSelf: PropTypes.bool.isRequired,
       bio: PropTypes.string,
+      postsCount: PropTypes.number.isRequired,
       followersCount: PropTypes.number.isRequired,
       followingCount: PropTypes.number.isRequired,
       categoryCount: PropTypes.number.isRequired,

@@ -36,7 +36,6 @@ export default function App() {
         ...Ionicons.font
       });
       await Font.loadAsync({'elli':require('./assets/fonts/Playball.ttf'), 'korElli' :require('./assets/fonts/TmonMonsori.ttf')}); 
-
       const cache = new InMemoryCache();
       const httpLink = new HttpLink({
         uri: 'http://3.134.176.171:4000/'

@@ -52,7 +52,6 @@ export default class MapContainer extends React.Component {
                 } catch{
                     error:"can't search"
                 }finally{
-                    console.log(searchResults);
                     this.setState({
                         loading:false,
                         searchResults,

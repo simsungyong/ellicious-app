@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, View, Button } from "react-native";
+import { ScrollView, View, Button, Text } from "react-native";
 import { gql } from "apollo-boost";
 // import { USER_FRAGMENT } from "../../fragments";
 import Loader from "../../components/Loader";
@@ -13,6 +13,8 @@ export const Messages = gql`
       participants {
         id
         username
+        firstName
+        avatar
       }
     }
   }
@@ -20,9 +22,8 @@ export const Messages = gql`
 
 export default ({ navigation }) => {
   const { loading, data } = useQuery(Messages);
-  console.log(data)
   if(!loading) {
-    console.log(data.seeRooms[0])
+    console.log(data.seeRooms)
   }
   return (
     <View>

@@ -39,8 +39,6 @@ query search($term: String!) {
   searchUser(term: $term) {
     id
     username
-    firstName
-    avatar
     isSelf
   }
 }
@@ -52,69 +50,48 @@ const MessageRooms = ({ id, participants, navigation }) => {
       term: participants[0].username
     }
   });
-  if(!loading) {
-    if(data.searchUser[0].isSelf) {
-      const { data2, loading2 } = useQuery(SEARCH_USER, {
-        variables: {
-          term: participants[1].username
-        }
-      });
-
-      return (
-        <Container>
-          { loading ? (
-            <Loader />
-          ) : (
-            <Container>
-              <TouchableOpacity onPress={() => {
-                navigation.navigate("MessageDetail", { username: participants[1].username })} } >
-                <Header>
-                  <Profile>
-                    <Image 
-                      style={{height: 40, width: 40, borderRadius:20}}
-                      source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}
-                      />
-                  </Profile>
-                  <UserInfo>
-                    <Bold>{ data2.searchUser[0].username }</Bold>
-                    <Text>{ data2.searchUser[0].firstName }</Text>
-                  </UserInfo>
-                </Header>
-              </TouchableOpacity>
-              <View/>
-            </Container>
-          )}
-        </Container>
-      );
-    } else {
-      return (
-        <Container>
-          { loading ? (
-            <Loader />
-          ) : (
-            <Container>
-              <TouchableOpacity onPress={() => {
-                navigation.navigate("MessageDetail", { username: participants[0].username })} } >
-                <Header>
-                  <Profile>
-                    <Image 
-                      style={{height: 40, width: 40, borderRadius:20}}
-                      source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}
-                      />
-                  </Profile>
-                  <UserInfo>
-                    <Bold>{ data.searchUser[0].username }</Bold>
-                    <Text>{ data.searchUser[0].firstName }</Text>
-                  </UserInfo>
-                </Header>
-              </TouchableOpacity>
-              <View/>
-            </Container>
-          )}
-        </Container>
-      );
-    }
-  };
+  console.log(data);
+  return (
+    <Container>
+      { loading ? (
+        <Loader />
+      ) : (
+        data.searchUser[0].isSelf ? (
+          <TouchableOpacity onPress={() => {
+            navigation.navigate("MessageDetail", { username: participants[1].username })} } >
+            <Header>
+              <Profile>
+                <Image 
+                  style={{height: 40, width: 40, borderRadius:20}}
+                  source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}
+                  />
+              </Profile>
+              <UserInfo>
+                <Bold>{ participants[1].username }</Bold>
+                <Text>{ participants[1].firstName }</Text>
+              </UserInfo>
+            </Header>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={() => {
+            navigation.navigate("MessageDetail", { username: participants[0].username })} } >
+            <Header>
+              <Profile>
+                <Image 
+                  style={{height: 40, width: 40, borderRadius:20}}
+                  source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}
+                  />
+              </Profile>
+              <UserInfo>
+                <Bold>{ participants[0].username }</Bold>
+                <Text>{ participants[0].firstName }</Text>
+              </UserInfo>
+            </Header>
+          </TouchableOpacity>
+        )
+      )}
+    </Container>
+  );
 }
 
 MessageRooms.propTypes = {

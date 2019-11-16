@@ -1,24 +1,16 @@
 import React, { useState } from "react";
-import { Image, TouchableOpacity, Platform } from "react-native";
+import { Image, TouchableOpacity, ScrollView } from "react-native";
 import styled from "styled-components";
-import { Ionicons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
-import styles from "../styles";
 import constants from "../constants";
 import SquarePhoto from "./SquarePhoto";
-import Post from "./Post";
 import MapViews from "./MapViews";
-import FollowButton from '../components/FollowButton'
 import { LightPink, Grey, TINT_COLOR, PointPink, mainPink, LightGrey, Line } from "./Color";
 import { LinearGradient } from "expo-linear-gradient";
 import Hr from "hr-native";
 
 const Container = styled.View`
   flex : 1;
-`;
-const PostCon = styled.View`
-  flex-direction: row;
-  height : ${constants.height /1.65}
 `;
 const Profile = styled.View`
   padding : 5px;
@@ -34,9 +26,8 @@ const Top = styled.View`
   alignItems: flex-end;
   
 `;
-const View = styled.View`
-  flex : 1;
-  
+const View=styled.View`
+flex : 1;
 `;
 const ProfileImage = styled.View`
   margin-left : 10px;
@@ -51,6 +42,7 @@ const ButtonContainer = styled.View`
   flex-direction: row;
   margin-top: 5px;
   padding-vertical: 5px;
+
 `;
 //border: 1px solid ${styles.lightGreyColor};
 
@@ -75,19 +67,12 @@ const NameBox = styled.View`
   height : 40px;
 `;
 
-
 const FollowCon = styled.View`
   alignItems: center;
   margin-right : 5px;
   justifyContent: flex-end;
   flex-direction: row;
   flex : 1;
-`;
-
-const BioCon = styled.View`
-  alignItems: flex-end;
-  flex : 1;
-  margin-Left : 10px;
 `;
 
 const Bold = styled.Text`
@@ -100,10 +85,6 @@ const BoldName = styled.Text`
   font-size : 30;
   margin-left : 5px;
   color : ${TINT_COLOR}
-`;
-
-const Bio = styled.Text`
-  font-size : 15;
 `;
 
 const Text = styled.Text`
@@ -148,7 +129,7 @@ const UserProfile = ({
 
   return (
     <Container>
-      <LinearGradient colors={[ "#facdcd" ,"white"]}>
+      
       <Profile>
        <View/>
         <Top>
@@ -182,7 +163,7 @@ const UserProfile = ({
           </Con>
         </Top>
       </Profile>
-      </LinearGradient>
+     
 
     <ButtonContainer>
       <TouchableOpacity onPress={toggleGrid}>
@@ -199,6 +180,7 @@ const UserProfile = ({
 
     <Hr lineStyle={{ backgroundColor : Line }}/>
 
+    <ScrollView>
     <ImageCon>
       {isGrid ? (
         posts && posts.map(p =>
@@ -208,6 +190,7 @@ const UserProfile = ({
         <MapViews />
       )}
     </ImageCon>
+    </ScrollView>
     </Container>
   )
 };

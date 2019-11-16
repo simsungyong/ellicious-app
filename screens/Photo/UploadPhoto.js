@@ -10,8 +10,9 @@ import Hr from "hr-native";
 import { useQuery } from "react-apollo-hooks";
 import { CATEGORY_FRAGMENT } from "../../fragments";
 import Loader from "../../components/Loader";
+import axios from 'axios'
 
-const UploadCon = styled.View`
+const UploadCon = styled.TouchableOpacity`
   alignItems: center;
   justifyContent: center;
 `;
@@ -123,9 +124,34 @@ export default ({navigation}) => {
   const [isModalPick, setModalPick] = useState(false);
   const [selectCate, setSelectCate] = useState();
   const [pickedName, setPickedName] = useState();
+  const [fileUrl, setFileUrl] = useState("");
   const photo = navigation.getParam("photo");
   const storeName = navigation.getParam("name");
   const storeAdr = navigation.getParam("formatted_address");
+
+  const handleSubmit=async()=>{
+    const formData = new FormData();
+    const name = photo.filename;
+    const [, type] = name.split(".");
+    formData.append("file", {
+      name,
+      type: type.toLowerCase(),
+      uri: photo.uri
+    });
+    try {
+      const {
+        data: { location }
+      } = await axios.post("http//3.134.176.171:4000/api/upload", formData, {
+        headers: {
+          "content-type": "multipart/form-data"
+        }
+      });
+      console.log(location);
+      setFileUrl(location);
+  }catch (e){
+    console.log(e);
+  }
+}
 
   const togglePicker=(p)=>{
     setModalPick(!p)
@@ -219,7 +245,7 @@ export default ({navigation}) => {
             placeholder="@직원 친절도"
             style = {marginLeft=30} />
       </MoreInfoCon>
-      <UploadCon>
+      <UploadCon onPress={handleSubmit}>
         <Button/>
       </UploadCon>
       

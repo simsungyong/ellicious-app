@@ -25,9 +25,18 @@ const Profile = styled.View`
   flex : 1;
   height : ${constants.height /4.3}
 `;
-
+const Header = styled.View`
+  position : relative;
+  justify-content : flex-end;
+`;
 const Top = styled.View`
   flex-direction: row;
+  alignItems: flex-end;
+  
+`;
+const View = styled.View`
+  flex : 1;
+  
 `;
 const ProfileImage = styled.View`
   margin-left : 10px;
@@ -57,17 +66,15 @@ const NameCon = styled.View`
   flex : 1;
   alignItems: center;
   justifyContent: center;
+
 `;
 const NameBox = styled.View`
   flex-direction: row;
   alignItems: center;
   justifyContent: center;
-
   height : 40px;
 `;
-const View = styled.View`
-  flex : 1;
-`;
+
 
 const FollowCon = styled.View`
   alignItems: center;
@@ -141,18 +148,9 @@ const UserProfile = ({
 
   return (
     <Container>
-      <LinearGradient
-        colors={[ mainPink ,"white"]}
-        /*start = {Platform.select({
-          ios: [0,0]
-        })}
-        end={Platform.select({
-          ios: [0,0.5],
-          android: [0,0.9]
-        })}*/
-      >
-       <Profile>
-         <View/>
+      <LinearGradient colors={[ "#facdcd" ,"white"]}>
+      <Profile>
+       <View/>
         <Top>
           <ProfileImage>
             <Image 
@@ -184,28 +182,24 @@ const UserProfile = ({
           </Con>
         </Top>
       </Profile>
-    </LinearGradient>
+      </LinearGradient>
 
-      <ButtonContainer>
-        <TouchableOpacity onPress={toggleGrid}>
-          <Button>
-            <TopButton>게시물</TopButton>
-          </Button>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={toggleGrid}>
-          <Button>
-            <TopButton>맛지도</TopButton>
-          </Button>
-        </TouchableOpacity>
-      </ButtonContainer>
+    <ButtonContainer>
+      <TouchableOpacity onPress={toggleGrid}>
+        <Button>
+          <TopButton>게시물</TopButton>
+        </Button>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={toggleGrid}>
+        <Button>
+          <TopButton>맛지도</TopButton>
+        </Button>
+      </TouchableOpacity>
+    </ButtonContainer>
 
-      <Hr
-        lineStyle={{
-          backgroundColor : Line
-        }}
-      />
+    <Hr lineStyle={{ backgroundColor : Line }}/>
 
-      <ImageCon>
+    <ImageCon>
       {isGrid ? (
         posts && posts.map(p =>
           <SquarePhoto key={p.id} {...p} />
@@ -213,7 +207,7 @@ const UserProfile = ({
       ) : (
         <MapViews />
       )}
-      </ImageCon>
+    </ImageCon>
     </Container>
   )
 };

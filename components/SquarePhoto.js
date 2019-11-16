@@ -4,7 +4,8 @@ import { withNavigation } from "react-navigation";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import constants from "../constants";
-import { LightPink, TINT_COLOR } from "./Color";
+import { LightPink, TINT_COLOR, mainPink, IconColor, Grey } from "./Color";
+import {MaterialCommunityIcons, Ionicons,EvilIcons, AntDesign } from "@expo/vector-icons";
 
 const Post = styled.View`
 background-color : ${LightPink}
@@ -19,11 +20,22 @@ const Bold = styled.Text`
   color : ${TINT_COLOR}
 `;
 const Imagecon = styled.View`
-  flex-direction: row;
   alignItems: center;
   justifyContent: space-around;
   margin-top : 5px;
 `;
+
+const Icons = styled.View`
+flex-direction: row;
+margin-left : 5px
+`;
+const Icon = styled.View`
+flex-direction: row;
+alignItems: center;
+justifyContent: center;
+flex : 1;
+`;
+
 const SquarePhoto = ({ 
   navigation, 
   files = [], 
@@ -40,6 +52,30 @@ const SquarePhoto = ({
       />
       <Imagecon>
         <Bold>#디저트 #공릉 #카페</Bold>
+        <Icons>
+          <Icon>
+            <MaterialCommunityIcons
+            size={13} 
+            name={"heart"}
+            color={mainPink}/>
+            <Bold>{likeCount}</Bold>
+          </Icon>
+          <Icon>
+          <EvilIcons
+              size={13} 
+              name={"comment"}
+              color={IconColor}/>
+            <Bold>{commentCount}</Bold>
+          </Icon>
+          <Icon>
+            <AntDesign 
+              size={10} 
+              name={"pushpin"}
+              color={Grey}/>
+            <Bold>{pickCount}</Bold>
+          </Icon>
+
+        </Icons>
       </Imagecon>
     </TouchableOpacity>
   </Post>

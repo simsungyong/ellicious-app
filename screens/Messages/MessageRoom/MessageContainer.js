@@ -4,7 +4,6 @@ import SearchBar from "../../../components/SearchBar";
 import MessagePresenter from "./MessagePresenter";
 import styled from "styled-components";
 import styles from "../../../styles";
-import constants from "../../../constants";
 import { PointPink, mainPink } from "../../../components/Color";
 
 
@@ -47,10 +46,9 @@ export default class extends React.Component {
     const { term, shouldFetch } = this.state;
     
     return (
-        <Text>Hello</Text>
-    //   <View style={{ flex: 1, justifyContent: 'center'}}>
-    //     <MessagePresenter term={ term } shouldFetch={ shouldFetch } />
-    //   </View>
+      <View style={{ flex: 1, justifyContent: 'center'}}>
+        <MessagePresenter term={ term } shouldFetch={ shouldFetch } />
+      </View>
     )
   }
 }

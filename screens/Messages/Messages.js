@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
-import { ScrollView, Text } from "react-native";
+import { ScrollView, Text, TextInput } from "react-native";
 import { gql } from "apollo-boost";
 // import { USER_FRAGMENT } from "../../fragments";
 import Loader from "../../components/Loader";
 import { useQuery } from "react-apollo-hooks";
 import MessageRooms from "../../components/MessageRooms";
+import SearchBar from "../../components/SearchBar";
 
 export const Messages = gql`
   {
@@ -26,7 +27,7 @@ export default ({ navigation }) => {
   }
   return (
     <ScrollView>
-      <Text>hello world</Text>
+      <Text>hello world!!!</Text>
       {loading ? <Loader /> : data && data.seeRooms && data.seeRooms.map(room =>
         <MessageRooms key={room.id} {...room} />)}
     </ScrollView>

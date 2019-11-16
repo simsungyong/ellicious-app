@@ -7,23 +7,24 @@ import { useQuery } from "react-apollo-hooks";
 import Loader from "../../../components/Loader";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "../../../styles";
-import MessageRooms from "../../../components/MessageRooms";
+import MessageAccountBox from "../../../components/MessageAccountBox";
 
 
-const SEARCH = gql`
-  {
-    seeRooms {
+const SEARCH_USER = gql`
+  query search($term: String!) {
+    searchUser(term: $term) {
       id
-      participants {
-        username
-      }
+      username
+      firstName
+      avatar
+      isSelf
     }
   }
 `;
 
 const MessagePresenter = ({ term, shouldFetch }) => {
   const [refreshing, setRefreshing] = useState(false);
-  const { data, loading, refetch } = useQuery(SEARCH, {
+  const { data, loading, refetch } = useQuery(SEARCH_USER, {
     variables: {
       term
     },
@@ -39,7 +40,7 @@ const MessagePresenter = ({ term, shouldFetch }) => {
       setRefreshing(false);
     }
   };
-  if(!loading) { console.log(data); }
+  
   return (
     <ScrollView refreshControl={
         <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
@@ -48,11 +49,20 @@ const MessagePresenter = ({ term, shouldFetch }) => {
       {loading ? (
         <Loader />
       ) : (
-        // data &&
-        // data.searchUser &&
-        // data.searchUser.map(user => 
-        //   <SearchAccountBox key={user.id} {...user} />
-        <Text>hello world</Text>
+        // data.searchUser[0].isSelf ? (
+        //   <View></View>
+        // ) : (
+        //   data &&
+        //   data.searchUser &&
+        //   data.searchUser.map(user => 
+        //     <MessageAccountBox key={user.id} {...user} />
+        //   )
+        // )
+        data &&
+        data.searchUser &&
+        data.searchUser.map(user => 
+          <MessageAccountBox key={user.id} {...user} />
+        )
       )}
     </ScrollView>
   );

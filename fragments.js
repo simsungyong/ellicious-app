@@ -76,6 +76,12 @@ export const USER_FRAGMENT = gql`
     }
   }`;
 
+export const CATEGORY_FRAGMENT = gql`
+  fragment CategoryParts on Category {
+    id
+    categoryName
+  }`
+
 export const POST_COMMENT = gql`
   fragment CommentParts on Comment {
     id

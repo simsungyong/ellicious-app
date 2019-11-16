@@ -1,72 +1,23 @@
 import React,{useState, useEffect} from "react";
 import styled from "styled-components";
-import {Text,Image,ScrollView,TouchableOpacity, TextInput, Platform,StyleSheet} from 'react-native';
+import { gql } from "apollo-boost";
+import {Text,Image,ScrollView,Modal,TouchableOpacity, TextInput,Picker, Platform,StyleSheet, TouchableHighlight,Button} from 'react-native';
 import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line } from '../../components/Color';
 import {FontAwesome} from "@expo/vector-icons";
 import Stars from 'react-native-stars';
 import {Icon} from 'native-base';
 import Hr from "hr-native";
-
-/*
-const Text = styled.Text`
-  font-size:7px;
-`;
-const View = styled.View`
-  background-color : ${BG_COLOR}
-  flex: 1;
-`;
-
-const TextBox = styled.Text`
-  margin-left : 20px;
-  font-Size : 20px;
-  color: #FE642E;
-  margin-bottom : 5px;
-`;
-
-const storeTextBox = styled.Text`
-  margin-left : 20px;
-  font-Size : 10px;
-  color: #FE642E;
-  margin-bottom : 5px;
-`;
+import Select2 from 'react-native-select-two';
+import { useQuery } from "react-apollo-hooks";
+import { CATEGORY_FRAGMENT } from "../../fragments";
+import Loader from "../../components/Loader";
 
 
-const TextCon = styled.View`
-  flex:2;
-`;
-
-const ImageBox = styled.View`
-  flex:1;
-`;
-
-const styles = StyleSheet.create({
-  myStarStyle: {
-    color: '#FACC2E',
-    backgroundColor: 'transparent',
-    textShadowColor: 'black',
-    //textShadowOffset: {width: 1, height: 1},
-    textShadowRadius: 2,
-  },
-  myEmptyStarStyle: {
-    color: 'white',
-  }
-});
-
-const Container = styled.View`
-  padding: 20px;
-  flex-direction: row;
-  background-color : pink;
-  margin-bottom : 10px;
-`;
-
-const Button = styled.TouchableOpacity`
-  background-color: ${props => props.theme.blueColor};
-  padding: 10px;
-  border-radius: 4px;
-  align-items: center;
-  justify-content: center;
-`;
-*/
+const mockData = [
+  { id: 1, name: 'React Native Developer' },
+  { id: 2, name: 'Android Developer' },
+  { id: 3, name: 'iOS Developer' }
+];
 
 const Container = styled.View`
   flex : 1;
@@ -98,12 +49,16 @@ const SubTitle = styled.Text`
 const View = styled.View`
   flex-direction: row;
 `;
+const ViewModal = styled.View`
+`;
 const Restaurant = styled.View`
   alignItems: flex-end;
   justifyContent: center;
   margin-right : 5px
   flex : 1
+
 `;
+
 const RestaurantCon = styled.View`
   flex : 1
   flex-direction: row;
@@ -130,14 +85,56 @@ const StoreName = styled.Text`
   margin-bottom : 5px;
   font-size : 20px;
 `;
+const StoreAddress = styled.Text`
+  font-weight: 600;
+  margin-bottom : 5px;
+  font-size : 10px;
+`;
+
+const styles=StyleSheet.create({
+  myStarStyle: {
+    color: 'yellow',
+    backgroundColor: 'transparent',
+    textShadowColor: 'black',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 2,
+    //starSize:50
+  },
+  myEmptyStarStyle: {
+    color: 'white',
+    //starSize:50
+  }
+});
+
+export const seeCategory = gql`
+  {
+    seeCategory {
+      ...CategoryParts
+    }
+  }
+  ${CATEGORY_FRAGMENT}`
+
 
 export default ({navigation}) => {
-  const [loading, setIsLoading] = useState(false);
+  const { loading, data } = useQuery(seeCategory);
+  const [starValue, setStarValue] = useState(2.5);
+  const [isModalPick, setModalPick] = useState(false);
+  const [selectCate, setSelectCate] = useState();
   const photo = navigation.getParam("photo");
   const storeName = navigation.getParam("name");
   const storeAdr = navigation.getParam("formatted_address");
 
+  const togglePicker=(p)=>{
+    setModalPick(!p)
+  }
 
+  const pickValue=(newValue)=>{
+    setSelectCate(newValue);
+    togglePicker(isModalPick);
+  }
+
+ 
+  
   return(
     <Container>
       <Top>
@@ -167,6 +164,7 @@ export default ({navigation}) => {
         </SubTitleCon>
         <Restaurant>
           <StoreName>{storeName}</StoreName>
+          <StoreAddress>{storeAdr}</StoreAddress>
         </Restaurant>
       </RestaurantCon>
 
@@ -177,14 +175,31 @@ export default ({navigation}) => {
           <SubTitle> 별 점 </SubTitle>
         </SubTitleCon>
         <Rating>
-          <FontAwesome
-            color={StarColor}
-            size={28}
-            name={"star"}
-          />
+          <Stars
+            half={true}
+            default={2.5}
+            update={(val)=>setStarValue(val)}
+            spacing={8}
+            count={5}
+            //starSize={50}
+            fullStar = {<FontAwesome name={'star'} style={[styles.myStarStyle]}/>}
+            //fullStar = {<Image source={require('../../assets/star.png')} style={{height:50,width:50}}/>}
+            emptyStar={<FontAwesome name={'star-o'} style={[styles.myStarStyle, styles.myEmptyStarStyle]}/>}
+            halfStar={<FontAwesome name={'star-half-full'} style={[styles.myStarStyle]}/>}/>
         </Rating> 
       </RatingCon>   
+      <Hr lineStyle={{ backgroundColor : Line}} />
 
+      <RatingCon>
+        <SubTitleCon>
+            <SubTitle> Category </SubTitle>
+        </SubTitleCon>
+        <Restaurant>
+          <TouchableOpacity onPress={()=>togglePicker(isModalPick)}>
+          <StoreName>{selectCate ? <Text>{selectCate}</Text> : 'select'}</StoreName>
+          </TouchableOpacity>
+        </Restaurant>
+      </RatingCon>
       <Hr lineStyle={{ backgroundColor : Line}} />
 
       <MoreInfoCon>
@@ -195,6 +210,48 @@ export default ({navigation}) => {
             placeholder="@직원 친절도"
             style = {marginLeft=30} />
       </MoreInfoCon>
+      
+      
+      <Modal visible={isModalPick} transparent={true} animationType="slide" onRequestClose={()=>console.log(cancle)}>
+        <ViewModal style={{margin:20, padding:20,
+          backgroundColor:'#efefef',
+          bottom:20,
+          left:20,
+          right:20,
+          alignItems: 'center',
+          position: 'absolute'}}>
+            <Text style={{fontWeight:'bold', marginBottom:10}}>카테고리</Text>
+            {data && data.seeCategory.map((value, index)=>{
+              return <TouchableHighlight key={index } onPress={()=>pickValue(value.id)} style={{paddingTop:4, paddingBottom:4}}>
+                <Text>{value.categoryName}</Text>
+              </TouchableHighlight>
+            })}
+            <TouchableHighlight onPress={()=>togglePicker(isModalPick)} style={{paddingTop:4, paddingBottom:4}}>
+              <Text style={{color:'#999'}}>Cancel</Text>
+            </TouchableHighlight>
+          </ViewModal>
+      </Modal>
+
+      
+
     </Container>
   );
 }
+
+
+/*<Select2
+          isSelectSingle
+          style={{ borderRadius: 5 }}
+          colorTheme={'blue'}
+          popupTitle='Select item'
+          title='Select item'
+          data={mockData}
+          searchPlaceHolderText	='카테고리 검색'
+          cancelButtonText='취소'
+          selectButtonText='선택'
+          onSelect={data => {setSelectCate(data)}}
+          onRemoveItem={data => {setSelectCate(data);}} 
+          />
+        <Text>
+          업로드!
+        </Text>*/

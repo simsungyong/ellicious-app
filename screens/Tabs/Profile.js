@@ -6,55 +6,19 @@ import Loader from "../../components/Loader";
 import { useQuery } from "react-apollo-hooks";
 import UserProfile from "../../components/UserProfile";
 
-export const MyProfile = gql`
+
+export const ME = gql`
   {
-    myProfile {
-      user {
-        id
-        avatar
-        username
-        firstName
-        isSelf
-        isFollowing
-        bio
-        posts {
-          id
-          caption
-          rating
-          storeLocation
-          storeName
-          user {
-            id
-            avatar
-            username
-          }
-          files {
-            id
-            url
-          }
-          likeCount
-          pickCount
-          comments {
-            id
-            text
-            user {
-              id
-              username
-              avatar
-            }
-          }
-          createdAt
-        }
-      }
+    me {
+      ...UserParts
     }
   }
-`;
-
+  ${USER_FRAGMENT}`
 export default ({ navigation }) => {
-  const { loading, data } = useQuery(MyProfile);
+  const { loading, data } = useQuery(ME);
   return (
     <ScrollView>
-      {loading ? <Loader /> : data && data.myProfile && <UserProfile {...data.myProfile.user} />}
+      {loading ? <Loader /> : data && data.me && <UserProfile {...data.me} />}
     </ScrollView>
   );
 };

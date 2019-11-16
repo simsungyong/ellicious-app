@@ -20,6 +20,7 @@ export const POST_FRAGMENT = gql`
     isLiked
     isPicked
     pickCount
+    commentCount
     comments {
       id
       text
@@ -37,16 +38,43 @@ export const USER_FRAGMENT = gql`
     id
     avatar
     username
+    lastName
+    firstName
     fullName
     isFollowing
     isSelf
     bio
-    posts {
-      ...PostParts
+    category{
+      categoryName
+      id
     }
-  }
-  ${POST_FRAGMENT}
-`;
+    following{
+      username
+      avatar
+      id
+      isFollowing
+    }
+    followers{
+      username
+      avatar
+      id
+      isFollowing
+    }
+    followingCount
+    followersCount
+    categoryCount
+    postsCount
+    posts {
+      id
+      likeCount
+      files{
+        id
+        url
+      }
+      pickCount
+      commentCount
+    }
+  }`;
 
 export const POST_COMMENT = gql`
   fragment CommentParts on Comment {

@@ -131,6 +131,8 @@ const PostOfComment = ({
         const {loading, data} = useQuery(GET_COMMENTS, {
          variables: { postId: post.id, headComment: id}
         });
+        console.log(data);
+
         const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
         const navi = ()=>{
           setbottomModalAndTitle(false);
@@ -241,8 +243,8 @@ PostOfComment.propTypes = {
     ),
     headComment: PropTypes.shape({
       id: PropTypes.string.isRequired,
-        text: PropTypes.string.isRequired,
-        user: PropTypes.shape({
+      text: PropTypes.string.isRequired,
+      user: PropTypes.shape({
           id: PropTypes.string.isRequired,
           username: PropTypes.string.isRequired,
           avatar: PropTypes.string.isRequired

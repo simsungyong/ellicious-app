@@ -23,7 +23,7 @@ import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 
 
-// AsyncStorage.clear();
+//AsyncStorage.clear();
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
@@ -50,6 +50,7 @@ export default function App() {
 
       const request = async operation => {
         const token = await AsyncStorage.getItem('jwt');
+        //console.log(token);
         operation.setContext({
           headers: {
             Authorization: `Bearer ${token}`

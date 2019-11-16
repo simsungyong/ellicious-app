@@ -7,7 +7,7 @@ import { useQuery } from "react-apollo-hooks";
 import Loader from "../../../components/Loader";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "../../../styles";
-import MessageRooms from "../../../constants/MessageRooms";
+import MessageRooms from "../../../components/MessageRooms";
 
 
 const SEARCH = gql`
@@ -39,7 +39,7 @@ const MessagePresenter = ({ term, shouldFetch }) => {
       setRefreshing(false);
     }
   };
-  console.log(data)
+  if(!loading) { console.log(data); }
   return (
     <ScrollView refreshControl={
         <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />

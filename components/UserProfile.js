@@ -11,7 +11,8 @@ import Post from "./Post";
 import MapViews from "./MapViews";
 import FollowButton from '../components/FollowButton'
 import Hr from "hr-native";
-import { LightPink, Grey, TINT_COLOR } from "./Color";
+import { LightPink, Grey, TINT_COLOR, PointPink } from "./Color";
+import TopBarNav from 'top-bar-nav';
 
 const Container = styled.View`
   flex : 1;
@@ -34,6 +35,7 @@ const ProfileImage = styled.View`
 
 const ImageCon = styled.View`
 flex-direction: row;
+
 `;
 
 
@@ -41,7 +43,6 @@ const ProfileMeta = styled.View`
   margin-top: 10px;
   padding-horizontal: 20px;
 `;
-
 
 const ButtonContainer = styled.View`
   flex-direction: row;
@@ -51,8 +52,11 @@ const ButtonContainer = styled.View`
 `;
 
 const Button = styled.View`
-  width: ${constants.width / 2};
+width: ${constants.width / 2};
   align-items: center;
+  alignItems: center;
+ justifyContent: center;
+ padding : 5px;
 `;
 
 const NameCon = styled.View`
@@ -85,6 +89,7 @@ const FollowCon = styled.View`
 const BioCon = styled.View`
   alignItems: flex-end;
   flex : 1;
+  margin-Left : 10px;
 `;
 
 const Bold = styled.Text`
@@ -92,7 +97,7 @@ const Bold = styled.Text`
   font-size : 15;
 `;
 const BoldName = styled.Text`
-  font-weight: 600;
+  font-weight: 300;
   font-size : 20;
   margin-left : 5px;
   color : ${TINT_COLOR}
@@ -107,7 +112,11 @@ const Bio = styled.Text`
 const Text = styled.Text`
   color : ${Grey}
 `;
-
+const TopButton = styled.Text`
+  font-weight: 300;
+  font-size : 20;
+  color : ${PointPink}
+`;
 const FollowPick = styled.View`
   flex-direction: row;
   alignItems: center;
@@ -137,37 +146,7 @@ const UserProfile = ({
 
   return (
     <Container>
-    <ButtonContainer>
-        <TouchableOpacity onPress={toggleGrid}>
-          <Button>
-            <Ionicons
-              color={isGrid ? styles.black : styles.darkGreyColor}
-              size={32}
-              name={Platform.OS === "ios" ? "ios-grid" : "md-grid"}
-            />
-          </Button>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={toggleGrid}>
-          <Button>
-            <Ionicons
-              color={!isGrid ? styles.black : styles.darkGreyColor}
-              size={32}
-              name={Platform.OS === "ios" ? "ios-list" : "md-list"}
-            />
-          </Button>
-        </TouchableOpacity>
-      
-      </ButtonContainer>
-      <ImageCon>
-      {isGrid ? (
-        posts && posts.map(p =>
-          <SquarePhoto key={p.id} {...p} />
-        )
-      ) : (
-        <MapViews />
-      )}
-      </ImageCon>
-      <Profile>
+       <Profile>
         <Top>
           <ProfileImage>
             <Image 
@@ -187,10 +166,9 @@ const UserProfile = ({
         <Bottom>
           <FollowCon>
             <FollowPick>
-              <Text>Full Name </Text>
-              <Bold>{fullName}</Bold>
+              <Text>게시물 </Text>
+              <Bold>{postsCount}</Bold>
             </FollowPick>
-              
             <FollowPick>
               <Text>Following </Text>
               <Bold>{followingCount}</Bold>
@@ -199,16 +177,35 @@ const UserProfile = ({
               <Text>Follower </Text>
               <Bold>{followersCount}</Bold>
             </FollowPick>
-            <FollowPick>
-              <Text>게시물 </Text>
-              <Bold>{postsCount}</Bold>
-            </FollowPick>
+            
           </FollowCon>
           <BioCon>
             <Bio>{bio}</Bio>
           </BioCon>
         </Bottom>
       </Profile>
+
+      <ButtonContainer>
+        <TouchableOpacity onPress={toggleGrid}>
+          <Button>
+            <TopButton>게시물</TopButton>
+          </Button>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={toggleGrid}>
+          <Button>
+            <TopButton>맛지도</TopButton>
+          </Button>
+        </TouchableOpacity>
+      </ButtonContainer>
+      <ImageCon>
+      {isGrid ? (
+        posts && posts.map(p =>
+          <SquarePhoto key={p.id} {...p} />
+        )
+      ) : (
+        <MapViews />
+      )}
+      </ImageCon>
     </Container>
   )
 };

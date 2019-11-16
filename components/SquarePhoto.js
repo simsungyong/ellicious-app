@@ -14,14 +14,15 @@ margin-bottom : 2px;
 `;
 
 const Bold = styled.Text`
-  font-weight: 400;
+  font-weight: 200;
   font-size : 11;
-
+  color : ${TINT_COLOR}
 `;
 const Imagecon = styled.View`
   flex-direction: row;
   alignItems: center;
   justifyContent: space-around;
+  margin-top : 5px;
 `;
 const SquarePhoto = ({ 
   navigation, 
@@ -38,9 +39,7 @@ const SquarePhoto = ({
         style={{ width: constants.width / 3, height: constants.height / 6 }}
       />
       <Imagecon>
-        <Bold>좋아요{likeCount}</Bold>
-        <Bold>댓글 {commentCount}</Bold>
-        <Bold>콕 !{pickCount}</Bold>
+        <Bold>#디저트 #공릉 #카페</Bold>
       </Imagecon>
     </TouchableOpacity>
   </Post>

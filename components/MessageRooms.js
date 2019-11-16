@@ -50,7 +50,7 @@ const MessageRooms = ({ id, participants, navigation }) => {
       term: participants[0].username
     }
   });
-  console.log(data);
+  
   return (
     <Container>
       { loading ? (
@@ -59,7 +59,9 @@ const MessageRooms = ({ id, participants, navigation }) => {
         data.searchUser[0].isSelf ? (
           <TouchableOpacity onPress={() => {
             navigation.navigate("MessageDetail", {
-              username: participants[1].username
+              username: participants[1].username,
+              userId: participants[1].id,
+              roomId: id
               })} } >
             <Header>
               <Profile>
@@ -77,7 +79,9 @@ const MessageRooms = ({ id, participants, navigation }) => {
         ) : (
           <TouchableOpacity onPress={() => {
             navigation.navigate("MessageDetail", {
-              username: participants[0].username
+              username: participants[0].username,
+              userId: participants[1].id,
+              roomId: id
               })} } >
             <Header>
               <Profile>

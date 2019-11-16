@@ -49,15 +49,6 @@ const MessagePresenter = ({ term, shouldFetch }) => {
       {loading ? (
         <Loader />
       ) : (
-        // data.searchUser[0].isSelf ? (
-        //   <View></View>
-        // ) : (
-        //   data &&
-        //   data.searchUser &&
-        //   data.searchUser.map(user => 
-        //     <MessageAccountBox key={user.id} {...user} />
-        //   )
-        // )
         data &&
         data.searchUser &&
         data.searchUser.map(user => 

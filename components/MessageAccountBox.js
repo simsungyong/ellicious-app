@@ -39,7 +39,7 @@ const MessageAccountBox = ({ navigation, username, firstName, avatar, id, isSelf
     <Container>
         {!isSelf ? (
             <TouchableOpacity onPress={() => {
-                navigation.navigate("MessageDetail", { username }) } } >
+                navigation.navigate("MessageDetail", { username, userId: id }) } } >
                 <Header>
                 <Profile>
                     <Image 

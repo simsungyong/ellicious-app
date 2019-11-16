@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ScrollView, Text } from "react-native";
+import { ScrollView, Text} from "react-native";
 import { gql } from "apollo-boost";
 import { USER_FRAGMENT } from "../../fragments";
 import Loader from "../../components/Loader";
@@ -17,8 +17,8 @@ export const ME = gql`
 export default ({ navigation }) => {
   const { loading, data } = useQuery(ME);
   return (
-    <ScrollView>
+    <>
       {loading ? <Loader /> : data && data.me && <UserProfile {...data.me} />}
-    </ScrollView>
+    </>
   );
 };

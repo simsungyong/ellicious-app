@@ -54,28 +54,28 @@ const SquarePhoto = ({
         <Bold>#디저트 #공릉 #카페</Bold>
         <Icons>
           <Icon>
-            <MaterialCommunityIcons
-            size={13} 
-            name={"heart"}
-            color={mainPink}/>
+            <MaterialCommunityIcons 
+              size={10} 
+              name={"heart"}
+              color={mainPink}/>
             <Bold>{likeCount}</Bold>
           </Icon>
           <Icon>
-          <EvilIcons
-              size={13} 
+            <EvilIcons
+              size={10} 
               name={"comment"}
               color={IconColor}/>
             <Bold>{commentCount}</Bold>
           </Icon>
           <Icon>
             <AntDesign 
-              size={10} 
+              size={8} 
               name={"pushpin"}
               color={Grey}/>
             <Bold>{pickCount}</Bold>
           </Icon>
-
         </Icons>
+
       </Imagecon>
     </TouchableOpacity>
   </Post>

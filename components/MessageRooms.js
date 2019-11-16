@@ -58,7 +58,9 @@ const MessageRooms = ({ id, participants, navigation }) => {
       ) : (
         data.searchUser[0].isSelf ? (
           <TouchableOpacity onPress={() => {
-            navigation.navigate("MessageDetail", { username: participants[1].username })} } >
+            navigation.navigate("MessageDetail", {
+              username: participants[1].username
+              })} } >
             <Header>
               <Profile>
                 <Image 
@@ -74,7 +76,9 @@ const MessageRooms = ({ id, participants, navigation }) => {
           </TouchableOpacity>
         ) : (
           <TouchableOpacity onPress={() => {
-            navigation.navigate("MessageDetail", { username: participants[0].username })} } >
+            navigation.navigate("MessageDetail", {
+              username: participants[0].username
+              })} } >
             <Header>
               <Profile>
                 <Image 

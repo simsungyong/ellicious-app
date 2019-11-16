@@ -4,7 +4,6 @@ import Messages from "../screens/Messages/Messages";
 import MessageRoom from "../screens/Messages/MessageRoom";
 import MessageDetail from "../screens/Messages/MessageDetail";
 
-
 export default createStackNavigator({
   Messages: {
     screen: Messages,

@@ -121,21 +121,6 @@ margin-bottom : 7;
 margin-top : 10px;
 `;
 
-const styles=StyleSheet.create({
-  myStarStyle: {
-    
-    backgroundColor: 'transparent',
-    textShadowColor: 'black',
-    textShadowOffset: {width: 1, height: 1},
-    textShadowRadius: 2,
-    //starSize:50
-  },
-  myEmptyStarStyle: {
-    //starSize:50
-  }
-});
-
-
 export const seeCategory = gql`
   {
     seeCategory {
@@ -197,7 +182,7 @@ export default ({navigation}) => {
       <Top>
         <ImageBox>
           <Image
-            source={{ uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704" }}
+            source={{ uri: photo.uri }}
             style={{ 
               height: 100, 
               width: 100, 
@@ -220,8 +205,8 @@ export default ({navigation}) => {
           <SubTitle> 음식점 </SubTitle>
         </SubTitleCon>
         <Restaurant>
-          <StoreName>영민 쉐프 맛집</StoreName>
-          <StoreAddress>대한민국 서울시 노원구 동일로 186길 77-7</StoreAddress>
+          <StoreName>{storeName}</StoreName>
+          <StoreAddress>{storeAdr}</StoreAddress>
         </Restaurant>
       </InfoCon>
 
@@ -270,6 +255,10 @@ export default ({navigation}) => {
             placeholder="@직원 친절도"
             style = {marginLeft=30} />
       </MoreInfoCon>
+      
+      <UploadCon onPress={handleSubmit}>
+        <Button/>
+      </UploadCon>
 
       <Modal visible={isModalPick} transparent={true} animationType="slide" onRequestClose={()=>console.log(cancle)}>
         <ViewModal style={{padding:10}}>

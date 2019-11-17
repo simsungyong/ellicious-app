@@ -44,13 +44,6 @@ const PhotoTabs = createMaterialTopTabNavigator(
 );
 
 export default createStackNavigator({
-  Upload: {
-    screen: UploadPhoto,
-    navigationOptions:{
-      title: "New Post",
-      headerBackTitle:null,
-    }
-  },
   Tabs : {
     screen: PhotoTabs,
     navigationOptions:{
@@ -63,6 +56,13 @@ export default createStackNavigator({
           </Text>
         </View>
       )
+    }
+  },
+  Upload: {
+    screen: UploadPhoto,
+    navigationOptions:{
+      title: "New Post",
+      headerBackTitle:null,
     }
   },
   

@@ -6,6 +6,7 @@ import gql from "graphql-tag";
 import PropTypes from "prop-types";
 import Loader from "../../../components/Loader";
 // import withSuspense from "../../../components/withSuspense";
+import Messages from "../Messages";
 
 const SEND_MESSAGE = gql`
   mutation sendMessage($text: String!, $roomId: String!, $toId: String!) {
@@ -16,12 +17,25 @@ const SEND_MESSAGE = gql`
   }
 `;
 
+const SEND_MESSAGE_WITHOUT_ROOMID = gql`
+  mutation sendMessage($text: String!, $toId: String!) {
+    sendMessage(message: $text toId: $toId) {
+      id
+      text
+      room {
+        id
+      }
+    }
+  }
+`;
+
 const MESSAGES = gql`
   query seeRoom($roomId: String!) {
     seeRoom(id: $roomId) {
       messages {
         id
         text
+        
       }
     }
   }
@@ -32,11 +46,13 @@ const NEW_MESSAGE = gql`
     newMessage(roomId: $roomId) {
       id
       text
+      
     }
   }
 `;
 
 const MessageDetailPresenter = ({username, userId, roomId}) => {
+  const [roomNum, setRoom] = useState(roomId);
   const [message, setMessage] = useState("");
   const [chat_message, setMessages] = useState();
 
@@ -44,24 +60,32 @@ const MessageDetailPresenter = ({username, userId, roomId}) => {
   const [sendMessageMutation] = useMutation(SEND_MESSAGE, {
     variables: {
       text: message,
-      roomId: roomId,
+      roomId: roomNum,
       toId: userId
     }
+    
   });
 
-  const { data, error, loading } = useQuery(
-    MESSAGES,
-    // { suspend: true },
-    { variables: { roomId: roomId }}
-  );
-  if(!loading)console.log(data.seeRoom.messages);
-  if(data !== undefined && chat_message == null) {
-      setMessages(data.seeRoom.messages)
+  const [sendWithoutRoomId] = useMutation(SEND_MESSAGE_WITHOUT_ROOMID, {
+    variables: {
+        text: message,
+        toId: userId
+    }
+  })
+
+  if(roomNum !== undefined) {
+    const { data, error, loading } = useQuery(
+        MESSAGES,
+        { variables: { roomId: roomNum }}
+    );
+    if(data !== undefined && chat_message == null) {
+        setMessages(data.seeRoom.messages)
+    }
   }
 
   const { data: newMessage } = useSubscription(NEW_MESSAGE, {
     variables: {
-      roomId: roomId
+      roomId: roomNum
     }
   });
 
@@ -84,37 +108,44 @@ const MessageDetailPresenter = ({username, userId, roomId}) => {
       return;
     }
     try {
-      await sendMessageMutation();
+      if(roomNum !== undefined) {
+        const {data:{sendMessage}}=await sendMessageMutation();
+        console.log(sendMessage.text);
+      } else {
+        const {data:{sendMessage}}=await sendWithoutRoomId();
+        console.log(sendMessage);
+        if(setMessage !== undefined) {
+            setRoom(setMessage.room.id);
+        }
+      }
+      
+      
     } catch (e) {
       console.log(e);
     }
   };
 
-    
-
-
   return (
     <KeyboardAvoidingView behavior="padding" enabled>
-        
-            <ScrollView>
-            {chat_message==undefined ? null : (chat_message.map(m => (
-              <View key={m.id} style={{ marginBottom: 10 }}>
+        <ScrollView>
+        {chat_message==undefined ?
+        null
+        : (
+            chat_message.map(m => (
+            <View key={m.id} style={{ marginBottom: 10 }}>
+                {/* <Text>{m.from.username}</Text> */}
                 <Text>{m.text}</Text>
-              </View>
-             )))}
-            <Text>{username}</Text>
-            <Text>{roomId}</Text>
-            <Text>{userId}</Text>
-            <TextInput
-              placeholder={"Type your message"}
-              onChangeText={onChangeText}
-              onSubmitEditing={onSubmit}
-              returnKeyType="send"
-              value={message}
-            />
-          </ScrollView>
-       
-      
+            </View>
+            ))
+        )}
+        <TextInput
+            placeholder={"Type your message"}
+            onChangeText={onChangeText}
+            onSubmitEditing={onSubmit}
+            returnKeyType="send"
+            value={message}
+        />
+        </ScrollView>
     </KeyboardAvoidingView>
   );
 }

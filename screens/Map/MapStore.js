@@ -21,25 +21,30 @@ const MapStore=({
     navigation,
     place_id,
     name,
+    location,
     formatted_address,
     photo
-})=>(
-    <TouchableOpacity onPress={()=>navigation.navigate("Upload",{photo,name,formatted_address})}>
-    <HContainer>
-        <Bold>{name}</Bold>
-        <Text>{formatted_address}</Text>
-    </HContainer>
-    </TouchableOpacity>
+})=>{
+    const storeLat = location.lat;
+    const storeLong = location.lng; 
+    return(
+        <TouchableOpacity onPress={()=>navigation.navigate("Upload",{photo,name,formatted_address, place_id, storeLat,storeLong})}>
+        <HContainer>
+            <Bold>{name}</Bold>
+            <Text>{formatted_address}</Text>
+        </HContainer>
+        </TouchableOpacity>
 );
+}
 
 
 MapStore.propTypes={
     place_id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     formatted_address: PropTypes.string.isRequired,
-    /*geometry: PropTypes.shape({
+    location: PropTypes.shape({
         lat: PropTypes.number.isRequired,
         lng: PropTypes.number.isRequired
-    })*/
+    })
 }
 export default withNavigation(MapStore);

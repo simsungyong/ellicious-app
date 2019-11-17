@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { gql } from "apollo-boost";
 import {Text,Image,ScrollView,Modal,TouchableOpacity, TextInput,Picker, Platform,StyleSheet, TouchableHighlight} from 'react-native';
 import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line } from '../../components/Color';
-import {FontAwesome} from "@expo/vector-icons";
+import {FontAwesome, EvilIcons} from "@expo/vector-icons";
 import Stars from 'react-native-stars';
 import {Icon} from 'native-base';
 import Hr from "hr-native";
@@ -11,6 +11,78 @@ import { useQuery } from "react-apollo-hooks";
 import { CATEGORY_FRAGMENT } from "../../fragments";
 import Loader from "../../components/Loader";
 import axios from 'axios'
+import constants from "../../constants";
+
+const Container = styled.View`
+  flex : 1;
+  padding : 10px;
+`;
+const Top = styled.View`
+  flex-direction: row;
+  margin-bottom : 10px;
+`;
+
+const ImageBox = styled.View`
+margin-left : 3px;
+`;
+const TextCon = styled.View``;
+
+const InfoCon = styled.View`
+  flex : 1
+  flex-direction: row;
+  margin-horizontal : 10px;
+  margin-top:7px;
+  margin-bottom : 7px;
+`;
+
+const SubTitleCon = styled.View`
+  padding : 5px;
+  justifyContent: center;
+`;
+const SubTitle = styled.Text`
+  font-size : 25px
+  margin-right : 10px
+  color : ${PointPink}
+  font-weight : 200;
+`;
+
+const Restaurant = styled.View`
+  alignItems: flex-end;
+  justifyContent: center;
+  margin-right : 5px
+  flex : 1
+`;
+
+const StoreName = styled.Text`
+  font-weight: 400;
+  margin-bottom : 5px;
+  font-size : 20px;
+`;
+const StoreAddress = styled.Text`
+  font-weight: 300;
+  margin-bottom : 5px;
+  font-size : 10px;
+`;
+
+const Rating = styled.View`
+  alignItems: flex-end;
+  justifyContent: center;
+  flex : 1
+
+`;
+
+const View = styled.View`
+ flex : 1
+`;
+
+const SubTitleConMI = styled.View`
+  padding : 5px;
+  justifyContent: center;
+`;
+const MoreInfoCon = styled.View`
+  flex : 6;
+  
+`;
 
 const UploadCon = styled.TouchableOpacity`
   alignItems: center;
@@ -23,91 +95,31 @@ const Button = styled.View`
   border: 10px solid ${mainPink};
 `;
 
-const Container = styled.View`
-  flex : 1;
-  padding : 10px;
-`;
-
-const Top = styled.View`
-  flex-direction: row;
-  margin-bottom : 10px;
-`;
-
-const ImageBox = styled.View`
-margin-left : 3px;
-`;
-const TextCon = styled.View``;
-
-const SubTitleCon = styled.View`
-  padding : 5px;
-  justifyContent: center;
-`;
-const SubTitle = styled.Text`
-  font-size : 25px
-  margin-right : 10px
-  color : ${PointPink}
-  font-weight : 200
-  ;
-`;
-
-const View = styled.View`
-  flex-direction: row;
-`;
 const ViewModal = styled.View`
+backgroundColor: white;
+bottom:1;
+height : ${constants.height / 2.5};
+left:2px;
+right:2px;
+alignItems: center
+position: absolute
+border-top-left-radius : 30px;
+border-top-right-radius : 30px;
+border-color : ${Grey};
+border-width : 1px;
 `;
-const Restaurant = styled.View`
-  alignItems: flex-end;
-  justifyContent: center;
-  margin-right : 5px
-  flex : 1
-
+const ViewText = styled.Text`
+fontWeight : 300;
+font-size : 25;
+margin-bottom : 10;
+color : ${PointPink}
 `;
-
-const RestaurantCon = styled.View`
-  flex : 1
-  flex-direction: row;
+const CategoryName = styled.Text`
+fontWeight : 200;
+font-size : 20;
+margin-bottom : 7;
+margin-top : 10px;
 `;
-const RatingCon = styled.View`
-flex : 1
-flex-direction: row;
-`;
-const Rating = styled.View`
-  alignItems: flex-end;
-  justifyContent: center;
-  flex : 1
-
-`;
-const SubTitleConMI = styled.View`
-  padding : 5px;
-  justifyContent: center;
-`;
-const MoreInfoCon = styled.View`
-  flex : 6;
-`;
-const StoreName = styled.Text`
-  font-weight: 600;
-  margin-bottom : 5px;
-  font-size : 20px;
-`;
-const StoreAddress = styled.Text`
-  font-weight: 600;
-  margin-bottom : 5px;
-  font-size : 10px;
-`;
-
-const styles=StyleSheet.create({
-  myStarStyle: {
-    
-    backgroundColor: 'transparent',
-    textShadowColor: 'black',
-    textShadowOffset: {width: 1, height: 1},
-    textShadowRadius: 2,
-    //starSize:50
-  },
-  myEmptyStarStyle: {
-    //starSize:50
-  }
-});
 
 export const seeCategory = gql`
   {
@@ -165,11 +177,6 @@ export default ({navigation}) => {
     nameValue(categoryName);
     togglePicker(isModalPick);
   }
-
-  
-
- 
-  
   return(
     <Container>
       <Top>
@@ -193,7 +200,7 @@ export default ({navigation}) => {
 
       <Hr lineStyle={{ backgroundColor : Line}} />
 
-      <RestaurantCon>
+      <InfoCon>
         <SubTitleCon>
           <SubTitle> 음식점 </SubTitle>
         </SubTitleCon>
@@ -201,11 +208,11 @@ export default ({navigation}) => {
           <StoreName>{storeName}</StoreName>
           <StoreAddress>{storeAdr}</StoreAddress>
         </Restaurant>
-      </RestaurantCon>
+      </InfoCon>
 
       <Hr lineStyle={{ backgroundColor : Line}} />
 
-      <RatingCon>
+      <InfoCon>
         <SubTitleCon>
           <SubTitle> 별 점 </SubTitle>
         </SubTitleCon>
@@ -214,27 +221,30 @@ export default ({navigation}) => {
             half={true}
             default={2.5}
             update={(val)=>setStarValue(val)}
-            spacing={8}
+            spacing={6}
             count={5}
             //starSize={50}
-            fullStar = {<FontAwesome name={'star'} size={35 }style={[styles.myStarStyle]}/>}
+            fullStar = {<FontAwesome name={'star'} size={25} color={StarColor}/>}
             //fullStar = {<Image source={require('../../assets/star.png')} style={{height:50,width:50}}/>}
-            emptyStar={<FontAwesome name={'star-o'} size={35} style={[styles.myStarStyle, styles.myEmptyStarStyle]}/>}
-            halfStar={<FontAwesome name={'star-half-full'} size={35} style={[styles.myStarStyle]}/>}/>
+            emptyStar={<FontAwesome name={'star-o'} size={25} color={Grey}/>}
+            halfStar={<FontAwesome name={'star-half-full'} size={25} color={StarColor}/>}/>
         </Rating> 
-      </RatingCon>   
+      </InfoCon>   
+
       <Hr lineStyle={{ backgroundColor : Line}} />
 
-      <RatingCon>
+      <InfoCon>
         <SubTitleCon>
-            <SubTitle> Category </SubTitle>
+          <SubTitle> Category </SubTitle>
         </SubTitleCon>
         <Restaurant>
           <TouchableOpacity onPress={()=>togglePicker(isModalPick)}>
-          <StoreName>{selectCate ? <Text>{pickedName}</Text> : 'select'}</StoreName>
+          <StoreName>
+            {selectCate ? <Text>{pickedName}</Text> :'Select'} 
+          </StoreName>
           </TouchableOpacity>
         </Restaurant>
-      </RatingCon>
+      </InfoCon>
       <Hr lineStyle={{ backgroundColor : Line}} />
 
       <MoreInfoCon>
@@ -245,33 +255,34 @@ export default ({navigation}) => {
             placeholder="@직원 친절도"
             style = {marginLeft=30} />
       </MoreInfoCon>
+      
       <UploadCon onPress={handleSubmit}>
         <Button/>
       </UploadCon>
-      
-      
+
       <Modal visible={isModalPick} transparent={true} animationType="slide" onRequestClose={()=>console.log(cancle)}>
-        <ViewModal style={{margin:20, padding:20,
-          backgroundColor:'#efefef',
-          bottom:20,
-          left:20,
-          right:20,
-          alignItems: 'center',
-          position: 'absolute'}}>
-            <Text style={{fontWeight:'bold', marginBottom:10}}>카테고리</Text>
+        <ViewModal style={{padding:10}}>
+          
+            <ViewText>카테고리</ViewText>
+            <Hr lineStyle={{ backgroundColor : Line}}/>
+
             {data && data.seeCategory.map((value, index)=>{
               return <TouchableHighlight key={index } onPress={()=>pickValue(value.id, value.categoryName)} style={{paddingTop:4, paddingBottom:4}}>
-                <Text>{value.categoryName}</Text>
+                <CategoryName>{value.categoryName}</CategoryName>
               </TouchableHighlight>
             })}
+            
+            <View/>
             <TouchableHighlight onPress={()=>togglePicker(isModalPick)} style={{paddingTop:4, paddingBottom:4}}>
-              <Text style={{color:'#999'}}>Cancel</Text>
+              <Text style={{color:mainPink, fontSize:17}}>카테고리 추가하기</Text>
             </TouchableHighlight>
+
+            <TouchableHighlight onPress={()=>togglePicker(isModalPick)} style={{paddingTop:4, paddingBottom:4}}>
+              <Text style={{color:Grey}}>Cancle</Text>
+            </TouchableHighlight>
+
           </ViewModal>
       </Modal>
-
-      
-
     </Container>
   );
 }
@@ -284,7 +295,7 @@ export default ({navigation}) => {
           popupTitle='Select item'
           title='Select item'
           data={mockData}
-          searchPlaceHolderText	='카테고리 검색'
+          searchPlaceHolderText   ='카테고리 검색'
           cancelButtonText='취소'
           selectButtonText='선택'
           onSelect={data => {setSelectCate(data)}}
@@ -293,3 +304,5 @@ export default ({navigation}) => {
         <Text>
           업로드!
         </Text>*/
+
+

@@ -14,6 +14,7 @@ import {Card} from 'native-base'
 import { withNavigation } from "react-navigation";
 import Hr from "hr-native";
 import Stars from 'react-native-stars';
+import { ME } from "../screens/Tabs/Profile";
 
 
 export const TOGGLE_LIKE = gql`
@@ -138,7 +139,7 @@ const Post = ({
         const [toggleLikeMutaton] = useMutation(TOGGLE_LIKE, {
         variables: {
         postId: id
-        }});
+        }, refetchQueries:()=>[{query:ME}]});
 
         const [togglePickMutation] = useMutation(TOGGLE_PICK, {
           variables:{

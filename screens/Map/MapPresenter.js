@@ -58,6 +58,7 @@ const MapPresenter =({
                   photo={photo}
                   key={store.place_id}
                   place_id={store.place_id}
+                  location={store.geometry.location}
                   name={store.name}
                   formatted_address={store.formatted_address}/>
               ))

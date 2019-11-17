@@ -295,7 +295,7 @@ export default ({navigation}) => {
           popupTitle='Select item'
           title='Select item'
           data={mockData}
-          searchPlaceHolderText	='카테고리 검색'
+          searchPlaceHolderText   ='카테고리 검색'
           cancelButtonText='취소'
           selectButtonText='선택'
           onSelect={data => {setSelectCate(data)}}
@@ -304,6 +304,5 @@ export default ({navigation}) => {
         <Text>
           업로드!
         </Text>*/
-
 
 

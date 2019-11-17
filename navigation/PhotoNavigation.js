@@ -65,6 +65,7 @@ export default createStackNavigator({
       headerBackTitle:null,
     }
   },
+  
   Map: {
     screen: MapContainer,
     navigationOptions:{

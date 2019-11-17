@@ -4,7 +4,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import constants from "../constants";
 import SquarePhoto from "./SquarePhoto";
-import MapViews from "./MapViews";
+import MapViews from "./MapView/MapViews";
 import { LightPink, Grey, TINT_COLOR, PointPink, mainPink, LightGrey, Line } from "./Color";
 import { LinearGradient } from "expo-linear-gradient";
 import Hr from "hr-native";

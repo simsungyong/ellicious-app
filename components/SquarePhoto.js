@@ -9,9 +9,10 @@ import {MaterialCommunityIcons, Ionicons,EvilIcons, AntDesign } from "@expo/vect
 
 const Post = styled.View`
 background-color : ${LightPink}
-padding : 3px;
 margin-right : 2px;
 margin-bottom : 2px;
+margin-top : 2px;
+width: ${constants.width / 3};
 `;
 
 const Bold = styled.Text`
@@ -75,7 +76,6 @@ const SquarePhoto = ({
             <Bold>{pickCount}</Bold>
           </Icon>
         </Icons>
-
       </Imagecon>
     </TouchableOpacity>
   </Post>

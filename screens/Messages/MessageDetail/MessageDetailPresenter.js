@@ -3,12 +3,13 @@ import { KeyboardAvoidingView, TextInput, View, ScrollView, Text } from "react-n
 import styled from "styled-components";
 import { useMutation, useQuery, useSubscription } from "react-apollo-hooks";
 import gql from "graphql-tag";
-
-import withSuspense from "../../components/withSuspense";
+import PropTypes from "prop-types";
+import Loader from "../../../components/Loader";
+// import withSuspense from "../../../components/withSuspense";
 
 const SEND_MESSAGE = gql`
   mutation sendMessage($text: String!, $roomId: String!, $toId: String!) {
-    sendMessage(message: $text toId: $userId roomId: $roomId) {
+    sendMessage(message: $text toId: $toId roomId: $roomId) {
       id
       text
     }
@@ -19,6 +20,7 @@ const MESSAGES = gql`
   query seeRoom($roomId: String!) {
     seeRoom(id: $roomId) {
       messages {
+        id
         text
       }
     }
@@ -34,41 +36,48 @@ const NEW_MESSAGE = gql`
   }
 `;
 
-export default ({navigation})  => {
-  const you = navigation.getParam("username");
-  const roomId = navigation.getParam("roomId");
-  const userId = navigation.getParam("userId");
-  
-
+const MessageDetailPresenter = ({username, userId, roomId}) => {
   const [message, setMessage] = useState("");
-  const sendMessageMutation = useMutation(SEND_MESSAGE, {
+  const [chat_message, setMessages] = useState();
+
+
+  const [sendMessageMutation] = useMutation(SEND_MESSAGE, {
     variables: {
       text: message,
       roomId: roomId,
       toId: userId
     }
   });
-  const { data: oldMessages } = useQuery(
+
+  const { data, error, loading } = useQuery(
     MESSAGES,
     // { suspend: true },
     { variables: { roomId: roomId }}
   );
+  if(!loading)console.log(data.seeRoom.messages);
+  if(data !== undefined && chat_message == null) {
+      setMessages(data.seeRoom.messages)
+  }
+
   const { data: newMessage } = useSubscription(NEW_MESSAGE, {
     variables: {
       roomId: roomId
     }
   });
-  const [messages, setMessages] = useState(oldMessages.seeRoom.messages);
+
   const updateMessages = () => {
     if (newMessage !== undefined) {
       const { newMessage: payload } = newMessage;
       setMessages(previous => [...previous, payload]);
     }
   };
+
   useEffect(() => {
     updateMessages();
   }, [newMessage]);
+
   const onChangeText = text => setMessage(text);
+
   const onSubmit = async () => {
     setMessage("");
     if (message === "") {
@@ -80,24 +89,40 @@ export default ({navigation})  => {
       console.log(e);
     }
   };
+
+    
+
+
   return (
-    <KeyboardAvoidingView behavior="padding" enabled style={{ flex: 1 }}>
-      <ScrollView>
-        {messages.map(m => (
-          <View key={m.id} style={{ marginBottom: 10 }}>
-            <Text>{m.text}</Text>
-          </View>
-        ))}
-        <Text>{you}</Text>
-        <Text>{roomId}</Text>
-        <TextInput
-          placeholder={"Type your message"}
-          onChangeText={onChangeText}
-          onSubmitEditing={onSubmit}
-          returnKeyType="send"
-          value={message}
-        />
-      </ScrollView>
+    <KeyboardAvoidingView behavior="padding" enabled>
+        
+            <ScrollView>
+            {chat_message==undefined ? null : (chat_message.map(m => (
+              <View key={m.id} style={{ marginBottom: 10 }}>
+                <Text>{m.text}</Text>
+              </View>
+             )))}
+            <Text>{username}</Text>
+            <Text>{roomId}</Text>
+            <Text>{userId}</Text>
+            <TextInput
+              placeholder={"Type your message"}
+              onChangeText={onChangeText}
+              onSubmitEditing={onSubmit}
+              returnKeyType="send"
+              value={message}
+            />
+          </ScrollView>
+       
+      
     </KeyboardAvoidingView>
-  )
+  );
 }
+
+MessageDetailPresenter.propTypes = {
+    username: PropTypes.string,
+    userId: PropTypes.string,
+    roomId: PropTypes.string
+};
+
+export default MessageDetailPresenter;

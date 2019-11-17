@@ -11,6 +11,8 @@ import { useQuery } from "react-apollo-hooks";
 import { CATEGORY_FRAGMENT } from "../../fragments";
 import Loader from "../../components/Loader";
 import axios from 'axios'
+import constants from "../../constants";
+
 const Container = styled.View`
   flex : 1;
   padding : 10px;
@@ -70,7 +72,7 @@ const Rating = styled.View`
 `;
 
 const View = styled.View`
-  flex-direction: row;
+ flex : 1
 `;
 
 const SubTitleConMI = styled.View`
@@ -92,9 +94,32 @@ const Button = styled.View`
   border-radius: 40px;
   border: 10px solid ${mainPink};
 `;
-const ViewModal = styled.View`
-`;
 
+const ViewModal = styled.View`
+backgroundColor: white;
+bottom:1;
+height : ${constants.height / 2.5};
+left:2px;
+right:2px;
+alignItems: center
+position: absolute
+border-top-left-radius : 30px;
+border-top-right-radius : 30px;
+border-color : ${Grey};
+border-width : 1px;
+`;
+const ViewText = styled.Text`
+fontWeight : 300;
+font-size : 25;
+margin-bottom : 10;
+color : ${PointPink}
+`;
+const CategoryName = styled.Text`
+fontWeight : 200;
+font-size : 20;
+margin-bottom : 7;
+margin-top : 10px;
+`;
 
 const styles=StyleSheet.create({
   myStarStyle: {
@@ -109,6 +134,7 @@ const styles=StyleSheet.create({
     //starSize:50
   }
 });
+
 
 export const seeCategory = gql`
   {
@@ -166,11 +192,6 @@ export default ({navigation}) => {
     nameValue(categoryName);
     togglePicker(isModalPick);
   }
-
-  
-
- 
-  
   return(
     <Container>
       <Top>
@@ -234,7 +255,7 @@ export default ({navigation}) => {
         <Restaurant>
           <TouchableOpacity onPress={()=>togglePicker(isModalPick)}>
           <StoreName>
-          {selectCate ? <Text>{pickedName}</Text> : 'Select'} 
+            {selectCate ? <Text>{pickedName}</Text> :'Select'} 
           </StoreName>
           </TouchableOpacity>
         </Restaurant>
@@ -250,34 +271,29 @@ export default ({navigation}) => {
             style = {marginLeft=30} />
       </MoreInfoCon>
 
-      <UploadCon onPress={handleSubmit}>
-        <Button/>
-      </UploadCon>
-      
-      
       <Modal visible={isModalPick} transparent={true} animationType="slide" onRequestClose={()=>console.log(cancle)}>
-        <ViewModal style={{margin:10, padding:20,
-          backgroundColor:'#efefef',
-          bottom:20,
-          left:20,
-          right:20,
-          alignItems: 'center',
-          position: 'absolute'}}>
+        <ViewModal style={{padding:10}}>
+          
+            <ViewText>카테고리</ViewText>
+            <Hr lineStyle={{ backgroundColor : Line}}/>
 
-            <Text style={{fontWeight:'bold', marginBottom:10}}>카테고리</Text>
             {data && data.seeCategory.map((value, index)=>{
               return <TouchableHighlight key={index } onPress={()=>pickValue(value.id, value.categoryName)} style={{paddingTop:4, paddingBottom:4}}>
-                <Text>{value.categoryName}</Text>
+                <CategoryName>{value.categoryName}</CategoryName>
               </TouchableHighlight>
             })}
+            
+            <View/>
             <TouchableHighlight onPress={()=>togglePicker(isModalPick)} style={{paddingTop:4, paddingBottom:4}}>
-              <Text style={{color:'#999'}}>Cancel</Text>
+              <Text style={{color:mainPink, fontSize:17}}>카테고리 추가하기</Text>
             </TouchableHighlight>
+
+            <TouchableHighlight onPress={()=>togglePicker(isModalPick)} style={{paddingTop:4, paddingBottom:4}}>
+              <Text style={{color:Grey}}>Cancle</Text>
+            </TouchableHighlight>
+
           </ViewModal>
       </Modal>
-
-      
-
     </Container>
   );
 }
@@ -299,3 +315,6 @@ export default ({navigation}) => {
         <Text>
           업로드!
         </Text>*/
+
+
+

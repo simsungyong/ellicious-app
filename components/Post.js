@@ -33,7 +33,6 @@ const Touchable = styled.TouchableOpacity``;
 const Container =styled.View`
   flex : 1;
 `;
-//Container Background color -->선택사항 상의해보고 변경하기
 
 const Header =styled.View`
   padding: 5px;

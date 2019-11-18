@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 import constants from "../../constants";
 import MapStore from './MapStore';
 import {Text, TouchableOpacity} from 'react-native'; //버튼
-import { LightGrey, Grey } from "../../components/Color";
+import { LightGrey, Grey, LightPink, Line } from "../../components/Color";
+import Hr from "hr-native";
 
 
 const Container = styled.View`
@@ -17,7 +18,7 @@ const Input = styled.TextInput`
     border-radius: 20px;
     padding : 10px;
     text-align:center;
-    background-color : ${LightGrey};
+    background-color : ${LightPink};
     border-radius: 10px;
 `;
 
@@ -48,6 +49,7 @@ const MapPresenter =({
           autoCorrect={false}
         />
       </InputContainer>
+
       <SearchResults> 
         {loading ? <Loader/> : (
           <>

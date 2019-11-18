@@ -81,7 +81,9 @@ const SubTitleConMI = styled.View`
 `;
 const MoreInfoCon = styled.View`
   flex : 6;
-  
+  margin-horizontal : 10px;
+  margin-top:7px;
+  margin-bottom : 7px;
 `;
 
 const UploadCon = styled.TouchableOpacity`
@@ -253,7 +255,7 @@ export default ({navigation}) => {
         </SubTitleConMI>
         <TextInput
             placeholder="@직원 친절도"
-            style = {marginLeft=30} />
+            style = {marginLeft=50} />
       </MoreInfoCon>
       
       <UploadCon onPress={handleSubmit}>

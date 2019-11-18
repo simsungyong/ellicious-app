@@ -83,7 +83,7 @@ export default class MyPick extends Component {
   }
 
   render() {
-    
+    //console.log(this.state.marker.picks)
     const interpolations = this.state.marker.picks.map((marker, index) => {
       const inputRange = [
         (index - 1) * CARD_WIDTH,

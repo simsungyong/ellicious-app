@@ -91,6 +91,11 @@ fragment CategoryInfo on Category {
       storeLocation
       storeLat
       storeLong
+      rating
+      files{
+        id
+        url
+      }
     }
 }`
 

@@ -8,6 +8,8 @@ import MapViews from "./MapView/MapViews";
 import { LightPink, Grey, TINT_COLOR, PointPink, mainPink, LightGrey, Line } from "./Color";
 import { LinearGradient } from "expo-linear-gradient";
 import Hr from "hr-native";
+import MapView from "react-native-maps";
+
 
 const Container = styled.View`
   flex : 1;
@@ -191,8 +193,7 @@ const UserProfile = ({
         )
       ) : (
         <Maps>
-          <MapViews />
-          
+          <MapView />
         </Maps>
       )}
     </ImageCon>

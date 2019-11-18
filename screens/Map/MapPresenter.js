@@ -18,14 +18,14 @@ const Input = styled.TextInput`
     border-radius: 20px;
     padding : 10px;
     text-align:center;
-    background-color : ${LightPink};
+    background-color : white;
     border-radius: 10px;
 `;
 
 const InputContainer = styled.View`
   align-items:center;
   padding:7px;
-
+  background-color : ${LightPink};
 `;
 const SearchResults = styled.ScrollView`
   margin-top: 15px;

@@ -31,8 +31,8 @@ const stackFactory = (initialRoute, customConfig) =>
       navigationOptions: {
       title: "Photo",
       headerTitle : (
-        <View style = {{ alignItems : "flex-start", flex : 1, padding : 5,  marginLeft : 5}}>
-          <Text style = {{ fontSize : 20 , color : TINT_COLOR, fontWeight : "bold"}}>
+        <View style = {{ alignItems : "center", flex : 1}}>
+          <Text style = {{ fontSize : 30 , color : TINT_COLOR, fontWeight: "200"}}>
             Post
           </Text>
         </View>
@@ -72,7 +72,7 @@ fontFamily : 'korElli';
 fontSize : 40 ;
 color : #f7f7f7;
 `;
-const test = StyleSheet.create(
+const Shadow = StyleSheet.create(
   {
       MainContainer:
       {
@@ -107,7 +107,7 @@ export default createBottomTabNavigator({
         ),
         headerLeft : (
           <View style = {{ alignItems : "flex-start", flex : 1, padding : 5,  marginLeft : 5, marginTop : 10}}>
-            <Title style={test.TextShadowStyle}>
+            <Title style={Shadow.TextShadowStyle}>
               Ellicious
             </Title>
           </View>

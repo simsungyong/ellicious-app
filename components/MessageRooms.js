@@ -8,18 +8,24 @@ import FollowButton from './FollowButton';
 import { useQuery } from "react-apollo-hooks";
 import { gql } from "apollo-boost";
 import Loader from "../components/Loader";
+import { Entypo } from "@expo/vector-icons";
+import { NewMsg } from "./Color";
 
 const Container = styled.View`
   flex : 1;
   flex-direction: row;
+
 `;
 const UserInfo = styled.View`
+margin-Left : 10px;
 `;
 
 const Header = styled.View`
   padding: 5px;
   flex-direction: row;
   align-items: center;
+  width : ${constants.width}
+  
 `;
 const Bold = styled.Text`
   font-weight: 600;
@@ -27,12 +33,18 @@ const Bold = styled.Text`
   font-size : 15px;
 `;
 const Profile = styled.View`
-  margin-right : 5px;
-`;
-const View = styled.View`
-  flex : 1;
-`;
 
+  flex-direction: row;
+  alignItems: center;
+ justifyContent: center;
+`;
+const State = styled.View`
+alignItems: flex-end;
+
+`;
+const View=styled.View`
+flex : 1;
+`;
 
 const SEARCH_USER = gql`
 query search($term: String!) {
@@ -66,14 +78,21 @@ const MessageRooms = ({ id, participants, navigation }) => {
             <Header>
               <Profile>
                 <Image 
-                  style={{height: 40, width: 40, borderRadius:20}}
+                  style={{height: 60, width: 60, borderRadius:'50%'}}
                   source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}
                   />
               </Profile>
               <UserInfo>
                 <Bold>{ participants[1].username }</Bold>
-                <Text>{ participants[1].firstName }</Text>
               </UserInfo>
+              <View/>
+              <State>
+                <Entypo
+                  name={'dot-single'}
+                  color={NewMsg}
+                  size={30}
+                />
+              </State>
             </Header>
           </TouchableOpacity>
         ) : (
@@ -89,11 +108,19 @@ const MessageRooms = ({ id, participants, navigation }) => {
                   style={{height: 40, width: 40, borderRadius:20}}
                   source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}
                   />
-              </Profile>
+             
               <UserInfo>
                 <Bold>{ participants[0].username }</Bold>
-                <Text>{ participants[0].firstName }</Text>
               </UserInfo>
+              </Profile>
+              <View/>
+              <State>
+                <Entypo
+                  name={'dot-single'}
+                  color={NewMsg}
+                  size={30}
+                />
+              </State>
             </Header>
           </TouchableOpacity>
         )
@@ -108,3 +135,10 @@ MessageRooms.propTypes = {
 };
 
 export default withNavigation(MessageRooms);
+
+
+/**
+ * 
+ * 
+ * <Text>{ participants[1].firstName }</Text>
+ */

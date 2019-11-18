@@ -1,7 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import MapView,{Marker, PROVIDER_GOOGLE} from 'react-native-maps';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import MapView,{Marker, PROVIDER_GOOGLE, Callout, Polygon} from 'react-native-maps';
+import { StyleSheet,Image, Text, View, Dimensions, TextBase } from 'react-native';
+import { useQuery } from "react-apollo-hooks";
+import { gql } from "apollo-boost";
 import Loader from '../Loader';
+import {CATEGORYINFO_FRAGMENT} from '../../fragments';
+import MapViewContainer from '../../components/MapView/MapViewProfile';
 
 const styles = StyleSheet.create({
     container: {
@@ -9,22 +13,34 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    mapStyle: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height/2,
-    },
+    }
 });
 
-const initialState = {
-    latitude: 37.630069700,
-    longitude: 127.0760193,
-    latitudeDelta:0.0922,
-    longitudeDelta:0.0421,
-}
+const region = {  
+    latitude: 37.6247855,
+    longitude: 127.0773206,
+    latitudeDelta: 0.047864195044303443,
+    longitudeDelta: 0.0540142817690068,
+  };
 
-const MapViews = () => {
-    const [currentPosition, setCurrentPosition] = useState(initialState);
+const GET_CATEGORYINFO = gql`
+  {
+    seeCategory {
+        ...CategoryInfo
+    }
+  } ${CATEGORYINFO_FRAGMENT}
+`;
+
+
+const MapViews=()=> {
+    
+    const { loading, data } = useQuery(GET_CATEGORYINFO);
+    //const [marker, setMarker] = useState(data.seeCategory);
+    if(!loading){
+        console.log(data.seeCategory)
+    }
+    const [currentPosition, setCurrentPosition] = useState();
+    /*
     useEffect(()=>{
         navigator.geolocation.getCurrentPosition(position=>{
             const {longitude, latitude} = position.coords;
@@ -37,26 +53,11 @@ const MapViews = () => {
         error=> alert(error.message),
         {timeout:20000, maximumAge:1000}
         )
-    },[]);
-
-    return currentPosition.latitude ? (
+    },[]);*/
+    return(
         <View style={styles.container}>
-          <MapView 
-            provider={PROVIDER_GOOGLE}
-            style={styles.mapStyle}
-            initialRegion={initialState}
-            showsUserLocation
-             >
-            <Marker
-             coordinate={{
-                "latitude" : 37.63006970000001,
-                "longitude" : 127.076019
-            }}
-             title={"교촌치킨 서울과기대점"}
-             description={"교촌 레드콤보 존맛탱"}/> 
-        </MapView>
+            {loading ? <Loader/> : <MapViewContainer marker={data.seeCategory} region={region}/> }
         </View>
-    ): <Loader/>;
+    )
 }
-
-export default MapViews
+export default MapViews;

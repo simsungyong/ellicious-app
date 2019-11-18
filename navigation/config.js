@@ -1,7 +1,7 @@
-import { PointPink, mainBlue, mainPink } from "../components/Color";
+import { BG_COLOR } from "../components/Color";
 
 export const HomestackStyles = {
-  backgroundColor: mainPink,
+  backgroundColor: BG_COLOR,
   height : 60
 };
 

@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { KeyboardAvoidingView, TextInput, View, ScrollView, Text } from "react-native";
+import { KeyboardAvoidingView, TextInput, View,Text, ScrollView, TextComponent } from "react-native";
 import styled from "styled-components";
 import { useMutation, useQuery, useSubscription } from "react-apollo-hooks";
 import gql from "graphql-tag";
@@ -8,7 +8,52 @@ import Loader from "../../../components/Loader";
 // import withSuspense from "../../../components/withSuspense";
 import Messages from "../Messages";
 import constants from "../../../constants";
+import { LightPink, TINT_COLOR, LightGrey, mainPink } from "../../../components/Color";
+import { Feather, EvilIcons } from "@expo/vector-icons";
 
+
+const Container = styled.View`
+
+`;
+const TextBox = styled.View`
+  background-color : ${LightPink}
+  border-radius : 5px
+  padding-vertical: 5px;
+  padding-horizontal : 10px;
+  margin-top:3px;
+`;
+const TextMSG = styled.Text`
+  font-size : 20px;
+  color : ${TINT_COLOR};
+`;
+const MSG = styled.View`
+flex-direction:row;
+`;
+const Img = styled.View`
+margin-right : 3px;
+`;
+const TextCon = styled.View`
+`;
+const Image=styled.Image`
+height: 25
+width: 25
+borderRadius:7.5
+margin-right : 2px;
+`;
+
+const Input=styled.TextInput`
+height : 30px;
+width : ${constants.width-45}
+border-radius : 10
+padding : 5px;
+`;
+const InputCon=styled.View`
+alignItems: center;
+justifyContent: center;
+padding : 10px;
+flex-direction:row
+background-color : ${LightGrey}
+`;
 const SEND_MESSAGE = gql`
   mutation sendMessage($text: String!, $roomId: String!, $toId: String!) {
     sendMessage(message: $text toId: $toId roomId: $roomId) {
@@ -131,36 +176,55 @@ const MessageDetailPresenter = ({username, userId, roomId}) => {
   };
 
   return (
-    <KeyboardAvoidingView behavior="padding" enabled>
-      <View>
-        <ScrollView style={{ height: constants.height / 1.3 }}>
+    <Container>
+      <KeyboardAvoidingView behavior="padding" enabled>
+        <ScrollView style={{ height : constants.height / 1.2 }}>
           {chat_message==undefined ?
           null
           : (
             chat_message.map(m => (
               m.from.username === username ? (
-                <View key={m.id} style={{ marginBottom: 10, alignItems: "flex-start", marginLeft: 10 }}>
-                  <Text>{m.from.username}</Text>
-                  <Text>{m.text}</Text>
-                </View>
+                <MSG key={m.id} style={{ marginBottom: 10, alignItems: "flex-start", marginLeft: 10 }}>
+                  <Img>
+                  <Image 
+                    source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}
+                  />
+                  </Img>
+                  <TextCon>
+                    <Text>{m.from.username}</Text>
+                    <TextBox>
+                      <TextMSG>{m.text}</TextMSG>
+                    </TextBox>
+                  </TextCon>
+                </MSG>
               ) : (
                 <View key={m.id} style={{ marginBottom: 10, alignItems: "flex-end", marginRight: 10}}>
-                  <Text>{m.from.username}</Text>
-                  <Text>{m.text}</Text>
+                  <TextBox>
+                    <TextMSG>{m.text}</TextMSG>
+                  </TextBox>
                 </View>
               )
             ))
           )}
         </ScrollView>
-        <TextInput
-            placeholder={"Type your message"}
-            onChangeText={onChangeText}
-            onSubmitEditing={onSubmit}
-            returnKeyType="send"
-            value={message}
-        />
-      </View>
-    </KeyboardAvoidingView>
+
+        <InputCon>
+          <Input
+              placeholder={"Type your message"}
+              onChangeText={onChangeText}
+              onSubmitEditing={onSubmit}
+              returnKeyType="send"
+              value={message}
+              backgroundColor={'white'}
+          />
+          <EvilIcons
+          name={'arrow-up'}
+          color={mainPink}
+          size={35}
+          />
+        </InputCon>
+        </KeyboardAvoidingView>
+      </Container>
   );
 }
 

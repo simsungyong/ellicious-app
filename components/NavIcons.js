@@ -2,7 +2,7 @@ import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 import styles from "../styles";
-import { PointPink } from "./Color";
+import { PointPink, Grey } from "./Color";
 
 const NavIcon = ({
     focused = true,
@@ -12,7 +12,7 @@ const NavIcon = ({
   }) => (
     <Ionicons
       name={name}
-      color={focused ? color : styles.darkGreyColor}
+      color={focused ? PointPink : Grey}
       size={size}
     />
 );

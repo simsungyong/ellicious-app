@@ -1,5 +1,5 @@
 import React, { useState  } from "react";
-import { ScrollView, RefreshControl, Platform, View, Text, StyleSheet} from "react-native";
+import { View, StyleSheet} from "react-native";
 import SearchBar from "../../../components/SearchBar";
 import SearchPresenter from "./SearchPresenter";
 import SearchAccountPresenter from "./SearchAccountPresenter";

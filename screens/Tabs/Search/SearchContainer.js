@@ -20,6 +20,10 @@ const Button = styled.View`
   width: ${constants.width / 2};
   align-items: center;
 `;
+const Text = styled.Text`
+font-weight : 200
+font-size: 20
+`;
 
 export default class extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -77,9 +81,9 @@ export default class extends React.Component {
     // There are three types of labels (image, text, and element)
     const ROUTESTACK = [
       // { image: require('../'), title: 'Scene' },
-      { text: '계정', title: 'Scene' },
+      { text: <Text>계정</Text>, title: 'Scene' },
       // { element: <Text>World</Text>, title: 'Scene' },
-      { text: '장소', title: 'Scene' }
+      { text: <Text>장소</Text>, title: 'Scene' }
     ];
 
     return (

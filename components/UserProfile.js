@@ -14,20 +14,21 @@ const Container = styled.View`
 `;
 const Profile = styled.View`
   padding : 5px;
-  flex : 1;
-  height : ${constants.height /4.3}
+
 `;
-const Header = styled.View`
-  position : relative;
-  justify-content : flex-end;
-`;
+
 const Top = styled.View`
   flex-direction: row;
   alignItems: flex-end;
-  
 `;
 const View=styled.View`
-flex : 1;
+flex:1
+
+`;
+
+const ViewBox=styled.View`
+height : 30;
+
 `;
 const ProfileImage = styled.View`
   margin-left : 10px;
@@ -36,6 +37,7 @@ const ProfileImage = styled.View`
 const ImageCon = styled.View`
 flex-direction: row;
 margin-top : 5px;
+flex : 1
 `;
 
 const ButtonContainer = styled.View`
@@ -106,6 +108,8 @@ const Con = styled.View`
 flex-direction : column
 flex : 1;
 `;
+
+const Maps = styled.View``;
 const UserProfile = ({
   id,
   avatar,
@@ -131,14 +135,13 @@ const UserProfile = ({
     <Container>
       
       <Profile>
-       <View/>
+        <ViewBox/>
         <Top>
           <ProfileImage>
             <Image 
               style={{height: 80, width: 80, borderRadius:30}}
               source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}/>
           </ProfileImage>
-
           <Con>
           <NameCon>
             <NameBox>
@@ -161,11 +164,11 @@ const UserProfile = ({
             </FollowPick>
           </FollowCon>
           </Con>
+          
         </Top>
       </Profile>
      
-
-    <ButtonContainer>
+      <ButtonContainer>
       <TouchableOpacity onPress={toggleGrid}>
         <Button>
           <TopButton>게시물</TopButton>
@@ -177,7 +180,7 @@ const UserProfile = ({
         </Button>
       </TouchableOpacity>
     </ButtonContainer>
-
+      
     <Hr lineStyle={{ backgroundColor : Line }}/>
 
     <ScrollView>
@@ -187,7 +190,12 @@ const UserProfile = ({
           <SquarePhoto key={p.id} {...p} />
         )
       ) : (
-        <MapViews />
+        <Maps>
+          <MapViews />
+          <View>
+            <Text>카테고리</Text>
+          </View>
+        </Maps>
       )}
     </ImageCon>
     </ScrollView>
@@ -246,3 +254,22 @@ UserProfile.propTypes = {
 };
 
 export default UserProfile;
+
+
+/**
+ * <ButtonContainer>
+      <TouchableOpacity onPress={toggleGrid}>
+        <Button>
+          <TopButton>게시물</TopButton>
+        </Button>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={toggleGrid}>
+        <Button>
+          <TopButton>맛지도</TopButton>
+        </Button>
+      </TouchableOpacity>
+    </ButtonContainer>
+ * 
+ * 
+ * 
+ */

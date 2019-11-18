@@ -1,55 +1,48 @@
 import React, { useState } from "react";
-import { Image, TouchableOpacity } from "react-native";
+import { Image, TouchableOpacity, ScrollView } from "react-native";
 import styled from "styled-components";
-import { Ionicons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
-import styles from "../styles";
-import { Platform } from "@unimodules/core";
 import constants from "../constants";
 import SquarePhoto from "./SquarePhoto";
-import Post from "./Post";
-import MapViews from "./MapViews";
-import FollowButton from '../components/FollowButton'
+import MapViews from "./MapView/MapViews";
+import { LightPink, Grey, TINT_COLOR, PointPink, mainPink, LightGrey, Line } from "./Color";
+import { LinearGradient } from "expo-linear-gradient";
 import Hr from "hr-native";
-import { LightPink, Grey, TINT_COLOR, PointPink } from "./Color";
-import TopBarNav from 'top-bar-nav';
 
 const Container = styled.View`
   flex : 1;
 `;
-const PostCon = styled.View`
-  flex-direction: row;
-  height : ${constants.height /1.65}
-`;
 const Profile = styled.View`
   padding : 5px;
   flex : 1;
+  
+  height : ${constants.height /1}
 `;
+
 const Top = styled.View`
-  flex : 1;
   flex-direction: row;
+  alignItems: flex-end;
+`;
+const View=styled.View`
+flex:1
+
 `;
 const ProfileImage = styled.View`
-    
+  margin-left : 10px;
 `;
 
 const ImageCon = styled.View`
 flex-direction: row;
-
-`;
-
-
-const ProfileMeta = styled.View`
-  margin-top: 10px;
-  padding-horizontal: 20px;
+margin-top : 5px;
 `;
 
 const ButtonContainer = styled.View`
   flex-direction: row;
-  margin-top: 30px;
+  margin-top: 5px;
   padding-vertical: 5px;
-  border: 1px solid ${styles.lightGreyColor};
+
 `;
+//border: 1px solid ${styles.lightGreyColor};
 
 const Button = styled.View`
 width: ${constants.width / 2};
@@ -63,50 +56,33 @@ const NameCon = styled.View`
   flex : 1;
   alignItems: center;
   justifyContent: center;
-  
+
 `;
 const NameBox = styled.View`
   flex-direction: row;
   alignItems: center;
   justifyContent: center;
-  background-color : ${LightPink}
   height : 40px;
-`;
-const View = styled.View`
-  flex : 1;
-`;
-const Bottom = styled.View`
-  flex-direction: row;
 `;
 
 const FollowCon = styled.View`
-  margin-top : 10px;
   alignItems: center;
-  justifyContent: center;
-
-`;
-
-const BioCon = styled.View`
-  alignItems: flex-end;
+  margin-right : 5px;
+  justifyContent: flex-end;
+  flex-direction: row;
   flex : 1;
-  margin-Left : 10px;
 `;
 
 const Bold = styled.Text`
   font-weight: 600;
   font-size : 15;
+  color : ${TINT_COLOR}
 `;
 const BoldName = styled.Text`
   font-weight: 300;
-  font-size : 20;
+  font-size : 30;
   margin-left : 5px;
   color : ${TINT_COLOR}
-`;
-
-const Following = styled.View``;
-const Follower = styled.View``;
-const Bio = styled.Text`
-  font-size : 15;
 `;
 
 const Text = styled.Text`
@@ -122,6 +98,11 @@ const FollowPick = styled.View`
   alignItems: center;
   justifyContent: center;
   margin-left : 5px;
+`;
+
+const Con = styled.View`
+flex-direction : column
+flex : 1;
 `;
 const UserProfile = ({
   id,
@@ -146,58 +127,59 @@ const UserProfile = ({
 
   return (
     <Container>
-       <Profile>
+      
+      <Profile>
+        <View/>
         <Top>
           <ProfileImage>
             <Image 
               style={{height: 80, width: 80, borderRadius:30}}
               source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}/>
           </ProfileImage>
-        
+          <Con>
           <NameCon>
             <NameBox>
+            <View/>
               <BoldName>{username}</BoldName>
-              <View/>
             </NameBox>
           </NameCon>
-        </Top>
-
-
-        <Bottom>
           <FollowCon>
             <FollowPick>
               <Text>게시물 </Text>
               <Bold>{postsCount}</Bold>
             </FollowPick>
             <FollowPick>
-              <Text>Following </Text>
-              <Bold>{followingCount}</Bold>
-            </FollowPick>
-            <FollowPick>
               <Text>Follower </Text>
               <Bold>{followersCount}</Bold>
             </FollowPick>
-            
+            <FollowPick>
+            <Text>Following </Text>
+              <Bold>{followingCount}</Bold>
+            </FollowPick>
           </FollowCon>
-          <BioCon>
-            <Bio>{bio}</Bio>
-          </BioCon>
-        </Bottom>
+          </Con>
+          
+        </Top>
       </Profile>
+     
 
-      <ButtonContainer>
-        <TouchableOpacity onPress={toggleGrid}>
-          <Button>
-            <TopButton>게시물</TopButton>
-          </Button>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={toggleGrid}>
-          <Button>
-            <TopButton>맛지도</TopButton>
-          </Button>
-        </TouchableOpacity>
-      </ButtonContainer>
-      <ImageCon>
+    <ButtonContainer>
+      <TouchableOpacity onPress={toggleGrid}>
+        <Button>
+          <TopButton>게시물</TopButton>
+        </Button>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={toggleGrid}>
+        <Button>
+          <TopButton>맛지도</TopButton>
+        </Button>
+      </TouchableOpacity>
+    </ButtonContainer>
+
+    <Hr lineStyle={{ backgroundColor : Line }}/>
+
+    <ScrollView>
+    <ImageCon>
       {isGrid ? (
         posts && posts.map(p =>
           <SquarePhoto key={p.id} {...p} />
@@ -205,7 +187,8 @@ const UserProfile = ({
       ) : (
         <MapViews />
       )}
-      </ImageCon>
+    </ImageCon>
+    </ScrollView>
     </Container>
   )
 };

@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import Loader from "../../../components/Loader";
 // import withSuspense from "../../../components/withSuspense";
 import Messages from "../Messages";
+import constants from "../../../constants";
 
 const SEND_MESSAGE = gql`
   mutation sendMessage($text: String!, $roomId: String!, $toId: String!) {
@@ -35,7 +36,9 @@ const MESSAGES = gql`
       messages {
         id
         text
-        
+        from {
+          username
+        }
       }
     }
   }
@@ -46,7 +49,9 @@ const NEW_MESSAGE = gql`
     newMessage(roomId: $roomId) {
       id
       text
-      
+      from {
+        username
+      }
     }
   }
 `;
@@ -127,17 +132,26 @@ const MessageDetailPresenter = ({username, userId, roomId}) => {
 
   return (
     <KeyboardAvoidingView behavior="padding" enabled>
-        <ScrollView>
-        {chat_message==undefined ?
-        null
-        : (
+      <View>
+        <ScrollView style={{ height: constants.height / 1.3 }}>
+          {chat_message==undefined ?
+          null
+          : (
             chat_message.map(m => (
-            <View key={m.id} style={{ marginBottom: 10 }}>
-                {/* <Text>{m.from.username}</Text> */}
-                <Text>{m.text}</Text>
-            </View>
+              m.from.username === username ? (
+                <View key={m.id} style={{ marginBottom: 10, alignItems: "flex-start", marginLeft: 10 }}>
+                  <Text>{m.from.username}</Text>
+                  <Text>{m.text}</Text>
+                </View>
+              ) : (
+                <View key={m.id} style={{ marginBottom: 10, alignItems: "flex-end", marginRight: 10}}>
+                  <Text>{m.from.username}</Text>
+                  <Text>{m.text}</Text>
+                </View>
+              )
             ))
-        )}
+          )}
+        </ScrollView>
         <TextInput
             placeholder={"Type your message"}
             onChangeText={onChangeText}
@@ -145,7 +159,7 @@ const MessageDetailPresenter = ({username, userId, roomId}) => {
             returnKeyType="send"
             value={message}
         />
-        </ScrollView>
+      </View>
     </KeyboardAvoidingView>
   );
 }

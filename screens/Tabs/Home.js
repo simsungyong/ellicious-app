@@ -6,7 +6,7 @@ import { gql } from "apollo-boost";
 import Loader from "../../components/Loader";
 import { useQuery } from "react-apollo-hooks";
 import Post from "../../components/Post";
-import {BG_COLOR} from "../../components/Color";
+import {BG_COLOR, mainPink} from "../../components/Color";
 import { POST_FRAGMENT } from "../../fragments";
 
 
@@ -25,7 +25,9 @@ const View = styled.View`
   flex: 1;
 `;
 const Container = styled.View`
-background-color : ${BG_COLOR};
+background-color : ${mainPink};
+padding-left: 2px;
+padding-right : 2px;
 `;
 
 const Text = styled.Text``;

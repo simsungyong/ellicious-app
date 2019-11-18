@@ -1,7 +1,7 @@
 export const BG_COLOR = "#f7f5f5";
 export const TINT_COLOR = "#404040";
 export const mainBlue = "#7AA1D2";
-export const mainPink = "#f5aeae";
+export const mainPink = "#ffc2c2";
 export const PointPink = "#f65252"
 export const StarColor = "#ffc06e";
 export const IconColor = "#3d3d3d";

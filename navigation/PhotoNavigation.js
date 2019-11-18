@@ -6,8 +6,8 @@ import SelectPhoto from "../screens/Photo/SelectPhoto";
 import TakePhoto from "../screens/Photo/TakePhoto";
 import MapContainer from '../screens/Map/MapContainer';
 import UploadPhoto from "../screens/Photo/UploadPhoto";
-import { stackStyles } from "./config";
-import { PointPink, TINT_COLOR } from "../components/Color";
+import { PhotostackStyles } from "./config";
+import { PointPink, TINT_COLOR, mainPink } from "../components/Color";
 
 const PhotoTabs = createMaterialTopTabNavigator(
   {
@@ -37,7 +37,7 @@ const PhotoTabs = createMaterialTopTabNavigator(
       },
       style:{
         paddingBottom:20,
-        ...stackStyles
+        ...PhotostackStyles
       }
     }
   }
@@ -48,10 +48,10 @@ export default createStackNavigator({
     screen: PhotoTabs,
     navigationOptions:{
       title:"사 진",
-      headerBackTitle: "뒤로",
+      headerBackTitle: null ,
       headerTitle : (
         <View style = {{ alignItems : "center", flex : 1, padding : 5,  marginLeft : 5}}>
-          <Text style = {{ fontSize : 25 , color : PointPink, fontWeight : "bold"}}>
+          <Text style = {{ fontSize : 25 , color : TINT_COLOR, fontWeight : "200"}}>
             사 진
           </Text>
         </View>
@@ -61,8 +61,15 @@ export default createStackNavigator({
   Upload: {
     screen: UploadPhoto,
     navigationOptions:{
-      title: "New Post",
+      title: "새 게시글",
       headerBackTitle:null,
+      headerTitle : (
+        <View style = {{ alignItems : "center", flex : 1, padding : 5,  marginLeft : 5}}>
+          <Text style = {{ fontSize : 22 , color : TINT_COLOR, fontWeight : "200"}}>
+            새 게시글
+          </Text>
+        </View>
+      )
     }
   },
   
@@ -71,13 +78,20 @@ export default createStackNavigator({
     navigationOptions:{
       title: "방문한 맛집은?",
       headerBackTitle:null,
+      headerTitle : (
+        <View style = {{ alignItems : "center", flex : 1, padding : 5,  marginLeft : 5}}>
+          <Text style = {{ fontSize : 22 , color : TINT_COLOR, fontWeight : "200"}}>
+            방문한 맛집은?
+          </Text>
+        </View>
+      )
     }
   }
 },
 {
   defaultNavigationOptions:{
     headerStyle:{
-      ...stackStyles
+      ...PhotostackStyles
     },
     headerTintColor:TINT_COLOR,
   }

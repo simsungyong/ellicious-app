@@ -1,5 +1,6 @@
 import React from "react";
-import { Platform, Text, View } from "react-native";
+import { Platform, Text, View, StyleSheet } from "react-native";
+import styled from 'styled-components';
 import { createBottomTabNavigator } from "react-navigation-tabs"
 import { createStackNavigator } from 'react-navigation-stack';
 import Home from "../screens/Tabs/Home";
@@ -10,12 +11,14 @@ import Detail from "../screens/Detail";
 import MessagesLink from "../components/MessagesLink";
 import NavIcon from "../components/NavIcons";
 import AlarmsLink from "../components/AlarmsLink";
-import { stackStyles } from "./config";
+import { stackStyles, HomestackStyles, SearchstackStyles  } from "./config";
 import CommentDetail from "../screens/CommentDetail";
 import styles from "../styles";
 import UserDetail from "../screens/UserDetail";
-import { PointPink, TINT_COLOR } from "../components/Color";
+import { PointPink, TINT_COLOR, Grey, mainPink } from "../components/Color";
 import MapContainer from '../screens/Map/MapContainer';
+import { white } from "ansi-colors";
+import { AntDesign } from "@expo/vector-icons";
 
 const stackFactory = (initialRoute, customConfig) =>
   createStackNavigator({
@@ -28,7 +31,7 @@ const stackFactory = (initialRoute, customConfig) =>
       navigationOptions: {
       title: "Photo",
       headerTitle : (
-        <View style = {{ alignItems : "center", flex : 1, padding : 5,  marginLeft : 5}}>
+        <View style = {{ alignItems : "flex-start", flex : 1, padding : 5,  marginLeft : 5}}>
           <Text style = {{ fontSize : 20 , color : TINT_COLOR, fontWeight : "bold"}}>
             Post
           </Text>
@@ -54,67 +57,120 @@ const stackFactory = (initialRoute, customConfig) =>
     defaultNavigationOptions: {
         headerBackTitle: null,
         headerTintColor: styles.blackColor,
-        headerStyle: { ...stackStyles }
+        //headerStyle: { ...stackStyles }
     }
   });
 
+const HeaderRight = styled.View`
+flex-direction : row;
+  alignItems: center;
+  justifyContent: center;
+  marginTop : 10;
+`;
+const Title = styled.Text`
+fontFamily : 'korElli';
+fontSize : 40 ;
+color : #f7f7f7;
+`;
+const test = StyleSheet.create(
+  {
+      MainContainer:
+      {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+  
+      },
+  
+      TextShadowStyle:
+      {
+         textAlign: 'center',
+         fontSize: 40,
+         textShadowColor: PointPink,
+         textShadowOffset: { width: 1, height: 4 },
+         textShadowRadius: 4
+      
+      }
+  
+  });
 /* 탭 내비게이션 메뉴 설정 */
 export default createBottomTabNavigator({
   
   Home: {
     screen: stackFactory(Home, {
-      title: "Ellicious",
-      headerRight: <MessagesLink />,
-      headerLeft : <AlarmsLink/>,
-      headerTitle : (
-        <View style = {{ alignItems : "flex-start", flex : 1, padding : 5,  marginLeft : 5}}>
-          <Text style = {{ fontFamily : 'elli', fontSize : 35 , color : PointPink}}>
+     // title: "Ellicious",
+      headerRight: (
+        <HeaderRight>
+          <MessagesLink />
+          <AlarmsLink/>
+        </HeaderRight>
+        ),
+        headerLeft : (
+          <View style = {{ alignItems : "flex-start", flex : 1, padding : 5,  marginLeft : 5, marginTop : 10}}>
+            <Title style={test.TextShadowStyle}>
+              Ellicious
+            </Title>
+          </View>
+        ),
+        headerStyle: HomestackStyles 
+     /* headerTitle : (
+        <View style = {{ alignItems : "flex-start", flex : 1, padding : 5,  marginLeft : 5, backgroundColor:'red'
+        }}>
+          <Text style = {{ fontFamily : 'korElli', fontSize : 35 , color : PointPink}}>
             Ellicious
           </Text>
         </View>
-      )
+      ) */
     }),
     navigationOptions: {
       tabBarIcon: ({ focused }) => (
-          <NavIcon
+          <AntDesign
             focused={focused}
-            name={Platform.OS === "ios" ? "ios-home" : "md-home"}
+            color={focused ? mainPink : Grey}
+            name={Platform.OS === "ios" ? "home" : "home"}
+            size={27}
           />
       )
     }
   },
   Search: {
     screen: stackFactory(Search, {
-      headerBackTitle: null
+      headerBackTitle: null,
+      headerStyle: SearchstackStyles 
     }),
     navigationOptions: {
       tabBarIcon: ({ focused }) => (
-          <NavIcon
+          <AntDesign
+            size={27}
+            color={focused ? mainPink : Grey}
             focused={focused}
-            name={Platform.OS === "ios" ? "ios-search" : "md-search"}
+            name={Platform.OS === "ios" ? "search1" : "search1"}
           />
       )
     }
   },
   Add: {
     screen: View,
+    headerStyle: stackStyles,
     navigationOptions: {
         tabBarOnPress: ({ navigation }) => navigation.navigate("PhotoNavigation"),
         tabBarIcon: ({ focused }) => (
-          <NavIcon
+          <AntDesign
+            color={focused ? mainPink : Grey}
             focused={focused}
             size={28}
-            name={Platform.OS === "ios" ? "ios-add" : "md-add"}
+            name={Platform.OS === "ios" ? "pluscircleo" : "pluscircleo"}
           />
       )
     }
   },
   Profile: {
     screen: stackFactory(Profile, {
-      title: "Profile",
+      headerStyle: stackStyles,
+      title: "프로필",
       headerTitle : (
         <View style = {{ alignItems : "center", flex : 1}}>
-          <Text style = {{ fontFamily : 'elli', fontSize : 30 , color : PointPink}}>
+          <Text style = {{ fontSize : 30 , color : PointPink, fontWeight: "200"}}>
             Profile
           </Text>
         </View>
@@ -122,19 +178,22 @@ export default createBottomTabNavigator({
     }),
     navigationOptions: {
         tabBarIcon: ({ focused }) => (
-            <NavIcon
+            <AntDesign
+              size={28}
+              color={focused ? mainPink : Grey}
               focused={focused}
-              name={Platform.OS === "ios" ? "ios-person" : "md-person"}
+              name={Platform.OS === "ios" ? "user" : "user"}
             />
         )
     }
   },
   MyPick: {
     screen: stackFactory(MyPick, {
+      headerStyle: stackStyles ,
       title: "MyPick",
       headerTitle : (
         <View style = {{ alignItems : "center", flex : 1}}>
-          <Text style = {{ fontFamily : 'elli', fontSize : 35 , color : PointPink}}>
+          <Text style = {{ fontSize : 30 , color : PointPink, fontWeight: "200"}}>
            MyPick
           </Text>
         </View>
@@ -142,19 +201,30 @@ export default createBottomTabNavigator({
     }),
     navigationOptions: {
         tabBarIcon: ({ focused }) => (
-            <NavIcon
+            <AntDesign
               focused={focused}
+              color={focused ? mainPink : Grey}
               name={
                 Platform.OS === "ios"
                   ? focused
-                    ? "ios-heart"
-                    : "ios-heart-empty"
+                    ? "pushpin"
+                    : "pushpino"
                   : focused
-                  ? "md-heart"
-                  : "md-heart-empty"
+                  ? "pushpin"
+                  : "pushpino"
               }
+              size={27}
             />
         )
     }
-  }
-});
+  },
+},
+{
+  tabBarOptions: {
+    showLabel: false,
+    style : {
+      //backgroundColor : mainPink
+    }
+}  
+}
+);

@@ -11,24 +11,40 @@ import {
   TouchableOpacity,
   Button,
 } from "react-native";
+import styled from "styled-components";
 
+import Stars from 'react-native-stars';
+import {FontAwesome, EvilIcons} from "@expo/vector-icons";
+import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line } from '../Color';
 import MapView from "react-native-maps";
 
+const Rating = styled.View`
+  alignItems: flex-end;
+  justifyContent: center;
+  flex : 1
 
+`;
 const { width, height } = Dimensions.get("window");
 
 const CARD_HEIGHT = height / 4;
 const CARD_WIDTH = CARD_HEIGHT - 50;
 
 export default class MyPick extends Component {
+    state = {
+        coordinate:{
+            latitude:0,
+            longitude:0
+        }
+    }
     constructor(props) {
         super(props);
         const {marker, region} = props;
         this.state = {marker, region};
+        
     }
     
     
-    
+   
 
   componentWillMount() {
     this.index = 0;
@@ -39,8 +55,8 @@ export default class MyPick extends Component {
     // We should just debounce the event listener here
     this.animation.addListener(({ value }) => {
       let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
-      if (index >= this.state.marker.posts.length) {
-        index = this.state.marker.posts.length - 1;
+      if (index >= this.state.marker.picks.length) {
+        index = this.state.marker.picks.length - 1;
       }
       if (index <= 0) {
         index = 0;
@@ -50,10 +66,12 @@ export default class MyPick extends Component {
       this.regionTimeout = setTimeout(() => {
         if (this.index !== index) {
           this.index = index;
-          const { coordinate } = this.state.marker.posts[index];
+          this.setState({coordinate:{latitude:this.state.marker.picks[index].post.storeLat, longitude:this.state.marker.picks[index].post.storeLong}})
+          
+          //const longitude = this.state.marker.picks[index].post.storeLong;
           this.map.animateToRegion(
             {
-              ...coordinate,
+              ...this.state.coordinate,
               latitudeDelta: this.state.region.latitudeDelta,
               longitudeDelta: this.state.region.longitudeDelta,
             },
@@ -65,8 +83,8 @@ export default class MyPick extends Component {
   }
 
   render() {
-    console.log(this.state.marker.posts);
-    const interpolations = this.state.marker.posts.map((marker, index) => {
+    
+    const interpolations = this.state.marker.picks.map((marker, index) => {
       const inputRange = [
         (index - 1) * CARD_WIDTH,
         index * CARD_WIDTH,
@@ -74,7 +92,7 @@ export default class MyPick extends Component {
       ];
       const scale = this.animation.interpolate({
         inputRange,
-        outputRange: [1, 2.5, 1],
+        outputRange: [0.5, 1.7, 0.5],
         extrapolate: "clamp",
       });
       const opacity = this.animation.interpolate({
@@ -88,11 +106,12 @@ export default class MyPick extends Component {
     return (
       <View style={styles.container}>
         <MapView
+            showsUserLocation
           ref={map => this.map = map}
-          initialRegion={this.props.region}
+          initialRegion={this.state.region}
           style={styles.container}
         >
-          {this.state.marker.posts.map((marker, index) => {
+          {this.state.marker.picks.map((marker, index) => {
             const scaleStyle = {
               transform: [
                 {
@@ -104,7 +123,7 @@ export default class MyPick extends Component {
               opacity: interpolations[index].opacity,
             };
             return (
-              <MapView.Marker key={index} coordinate={marker.coordinate}>
+              <MapView.Marker key={index} coordinate={{latitude:marker.post.storeLat, longitude:marker.post.storeLong}}>
                 <Animated.View style={[styles.markerWrap, opacityStyle]}>
                   <Animated.View style={[styles.ring, scaleStyle]} />
                   <View style={styles.marker} />
@@ -133,18 +152,19 @@ export default class MyPick extends Component {
           style={styles.scrollView}
           contentContainerStyle={styles.endPadding}
         >
-          {this.state.marker.posts.map((marker, index) => (
+          {this.state.marker.picks.map((marker, index) => (
             <View style={styles.card} key={index}>
               <Image
-                source={marker.image}
+                source={{uri:marker.post.files[0].url}}
                 style={styles.cardImage}
                 resizeMode="cover"
               />
               <View style={styles.textContent}>
-                <Text numberOfLines={1} style={styles.cardtitle}>{marker.title}</Text>
+                <Text numberOfLines={1} style={styles.cardtitle}>{marker.post.storeName}</Text>
                 <Text numberOfLines={1} style={styles.cardDescription}>
                   {marker.description}
                 </Text>
+                
               </View>
             </View>
           ))}

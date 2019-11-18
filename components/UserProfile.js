@@ -192,9 +192,7 @@ const UserProfile = ({
       ) : (
         <Maps>
           <MapViews />
-          <View>
-            <Text>카테고리</Text>
-          </View>
+          
         </Maps>
       )}
     </ImageCon>

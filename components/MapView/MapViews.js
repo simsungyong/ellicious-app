@@ -5,6 +5,7 @@ import { useQuery } from "react-apollo-hooks";
 import { gql } from "apollo-boost";
 import Loader from '../Loader';
 import {CATEGORYINFO_FRAGMENT} from '../../fragments';
+import MapViewContainer from '../../components/MapView/MapViewProfile';
 
 const styles = StyleSheet.create({
     container: {
@@ -12,39 +13,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    mapStyle: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height/2,
-    },
+    }
 });
-const INITIAL_MARKER = [
-    {
-        id:1,
-        region:{latitude:37.62572129999999, longitude:127.0653296 },
-        title: '땅코',
-        desc: 'ㄹㄹㄹㄹㄹㄹㄹ'
-    },
-    {
-        id:2,
-        region:{latitude:37.6563426, longitude:127.0781567 },
-        title: '왕짜장',
-        desc: 'ㄹㄹㄹㄹㄹddㄹㄹ',
-    },
-    {
-        id:3,
-        region:{latitude:37.6274535, longitude:127.0781088 },
-        title: '몰라몰라',
-        desc: 'ㄹㄹㄹㄹㄹㄹㄹ',
-    },
-]
 
-const initialState = {
-    latitude: 37.630069700,
-    longitude: 127.0760193,
-    latitudeDelta:0.0922,
-    longitudeDelta:0.0421,
-}
+const region = {  
+    latitude: 37.6247855,
+    longitude: 127.0773206,
+    latitudeDelta: 0.047864195044303443,
+    longitudeDelta: 0.0540142817690068,
+  };
 
 const GET_CATEGORYINFO = gql`
   {
@@ -55,14 +32,16 @@ const GET_CATEGORYINFO = gql`
 `;
 
 
-export default MapViews = () => {
-    let myMap;
-    let a;
+const MapViews=()=> {
+    
     const { loading, data } = useQuery(GET_CATEGORYINFO);
-
-    {loading ? <Loader/> : console.log(data.seeCategory);}
-    const [currentPosition, setCurrentPosition] = useState(initialState);
-    /*useEffect(()=>{
+    //const [marker, setMarker] = useState(data.seeCategory);
+    if(!loading){
+        console.log(data.seeCategory)
+    }
+    const [currentPosition, setCurrentPosition] = useState();
+    /*
+    useEffect(()=>{
         navigator.geolocation.getCurrentPosition(position=>{
             const {longitude, latitude} = position.coords;
             setCurrentPosition({
@@ -75,58 +54,10 @@ export default MapViews = () => {
         {timeout:20000, maximumAge:1000}
         )
     },[]);*/
-
-    const renderMarker = () =>{
-        return INITIAL_MARKER.map(_marker=>(            
-            <Marker
-            //draggable
-             key={_marker.id}
-             coordinate={_marker['region']}
-             pinColor={'#000000'}
-             title={_marker.title}
-             description={_marker['desc']}
-             onPress={()=>console.log(_marker['region'])}
-                 /*myMap.fitToCoordinates([_marker['region']],{
-                     edgePadding:{top:10, bottom:10, left:10, right:10},
-                     //animated:true
-                 })
-                }}*/>
-                    
-                </Marker>
-            
-        ));
-    }
-    
-
-    return currentPosition.latitude ? (
+    return(
         <View style={styles.container}>
-          <MapView 
-            ref={ref=>myMap = ref}
-            provider={PROVIDER_GOOGLE}
-            style={styles.mapStyle}
-            initialRegion={currentPosition}
-            //onRegionChange={setCurrentPosition}
-            showsUserLocation
-             >
-        
-            {renderMarker()}
-            
-        </MapView>
+            {loading ? <Loader/> : <MapViewContainer marker={data.seeCategory} region={region}/> }
         </View>
-    ): <Loader/>;
-}
-
-/* <Polygon coordinates={INITIAL_MARKER.region}
-fillColor={'rgba(100,200,200,0.3)'}*/
-/*showWelcomeMessage=()=>{
-    Alert.alert(
-        "Welcome to fafaf",
-        [{
-            text:"Cancel",
-            style:"cancel"
-        },
-        {
-            text:"OK"
-        }]
     )
-}*/
+}
+export default MapViews;

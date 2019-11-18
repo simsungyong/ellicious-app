@@ -39,45 +39,43 @@ export default class MapContainer extends React.Component {
     };
 }
     onSubmitEditing=async()=>{
-        const {searchTerm} = this.state;
-        if(searchTerm !==""){
+    }
+    handleSearchUpdate = async(text) => {
+        this.setState({
+            searchTerm:text
+        })
+        if(text !==""){
             let loading, searchResults, error;
             this.setState({
                 loading:true
             });
             try{
                 ({
-                    data:{results: searchResults}}
-                    = await search.searchStore(searchTerm));
-                } catch{
-                    error:"can't search"
-                }finally{
-                    this.setState({
-                        loading:false,
-                        searchResults,
-                        error
-                    });
-                }
+                data:{results: searchResults}}
+                = await search.searchStore(text));
+            } catch{
+                error:"can't search"
+            }finally{
+                this.setState({
+                    loading:false,
+                    searchResults,
+                    error
+                });
             }
         }
-        handleSearchUpdate = text=>{
-            this.setState({
-                searchTerm:text
-            })
-        }
-        render(){
-            const{loading, searchResults, searchTerm, photo} = this.state;
-            return (
-            
-                <MapPresenter
-                photo={photo}
-                loading={loading}
-                searchResults={searchResults}
-                searchTerm={searchTerm}
-                onSubmitEditing={this.onSubmitEditing}
-                handleSearchUpdate={this.handleSearchUpdate}/>
-            );
-        }
     }
+    render(){
+        const{loading, searchResults, searchTerm, photo} = this.state;
+        return (
+            <MapPresenter
+            photo={photo}
+            loading={loading}
+            searchResults={searchResults}
+            searchTerm={searchTerm}
+            onSubmitEditing={this.onSubmitEditing}
+            handleSearchUpdate={this.handleSearchUpdate}/>
+        );
+    }
+}
 
     

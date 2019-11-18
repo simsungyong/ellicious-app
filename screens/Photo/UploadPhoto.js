@@ -153,6 +153,7 @@ export default ({navigation}) => {
       uri: photo.uri
     });
     try {
+      console.log(formData)
       const {
         data: { location }
       } = await axios.post("http//192.168.0.135:4000/api/upload", formData, {

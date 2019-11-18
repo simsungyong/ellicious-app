@@ -5,6 +5,7 @@ import { gql } from "apollo-boost";
 import Loader from "../../components/Loader";
 import { useQuery } from "react-apollo-hooks";
 import MessageRooms from "../../components/MessageRooms";
+import { mainPink } from "../../components/Color";
 
 export const Messages = gql`
   {
@@ -31,7 +32,7 @@ export default ({ navigation }) => {
         {loading ? <Loader /> : data && data.seeRooms && data.seeRooms.map(room =>
           <MessageRooms key={room.id} {...room} />)}
       </ScrollView>
-      <Button title="대화상대 추가" onPress={() => navigation.navigate("MessageRoom")}></Button>
+      <Button title="대화상대 추가"  onPress={() => navigation.navigate("MessageRoom")}></Button>
     </View>
   );
 };

@@ -8,6 +8,7 @@ import constants from "../../../constants";
 import { PointPink, mainPink } from "../../../components/Color";
 
 
+
 export default class extends React.Component {
   static navigationOptions = ({ navigation }) => ({
     headerTitle: (
@@ -15,8 +16,10 @@ export default class extends React.Component {
         value={navigation.getParam("term", "")}
         onChange={navigation.getParam("onChange", () => null)}
         onSubmit={navigation.getParam("onSubmit", () => null)}
+        style={{alignItems: 'flex-start'}}
       />
-    )
+    ),
+    
   });
   constructor(props) {
       super(props);

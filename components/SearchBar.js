@@ -9,7 +9,7 @@ import { LightGrey } from "./Color";
 const SearchBar = ({ onChange, value, onSubmit }) => (
     <TextInput
         style={{
-            width: constants.width - 40,
+            width: constants.width - 45,
             height: 35,
             backgroundColor: LightGrey,
             padding: 10,

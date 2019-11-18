@@ -82,6 +82,18 @@ export const CATEGORY_FRAGMENT = gql`
     categoryName
   }`
 
+export const CATEGORYINFO_FRAGMENT = gql`
+fragment CategoryInfo on Category {
+    id
+    categoryName
+    posts{
+      storeName
+      storeLocation
+      storeLat
+      storeLong
+    }
+}`
+
 export const POST_COMMENT = gql`
   fragment CommentParts on Comment {
     id
@@ -101,6 +113,8 @@ export const POST_COMMENT = gql`
     createdAt
   }
 `
+
+
 
 /*
 

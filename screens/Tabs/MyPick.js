@@ -64,7 +64,7 @@ const PICK_ITEM = gql`
 const MyPick=({navigation})=>{
   const { loading, data } = useQuery(PICK_ITEM);
   //if(!loading){console.log(data)} 
-  const [marker, setMarker] = useState(data.me);
+  //const [marker, setMarker] = useState(data.me);
   
   /*const [currentPosition, setCurrentPosition] = useState(region);
     useEffect(()=>{
@@ -88,7 +88,7 @@ const MyPick=({navigation})=>{
 
   return(
     <View style={styles.container}>
-      {loading ? <Loader/> : <MapViewContainer navigation={navigation} marker={marker} region={region}/>}
+      {loading ? <Loader/> : <MapViewContainer navigation={navigation} marker={data.me} region={region}/>}
     </View>
   )
 }

@@ -176,9 +176,8 @@ const MessageDetailPresenter = ({username, userId, roomId}) => {
   };
 
   return (
-    <Container>
     <KeyboardAvoidingView behavior="padding" enabled>
-    
+      <Container>
         <ScrollView style={{ height : constants.height / 1.2 }}>
           {chat_message==undefined ?
           null
@@ -224,9 +223,8 @@ const MessageDetailPresenter = ({username, userId, roomId}) => {
           size={35}
           />
         </InputCon>
-      
+      </Container>
     </KeyboardAvoidingView>
-    </Container>
   );
 }
 

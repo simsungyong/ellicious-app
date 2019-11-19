@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Image, TouchableOpacity, ScrollView } from "react-native";
+import React, { useState, Component } from "react";
+import { Image, TouchableOpacity, ScrollView, StyleSheet } from "react-native";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import constants from "../constants";
@@ -9,7 +9,7 @@ import { LightPink, Grey, TINT_COLOR, PointPink, mainPink, LightGrey, Line } fro
 import { LinearGradient } from "expo-linear-gradient";
 import Hr from "hr-native";
 import MapView from "react-native-maps";
-
+import TopBarNav from 'top-bar-nav';
 
 const Container = styled.View`
   flex : 1;
@@ -25,12 +25,10 @@ const Top = styled.View`
 `;
 const View=styled.View`
 flex:1
-
 `;
 
 const ViewBox=styled.View`
 height : 30;
-
 `;
 const ProfileImage = styled.View`
   margin-left : 10px;
@@ -111,7 +109,36 @@ flex-direction : column
 flex : 1;
 `;
 
-const Maps = styled.View``;
+const Scene = ({ index }) => (
+  <View style={{ flex: 1, justifyContent: 'center'}}>
+    <Text style={{ fontSize: 50}}>{index}</Text>
+  </View>
+);
+/*
+const ScenePost = ({index=0}) => (
+  posts && posts.map(p =>
+    <SquarePhoto key={p.id} {...p} />
+  )
+);
+const SceneMap = ({index=1}) => (
+  <MapView/>
+);
+*/
+const ROUTES = {
+  Scene
+};
+
+const ROUTESTACK = [
+  { text: <TopButton>게시물</TopButton>, title: 'Scene' }, 
+  { text: <TopButton>맛지도</TopButton>, title: 'Scene' }, 
+];
+const Style = StyleSheet.create ({
+  underlineStyle: {
+    height: 3.6,
+    backgroundColor: mainPink,
+    width: constants.width / 2
+  }
+})
 const UserProfile = ({
   id,
   avatar,
@@ -135,9 +162,8 @@ const UserProfile = ({
 
   return (
     <Container>
-      
+      <ViewBox/>
       <Profile>
-        <ViewBox/>
         <Top>
           <ProfileImage>
             <Image 
@@ -169,35 +195,18 @@ const UserProfile = ({
           
         </Top>
       </Profile>
-     
-      <ButtonContainer>
-      <TouchableOpacity onPress={toggleGrid}>
-        <Button>
-          <TopButton>게시물</TopButton>
-        </Button>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={toggleGrid}>
-        <Button>
-          <TopButton>맛지도</TopButton>
-        </Button>
-      </TouchableOpacity>
-    </ButtonContainer>
       
-    <Hr lineStyle={{ backgroundColor : Line }}/>
-
-    <ScrollView>
-    <ImageCon>
-      {isGrid ? (
-        posts && posts.map(p =>
-          <SquarePhoto key={p.id} {...p} />
-        )
-      ) : (
-        <Maps>
-          <MapView />
-        </Maps>
-      )}
-    </ImageCon>
-    </ScrollView>
+      <TopBarNav
+          routeStack={ROUTESTACK}
+          renderScene={(route, i) => {
+            let Component = ROUTES[route.title];
+            return <Component index={i} />;
+          }}
+          headerStyle={{ paddingTop: 20 }}
+          inactiveOpacity={1}
+          fadeLabels={true}
+          underlineStyle={Style.underlineStyle}
+        />
     </Container>
   )
 };
@@ -270,5 +279,13 @@ export default UserProfile;
     </ButtonContainer>
  * 
  * 
- * 
+ * <ImageCon>
+              {isGrid ? (
+                posts && posts.map(p =>
+                  <SquarePhoto key={p.id} {...p} />
+                )
+              ) : (
+                <MapView />
+              )}
+            </ImageCon>
  */

@@ -118,7 +118,9 @@ const Scene = ({ index, posts }) => (
   
     <View style={{ flex: 1 }}>
       {(index == 1) ? (
+        
         <ProfileMapContainer style={{flex:1}}/>
+       
       ) : (
         <ScrollView>
         <Post>{

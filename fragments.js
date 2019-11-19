@@ -87,6 +87,7 @@ fragment CategoryInfo on Category {
     id
     categoryName
     posts{
+      id
       storeName
       storeLocation
       storeLat

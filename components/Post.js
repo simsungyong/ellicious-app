@@ -14,7 +14,7 @@ import {Card} from 'native-base'
 import { withNavigation } from "react-navigation";
 import Hr from "hr-native";
 import Stars from 'react-native-stars';
-import { ME } from "../screens/Tabs/MyPick";
+//import { PICK_ITEM } from "../screens/Tabs/MyPick";
 
 
 export const TOGGLE_LIKE = gql`
@@ -138,13 +138,13 @@ const Post = ({
         const [toggleLikeMutaton] = useMutation(TOGGLE_LIKE, {
         variables: {
         postId: id
-        }, refetchQueries:()=>[{query:ME}]});
+        }});
 
         const [togglePickMutation] = useMutation(TOGGLE_PICK, {
           variables:{
             postId: id
-          },
-          refetchQueries:()=>[{query: ME}]
+          }
+          
         });
       
     const time=moment(createdAt).startOf('hour').fromNow();

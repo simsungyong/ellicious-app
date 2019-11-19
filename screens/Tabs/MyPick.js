@@ -14,7 +14,7 @@ import {
   Button,
 } from "react-native";
 import MapView from "react-native-maps";
-import MapViewContainer from '../../components/MapView/MapViewPick';
+import MapViewPick from '../../components/MapView/MapViewPick';
 import Loader from "../../components/Loader";
 
 const styles = StyleSheet.create({
@@ -28,9 +28,6 @@ const styles = StyleSheet.create({
   backgroundColor: "rgba(120,3,150, 0.9)",
 },
 })
-
-
-
 
 
 const region = {  
@@ -62,33 +59,18 @@ const PICK_ITEM = gql`
 `;
 
 const MyPick=({navigation})=>{
-  const { loading, data } = useQuery(PICK_ITEM);
-  //if(!loading){console.log(data)} 
-  //const [marker, setMarker] = useState(data.me);
+  //const [isLoading, setLoading] = useState(false);
+  //const [qRefresh, setQRefresh] = useState(0)
+  const { loading, data, error } = useQuery(PICK_ITEM);
+  const [marker,setData] = useState('');
+  if(!loading){
+    console.log(data)
+    console.log(loading)
+  }
   
-  /*const [currentPosition, setCurrentPosition] = useState(region);
-    useEffect(()=>{
-        navigator.geolocation.getCurrentPosition(position=>{
-            const {longitude, latitude} = position.coords;
-            setCurrentPosition({
-                ...currentPosition,
-                latitude,
-                longitude
-            })
-        },
-        error=> alert(error.message),
-        {timeout:20000, maximumAge:1000}
-        )
-    },[]);
-  //console.log(data);
-  
-  const handle=async(index)=>{
-    await setMarker(markers[index]);
-  }*/
-
   return(
     <View style={styles.container}>
-      {loading ? <Loader/> : <MapViewContainer navigation={navigation} marker={data.me} region={region}/>}
+       {loading ? <Loader/> : <MapViewPick navigation={navigation} marker={data.me} region={region}/>}
     </View>
   )
 }
@@ -105,4 +87,4 @@ export default MyPick;
             ))}
         </View>*/
 
-        
+//     

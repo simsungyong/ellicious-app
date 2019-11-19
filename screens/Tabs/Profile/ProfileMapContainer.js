@@ -15,9 +15,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     subContainer: {
-        flex: 10,
-        justifyContent : 'flex-end',
-        flexDirection: 'row',
+        flex: 1,
+        justifyContent : 'flex-start',
+        
 
     }
 })
@@ -39,18 +39,19 @@ const GET_CATEGORYINFO = gql`
 
 
 const ProfileMapContainer=()=> {
-    const [index, setIndex] = useState(0);
+    const [indexCate, setIndex] = useState(1);
     const { loading, data } = useQuery(GET_CATEGORYINFO);
     
     
+   
 
     
     return(
         <View style={styles.container}>
-            {loading ? <Loader/> : <ProfileMapPresenter marker={data.seeCategory[index]} region={region}/> }
+            {loading ? <Loader/> : <ProfileMapPresenter marker={data.seeCategory[indexCate]} region={region}/> }
             <View style={styles.subContainer}>
                 {data.seeCategory.map((category, index)=>(
-                    <TouchableOpacity key={index}>
+                    <TouchableOpacity key={index} onPress={()=>console.log(index)}>
                         <>
                         <Text>{category.categoryName}</Text>
                         </>

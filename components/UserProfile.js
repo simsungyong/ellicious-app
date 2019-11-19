@@ -113,7 +113,7 @@ const Scene = ({ index, posts }) => (
   
   <View style={{ flex: 1 }}>
     {(index == 1) ? (
-      <MapView />
+      <MapView style={{flex:1}}/>
     ) : (
       posts && posts.map(p =>
         <SquarePhoto key={p.id} {...p} />

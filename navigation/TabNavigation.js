@@ -6,7 +6,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import Home from "../screens/Tabs/Home";
 import Search from "../screens/Tabs/Search";
 import MyPick from "../screens/Tabs/MyPick";
-import Profile from "../screens/Tabs/Profile";
+import Profile from "../screens/Tabs/Profile/Profile";
 import Detail from "../screens/Detail";
 import MessagesLink from "../components/MessagesLink";
 import NavIcon from "../components/NavIcons";

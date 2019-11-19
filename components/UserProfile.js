@@ -10,6 +10,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import Hr from "hr-native";
 import MapView from "react-native-maps";
 import TopBarNav from 'top-bar-nav';
+import ProfileMapContainer from "../screens/Tabs/Profile/ProfileMapContainer";
 
 const Container = styled.View`
   flex : 1;
@@ -117,7 +118,7 @@ const Scene = ({ index, posts }) => (
   
     <View style={{ flex: 1 }}>
       {(index == 1) ? (
-        <MapView style={{flex:1}}/>
+        <ProfileMapContainer style={{flex:1}}/>
       ) : (
         <ScrollView>
         <Post>{
@@ -128,7 +129,6 @@ const Scene = ({ index, posts }) => (
         </ScrollView>
       )}
     </View>
-  
 );
 
 const ROUTES = {

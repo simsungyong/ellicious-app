@@ -18,6 +18,7 @@ const SEARCH_STORE = gql`
       id
       storeName
       storeLocation
+      placeId
     }
   }
 `;

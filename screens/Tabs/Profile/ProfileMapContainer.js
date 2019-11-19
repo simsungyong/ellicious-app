@@ -39,26 +39,34 @@ const GET_CATEGORYINFO = gql`
 
 
 const ProfileMapContainer=()=> {
-    const [indexCate, setIndex] = useState(1);
+    const [mapIdx, setIndex] = useState(0);
+    const [confirm, setConform] = useState(false);
     const { loading, data } = useQuery(GET_CATEGORYINFO);
-    
-    
-   
 
+    const handleIndex = async (index) => {
+        await setConform(true)
+        await setIndex(index)
+        await setConform(false)
+        console.log(index)
+    }
     
     return(
         <View style={styles.container}>
-            {loading ? <Loader/> : <ProfileMapPresenter marker={data.seeCategory[indexCate]} region={region}/> }
-            <View style={styles.subContainer}>
-                {data.seeCategory.map((category, index)=>(
-                    <TouchableOpacity key={index} onPress={()=>console.log(index)}>
-                        <>
-                        <Text>{category.categoryName}</Text>
-                        </>
-                    </TouchableOpacity>
-                ))}
-            </View>
-
+            {loading===false && confirm===false ? ( 
+                <>
+                <ProfileMapPresenter marker={data.seeCategory[mapIdx]} region={region}/>
+                <View style={styles.subContainer}>
+                    {data.seeCategory.map((category, index)=>(
+                        <TouchableOpacity key={index} onPress={() => handleIndex(index)}>
+                            <>
+                            <Text>{category.categoryName}</Text>
+                            </>
+                        </TouchableOpacity>
+                    ))}
+                </View>
+                </>
+            ) : <Loader/> }
+            )}
         </View>
     )
 }

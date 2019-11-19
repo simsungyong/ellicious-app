@@ -23,7 +23,7 @@ import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 
 
-// AsyncStorage.clear();
+//AsyncStorage.clear();
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);

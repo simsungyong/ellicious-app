@@ -14,7 +14,7 @@ import {
   Button,
 } from "react-native";
 import MapView from "react-native-maps";
-import MapViewContainer from '../../components/MapView/MapViewPick';
+import MapViewContainer from '../../components/MapView/MapViewPick1';
 import Loader from "../../components/Loader";
 
 const styles = StyleSheet.create({

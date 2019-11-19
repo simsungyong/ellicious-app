@@ -109,21 +109,19 @@ flex-direction : column
 flex : 1;
 `;
 
-const Scene = ({ index }) => (
-  <View style={{ flex: 1, justifyContent: 'center'}}>
-    <Text style={{ fontSize: 50}}>{index}</Text>
+const Scene = ({ index, posts }) => (
+  
+  <View style={{ flex: 1 }}>
+    {(index == 1) ? (
+      <MapView />
+    ) : (
+      posts && posts.map(p =>
+        <SquarePhoto key={p.id} {...p} />
+      )
+    )}
   </View>
 );
-/*
-const ScenePost = ({index=0}) => (
-  posts && posts.map(p =>
-    <SquarePhoto key={p.id} {...p} />
-  )
-);
-const SceneMap = ({index=1}) => (
-  <MapView/>
-);
-*/
+
 const ROUTES = {
   Scene
 };
@@ -200,7 +198,7 @@ const UserProfile = ({
           routeStack={ROUTESTACK}
           renderScene={(route, i) => {
             let Component = ROUTES[route.title];
-            return <Component index={i} />;
+            return <Component index={i} posts={posts} />;
           }}
           headerStyle={{ paddingTop: 20 }}
           inactiveOpacity={1}
@@ -262,30 +260,3 @@ UserProfile.propTypes = {
 };
 
 export default UserProfile;
-
-
-/**
- * <ButtonContainer>
-      <TouchableOpacity onPress={toggleGrid}>
-        <Button>
-          <TopButton>게시물</TopButton>
-        </Button>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={toggleGrid}>
-        <Button>
-          <TopButton>맛지도</TopButton>
-        </Button>
-      </TouchableOpacity>
-    </ButtonContainer>
- * 
- * 
- * <ImageCon>
-              {isGrid ? (
-                posts && posts.map(p =>
-                  <SquarePhoto key={p.id} {...p} />
-                )
-              ) : (
-                <MapView />
-              )}
-            </ImageCon>
- */

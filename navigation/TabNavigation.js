@@ -15,6 +15,7 @@ import { stackStyles, HomestackStyles, SearchstackStyles  } from "./config";
 import CommentDetail from "../screens/CommentDetail";
 import styles from "../styles";
 import UserDetail from "../screens/UserDetail";
+import StoreDetail from "../screens/StoreDetail";
 import { PointPink, TINT_COLOR, Grey, mainPink } from "../components/Color";
 import MapContainer from '../screens/Map/MapContainer';
 import { white } from "ansi-colors";
@@ -46,10 +47,18 @@ const stackFactory = (initialRoute, customConfig) =>
         title: "댓 글"
       })
     },
+    
     UserDetail: {
       screen: UserDetail,
       navigationOptions: ({ navigation }) => ({
         title: navigation.getParam("username")
+      })
+    },
+
+    StoreDetail: {
+      screen: StoreDetail,
+      navigationOptions: ({ navigation }) => ({
+        title: navigation.getParam("storeName")
       })
     }
   },

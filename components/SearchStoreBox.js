@@ -19,8 +19,8 @@ const Profile = styled.View`
   margin-right : 5px;
 `;
 
-const SearchStoreBox = ({ navigation, storeName, storeLocation, id }) => (
-  <TouchableOpacity onPress={() => navigation.navigate("Profile", { id })}>
+const SearchStoreBox = ({ navigation, storeName, storeLocation, id, placeId }) => (
+  <TouchableOpacity onPress={() => navigation.navigate("StoreDetail", { storeName, placeId })}>
     <Header>
       <Profile>
         <Image 
@@ -38,7 +38,8 @@ const SearchStoreBox = ({ navigation, storeName, storeLocation, id }) => (
 SearchStoreBox.propTypes = {
   id: PropTypes.string.isRequired,
   storeName: PropTypes.string.isRequired,
-  storeLocation: PropTypes.string
+  storeLocation: PropTypes.string,
+  placeId: PropTypes.string.isRequired
 };
 
 export default withNavigation(SearchStoreBox);

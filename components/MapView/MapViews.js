@@ -36,9 +36,7 @@ const MapViews=()=> {
     
     const { loading, data } = useQuery(GET_CATEGORYINFO);
     //const [marker, setMarker] = useState(data.seeCategory);
-    if(!loading){
-        console.log(data.seeCategory)
-    }
+
     const [currentPosition, setCurrentPosition] = useState();
     /*
     useEffect(()=>{
@@ -56,7 +54,7 @@ const MapViews=()=> {
     },[]);*/
     return(
         <View style={styles.container}>
-            {loading ? <Loader/> : <MapViewContainer marker={data.seeCategory} region={region}/> }
+            {loading ? <Loader/> : <MapViewContainer marker={data.seeCategory[1]} region={region}/> }
         </View>
     )
 }

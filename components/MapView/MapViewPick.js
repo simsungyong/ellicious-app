@@ -29,7 +29,7 @@ const { width, height } = Dimensions.get("window");
 const CARD_HEIGHT = height / 4;
 const CARD_WIDTH = CARD_HEIGHT - 50;
 
-export default class MyPick extends Component {
+export default class MapViewPick extends Component {
     state = {
         coordinate:{
             latitude:0,
@@ -83,7 +83,7 @@ export default class MyPick extends Component {
   }
 
   render() {
-    
+    //console.log(this.state.marker.picks)
     const interpolations = this.state.marker.picks.map((marker, index) => {
       const inputRange = [
         (index - 1) * CARD_WIDTH,
@@ -229,9 +229,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   marker: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    width: 11,
+    height: 11,
+    borderRadius: 7,
     backgroundColor: "rgba(130,4,150, 0.9)",
   },
   ring: {

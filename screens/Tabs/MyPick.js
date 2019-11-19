@@ -14,7 +14,7 @@ import {
   Button,
 } from "react-native";
 import MapView from "react-native-maps";
-import MapViewContainer from '../../components/MapView/MapViewPick1';
+import MapViewContainer from '../../components/MapView/MapViewPick';
 import Loader from "../../components/Loader";
 
 const styles = StyleSheet.create({
@@ -61,7 +61,7 @@ const PICK_ITEM = gql`
   }
 `;
 
-const MyPick=()=>{
+const MyPick=({navigation})=>{
   const { loading, data } = useQuery(PICK_ITEM);
   
   //const [marker, setMarker] = useState(data.me);
@@ -88,7 +88,7 @@ const MyPick=()=>{
 
   return(
     <View style={styles.container}>
-      {loading ? <Loader/> : <MapViewContainer marker={data.me} region={region}/>}
+      {loading ? <Loader/> : <MapViewContainer navigation={navigation} marker={data.me} region={region}/>}
     </View>
   )
 }

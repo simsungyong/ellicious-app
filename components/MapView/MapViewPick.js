@@ -16,21 +16,15 @@ import styled from "styled-components";
 import Stars from 'react-native-stars';
 import {FontAwesome, EvilIcons} from "@expo/vector-icons";
 import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line } from '../Color';
-import MapView from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE,Marker, Callout, Circle } from "react-native-maps";
+import { Platform } from "@unimodules/core";
+import Carousel from 'react-native-snap-carousel';
 
-const Rating = styled.View`
-  alignItems: flex-end;
-  justifyContent: center;
-  flex : 1
-
-`;
-const { width, height } = Dimensions.get("window");
-
-const CARD_HEIGHT = height / 4;
-const CARD_WIDTH = CARD_HEIGHT - 50;
-
-export default class MapViewPick extends Component {
+export default class MapViewPick extends React.Component {
+    
     state = {
+        //translateYValue: new Animated.Value(value),
+
         coordinate:{
             latitude:0,
             longitude:0
@@ -38,231 +32,162 @@ export default class MapViewPick extends Component {
     }
     constructor(props) {
         super(props);
+        const {navigation} = props;
         const {marker, region} = props;
         this.state = {marker, region};
+    }
+
+    
+
+    componentDidMount(){
+        this.locationCurrentPosition();
         
     }
+
+    locationCurrentPosition=()=>{
+        navigator.geolocation.getCurrentPosition(position=>{
+            //this.setState({coordinate:position.coords})
+            this.setState({region:{latitude:position.coords.latitude,
+                                    longitude: position.coords.longitude,
+                                    ...this.state.region}})
+            console.log(this.state.region);
+
+            
+        },
+        error=> alert(error.message),
+        {timeout:20000, maximumAge:1000}
+        )
+    }
+
+   onCarouselItemChange=(index)=>{
+        let latitude = this.state.marker.picks[index].post.storeLat
+        let longitude = this.state.marker.picks[index].post.storeLong
+        this._map.animateToRegion({
+            latitude:latitude,
+            longitude:longitude,
+            latitudeDelta: 0.047864195044303443,
+            longitudeDelta: 0.0540142817690068,
+        })
+    }
     
-    
-   
+    onMarkerPressed=(index)=>{
+        this._map.animateToRegion({
+            latitude: this.state.marker.picks[index].post.storeLat,
+            longitude: this.state.marker.picks[index].post.storeLong,
+            latitudeDelta: 0.047864195044303443,
+            longitudeDelta: 0.0540142817690068
+        })
 
-  componentWillMount() {
-    this.index = 0;
-    this.animation = new Animated.Value(0);
-  }
-  componentDidMount() {
-    // We should detect when scrolling has stopped then animate
-    // We should just debounce the event listener here
-    this.animation.addListener(({ value }) => {
-      let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
-      if (index >= this.state.marker.picks.length) {
-        index = this.state.marker.picks.length - 1;
-      }
-      if (index <= 0) {
-        index = 0;
-      }
+        this._carousel.snapToItem(index);
+    }
 
-      clearTimeout(this.regionTimeout);
-      this.regionTimeout = setTimeout(() => {
-        if (this.index !== index) {
-          this.index = index;
-          this.setState({coordinate:{latitude:this.state.marker.picks[index].post.storeLat, longitude:this.state.marker.picks[index].post.storeLong}})
-          
-          //const longitude = this.state.marker.picks[index].post.storeLong;
-          this.map.animateToRegion(
-            {
-              ...this.state.coordinate,
-              latitudeDelta: this.state.region.latitudeDelta,
-              longitudeDelta: this.state.region.longitudeDelta,
-            },
-            350
-          );
-        }
-      }, 10);
-    });
-  }
 
-  render() {
-    //console.log(this.state.marker.picks)
-    const interpolations = this.state.marker.picks.map((marker, index) => {
-      const inputRange = [
-        (index - 1) * CARD_WIDTH,
-        index * CARD_WIDTH,
-        ((index + 1) * CARD_WIDTH),
-      ];
-      const scale = this.animation.interpolate({
-        inputRange,
-        outputRange: [0.5, 1.7, 0.5],
-        extrapolate: "clamp",
-      });
-      const opacity = this.animation.interpolate({
-        inputRange,
-        outputRange: [0.35, 1, 0.35],
-        extrapolate: "clamp",
-      });
-      return { scale, opacity };
-    });
+    renderCarouselItem = ({item})=>(
+        <View style={styles.cardContainer}>
+            <Text style={styles.cardTitle}>{item.post.storeName}</Text>
+            <Image source={{uri:item.post.files[0].url}}
+                                style={styles.cardImage, {width:130, height:130}}/>
+        </View>
+    )
 
-    return (
-      <View style={styles.container}>
-        <MapView
-            showsUserLocation
-          ref={map => this.map = map}
-          initialRegion={this.state.region}
-          style={styles.container}
-        >
-          {this.state.marker.picks.map((marker, index) => {
-            const scaleStyle = {
-              transform: [
-                {
-                  scale: interpolations[index].scale,
-                },
-              ],
-            };
-            const opacityStyle = {
-              opacity: interpolations[index].opacity,
-            };
-            return (
-              <MapView.Marker key={index} coordinate={{latitude:marker.post.storeLat, longitude:marker.post.storeLong}}>
-                <Animated.View style={[styles.markerWrap, opacityStyle]}>
-                  <Animated.View style={[styles.ring, scaleStyle]} />
-                  <View style={styles.marker} />
-                </Animated.View>
-              </MapView.Marker>
-            );
-          })}
-        </MapView>
-        <Animated.ScrollView
-          horizontal
-          scrollEventThrottle={1}
-          showsHorizontalScrollIndicator={false}
-          snapToInterval={CARD_WIDTH}
-          onScroll={Animated.event(
-            [
-              {
-                nativeEvent: {
-                  contentOffset: {
-                    x: this.animation,
-                  },
-                },
-              },
-            ],
-            { useNativeDriver: true }
-          )}
-          style={styles.scrollView}
-          contentContainerStyle={styles.endPadding}
-        >
-          {this.state.marker.picks.map((marker, index) => (
-            <View style={styles.card} key={index}>
-              <Image
-                source={{uri:marker.post.files[0].url}}
-                style={styles.cardImage}
-                resizeMode="cover"
-              />
-              <View style={styles.textContent}>
-                <Text numberOfLines={1} style={styles.cardtitle}>{marker.post.storeName}</Text>
-                <Text numberOfLines={1} style={styles.cardDescription}>
-                  {marker.description}
-                </Text>
+    render(){
+        //console.log(this.state.marker.picks);
+        return (
+            <View style={styles.container}>
+            <MapView
+                provider={PROVIDER_GOOGLE}
+                ref={map=>this._map = map}
+                style={styles.map}
+                showsUserLocation={true}
+                initialRegion={this.state.region}>
                 
-              </View>
-            </View>
-          ))}
-        </Animated.ScrollView>
-      </View>
-   );
-  }
+                {this.state.marker.picks.map((marker, index)=>(
+                    <Marker 
+                    key={index}
+                    onPress={this.onMarkerPressed(index)} 
+                    coordinate={{latitude:marker.post.storeLat, longitude:marker.post.storeLong}}
+                    //ref={ref=>this.state.markers[index] = ref}//}
+                    >
+                    
+                    <Image source={{uri:marker.post.files[0].url}}
+                                style={styles.markerImage}/>
+
+                    </Marker>
+                ))}
+                
+                </MapView>
+                <Carousel
+                    ref={(c) => { this._carousel = c; }}
+                    data={this.state.marker.picks}
+                    renderItem={this.renderCarouselItem}
+                    sliderWidth={Dimensions.get("window").width}
+                    itemWidth={300}
+                    containerCustomStyle={styles.carousel}
+                    removeClippedSubviews={false}
+                    onSnapToItem={(index=>this.onCarouselItemChange(index))}
+            />
+                </View>
+
+        )
+        
+    }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 10,
-  },
-  container1: {
-    alignItems:"center",
-    flex: 1,
-    flexDirection:'row'
-  },
-  scrollView: {
-    position: "absolute",
-    bottom: 30,
-    left: 0,
-    right: 0,
-    paddingVertical: 10,
-  },
-  endPadding: {
-    paddingRight: width - CARD_WIDTH,
-  },
-  card: {
-    padding: 10,
-    elevation: 2,
-    backgroundColor: "#FFF",
-    marginHorizontal: 10,
-    shadowColor: "#000",
-    shadowRadius: 5,
-    shadowOpacity: 0.3,
-    shadowOffset: { x: 2, y: -2 },
-    height: CARD_HEIGHT,
-    width: CARD_WIDTH,
-    overflow: "hidden",
-  },
-  cardImage: {
-    flex: 3,
-    width: "100%",
-    height: "100%",
-    alignSelf: "center",
-  },
-  textContent: {
-    flex: 1,
-  },
-  cardtitle: {
-    fontSize: 12,
-    marginTop: 5,
-    fontWeight: "bold",
-  },
-  cardDescription: {
-    fontSize: 12,
-    color: "#444",
-  },
-  markerWrap: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  marker: {
-    width: 11,
-    height: 11,
-    borderRadius: 7,
-    backgroundColor: "rgba(130,4,150, 0.9)",
-  },
-  ring: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: "rgba(130,4,150, 0.3)",
-    position: "absolute",
-    borderWidth: 1,
-    borderColor: "rgba(130,4,150, 0.5)",
-  },
-  
-});
+    container:{
+        ...StyleSheet.absoluteFillObject
+    },
+    map:{
+        ...StyleSheet.absoluteFillObject
+    },
+    carousel:{
+        position:'absolute',
+        bottom:0,
+        marginBottom:48
+    },
+    cardContainer:{
+        backgroundColor: 'rgba(0,0,0,0.6)',
+        height:200,
+        width:300,
+        padding: 24,
+        borderRadius: 24
+    
+    },
+    cardImage:{
+        height:120,
+        width:300,
+        bottom:0,
+        position:'absolute',
+        borderBottomLeftRadius:24,
+        borderBottomRightRadius:24
+    },
+    cardTitle:{
+        color:"white",
+        fontSize:22,
+        alignSelf:'center',
+        marginBottom:10
+    },
+    markerImage:{
+        width:25,
+        height:25,
+        opacity:1,
+        borderWidth:2,
+        borderBottomLeftRadius:10,
+        borderBottomRightRadius:10,
+        borderTopLeftRadius:10,
+        borderTopRightRadius:10,
 
-AppRegistry.registerComponent("mapfocus", () => screens);
+    }
+})
 
-/*import React from "react";
-import styled from "styled-components";
+/*{this.state.marker.picks.map((marker, index)=>(
+                    <Circle
+                        key={index} center={{latitude:marker.post.storeLat, longitude:marker.post.storeLong}}
+                        radius={150}
+                        fillColor={'rgba(150,2000,200,0.5)'}/>))}*/
 
-const View = styled.View`
-  justify-content: center;
-  align-items: center;
-  flex: 1;
-`;
-
-const Text = styled.Text``;
-
-export default () => (
-  <View>
-    <Text>콕 집기</Text>
-  </View>
-);*/
-
-
+/*<Callout>
+                            <Image source={{uri:marker.post.files[0].url}}
+                                style={styles.cardImage, {width:50, height:50}}/>
+                            <Text>{marker.post.storeName}</Text>
+                        </Callout>*/

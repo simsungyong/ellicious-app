@@ -109,17 +109,26 @@ flex-direction : column
 flex : 1;
 `;
 
+const Post = styled.View`
+flex-direction : row;
+`;
+
 const Scene = ({ index, posts }) => (
   
-  <View style={{ flex: 1 }}>
-    {(index == 1) ? (
-      <MapView style={{flex:1}}/>
-    ) : (
-      posts && posts.map(p =>
-        <SquarePhoto key={p.id} {...p} />
-      )
-    )}
-  </View>
+    <View style={{ flex: 1 }}>
+      {(index == 1) ? (
+        <MapView style={{flex:1}}/>
+      ) : (
+        <ScrollView>
+        <Post>{
+        posts && posts.map(p =>
+          <SquarePhoto key={p.id} {...p} />
+        )}
+        </Post>
+        </ScrollView>
+      )}
+    </View>
+  
 );
 
 const ROUTES = {

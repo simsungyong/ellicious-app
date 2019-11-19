@@ -1,7 +1,7 @@
-import { BG_COLOR } from "../components/Color";
+import { BG_POST_COLOR } from "../components/Color";
 
 export const HomestackStyles = {
-  backgroundColor: BG_COLOR,
+  backgroundColor: BG_POST_COLOR,
   height : 60
 };
 

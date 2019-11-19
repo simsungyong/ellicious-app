@@ -14,8 +14,8 @@ import {
   Button,
 } from "react-native";
 import MapView from "react-native-maps";
-import MapViewContainer from '../../components/MapView/MapViewPick';
-import Loader from "../../components/Loader";
+import MapViewContainer from '../../../components/MapView/MapViewPick';
+import Loader from "../../../components/Loader";
 
 const styles = StyleSheet.create({
   container: {
@@ -61,7 +61,7 @@ const PICK_ITEM = gql`
   }
 `;
 
-const MyPick=({navigation})=>{
+const ProfileMapContainer=({navigation})=>{
   const { loading, data } = useQuery(PICK_ITEM);
   //if(!loading){console.log(data)} 
   const [marker, setMarker] = useState(data.me);
@@ -94,15 +94,4 @@ const MyPick=({navigation})=>{
 }
 
 
-export default MyPick;
-/*<View style={styles.container1}>
-            {markers.map((marker, index)=>(
-              <View style={styles.button} key={index}>
-                  <TouchableOpacity onPress={handle(index)}>
-                  <Text>{marker.categoryname}</Text>
-                  </TouchableOpacity>
-                </View>
-            ))}
-        </View>*/
-
-        
+export default ProfileMapContainer;

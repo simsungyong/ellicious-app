@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { ScrollView, Text} from "react-native";
 import { gql } from "apollo-boost";
-import { USER_FRAGMENT } from "../../fragments";
-import Loader from "../../components/Loader";
+import { USER_FRAGMENT } from "../../../fragments";
+import Loader from "../../../components/Loader";
 import { useQuery } from "react-apollo-hooks";
-import UserProfile from "../../components/UserProfile";
+import UserProfile from "../../../components/UserProfile";
 
 
 export const ME = gql`

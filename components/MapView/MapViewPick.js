@@ -24,7 +24,7 @@ export default class MapViewPick extends React.Component {
     
     state = {
         //translateYValue: new Animated.Value(value),
-
+        //markers:[],
         coordinate:{
             latitude:0,
             longitude:0
@@ -50,7 +50,7 @@ export default class MapViewPick extends React.Component {
             this.setState({region:{latitude:position.coords.latitude,
                                     longitude: position.coords.longitude,
                                     ...this.state.region}})
-            console.log(this.state.region);
+            //console.log(this.state.region);
 
             
         },
@@ -65,12 +65,13 @@ export default class MapViewPick extends React.Component {
         this._map.animateToRegion({
             latitude:latitude,
             longitude:longitude,
-            latitudeDelta: 0.047864195044303443,
-            longitudeDelta: 0.0540142817690068,
+            latitudeDelta: 0.011864195044303443,
+            longitudeDelta: 0.0100142817690068,
         })
+        
     }
     
-    onMarkerPressed=(index)=>{
+    /*onMarkerPressed=(index)=>{
         this._map.animateToRegion({
             latitude: this.state.marker.picks[index].post.storeLat,
             longitude: this.state.marker.picks[index].post.storeLong,
@@ -79,14 +80,18 @@ export default class MapViewPick extends React.Component {
         })
 
         this._carousel.snapToItem(index);
-    }
+    }*/
 
 
     renderCarouselItem = ({item})=>(
         <View style={styles.cardContainer}>
             <Text style={styles.cardTitle}>{item.post.storeName}</Text>
+            <View style={styles.viewSub}>
             <Image source={{uri:item.post.files[0].url}}
                                 style={styles.cardImage, {width:130, height:130}}/>
+            <Text style={styles.ratingCard}>별점 : {item.post.rating}</Text>
+            <Text style={styles.cardTitle}>{} {item.post.rating}</Text>
+            </View>
         </View>
     )
 
@@ -104,9 +109,10 @@ export default class MapViewPick extends React.Component {
                 {this.state.marker.picks.map((marker, index)=>(
                     <Marker 
                     key={index}
-                    onPress={this.onMarkerPressed(index)} 
+                    onPress={()=> this.props.navigation.navigate("Detail",{id:marker.post.id})} 
                     coordinate={{latitude:marker.post.storeLat, longitude:marker.post.storeLong}}
-                    //ref={ref=>this.state.markers[index] = ref}//}
+                    //ref={ref=>this.state.markers[index] = ref}
+                
                     >
                     
                     <Image source={{uri:marker.post.files[0].url}}
@@ -153,6 +159,16 @@ const styles = StyleSheet.create({
         borderRadius: 24
     
     },
+    viewSub:{
+        flexDirection:'row'
+    },
+    ratingCard:{
+        color:"white",
+        fontSize:14,
+        alignSelf:'center',
+        marginBottom:10
+    
+    },
     cardImage:{
         height:120,
         width:300,
@@ -168,8 +184,8 @@ const styles = StyleSheet.create({
         marginBottom:10
     },
     markerImage:{
-        width:25,
-        height:25,
+        width:30,
+        height:30,
         opacity:1,
         borderWidth:2,
         borderBottomLeftRadius:10,

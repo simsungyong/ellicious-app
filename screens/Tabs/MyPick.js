@@ -64,7 +64,9 @@ const PICK_ITEM = gql`
 const MyPick=()=>{
   const { loading, data } = useQuery(PICK_ITEM);
   //const [marker, setMarker] = useState(data.me);
-  
+  if(!loading){
+    console.log(data.me)
+  }
   /*const [currentPosition, setCurrentPosition] = useState(region);
     useEffect(()=>{
         navigator.geolocation.getCurrentPosition(position=>{

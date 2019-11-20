@@ -39,6 +39,7 @@ export default class ProfileMapPresenter extends React.Component {
     
 
     componentDidMount(){
+        
         this.locationCurrentPosition();
         
     }
@@ -200,6 +201,9 @@ const styles = StyleSheet.create({
 
     }
 })
+
+AppRegistry.registerComponent("mapfocus", () => screens);
+
 
 /*{this.state.marker.picks.map((marker, index)=>(
                     <Circle

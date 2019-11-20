@@ -62,11 +62,16 @@ const MyPick=({navigation})=>{
   //const [isLoading, setLoading] = useState(false);
   //const [qRefresh, setQRefresh] = useState(0)
   const { loading, data, error } = useQuery(PICK_ITEM);
-  const [marker,setData] = useState('');
-  if(!loading){
-    console.log(data)
-    console.log(loading)
+  const [confirm, setConfirm] = useState(false);
+
+  
+  const handleIndex = async () => {
+      await setConfirm(true)
+      if(!loading){
+        await setConfirm(false)
+      }
   }
+
   
   return(
     <View style={styles.container}>

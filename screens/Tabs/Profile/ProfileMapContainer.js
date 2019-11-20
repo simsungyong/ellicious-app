@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import MapView,{Marker, PROVIDER_GOOGLE, Callout, Polygon} from 'react-native-maps';
+//import MapView,{Marker, PROVIDER_GOOGLE, Callout, Polygon} from 'react-native-maps';
 import { StyleSheet,Image, Text, View, Dimensions, TextBase, TouchableOpacity } from 'react-native';
 import { useQuery } from "react-apollo-hooks";
 import { gql } from "apollo-boost";
@@ -52,7 +52,9 @@ const ProfileMapContainer=()=> {
     
     return(
         <View style={styles.container}>
-            {loading===false && confirm===false ? ( 
+            {loading ? <Loader/> : (
+            <>
+            {confirm ? <Loader/> : (
                 <>
                 <ProfileMapPresenter marker={data.seeCategory[mapIdx]} region={region}/>
                 <View style={styles.subContainer}>
@@ -65,7 +67,8 @@ const ProfileMapContainer=()=> {
                     ))}
                 </View>
                 </>
-            ) : <Loader/> }
+            )}
+            </>
             )}
         </View>
     )

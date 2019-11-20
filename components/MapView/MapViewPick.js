@@ -37,12 +37,28 @@ export default class MapViewPick extends React.Component {
         this.state = {marker, region};
     }
 
-    
+    componentWillMount() {
+        this.index = 0;
+        this.animation = new Animated.Value(0);
+      }
 
     componentDidMount(){
         this.locationCurrentPosition();
-        
+        this.animation.addListener(({ value }) => {
+            
+            let index = Math.floor(value / 300 + 0.3);
+             // animate 30% away from landing on the next item
+            if (index >= this.state.marker.picks.length) {
+              index = this.state.marker.picks.length - 1;
+            }
+            if (index <= 0) {
+              index = 0;
+            }
+      
+            
+      });
     }
+        
 
     locationCurrentPosition=()=>{
         navigator.geolocation.getCurrentPosition(position=>{
@@ -82,7 +98,7 @@ export default class MapViewPick extends React.Component {
         this._carousel.snapToItem(index);
     }*/
 
-
+    
     renderCarouselItem = ({item})=>(
         <View style={styles.cardContainer}>
             <Text style={styles.cardTitle}>{item.post.storeName}</Text>
@@ -96,7 +112,23 @@ export default class MapViewPick extends React.Component {
     )
 
     render(){
-        //console.log(this.state.marker.picks);
+        
+        const interpolations = this.state.marker.picks.map((marker, index) => {
+            const inputRange = [
+              (index - 1) * 300,
+              index * 300,
+              ((index + 1) * 300),
+            ];
+            const opacity = this.animation.interpolate({
+              inputRange,
+              outputRange: [0.45, 1, 0.45],
+              extrapolate: "clamp",
+            });
+            return { opacity };
+          });
+
+
+
         return (
             <View style={styles.container}>
             <MapView
@@ -106,21 +138,25 @@ export default class MapViewPick extends React.Component {
                 showsUserLocation={true}
                 initialRegion={this.state.region}>
                 
-                {this.state.marker.picks.map((marker, index)=>(
-                    <Marker 
-                    key={index}
-                    onPress={()=> this.props.navigation.navigate("Detail",{id:marker.post.id})} 
-                    coordinate={{latitude:marker.post.storeLat, longitude:marker.post.storeLong}}
-                    //ref={ref=>this.state.markers[index] = ref}
-                
-                    >
+                {this.state.marker.picks.map((marker, index)=>
+                    {
+                      const opacityStyle = {
+                        opacity: interpolations[index].opacity,
+                      };
+                    return( 
+                        <Marker 
+                        key={index}
+                        onPress={()=> this.props.navigation.navigate("Detail",{id:marker.post.id})} 
+                        coordinate={{latitude:marker.post.storeLat, longitude:marker.post.storeLong}}
+                        //ref={ref=>this.state.markers[index] = ref}
+                        >
+                        <Animated.View style={opacityStyle}>
+                            <Image source={{uri:marker.post.files[0].url}}
+                                    style={styles.markerImage}/>
+                        </Animated.View>
+                        </Marker> )
+                        })}
                     
-                    <Image source={{uri:marker.post.files[0].url}}
-                                style={styles.markerImage}/>
-
-                    </Marker>
-                ))}
-                
                 </MapView>
                 <Carousel
                     ref={(c) => { this._carousel = c; }}
@@ -131,6 +167,18 @@ export default class MapViewPick extends React.Component {
                     containerCustomStyle={styles.carousel}
                     removeClippedSubviews={false}
                     onSnapToItem={(index=>this.onCarouselItemChange(index))}
+                    onScroll={Animated.event(
+                        [
+                          {
+                            nativeEvent: {
+                              contentOffset: {
+                                x: this.animation,
+                              },
+                            },
+                          },
+                        ],
+                        { useNativeDriver: true }
+                      )}
             />
                 </View>
 
@@ -162,6 +210,10 @@ const styles = StyleSheet.create({
     viewSub:{
         flexDirection:'row'
     },
+    markerWrap: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
     ratingCard:{
         color:"white",
         fontSize:14,
@@ -183,6 +235,15 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         marginBottom:10
     },
+    ring: {
+        width: 24,
+        height: 24,
+        borderRadius: 12,
+        backgroundColor: "rgba(130,4,150, 0.3)",
+        position: "absolute",
+        borderWidth: 1,
+        borderColor: "rgba(130,4,150, 0.5)",
+      },
     markerImage:{
         width:30,
         height:30,
@@ -192,18 +253,13 @@ const styles = StyleSheet.create({
         borderBottomRightRadius:10,
         borderTopLeftRadius:10,
         borderTopRightRadius:10,
-
-    }
+    },
+    marker: {
+    width: 11,
+    height: 11,
+    borderRadius: 7,
+    backgroundColor: "rgba(130,4,150, 0.9)",
+  }
 })
 
-/*{this.state.marker.picks.map((marker, index)=>(
-                    <Circle
-                        key={index} center={{latitude:marker.post.storeLat, longitude:marker.post.storeLong}}
-                        radius={150}
-                        fillColor={'rgba(150,2000,200,0.5)'}/>))}*/
-
-/*<Callout>
-                            <Image source={{uri:marker.post.files[0].url}}
-                                style={styles.cardImage, {width:50, height:50}}/>
-                            <Text>{marker.post.storeName}</Text>
-                        </Callout>*/
+AppRegistry.registerComponent("mapfocus", () => screens);

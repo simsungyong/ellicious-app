@@ -126,7 +126,7 @@ export default class MapViewPick extends Component {
               <MapView.Marker key={index} coordinate={{latitude:marker.post.storeLat, longitude:marker.post.storeLong}}>
                 <Animated.View style={[styles.markerWrap, opacityStyle]}>
                   <Animated.View style={[styles.ring, scaleStyle]} />
-                  <View style={styles.marker} />
+                  <View style={styles.marker}/>
                 </Animated.View>
               </MapView.Marker>
             );

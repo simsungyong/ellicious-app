@@ -1,24 +1,27 @@
 import React, {useState, useEffect} from 'react';
 //import MapView,{Marker, PROVIDER_GOOGLE, Callout, Polygon} from 'react-native-maps';
-import { StyleSheet,Image, Text, View, Dimensions, TextBase, TouchableOpacity } from 'react-native';
+import { StyleSheet,Image, Text, View, Dimensions, TextBase } from 'react-native';
 import { useQuery } from "react-apollo-hooks";
 import { gql } from "apollo-boost";
 import Loader from '../../../components/Loader';
 import {CATEGORYINFO_FRAGMENT} from '../../../fragments';
 import ProfileMapPresenter from '../../Tabs/Profile/ProfileMapPresenter';
+import styled from "styled-components";
+
+const Touchable = styled.TouchableOpacity`
+    margin-bottom : 20px;
+    margin-right : 10px;
+`;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end',
     },
     subContainer: {
-        flex: 1,
-        justifyContent : 'flex-start',
-        
-
+        justifyContent : 'flex-start'
     }
 })
 
@@ -59,11 +62,14 @@ const ProfileMapContainer=({navigation})=> {
                 <ProfileMapPresenter marker={data.seeCategory[mapIdx]} region={region} navigation={navigation}/>
                 <View style={styles.subContainer}>
                     {data.seeCategory.map((category, index)=>(
-                        <TouchableOpacity key={index} onPress={() => handleIndex(index)}>
+                        <Touchable
+                        key={index}
+                        onPress={() => handleIndex(index)}
+                        >
                             <>
                             <Text>{category.categoryName}</Text>
                             </>
-                        </TouchableOpacity>
+                        </Touchable>
                     ))}
                 </View>
                 </>

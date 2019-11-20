@@ -114,12 +114,12 @@ const Post = styled.View`
 flex-direction : row;
 `;
 
-const Scene = ({ index, posts }) => (
+const Scene = ({ index, posts, userId }) => (
   
-    <View style={{ flex: 1 }}>
+    <View >
       {(index == 1) ? (
         
-        <ProfileMapContainer style={{flex:1}}/>
+        <ProfileMapContainer userId={userId}/>
        
       ) : (
         <ScrollView>
@@ -209,7 +209,7 @@ const UserProfile = ({
           routeStack={ROUTESTACK}
           renderScene={(route, i) => {
             let Component = ROUTES[route.title];
-            return <Component index={i} posts={posts} />;
+            return <Component index={i} posts={posts} userId={id}/>;
           }}
           headerStyle={{ paddingTop: 20 }}
           inactiveOpacity={1}

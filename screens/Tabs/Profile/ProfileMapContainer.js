@@ -33,18 +33,20 @@ const region = {
   };
 
 const GET_CATEGORYINFO = gql`
-  {
-    seeCategory {
-        ...CategoryInfo
+  query seeCategory($userId: String!){
+    seeCategory(userId: $userId) {
+      ...CategoryInfo
+      }
     }
-  } ${CATEGORYINFO_FRAGMENT}
+    ${CATEGORYINFO_FRAGMENT}
 `;
 
-
-const ProfileMapContainer=({navigation})=> {
+const ProfileMapContainer=({navigation, userId})=> {
     const [mapIdx, setIndex] = useState(0);
     const [confirm, setConform] = useState(false);
-    const { loading, data } = useQuery(GET_CATEGORYINFO);
+    const { loading, data } = useQuery(GET_CATEGORYINFO, {
+        variables: { userId: userId }
+      });
 
     const handleIndex = async (index) => {
         await setConform(true)
@@ -80,5 +82,3 @@ const ProfileMapContainer=({navigation})=> {
     )
 }
 export default ProfileMapContainer;
-
-          

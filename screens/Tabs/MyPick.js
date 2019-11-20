@@ -16,6 +16,7 @@ import {
 import MapView from "react-native-maps";
 import MapViewPick from '../../components/MapView/MapViewPick';
 import Loader from "../../components/Loader";
+import {PICK_FRAGMENT} from '../../fragments';
 
 const styles = StyleSheet.create({
   container: {
@@ -37,51 +38,32 @@ const region = {
   longitudeDelta: 0.0540142817690068,
 };
 
-const PICK_ITEM = gql`
+const GET_PICK = gql`
   {
-    me {
-      picks {
-          post {
-            id
-            storeLat
-            storeLong
-            storeName
-            rating
-            storeLocation
-            files{
-              url
-              id
-            }
-          }
-      }
+    seePick {
+        ...PickInfo
     }
-  }
+  } ${PICK_FRAGMENT}
 `;
 
 const MyPick=({navigation})=>{
   //const [isLoading, setLoading] = useState(false);
   //const [qRefresh, setQRefresh] = useState(0)
-  const { loading, data, error } = useQuery(PICK_ITEM);
+  const { loading, data, error } = useQuery(GET_PICK);
   const [confirm, setConfirm] = useState(false);
 
-  
-  const handleIndex = async () => {
-      await setConfirm(true)
-      if(!loading){
-        await setConfirm(false)
-      }
-  }
 
   
   return(
     <View style={styles.container}>
-       {loading ? <Loader/> : <MapViewPick navigation={navigation} marker={data.me} region={region}/>}
+       {loading ? <Loader/>: console.log(data.seePick)}
     </View>
   )
 }
 
 
 export default MyPick;
+//{loading ? <Loader/> : <MapViewPick navigation={navigation} marker={data.me} region={region}/>}
 /*<View style={styles.container1}>
             {markers.map((marker, index)=>(
               <View style={styles.button} key={index}>

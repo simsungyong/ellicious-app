@@ -18,8 +18,9 @@ import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPi
 import MapView, { PROVIDER_GOOGLE,Marker, Callout, Circle } from "react-native-maps";
 import { Platform } from "@unimodules/core";
 import Carousel from 'react-native-snap-carousel';
+import { withNavigation } from "react-navigation";
 
-export default class ProfileMapPresenter extends React.Component {
+class ProfileMapPresenter extends React.Component {
     
     state = {
         
@@ -38,10 +39,8 @@ export default class ProfileMapPresenter extends React.Component {
     
 
     componentDidMount(){
-        this.setState({region:{latitude:this.state.marker.posts[0].storeLat,
-            longitude: this.state.marker.posts[0].storeLong,
-            ...this.state.region}})
-        //this.locationCurrentPosition();
+        
+        this.locationCurrentPosition();
         
     }
 
@@ -92,7 +91,7 @@ export default class ProfileMapPresenter extends React.Component {
                     //ref={ref=>this.state.markers[index] = ref}
                 
                     >
-                    <Callout>
+                    <Callout onPress={()=>this.props.navigation.navigate("Detail", {id:marker.id})}>
                             <Text>라라라라</Text>
                     </Callout>
                     <Image source={{uri:marker.files[0].url}}
@@ -173,7 +172,7 @@ const styles = StyleSheet.create({
 })
 
 AppRegistry.registerComponent("mapfocus", () => screens);
-
+export default withNavigation(ProfileMapPresenter);
 
 /*{this.state.marker.picks.map((marker, index)=>(
                     <Circle

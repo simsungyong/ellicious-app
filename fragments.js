@@ -76,6 +76,28 @@ export const USER_FRAGMENT = gql`
     }
   }`;
 
+export const PICK_FRAGMENT = gql`
+  fragment PickInfo on Pick {
+    post {
+      id
+      storeLat
+      storeLong
+      rating
+      storeLocation
+      storeName
+      files{
+        url
+        id
+      }
+      user{
+        username
+        avatar
+        id
+      }
+    }
+  }
+`
+
 export const CATEGORY_FRAGMENT = gql`
   fragment CategoryParts on Category {
     id

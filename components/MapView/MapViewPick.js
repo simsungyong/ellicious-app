@@ -154,10 +154,13 @@ export default class MapViewPick extends React.Component {
                     return( 
                         <Marker 
                         key={index}
-                        onPress={()=> this.state.navigation.navigate("Detail",{id:marker.post.id})} 
+                        
                         coordinate={{latitude:marker.post.storeLat, longitude:marker.post.storeLong}}
                         //ref={ref=>this.state.markers[index] = ref}
                         >
+                        <Callout onPress={()=> this.state.navigation.navigate("Detail",{id:marker.post.id})} >
+                          
+                        </Callout>
                         <Animated.View style={opacityStyle}>
                             <Image source={{uri:marker.post.files[0].url}}
                                     style={styles.markerImage}/>

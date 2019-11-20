@@ -38,7 +38,7 @@ const GET_CATEGORYINFO = gql`
 `;
 
 
-const ProfileMapContainer=()=> {
+const ProfileMapContainer=({navigation})=> {
     const [mapIdx, setIndex] = useState(0);
     const [confirm, setConform] = useState(false);
     const { loading, data } = useQuery(GET_CATEGORYINFO);
@@ -56,7 +56,7 @@ const ProfileMapContainer=()=> {
             <>
             {confirm ? <Loader/> : (
                 <>
-                <ProfileMapPresenter marker={data.seeCategory[mapIdx]} region={region}/>
+                <ProfileMapPresenter marker={data.seeCategory[mapIdx]} region={region} navigation={navigation}/>
                 <View style={styles.subContainer}>
                     {data.seeCategory.map((category, index)=>(
                         <TouchableOpacity key={index} onPress={() => handleIndex(index)}>

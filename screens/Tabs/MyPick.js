@@ -56,14 +56,14 @@ const MyPick=({navigation})=>{
   
   return(
     <View style={styles.container}>
-       {loading ? <Loader/>: console.log(data.seePick)}
+       {loading ? <Loader/> : <MapViewPick navigation={navigation} marker={data.seePick} region={region}/>}
     </View>
   )
 }
 
 
 export default MyPick;
-//{loading ? <Loader/> : <MapViewPick navigation={navigation} marker={data.me} region={region}/>}
+
 /*<View style={styles.container1}>
             {markers.map((marker, index)=>(
               <View style={styles.button} key={index}>

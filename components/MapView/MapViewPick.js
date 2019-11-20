@@ -32,9 +32,9 @@ export default class MapViewPick extends React.Component {
     }
     constructor(props) {
         super(props);
-        const {navigation} = props;
-        const {marker, region} = props;
-        this.state = {marker, region};
+        
+        const {marker, region,navigation} = props;
+        this.state = {marker, region,navigation};
     }
 
     componentWillMount() {
@@ -54,8 +54,16 @@ export default class MapViewPick extends React.Component {
             if (index <= 0) {
               index = 0;
             }
+
+            clearTimeout(this.regionTimeout);
+      this.regionTimeout = setTimeout(() => {
+        if (this.index !== index) {
+          this.index = index;
+          this.setState({coordinate:{latitude:this.state.marker.picks[index].post.storeLat, longitude:this.state.marker.picks[index].post.storeLong}})
+          
+        }
+      }, 10);
       
-            
       });
     }
         
@@ -146,7 +154,7 @@ export default class MapViewPick extends React.Component {
                     return( 
                         <Marker 
                         key={index}
-                        onPress={()=> this.props.navigation.navigate("Detail",{id:marker.post.id})} 
+                        onPress={()=> this.state.navigation.navigate("Detail",{id:marker.post.id})} 
                         coordinate={{latitude:marker.post.storeLat, longitude:marker.post.storeLong}}
                         //ref={ref=>this.state.markers[index] = ref}
                         >
@@ -253,13 +261,7 @@ const styles = StyleSheet.create({
         borderBottomRightRadius:10,
         borderTopLeftRadius:10,
         borderTopRightRadius:10,
-    },
-    marker: {
-    width: 11,
-    height: 11,
-    borderRadius: 7,
-    backgroundColor: "rgba(130,4,150, 0.9)",
-  }
+    }
 })
 
 AppRegistry.registerComponent("mapfocus", () => screens);

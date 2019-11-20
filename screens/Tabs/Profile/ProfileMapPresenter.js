@@ -32,15 +32,16 @@ export default class ProfileMapPresenter extends React.Component {
         super(props);
         const {navigation} = props;
         const {marker, region} = props;
-        this.state = {marker, region};
-
+        this.state = {marker, region, navigation};
     }
 
     
 
     componentDidMount(){
-        
-        this.locationCurrentPosition();
+        this.setState({region:{latitude:this.state.marker.posts[0].storeLat,
+            longitude: this.state.marker.posts[0].storeLong,
+            ...this.state.region}})
+        //this.locationCurrentPosition();
         
     }
 
@@ -59,40 +60,17 @@ export default class ProfileMapPresenter extends React.Component {
         )
     }
 
-   onCarouselItemChange=(index)=>{
-        let latitude = this.state.marker.posts[index].storeLat
-        let longitude = this.state.marker.posts[index].storeLong
+    /*onMarkerPressed=(marker,index)=>{
         this._map.animateToRegion({
-            latitude:latitude,
-            longitude:longitude,
-            latitudeDelta: 0.011864195044303443,
-            longitudeDelta: 0.0100142817690068,
-        })
-        
-    }
-    /*onMarkerPressed=(index)=>{
-        this._map.animateToRegion({
-            latitude: this.state.marker.picks[index].post.storeLat,
-            longitude: this.state.marker.picks[index].post.storeLong,
+            latitude: marker.posts[index].storeLat,
+            longitude: marker.posts[index].storeLong,
             latitudeDelta: 0.047864195044303443,
             longitudeDelta: 0.0540142817690068
         })
 
-        this._carousel.snapToItem(index);
     }*/
 
-   
-    renderCarouselItem = ({item})=>(
-        <View style={styles.cardContainer}>
-            <Text style={styles.cardTitle}>{item.storeName}</Text>
-            <View style={styles.viewSub}>
-            <Image source={{uri:item.files[0].url}}
-                                style={styles.cardImage, {width:130, height:130}}/>
-            <Text style={styles.ratingCard}>별점 : {item.rating}</Text>
-            
-            </View>
-        </View>
-    )
+
 
     render(){
         //console.log(this.state.marker.posts[0]);
@@ -109,12 +87,14 @@ export default class ProfileMapPresenter extends React.Component {
                 {this.state.marker.posts.map((marker, index)=>(
                     <Marker 
                     key={index}
-                    onPress={()=> this.props.navigation.navigate("Detail",{id:marker.id})} 
+                   // onPress={this.onMarkerPressed(marker,index)} 
                     coordinate={{latitude:marker.storeLat, longitude:marker.storeLong}}
                     //ref={ref=>this.state.markers[index] = ref}
                 
                     >
-                    
+                    <Callout>
+                            <Text>라라라라</Text>
+                    </Callout>
                     <Image source={{uri:marker.files[0].url}}
                                 style={styles.markerImage}/>
 
@@ -122,16 +102,6 @@ export default class ProfileMapPresenter extends React.Component {
                 ))}
                 
                 </MapView>
-                <Carousel
-                    ref={(c) => { this._carousel = c; }}
-                    data={this.state.marker.posts}
-                    renderItem={this.renderCarouselItem}
-                    sliderWidth={Dimensions.get("window").width}
-                    itemWidth={300}
-                    containerCustomStyle={styles.carousel}
-                    removeClippedSubviews={false}
-                    onSnapToItem={(index=>this.onCarouselItemChange(index))}
-                />
                    
                 </View>
 

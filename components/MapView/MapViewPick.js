@@ -125,25 +125,26 @@ export default class MapViewPick extends React.Component {
                     <Text style={styles.cardUsername}>{item.post.user.username}</Text>
                 </View>
                 <View style={styles.viewSubRating}>
-                      <FontAwesome
-                      color={StarColor}
-                      size={25}
-                      name={"star"}
-                    />
-                    <FontAwesome
-                      color={StarColor}
-                      size={25}
-                      name={"star"}
-                    />
-                    <FontAwesome
-                      color={StarColor}
-                      size={25}
-                      name={"star"}
-                    />
-                    <FontAwesome
-                      color={StarColor}
-                      size={25}
-                      name={"star-o"}
+                  <Stars
+                      default={item.post.rating}
+                      count={5}
+                      half={true}
+                      starSize={50}
+                      fullStar={<FontAwesome
+                        color={StarColor}
+                        size={25}
+                        name={"star"}
+                      />}
+                      emptyStar={<FontAwesome
+                        color={StarColor}
+                        size={25}
+                        name={"star-o"}
+                      />}
+                      halfStar={<FontAwesome
+                        color={StarColor}
+                        size={25}
+                        name={"star-half-empty"}
+                      />}
                     />
                       </View>
               </View>

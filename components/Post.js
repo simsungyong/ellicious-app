@@ -64,7 +64,7 @@ const Store = styled.View`
   margin-bottom : 10px;
   align-items: center;
 `;
-const Rating = styled.Text`
+const Rating = styled.View`
 `;
 
 const CaptionCon = styled.View`
@@ -232,31 +232,27 @@ const Post = ({
               <StoreName>{storeName}</StoreName>
             </Touchable>
             <Rating>
-              <FontAwesome
-                color={StarColor}
-                size={28}
-                name={"star"}
-              />
-              <FontAwesome
-                color={StarColor}
-                size={28}
-                name={"star"}
-              />
-              <FontAwesome
-              color={StarColor}
-              size={28}
-              name={"star"}
-            />
-              <FontAwesome
-                color={StarColor}
-                size={28}
-                name={"star"}
-              />
-              <FontAwesome
-                color={StarColor}
-                size={28}
-                name={"star-o"}
-              />
+                <Stars
+                      default={rating}
+                      count={5}
+                      half={true}
+                      starSize={50}
+                      fullStar={<FontAwesome
+                        color={StarColor}
+                        size={25}
+                        name={"star"}
+                      />}
+                      emptyStar={<FontAwesome
+                        color={StarColor}
+                        size={25}
+                        name={"star-o"}
+                      />}
+                      halfStar={<FontAwesome
+                        color={StarColor}
+                        size={25}
+                        name={"star-half-empty"}
+                      />}
+                    />           
             </Rating>
             </Store>
           </StoreInfo>

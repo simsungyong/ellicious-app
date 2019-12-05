@@ -9,7 +9,7 @@ const FloatingLabelInput = ({label, onChangeText,value})=>{
   
   const [focus, setFocus] = useState(false);
   const [animation, setAnimation] = useState(new Animated.Value(0));
-  console.log(label);
+  //console.log(label);
   const handleFocus = () => setFocus(true);
   const handleBlur = () => setFocus( false );
 

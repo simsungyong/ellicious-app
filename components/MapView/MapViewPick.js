@@ -20,6 +20,13 @@ import MapView, { PROVIDER_GOOGLE,Marker, Callout, Circle } from "react-native-m
 import { Platform } from "@unimodules/core";
 import Carousel from 'react-native-snap-carousel';
 
+const Container = styled.View`
+padding : 10px;
+background-color : 'rgba(0,0,0,0.6)'
+border-radius : 24;
+
+`;
+
 export default class MapViewPick extends React.Component {
     
     state = {
@@ -108,7 +115,7 @@ export default class MapViewPick extends React.Component {
 
     
     renderCarouselItem = ({item})=>(
-        <View style={styles.cardContainer}>
+        <Container>
             <Text style={styles.cardTitle}>{item.post.storeName}</Text>
             <View style={styles.viewSub}>
               <View style={styles.imageCon}>
@@ -120,7 +127,7 @@ export default class MapViewPick extends React.Component {
 
                 <View style={styles.viewSubDetail}>
                   <Image 
-                    style={{height: 40, width: 40, borderRadius:19}}
+                    style={{height: 40, width: 40, borderRadius:19, marginRight:5}}
                     source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}/>
                     <Text style={styles.cardUsername}>{item.post.user.username}</Text>
                 </View>
@@ -128,6 +135,7 @@ export default class MapViewPick extends React.Component {
                   <Stars
                       default={item.post.rating}
                       count={5}
+                      disabled={true}
                       half={true}
                       starSize={50}
                       fullStar={<FontAwesome
@@ -150,7 +158,7 @@ export default class MapViewPick extends React.Component {
               </View>
             </View>
             
-        </View>
+        </Container>
     )
 
     render(){
@@ -261,7 +269,9 @@ const styles = StyleSheet.create({
     },
     viewSubDetail:{
       flexDirection:'row',
-      marginBottom:30
+      marginBottom:30,
+      alignItems: "center",
+      justifyContent: "center"
   },
     viewSubRating:{
       flexDirection:'row',

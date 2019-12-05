@@ -92,7 +92,7 @@ class ProfileMapPresenter extends React.Component {
                 
                     >
                     <Callout onPress={()=>this.props.navigation.navigate("Detail", {id:marker.id})}>
-                            <Text>라라라라</Text>
+                            <Text>라라브래드 공릉ㅈ</Text>
                     </Callout>
                     <Image source={{uri:marker.files[0].url}}
                                 style={styles.markerImage}/>

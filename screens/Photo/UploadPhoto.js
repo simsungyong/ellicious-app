@@ -124,12 +124,14 @@ margin-top : 10px;
 `;
 
 export const seeCategory = gql`
-  {
-    seeCategory {
+  
+  query seeCategory($userId: String){
+    seeCategory(userId: $userId){
       ...CategoryParts
     }
   }
   ${CATEGORY_FRAGMENT}`
+  ;
 
 
 export default ({navigation}) => {
@@ -143,6 +145,9 @@ export default ({navigation}) => {
   const storeName = navigation.getParam("name");
   const storeAdr = navigation.getParam("formatted_address");
 
+  if(!loading){
+    console.log(data);
+  }
   const handleSubmit=async()=>{
     const formData = new FormData();
     const name = photo.filename;
@@ -161,7 +166,7 @@ export default ({navigation}) => {
           "content-type": "multipart/form-data"
         }
       });
-      console.log(location);
+      
       setFileUrl(location);
   }catch (e){
     console.log(e);

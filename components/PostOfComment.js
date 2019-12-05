@@ -63,6 +63,11 @@ const Bold = styled.Text`
 const Reply = styled.Text`
   color : ${Grey};
 `;
+
+const Timebox = styled.Text`
+  opacity: 0.5;
+  font-size: 13px;
+`;
 /*
 const CaptionsCon = styled.View`
   flex-direction: row;
@@ -127,11 +132,13 @@ const PostOfComment = ({
     navigation,
     createdAt,
     }) => {
-
+        console.log(user.username);
+        console.log(text);
+        const time=moment(createdAt).startOf('hour').fromNow();
         const {loading, data} = useQuery(GET_COMMENTS, {
          variables: { postId: post.id, headComment: id}
         });
-        console.log(data);
+       // console.log(data.seeComment.length);
 
         const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
         const navi = ()=>{
@@ -159,9 +166,9 @@ const PostOfComment = ({
                 </Comment>
 
                 <ReplyCon>
-                  <Text>-시간전</Text>
+                  <Timebox>{time}</Timebox>
                   <Touchable onPress={()=>setbottomModalAndTitle(true)}>
-                    <Reply>Reply</Reply>
+                    <Reply>Reply {data.seeComment.length}</Reply>
                   </Touchable>
                 </ReplyCon>
               </CommentCon>
@@ -199,9 +206,9 @@ const PostOfComment = ({
                   </Comment>
 
                   <ReplyCon>
-                    <Text>-시간전</Text>
+                    <Timebox>{time}</Timebox>
                     <Touchable onPress={()=>setbottomModalAndTitle(true)}>
-                      <Reply>Reply</Reply>
+                      <Reply>Reply {data.seeComment.length}</Reply>
                     </Touchable>
                   </ReplyCon>
                 </CommentCon>

@@ -39,9 +39,11 @@ export default function App() {
       const cache = new InMemoryCache();
       const httpLink = new HttpLink({
         uri: 'http://192.168.0.135:4000/'
+        //uri: 'http://3.134.176.171:4000/'
       });
       const wsLink = new WebSocketLink({
-        uri: `ws://192.168.0.135:4000/`,
+        uri: 'http://192.168.0.135:4000/',
+        //uri: `ws://3.134.176.171:4000/`,
         options: {
             reconnect: true
         }

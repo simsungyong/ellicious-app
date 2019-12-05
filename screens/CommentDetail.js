@@ -81,7 +81,7 @@ export default ({navigation})=>{
       }
     });
     
-    console.log(data.seeComment);
+    //console.log(data.seeComment);
     const refresh = async() =>{
         try{
           setRefreshing(true);

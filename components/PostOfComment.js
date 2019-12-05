@@ -168,7 +168,7 @@ const PostOfComment = ({
                 <ReplyCon>
                   <Timebox>{time}</Timebox>
                   <Touchable onPress={()=>setbottomModalAndTitle(true)}>
-                    <Reply>Reply {data.seeComment.length}</Reply>
+                    <Reply>Reply </Reply>
                   </Touchable>
                 </ReplyCon>
               </CommentCon>
@@ -208,7 +208,7 @@ const PostOfComment = ({
                   <ReplyCon>
                     <Timebox>{time}</Timebox>
                     <Touchable onPress={()=>setbottomModalAndTitle(true)}>
-                      <Reply>Reply {data.seeComment.length}</Reply>
+                      <Reply>Reply </Reply>
                     </Touchable>
                   </ReplyCon>
                 </CommentCon>

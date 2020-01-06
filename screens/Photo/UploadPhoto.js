@@ -1,7 +1,7 @@
 import React,{useState, useEffect} from "react";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
-import {Text,Image,ScrollView,Modal,TouchableOpacity, TextInput,Picker, Platform,StyleSheet, TouchableHighlight} from 'react-native';
+import {Text,Image,ScrollView,Modal,TouchableOpacity, TextInput,Picker, Platform,StyleSheet, TouchableHighlight, Alert} from 'react-native';
 import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line } from '../../components/Color';
 import {FontAwesome, EvilIcons} from "@expo/vector-icons";
 import Stars from 'react-native-stars';
@@ -10,7 +10,7 @@ import Hr from "hr-native";
 import { useQuery } from "react-apollo-hooks";
 import { CATEGORY_FRAGMENT } from "../../fragments";
 import Loader from "../../components/Loader";
-import axios from 'axios'
+import axios from 'axios';
 import constants from "../../constants";
 
 const Container = styled.View`
@@ -146,7 +146,7 @@ export default ({navigation}) => {
   const storeAdr = navigation.getParam("formatted_address");
 
   if(!loading){
-    console.log(data);
+    //console.log(data);
   }
   const handleSubmit=async()=>{
     const formData = new FormData();
@@ -154,24 +154,22 @@ export default ({navigation}) => {
     const [, type] = name.split(".");
     formData.append("file", {
       name,
-      type: type.toLowerCase(),
+      type: "image/jpeg",
       uri: photo.uri
     });
+    
     try {
-      console.log(formData)
       const {
-        data: { location }
-      } = await axios.post("http//3.134.176.171:4000/api/upload", formData, {
-        headers: {
-          "content-type": "multipart/form-data"
+        data: {path}
+      } = await axios.post("http://192.168.0.135:4000/api/upload", formData, {
+        headers:{
+          "content-type" : "multipart/form-data"
         }
       });
-      
-      setFileUrl(location);
-  }catch (e){
-    console.log(e);
-  }
-}
+    } catch (e) {
+      Alert.alert("can't upload ", "Try later");
+    }   
+};
 
   const togglePicker=(p)=>{
     setModalPick(!p)

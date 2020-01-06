@@ -11,6 +11,20 @@ import Hr from "hr-native";
 import MapView from "react-native-maps";
 import TopBarNav from 'top-bar-nav';
 import ProfileMapContainer from "../screens/Tabs/Profile/ProfileMapContainer";
+import { gql } from "apollo-boost";
+import { useMutation } from "react-apollo-hooks";
+
+export const FOLLOW = gql`
+  mutation follow($id: String!) {
+    follow(id: $id)
+  }
+`;
+
+export const UNFOLLOW = gql`
+  mutation unfollow($id: String!) {
+    unfollow(id: $id)
+  }
+`;
 
 const Container = styled.View`
   flex : 1;
@@ -147,6 +161,7 @@ const ROUTESTACK = [
   { text: <TopButton>게시물</TopButton>, title: 'Scene' }, 
   { text: <TopButton>맛지도</TopButton>, title: 'Scene' }, 
 ];
+
 const Style = StyleSheet.create ({
   underlineStyle: {
     height: 3.6,
@@ -154,6 +169,8 @@ const Style = StyleSheet.create ({
     width: constants.width / 2
   }
 })
+
+
 const UserProfile = ({
   id,
   avatar,
@@ -175,6 +192,33 @@ const UserProfile = ({
   const [isGrid, setIsGrid] = useState(true);
   const toggleGrid = () => setIsGrid(i => !i);
 
+  const [followingConfirm, setFollowing] = useState(isFollowing);
+  const [followCount, setFollowCount] = useState(followersCount);
+  const [FollowMutation] = useMutation(FOLLOW, {
+    variables: {
+    id: id
+    }});
+
+  const [UnFollowMutation] = useMutation(UNFOLLOW, {
+    variables:{
+      id: id
+    }
+  });
+
+
+const handleFollow = async () =>{
+  try{
+    if(followingConfirm === true) {
+      await UnFollowMutation();
+      setFollowing(f => !f);
+      setFollowCount(l=>l-1)
+    } else {
+      await FollowMutation();
+      setFollowing(f => !f);
+      setFollowCount(l=>l+1)
+    }
+  } catch (e) {}
+};
 
   return (
     <Container>
@@ -200,7 +244,7 @@ const UserProfile = ({
             </FollowPick>
             <FollowPick>
               <Text>Follower </Text>
-              <Bold>{followersCount}</Bold>
+              <Bold>{followCount}</Bold>
             </FollowPick>
             <FollowPick>
             <Text>Following </Text>
@@ -208,9 +252,12 @@ const UserProfile = ({
             </FollowPick>
           </FollowCon>
           <FollowCon>
-          <FollowButton backgroundColor={isFollowing ? LightGrey :"blue" }>
-            <Text style={{color:"black"}}>Following</Text>
-          </FollowButton>
+            {
+              isSelf ?
+              null : <FollowButton onPress={handleFollow} backgroundColor={followingConfirm ? LightGrey :"blue" }>
+                  <Text style={{color:"black"}}>Following</Text>
+                </FollowButton>
+            }
           </FollowCon>
           </Con>
           

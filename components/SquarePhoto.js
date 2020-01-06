@@ -12,7 +12,7 @@ background-color : ${LightPink}
 margin-right : 2px;
 margin-bottom : 2px;
 margin-top : 2px;
-width: ${constants.width / 3};
+width: ${constants.width / 3.1};
 `;
 
 const Bold = styled.Text`
@@ -49,7 +49,7 @@ const SquarePhoto = ({
     <TouchableOpacity onPress={() => navigation.navigate("Detail", { id })}>
       <Image
         source={{ uri: files[0].url }}
-        style={{ width: constants.width / 3, height: constants.height / 6 }}
+        style={{ width: constants.width / 3.1, height: constants.height / 6 }}
       />
       <Imagecon>
         <Bold>#디저트 #공릉 #카페</Bold>

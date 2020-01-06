@@ -1,5 +1,5 @@
 import React, { useState, Component } from "react";
-import { Image, TouchableOpacity, ScrollView, StyleSheet, Button } from "react-native";
+import { Image, TouchableOpacity, ScrollView, StyleSheet, Button, FlatList, SafeAreaView } from "react-native";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import constants from "../constants";
@@ -110,7 +110,7 @@ flex : 1;
 `;
 
 const Post = styled.View`
-flex-direction : row;
+flex-direction : column
 `;
 
 const Scene = ({ index, posts, userId }) => (
@@ -121,12 +121,17 @@ const Scene = ({ index, posts, userId }) => (
         <ProfileMapContainer userId={userId}/>
        
       ) : (
-        <ScrollView>
-        <Post>{
-        posts && posts.map(p =>
-          <SquarePhoto key={p.id} {...p} />
-        )}
-        </Post>
+        <ScrollView
+          contentContainerStyle={{
+            flexDirection: "row",
+            flexWrap: "wrap"
+          }}
+        >
+          {
+          posts && posts.map(p =>
+            <SquarePhoto key={p.id} {...p} />
+          )}
+         
         </ScrollView>
       )}
     </View>

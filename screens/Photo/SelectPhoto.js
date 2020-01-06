@@ -7,7 +7,6 @@ import styled from "styled-components";
 import Loader from "../../components/Loader";
 import constants from "../../constants";
 import { mainPink, TINT_COLOR, IconColor, LightGrey } from "../../components/Color";
-
 const View = styled.View`
   flex: 1;
 `;
@@ -25,6 +24,7 @@ const Text = styled.Text`
   color: ${TINT_COLOR};
   font-weight: 600;
   `;
+
 
 export default ({navigation}) => {
   const [loading, setLoading] = useState(true);
@@ -83,10 +83,9 @@ return(
         <View>
           {hasPermission ? (
             <>
-
-                <Image
+            <Image
                   style={{ width: constants.width, height: constants.height / 2 }}
-                  //source={{ uri: selected.uri }}
+                  source={{ uri: selected.uri }}
                 />
               <Button onPress={handleSelected}>
                 <AntDesign
@@ -125,7 +124,6 @@ return(
     </View>
   );
 };
-
 /* 
 <EvilIcons
   color={PointPink }

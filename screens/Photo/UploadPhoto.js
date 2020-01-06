@@ -2,7 +2,7 @@ import React,{useState, useEffect} from "react";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
 import {Text,Image,ScrollView,Modal,TouchableOpacity, TextInput,Picker, Platform,StyleSheet, TouchableHighlight, Alert} from 'react-native';
-import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line } from '../../components/Color';
+import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line, LightPink } from '../../components/Color';
 import {FontAwesome, EvilIcons} from "@expo/vector-icons";
 import Stars from 'react-native-stars';
 import {Icon} from 'native-base';
@@ -12,6 +12,7 @@ import { CATEGORY_FRAGMENT } from "../../fragments";
 import Loader from "../../components/Loader";
 import axios from 'axios';
 import constants from "../../constants";
+
 
 const Container = styled.View`
   flex : 1;
@@ -84,13 +85,14 @@ const MoreInfoCon = styled.View`
   margin-horizontal : 10px;
   margin-top:7px;
   margin-bottom : 7px;
+  background-color : green
 `;
 
 const UploadCon = styled.TouchableOpacity`
   alignItems: center;
   justifyContent: center;
 `;
-const Button = styled.View`
+const UploadButton = styled.View`
   width: 80;
   height: 80;
   border-radius: 40px;
@@ -123,6 +125,18 @@ margin-bottom : 7;
 margin-top : 10px;
 `;
 
+const ButtonCon = styled.View`
+flex-direction : row;
+`;
+const Button = styled.View`
+  alignItems: center;
+  justifyContent: center;
+  borderRadius: 5;
+  background-color : ${LightGrey}
+  padding : 5px;
+  margin : 2px;
+  height : 10px;
+`;
 export const seeCategory = gql`
   
   query seeCategory($userId: String){
@@ -257,13 +271,17 @@ export default ({navigation}) => {
         <SubTitleConMI>
           <SubTitle> More Information </SubTitle>
         </SubTitleConMI>
-        <TextInput
-            placeholder="@직원 친절도"
-            style = {marginLeft=50} />
+        <ButtonCon>
+        <TouchableOpacity>
+          <Button>
+            <Text>주차가능</Text>
+          </Button>
+        </TouchableOpacity>
+        </ButtonCon>
       </MoreInfoCon>
       
       <UploadCon onPress={handleSubmit}>
-        <Button/>
+        <UploadButton/>
       </UploadCon>
 
       <Modal visible={isModalPick} transparent={true} animationType="slide" onRequestClose={()=>console.log(cancle)}>
@@ -292,6 +310,19 @@ export default ({navigation}) => {
     </Container>
   );
 }
+const styles = StyleSheet.create({
+  button: {
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderRadius: 2,
+  backgroundColor :LightGrey,
+  padding : 5,
+  margin : 2,
+  height : 100,
+  width : 100
+  }
+})
+
 
 
 /*<Select2

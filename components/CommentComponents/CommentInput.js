@@ -10,7 +10,9 @@ import moment from "moment";
 const Touchable = styled.TouchableOpacity``;
 
 const Container = styled.View`
+
 `;
+
 const CaptionCon = styled.View`
   flex-direction: row; 
   alignItems: center;

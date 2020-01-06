@@ -28,7 +28,8 @@ const CommentBox =styled.View`
   margin-bottom: 10px;
   alignItems: center;
   margin-left : 5px;
-  margin-right : 5px;
+  margin-right : 2px;
+  margin-top : 7px;
 `;
 const Bold = styled.Text`
   font-weight: 600;
@@ -40,7 +41,7 @@ const TextBox = styled.View`
   border-radius: 4px;
   justifyContent: center;
   padding : 5px;
-  width: ${constants.width / 1.32};
+  flex : 1;
   margin-right : 5px;
   margin-left : 5px;
   height : 30;

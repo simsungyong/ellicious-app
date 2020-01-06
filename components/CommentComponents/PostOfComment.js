@@ -10,7 +10,7 @@ import constants from "../../constants";
 import { useMutation } from "react-apollo-hooks";
 import styles from "../../styles";
 import moment from "moment";
-import {LightPink, Grey} from '../Color';
+import {LightPink, Grey, mainPink, LightGrey, CommentsBox} from '../Color';
 import Loader from '../Loader'
 import { POST_COMMENT } from "../../fragments";
 import { withNavigation } from "react-navigation";
@@ -22,7 +22,7 @@ const Touchable = styled.TouchableOpacity`
   margin-bottom:3px;
 `;
 const Container = styled.View`
-  margin-left : 5px;;
+  margin-left : 5px;
 `;
 
 const CaptionsCon = styled.View`
@@ -54,14 +54,14 @@ const ReplyCon = styled.View`
   margin-right : 5px;
   margin-left : 7px;
 `;
-const Bold = styled.Text`
-  font-weight: 600;
-  margin-bottom : 5px;
-  font-size : 15px;
-  margin-right : 5px;
-`;
+
 const Reply = styled.Text`
   color : ${Grey};
+`;
+const TICon = styled.View`
+flex : 1;
+background-color : ${LightGrey};
+padding : 5px;
 `;
 
 const Timebox = styled.Text`
@@ -109,7 +109,35 @@ const CommentCount = styled.Text`
 `;
 */
 const TextInputCon=styled.View`
- margin-left : 15px;
+ margin-left : 5px;
+ padding : 10px;
+ flex-direction : row;
+ justifyContent: center;
+ margin-right : 5px;
+`;
+
+const CommentBox =styled.View`
+  flex-direction:row;
+  margin-bottom: 10px;
+  alignItems: center;
+  margin-left : 5px;
+  margin-right : 2px;
+  margin-top : 7px;
+`;
+const Bold = styled.Text`
+  font-weight: 600;
+  font-size : 15px;
+  margin-right : 5px;
+`;
+const TextBox = styled.View`
+  background-color : ${CommentsBox};
+  border-radius: 4px;
+  justifyContent: center;
+  padding : 5px;
+  flex : 1;
+  margin-right : 5px;
+  margin-left : 5px;
+  height : 30;
 `;
 
 const GET_COMMENTS = gql`
@@ -208,7 +236,7 @@ const PostOfComment = ({
                   <ReplyCon>
                     <Timebox>{time}</Timebox>
                     <Touchable onPress={()=>setbottomModalAndTitle(true)}>
-                      <Reply>Reply </Reply>
+                      <Reply>Reply</Reply>
                     </Touchable>
                   </ReplyCon>
                 </CommentCon>
@@ -219,13 +247,22 @@ const PostOfComment = ({
                   <CommentInput
                     key={comment.id}{...comment}/>)
                 )}
-                <TextInputCon>
-                  <TextInput
-                    returnKeyType="send"
-                    autoFocus={true}
-                    placeholder="Comment"
-                  />
-                </TextInputCon>
+
+          <CommentBox>
+            <TextBox>
+              <TextInput
+                //{...textInput}
+                returnKeyType="send"
+                //onSubmitEditing={handleLogin}
+                //autoFocus={focusing}
+                placeholder="Comment"
+              />
+            </TextBox>
+            <Touchable>
+              <Bold>Reply</Bold>
+            </Touchable>
+          </CommentBox>
+
                 <KeyboardSpacer/>
             </ModalContent>
           </Modal.BottomModal>

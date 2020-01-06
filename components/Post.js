@@ -119,7 +119,7 @@ flex-direction: row;
 const TagBox = styled.View`
 borderRadius:5;
 height : 25;
-padding : 10px;
+padding : 5px;
 background-color :  ${LightGrey}
 align-items: center; 
 justifyContent: center;

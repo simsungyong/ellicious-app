@@ -1,5 +1,5 @@
 import React, { useState, Component } from "react";
-import { Image, TouchableOpacity, ScrollView, StyleSheet } from "react-native";
+import { Image, TouchableOpacity, ScrollView, StyleSheet, Button } from "react-native";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import constants from "../constants";
@@ -49,13 +49,12 @@ const ButtonContainer = styled.View`
 `;
 //border: 1px solid ${styles.lightGreyColor};
 
-const Button = styled.View`
-width: ${constants.width / 2};
-  align-items: center;
-  alignItems: center;
- justifyContent: center;
- padding : 5px;
-`;
+const FollowButton =styled.TouchableOpacity`
+  width: 50px;
+  height: 25px;
+  background-color: ${props=>props.backgroundColor};
+  border-radius: 7px;
+  `;
 
 const NameCon = styled.View`
   flex : 1;
@@ -156,6 +155,7 @@ const UserProfile = ({
   categories,
   firstName,
   isSelf,
+  isFollowing,
   followersCount,
   followingCount,
   postsCount,
@@ -200,6 +200,9 @@ const UserProfile = ({
               <Bold>{followingCount}</Bold>
             </FollowPick>
           </FollowCon>
+          <FollowButton backgroundColor={isFollowing ? LightGrey :"blue" }>
+            <Text style={{color:"black"}}>팔로우</Text>
+          </FollowButton>
           </Con>
           
         </Top>
@@ -233,6 +236,7 @@ UserProfile.propTypes = {
       followersCount: PropTypes.number.isRequired,
       followingCount: PropTypes.number.isRequired,
       categoryCount: PropTypes.number.isRequired,
+      isFollowing: PropTypes.bool.isRequired,
       followers:PropTypes.arrayOf(
         PropTypes.shape({
           username:PropTypes.string.isRequired,

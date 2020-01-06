@@ -50,10 +50,12 @@ const ButtonContainer = styled.View`
 //border: 1px solid ${styles.lightGreyColor};
 
 const FollowButton =styled.TouchableOpacity`
-  width: 50px;
-  height: 25px;
+  width: 70px;
+  height: 27px;
   background-color: ${props=>props.backgroundColor};
   border-radius: 7px;
+  alignItems: center;
+  justifyContent: center;
   `;
 
 const NameCon = styled.View`
@@ -205,9 +207,11 @@ const UserProfile = ({
               <Bold>{followingCount}</Bold>
             </FollowPick>
           </FollowCon>
+          <FollowCon>
           <FollowButton backgroundColor={isFollowing ? LightGrey :"blue" }>
-            <Text style={{color:"black"}}>팔로우</Text>
+            <Text style={{color:"black"}}>Following</Text>
           </FollowButton>
+          </FollowCon>
           </Con>
           
         </Top>

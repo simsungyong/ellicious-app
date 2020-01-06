@@ -9,12 +9,14 @@ import { LightGrey } from "../Color";
 const SearchBar = ({ onChange, value, onSubmit }) => (
     <TextInput
         style={{
-            width: constants.width - 45,
+            //width: constants.width - 45,
             height: 35,
             backgroundColor: LightGrey,
             padding: 10,
             borderRadius: 5,
-            textAlign: "center"
+            textAlign: "center", 
+            flex : 1,
+            margin : 5
         }}
         returnKeyType="search"
         onChangeText={onChange}

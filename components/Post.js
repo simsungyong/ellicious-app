@@ -111,6 +111,20 @@ const IconCon = styled.View`
 const Caption = styled.Text`
   font-size : 15px;
 `;
+const Tag = styled.View`
+padding : 3px;
+padding-left : 5px;
+flex-direction: row;
+`;
+const TagBox = styled.View`
+borderRadius:5;
+height : 25;
+padding : 10px;
+background-color :  ${LightGrey}
+align-items: center; 
+justifyContent: center;
+`;
+const TagText = styled.Text``;
 
 const Post = ({
     user, 
@@ -226,6 +240,12 @@ const Post = ({
                    source={{uri: file.url}}/>
               ))}
           </Swiper>
+          <Tag>
+                <TagBox>
+                  <TagText>#공릉동</TagText>
+                </TagBox>
+                <View/>
+          </Tag>
           <StoreInfo>
             <Store>
             <Touchable>

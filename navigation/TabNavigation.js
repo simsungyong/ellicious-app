@@ -8,7 +8,7 @@ import Search from "../screens/Tabs/Search";
 import MyPick from "../screens/Tabs/MyPick";
 import Profile from "../screens/Tabs/Profile/Profile";
 import Detail from "../screens/Detail";
-import MessagesLink from "../components/MessagesLink";
+import MessagesLink from "../components/MessageComponents/MessagesLink";
 import NavIcon from "../components/NavIcons";
 import AlarmsLink from "../components/AlarmsLink";
 import { stackStyles, HomestackStyles, SearchstackStyles  } from "./config";

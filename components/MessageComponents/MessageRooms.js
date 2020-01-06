@@ -1,15 +1,15 @@
 import React from "react";
 import { TouchableOpacity, Image, Text, Button } from "react-native";
 import PropTypes from "prop-types";
-import constants from "../constants";
+import constants from "../../constants";
 import styled from "styled-components";
 import { withNavigation } from "react-navigation";
-import FollowButton from './FollowButton';
+import FollowButton from '../FollowButton';
 import { useQuery } from "react-apollo-hooks";
 import { gql } from "apollo-boost";
-import Loader from "../components/Loader";
+import Loader from "../Loader";
 import { Entypo } from "@expo/vector-icons";
-import { NewMsg } from "./Color";
+import { NewMsg } from "../Color";
 
 const Container = styled.View`
   flex : 1;

@@ -1,6 +1,6 @@
 import React, { useState  } from "react";
 import { ScrollView, RefreshControl, Platform, View, Text, StyleSheet} from "react-native";
-import SearchBar from "../../../components/SearchBar";
+import SearchBar from "../../../components/SearchComponents/SearchBar";
 import MessagePresenter from "./MessagePresenter";
 import styled from "styled-components";
 import styles from "../../../styles";

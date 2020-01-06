@@ -8,7 +8,7 @@ import useInput from "../hooks/useInput";
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { ScrollView, Text,Image,TextInput,RefreshControl, KeyboardAvoidingView } from "react-native";
 import { POST_COMMENT } from "../fragments";
-import PostOfComment from '../components/PostOfComment';
+import PostOfComment from '../components/CommentComponents/PostOfComment';
 import { LightGrey, CommentsBox, mainPink } from "../components/Color";
 import constants from "../constants";
 

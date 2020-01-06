@@ -4,7 +4,7 @@ import { gql } from "apollo-boost";
 // import { USER_FRAGMENT } from "../../fragments";
 import Loader from "../../components/Loader";
 import { useQuery } from "react-apollo-hooks";
-import MessageRooms from "../../components/MessageRooms";
+import MessageRooms from "../../components/MessageComponents/MessageRooms";
 import { mainPink } from "../../components/Color";
 
 export const Messages = gql`

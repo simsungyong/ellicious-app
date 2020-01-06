@@ -10,7 +10,7 @@ import styles from "../../../styles";
 import constants from "../../../constants";
 import TopBarNav from 'top-bar-nav';
 
-import SearchStoreBox from "../../../components/SearchStoreBox";
+import SearchStoreBox from "../../../components/SearchComponents/SearchStoreBox";
 
 const SEARCH_STORE = gql`
   query search($term: String!) {

@@ -2,9 +2,9 @@ import React from "react";
 import { TouchableOpacity, Image, Text } from "react-native";
 import { withNavigation } from "react-navigation";
 import PropTypes from "prop-types";
-import constants from "../constants";
+import constants from "../../constants";
 import styled from "styled-components";
-import FollowButton from './FollowButton';
+import FollowButton from '../FollowButton';
 
 const Container = styled.View`
   flex : 1;

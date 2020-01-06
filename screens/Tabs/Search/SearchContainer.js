@@ -1,6 +1,6 @@
 import React, { useState  } from "react";
 import { View, StyleSheet} from "react-native";
-import SearchBar from "../../../components/SearchBar";
+import SearchBar from "../../../components/SearchComponents/SearchBar";
 import SearchPresenter from "./SearchPresenter";
 import SearchAccountPresenter from "./SearchAccountPresenter";
 import SearchStorePresenter from "./SearchStorePresenter";

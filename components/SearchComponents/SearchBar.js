@@ -2,9 +2,9 @@
 import React from "react";
 import { TextInput } from "react-native";
 import PropTypes from "prop-types";
-import constants from "../constants";
-import styles from "../styles";
-import { LightGrey } from "./Color";
+import constants from "../../constants";
+import styles from "../../styles";
+import { LightGrey } from "../Color";
 
 const SearchBar = ({ onChange, value, onSubmit }) => (
     <TextInput

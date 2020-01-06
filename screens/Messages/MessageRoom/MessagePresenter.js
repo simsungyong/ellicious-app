@@ -7,7 +7,7 @@ import { useQuery } from "react-apollo-hooks";
 import Loader from "../../../components/Loader";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "../../../styles";
-import MessageAccountBox from "../../../components/MessageAccountBox";
+import MessageAccountBox from "../../../components/MessageComponents/MessageAccountBox";
 
 
 const SEARCH_USER = gql`

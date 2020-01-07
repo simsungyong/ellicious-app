@@ -6,6 +6,7 @@ import constants from "../constants";
 import SquarePhoto from "./SquarePhoto";
 import MapViews from "./MapView/MapViews";
 import { LightPink, Grey, TINT_COLOR, PointPink, mainPink, LightGrey, Line } from "./Color";
+import { AntDesign } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import Hr from "hr-native";
 import MapView from "react-native-maps";
@@ -13,6 +14,8 @@ import TopBarNav from 'top-bar-nav';
 import ProfileMapContainer from "../screens/Tabs/Profile/ProfileMapContainer";
 import { gql } from "apollo-boost";
 import { useMutation } from "react-apollo-hooks";
+import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
+
 
 export const FOLLOW = gql`
   mutation follow($id: String!) {
@@ -25,6 +28,7 @@ export const UNFOLLOW = gql`
     unfollow(id: $id)
   }
 `;
+const Touchable = styled.TouchableOpacity``;
 
 const Container = styled.View`
   flex : 1;
@@ -191,7 +195,7 @@ const UserProfile = ({
 }) => {
   const [isGrid, setIsGrid] = useState(true);
   const toggleGrid = () => setIsGrid(i => !i);
-
+  const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
   const [followingConfirm, setFollowing] = useState(isFollowing);
   const [followCount, setFollowCount] = useState(followersCount);
   const [FollowMutation] = useMutation(FOLLOW, {
@@ -275,7 +279,23 @@ const handleFollow = async () =>{
           fadeLabels={true}
           underlineStyle={Style.underlineStyle}
         />
+
+    <Modal.BottomModal
+    visible={bottomModalAndTitle}
+    onTouchOutside={() => setbottomModalAndTitle(false)}
+    height={0.9}
+    width={1}
+    onSwipeOut={() => setbottomModalAndTitle(false)}
+    modalTitle={
+      <ModalTitle
+        title="프로필 편집" 
+        hasTitleBar
+      />
+    }
+    >
+    </Modal.BottomModal>    
     </Container>
+
   )
 };
 

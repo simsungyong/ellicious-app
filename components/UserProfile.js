@@ -36,7 +36,6 @@ const Container = styled.View`
 `;
 const Profile = styled.View`
   padding : 5px;
-
 `;
 
 const Top = styled.View`
@@ -93,7 +92,7 @@ const EditCon = styled.View`
 margin-vertical : 3px;
 `;
 const FollowCon = styled.View`
-  alignItems: center;
+  alignItems: flex-end;
   margin-right : 5px;
   justifyContent: flex-end;
   flex-direction: row;
@@ -136,6 +135,12 @@ const Post = styled.View`
 flex-direction : column
 `;
 
+const BioCon = styled.View`
+flex-direction : row;
+`;
+const Blank = styled.View`
+flex : 1;
+`;
 
 const Scene = ({ index, posts, userId }) => (
   
@@ -236,7 +241,7 @@ const handleFollow = async () =>{
         <Top>
           <ProfileImage>
             <Image 
-              style={{height: 80, width: 80, borderRadius:30}}
+              style={{height: 90, width: 90, borderRadius:30}}
               source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}/>
           </ProfileImage>
           <Con>
@@ -257,7 +262,11 @@ const handleFollow = async () =>{
                 </FollowButton>
             }
           </EditCon>
-            </NameBox>
+          </NameBox>
+          <BioCon>
+            <Blank/>
+            <Text>{bio}</Text>
+          </BioCon>
           </NameCon>
           <FollowCon>
             <FollowPick>

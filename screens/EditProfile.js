@@ -12,7 +12,7 @@ import { PointPink, CommentsBox, mainPink, TINT_COLOR, Grey, LightPink } from ".
 import { withNavigation } from "react-navigation";
 import constants from "../constants";
 import { FormLabel, FormInput } from 'react-native-elements'
-import {AntDesign} from '@expo/vector-icons'
+import {AntDesign, FontAwesome} from '@expo/vector-icons'
 
 const Container = styled.View`
 flex : 1;
@@ -27,13 +27,14 @@ const EditImage = styled.View`
   alignItems: center;
   justifyContent: center;
 `;
-const ImageCon = styled.TouchableOpacity`
+const ImageCon = styled.View`
 `;
 
 const Image = styled.Image`
-  width: 80;
-  height: 80;
+  width: 95;
+  height: 95;
   borderRadius:30;
+  position : relative;
 `;
 const EditButton = styled.TouchableOpacity`
 alignItems: center;
@@ -61,6 +62,14 @@ margin-right : 10px;
 alignItems: center;
 justifyContent: center;
 `;
+const Button = styled.TouchableOpacity`
+  right : 0px;
+  bottom: 0px;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  
+`;
 const EditProfile=({
     id,
     avatar,
@@ -78,6 +87,16 @@ const EditProfile=({
             <Image  
               source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}
             />
+            
+            <Button>
+              <FontAwesome 
+                name = {'camera'}
+                color ={Grey}
+                position={'absolute'}
+                size={25}
+              />
+            </Button>
+            
           </ImageCon>
           <EditButton>
             <TextInput 
@@ -146,7 +165,7 @@ const styles = StyleSheet.create({
       fontSize : 17
     },
     EditId : {
-      fontSize : 30, 
+      fontSize : 25, 
       fontWeight : "200",
       marginTop: 7
     },

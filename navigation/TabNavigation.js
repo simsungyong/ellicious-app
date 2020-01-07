@@ -52,7 +52,7 @@ const stackFactory = (initialRoute, customConfig) =>
     EditProfile: {
       screen: EditProfile,
       navigationOptions: ({ navigation }) => ({
-        title: "프로필 편집"
+        title: "프로필 수정"
       })
     },
     

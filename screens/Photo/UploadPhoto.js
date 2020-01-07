@@ -137,6 +137,7 @@ const Button = styled.TouchableOpacity`
   borderRadius: 7;
   padding : 5px;
   margin : 4px;
+  background-color: ${props=>props.backgroundColor};
   width : ${constants.width /3.7};
   borderColor: ${mainPink};
   borderWidth: 1.5
@@ -197,7 +198,6 @@ export default ({navigation}) => {
   const handleKey= async(i)=>{
     
     await setKey([!keys[i],...keys])
-    console.log(keys)
   }
 
   const togglePicker=(p)=>{
@@ -290,43 +290,27 @@ export default ({navigation}) => {
           <ScrollView>
           <ButtonCon>
           <Button onPress={()=>handleKey(0)} backgroundColor={ keys[0] ? mainPink : LightGrey}><Text>주차가능</Text></Button>
-          <Button onPress={()=>handleKey(1)}><Text>가성비</Text></Button>
-          <Button onPress={()=>handleKey(2)}><Text>서비스 좋아</Text></Button>
+          <Button onPress={()=>handleKey(1)} backgroundColor={ keys[1] ? mainPink : LightGrey}><Text>가성비</Text></Button>
+          <Button onPress={()=>handleKey(2)} backgroundColor={ keys[2] ? mainPink : LightGrey}><Text>서비스 좋아</Text></Button>
           </ButtonCon>
 
           <ButtonCon>
-          <Button onPress={()=>handleKey(3)}><Text>24시간</Text></Button>
-          <TouchableOpacity>
-            <Button><Text>자리넓어</Text></Button>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Button><Text>혼밥가능</Text></Button>
-          </TouchableOpacity>
+          <Button onPress={()=>handleKey(3)} backgroundColor={ keys[3] ? mainPink : LightGrey}><Text>24시간</Text></Button>
+          <Button onPress={()=>handleKey(4)} backgroundColor={ keys[4] ? mainPink : LightGrey}><Text>자리넓어</Text></Button>
+          <Button onPress={()=>handleKey(5)} backgroundColor={ keys[5] ? mainPink : LightGrey}><Text>혼밥가능</Text></Button>
           </ButtonCon>
 
           <ButtonCon>
-          <TouchableOpacity>
-            <Button><Text>애견동반가능</Text></Button>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Button><Text>또오고싶어</Text></Button>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Button><Text>단체석 가능</Text></Button>
-          </TouchableOpacity>
-        </ButtonCon>
+          <Button onPress={()=>handleKey(6)} backgroundColor={ keys[6] ? mainPink : LightGrey}><Text>24시간</Text></Button>
+          <Button onPress={()=>handleKey(7)} backgroundColor={ keys[7] ? mainPink : LightGrey}><Text>자리넓어</Text></Button>
+          <Button onPress={()=>handleKey(8)} backgroundColor={ keys[8] ? mainPink : LightGrey}><Text>혼밥가능</Text></Button>
+          </ButtonCon>
 
-        <ButtonCon>
-        <TouchableOpacity>
-          <Button><Text>예약가능</Text></Button>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Button><Text>연인과 함께</Text></Button>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Button><Text>가족과 함께</Text></Button>
-        </TouchableOpacity>
-        </ButtonCon>
+          <ButtonCon>
+          <Button onPress={()=>handleKey(9)} backgroundColor={ keys[9] ? mainPink : LightGrey}><Text>24시간</Text></Button>
+          <Button onPress={()=>handleKey(10)} backgroundColor={ keys[10] ? mainPink : LightGrey}><Text>자리넓어</Text></Button>
+          <Button onPress={()=>handleKey(11)} backgroundColor={ keys[11] ? mainPink : LightGrey}><Text>혼밥가능</Text></Button>
+          </ButtonCon>
         </ScrollView>
         </ButtonCon>
       </MoreInfoCon>

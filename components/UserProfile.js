@@ -183,11 +183,11 @@ const UserProfile = ({
   fullName,
   categories,
   firstName,
+  navigation,
   isSelf,
   isFollowing,
   followersCount,
   followingCount,
-  navigation,
   postsCount,
   categoryCount,
   followers,
@@ -260,12 +260,12 @@ const handleFollow = async () =>{
           <FollowCon>
             {
               isSelf ?
-              <Touchable onPress={()=>setbottomModalAndTitle(true)}>
+              <TouchableOpacity onPress={()=>navigation.navigate("EditProfile")}>
               <AntDesign
                   color={mainPink}
                   size={27}
                   name={"setting"}
-                  /></Touchable> : <FollowButton onPress={handleFollow} backgroundColor={followingConfirm ? LightGrey :mainPink }>
+                  /></TouchableOpacity> : <FollowButton onPress={handleFollow} backgroundColor={followingConfirm ? LightGrey :mainPink }>
                   <Text style={{color:"black"}}>Following</Text>
                 </FollowButton>
             }

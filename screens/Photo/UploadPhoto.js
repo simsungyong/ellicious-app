@@ -1,7 +1,8 @@
 import React,{useState, useEffect} from "react";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
-import {Text,Image,ScrollView,Modal,TouchableOpacity, TextInput,Picker, Platform,StyleSheet, TouchableHighlight, Alert} from 'react-native';
+import PropTypes from 'prop-types';
+import {Text,Image,ScrollView,Modal,TouchableOpacity, TextInput,Picker, Platform, TouchableHighlight, Alert} from 'react-native';
 import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line, LightPink } from '../../components/Color';
 import {FontAwesome, EvilIcons} from "@expo/vector-icons";
 import Stars from 'react-native-stars';
@@ -130,18 +131,16 @@ flex-direction : row;
 alignItems: center;
 justifyContent: center;
 `;
-const Button = styled.View`
+const Button = styled.TouchableOpacity`
   alignItems: center;
   justifyContent: center;
   borderRadius: 7;
-  
   padding : 5px;
   margin : 4px;
-  width : ${constants.width /3.7}
+  width : ${constants.width /3.7};
   borderColor: ${mainPink};
   borderWidth: 1.5
 `;
-//background-color : ${LightGrey}
 
 export const seeCategory = gql`
   
@@ -155,12 +154,16 @@ export const seeCategory = gql`
 
 
 export default ({navigation}) => {
+  //let keys = [false,false,false,false,false,false,false,false,false,false,false,false];
+  const [keys, setKey] = useState([false,false,false,false,false,false,false,false,false,false,false,false]);
+  const keyword = ['주차가능', '가성비', '서비스 좋음', '24시간', '자리넓음', '혼밥가능', '애견동반가능', '또오고싶은 맛집', '단체석 가능','예약가능','연인과 함께','가족과 함께'];
   const { loading, data } = useQuery(seeCategory);
   const [starValue, setStarValue] = useState(2.5);
   const [isModalPick, setModalPick] = useState(false);
   const [selectCate, setSelectCate] = useState();
   const [pickedName, setPickedName] = useState();
   const [fileUrl, setFileUrl] = useState("");
+
   const photo = navigation.getParam("photo");
   const storeName = navigation.getParam("name");
   const storeAdr = navigation.getParam("formatted_address");
@@ -190,6 +193,12 @@ export default ({navigation}) => {
       Alert.alert("can't upload ", "Try later");
     }   
 };
+
+  const handleKey= async(i)=>{
+    
+    await setKey([!keys[i],...keys])
+    console.log(keys)
+  }
 
   const togglePicker=(p)=>{
     setModalPick(!p)
@@ -254,7 +263,7 @@ export default ({navigation}) => {
             //fullStar = {<Image source={require('../../assets/star.png')} style={{height:50,width:50}}/>}
             emptyStar={<FontAwesome name={'star-o'} size={25} color={Grey}/>}
             halfStar={<FontAwesome name={'star-half-full'} size={25} color={StarColor}/>}/>
-        </Rating> 
+        </Rating>
       </InfoCon>   
 
       <Hr lineStyle={{ backgroundColor : Line}} />
@@ -277,27 +286,18 @@ export default ({navigation}) => {
         <SubTitleConMI>
           <SubTitle> More Information </SubTitle>
         </SubTitleConMI>
-
         <ButtonCon>
           <ScrollView>
           <ButtonCon>
-          <TouchableOpacity>
-            <Button><Text>주차가능</Text></Button>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Button><Text>가성비</Text></Button>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Button><Text>서비스 좋음</Text></Button>
-          </TouchableOpacity>
+          <Button onPress={()=>handleKey(0)} backgroundColor={ keys[0] ? mainPink : LightGrey}><Text>주차가능</Text></Button>
+          <Button onPress={()=>handleKey(1)}><Text>가성비</Text></Button>
+          <Button onPress={()=>handleKey(2)}><Text>서비스 좋아</Text></Button>
           </ButtonCon>
 
           <ButtonCon>
+          <Button onPress={()=>handleKey(3)}><Text>24시간</Text></Button>
           <TouchableOpacity>
-            <Button><Text>24시간</Text></Button>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Button><Text>자리넓음</Text></Button>
+            <Button><Text>자리넓어</Text></Button>
           </TouchableOpacity>
           <TouchableOpacity>
             <Button><Text>혼밥가능</Text></Button>
@@ -309,7 +309,7 @@ export default ({navigation}) => {
             <Button><Text>애견동반가능</Text></Button>
           </TouchableOpacity>
           <TouchableOpacity>
-            <Button><Text>또오고싶은 맛집</Text></Button>
+            <Button><Text>또오고싶어</Text></Button>
           </TouchableOpacity>
           <TouchableOpacity>
             <Button><Text>단체석 가능</Text></Button>

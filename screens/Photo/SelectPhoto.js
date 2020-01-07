@@ -85,7 +85,7 @@ return(
             <>
             <Image
                   style={{ width: constants.width, height: constants.height / 2 }}
-                  source={{ uri: selected.uri }}
+                  //source={{ uri: selected.uri }}
                 />
               <Button onPress={handleSelected}>
                 <AntDesign

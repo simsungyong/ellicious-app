@@ -250,7 +250,7 @@ const handleFollow = async () =>{
               <TouchableOpacity onPress={()=>navigation.navigate("EditProfile")}>
               <Foundation
                   color={Grey}
-                  size={13}
+                  size={17}
                   name={"pencil"}
                   /></TouchableOpacity> : <FollowButton onPress={handleFollow} backgroundColor={followingConfirm ? LightGrey :mainPink }>
                   <Text style={{color:"black"}}>Following</Text>

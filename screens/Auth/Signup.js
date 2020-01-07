@@ -9,6 +9,7 @@ import { useMutation } from "react-apollo-hooks";
 import { LOG_IN, CREATE_ACCOUNT } from "./AuthQueries";
 import { TINT_COLOR, PointPink, BG_COLOR } from '../../components/Color'
 import { SocialIcon } from 'react-native-elements';
+import * as Facebook from "expo-facebook";
 
 const Container = styled.View`
   flex: 1;
@@ -99,6 +100,36 @@ export default ({ navigation }) => {
       setLoading(false);
     }
   };
+
+  const fbLogin = async () => {
+    try {
+      setLoading(true);
+      const { type, token } = await Facebook.logInWithReadPermissionsAsync(
+        "1849127108565501",
+        {
+          permissions: ["public_profile", "email"]
+        }
+      );
+      if (type === "success") {
+        const response = await fetch(
+          `https://graph.facebook.com/me?access_token=${token}&fields=id,last_name,first_name,email`
+        );
+        Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
+        const { email, first_name, last_name } = await response.json();
+        emailInput.setValue(email);
+        fNameInput.setValue(first_name);
+        lNameInput.setValue(last_name);
+        const [username] = email.split("@");
+        usernameInput.setValue(username);
+        setLoading(false);
+      } else {
+        // type === 'cancel'
+      }
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`);
+    }
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}> 
       <Container>
@@ -140,7 +171,7 @@ export default ({ navigation }) => {
           <AuthButton loading={loading} onPress={handleSingup} text="회원가입" />
         </View>
         <OtherSignUP>
-          <SocialIcon type="facebook" onPress={() => {alert('Facebook Login');}} />
+          <SocialIcon type="facebook" onPress={fbLogin} />
           <SocialIcon type="google" onPress={() => {alert('Google Login');}} />
         </OtherSignUP>
         <View/>

@@ -14,6 +14,7 @@ import TopBarNav from 'top-bar-nav';
 import ProfileMapContainer from "../screens/Tabs/Profile/ProfileMapContainer";
 import { gql } from "apollo-boost";
 import { useMutation } from "react-apollo-hooks";
+import { withNavigation } from "react-navigation";
 import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
 
 
@@ -186,6 +187,7 @@ const UserProfile = ({
   isFollowing,
   followersCount,
   followingCount,
+  navigation,
   postsCount,
   categoryCount,
   followers,
@@ -263,7 +265,7 @@ const handleFollow = async () =>{
                   color={mainPink}
                   size={27}
                   name={"setting"}
-                /></Touchable> : <FollowButton onPress={handleFollow} backgroundColor={followingConfirm ? LightGrey : mainPink }>
+                  /></Touchable> : <FollowButton onPress={handleFollow} backgroundColor={followingConfirm ? LightGrey :mainPink }>
                   <Text style={{color:"black"}}>Following</Text>
                 </FollowButton>
             }
@@ -277,7 +279,7 @@ const handleFollow = async () =>{
           routeStack={ROUTESTACK}
           renderScene={(route, i) => {
             let Component = ROUTES[route.title];
-            return <Component index={i} posts={posts} userId={id}/>;
+            return <Component index={0} posts={posts} userId={id}/>;
           }}
           headerStyle={{ paddingTop: 20 }}
           inactiveOpacity={1}
@@ -285,20 +287,6 @@ const handleFollow = async () =>{
           underlineStyle={Style.underlineStyle}
         />
 
-    <Modal.BottomModal
-    visible={bottomModalAndTitle}
-    onTouchOutside={() => setbottomModalAndTitle(false)}
-    height={0.9}
-    width={1}
-    onSwipeOut={() => setbottomModalAndTitle(false)}
-    modalTitle={
-      <ModalTitle
-        title="프로필 편집" 
-        hasTitleBar
-      />
-    }
-    >
-    </Modal.BottomModal>    
     </Container>
 
   )
@@ -355,4 +343,4 @@ UserProfile.propTypes = {
 
 };
 
-export default UserProfile;
+export default withNavigation(UserProfile);

@@ -260,12 +260,12 @@ const handleFollow = async () =>{
           <FollowCon>
             {
               isSelf ?
-              <Touchable onPress={()=>navigation.navigate("EditProfile")}>
+              <Touchable onPress={()=>setbottomModalAndTitle(true)}>
               <AntDesign
                   color={mainPink}
                   size={27}
                   name={"setting"}
-                /></Touchable> : <FollowButton onPress={handleFollow} backgroundColor={followingConfirm ? LightGrey : mainPink }>
+                  /></Touchable> : <FollowButton onPress={handleFollow} backgroundColor={followingConfirm ? LightGrey :mainPink }>
                   <Text style={{color:"black"}}>Following</Text>
                 </FollowButton>
             }

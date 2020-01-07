@@ -254,7 +254,7 @@ const handleFollow = async () =>{
           <FollowCon>
             {
               isSelf ?
-              null : <FollowButton onPress={handleFollow} backgroundColor={followingConfirm ? LightGrey :"blue" }>
+              null : <FollowButton onPress={handleFollow} backgroundColor={followingConfirm ? LightGrey :mainPink }>
                   <Text style={{color:"black"}}>Following</Text>
                 </FollowButton>
             }

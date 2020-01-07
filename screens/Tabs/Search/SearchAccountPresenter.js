@@ -20,6 +20,7 @@ const SEARCH_USER = gql`
       firstName
       avatar
       isSelf
+      isFollowing
     }
   }
 `;

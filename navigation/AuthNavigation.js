@@ -4,13 +4,15 @@ import Signup from "../screens/Auth/Signup";
 import Confirm from "../screens/Auth/Confirm";
 import Login from "../screens/Auth/Login";
 import AuthHome from "../screens/Auth/AuthHome";
+import EmailCheck from "../screens/Auth/EmailCheck";
 
 const AuthNavigation = createStackNavigator(
   {
     AuthHome,
     Login,
     Signup,
-    Confirm
+    Confirm,
+    EmailCheck
   },
   {
     headerMode: "none"

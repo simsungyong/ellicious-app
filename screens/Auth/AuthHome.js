@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import constants from "../../constants";
 import AuthButton from "../../components/AuthButton";
+import AuthInput from "../../components/AuthInput";
+import { useMutation } from "react-apollo-hooks";
+import { LOG_IN, CREATE_ACCOUNT } from "./AuthQueries";
+import { Alert } from "react-native";
 import {mainPink, TINT_COLOR, PointPink, BG_COLOR } from "../../components/Color";
+import { SocialIcon } from 'react-native-elements';
+import useInput from "../../hooks/useInput";
+import * as Facebook from "expo-facebook";
+import * as Google from 'expo-google-app-auth';
 
 const Container = styled.View`
   justify-content: center;
@@ -12,11 +20,11 @@ const Container = styled.View`
   padding : 10px;
 `;
 const Top = styled.View`
-  flex: 2;
+  flex: 1;
 `;
 
 const TitleCon = styled.View`
-  flex: 3;
+  flex: 2;
 `;
 
 const Subtitle = styled.Text `
@@ -34,7 +42,12 @@ const Title = styled.Text `
   color: ${PointPink};
 `;
 const Middle = styled.View`
-  flex: 3;
+`;
+
+const InfoCon = styled.View`
+  flex : 2;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ButtonContainer = styled.View`
@@ -71,14 +84,127 @@ const LoginLinkText = styled.Text`
   margin-top: 20px;
   font-weight: 600;
 `;
+const LoginButtonCon = styled.View`
+justify-content: center;
+align-items: center;
+flex : 2;
+`;
 
+const OtherLoginCon = styled.View`
+  flex-direction : row;
+  margin-top : 10px;
+`;
 const Bottom =styled.View`
   flex: 1;
   background-color : ${BG_COLOR}
 `;
 
-export default ({ navigation }) => (
-  <Container>
+export default ({ navigation }) => {
+  const fNameInput = useInput("");
+  const lNameInput = useInput("");
+  const emailInput = useInput(navigation.getParam("email", ""));
+  const usernameInput = useInput("");
+
+  const [loading, setLoading] = useState(false);
+
+  const [createAccountMutation] = useMutation(CREATE_ACCOUNT, {
+    variables: {
+      username: usernameInput.value,
+      email: emailInput.value,
+      firstName: fNameInput.value,
+      lastName: lNameInput.value
+    }
+  });
+
+  const [requestSecretMutation] = useMutation(LOG_IN, {
+    variables: {
+      email: emailInput.value
+    }
+  });
+
+
+  const handleLogin = async () => {
+    const { value } = emailInput;
+    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (value === "") {
+      return Alert.alert("Email can't be empty");
+    } else if (!value.includes("@") || !value.includes(".")) {
+      return Alert.alert("Please write an email");
+    } else if (!emailRegex.test(value)) {
+      return Alert.alert("That email is invalid");
+    }
+    try {
+      setLoading(true);
+      const {
+        data: { requestSecret }
+      } = await requestSecretMutation();
+      if (requestSecret) {
+        // Alert.alert("Check your email");
+        navigation.navigate("Confirm", { email: value });
+        return;
+      } else {
+        Alert.alert("Account not found");
+        return;
+      }
+    } catch (e) {
+      console.log(e);
+      Alert.alert("Can't log in now");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fbLogin = async () => {
+    try {
+      setLoading(true);
+      const { type, token } = await Facebook.logInWithReadPermissionsAsync(
+        "1849127108565501",
+        {
+          permissions: ["public_profile", "email"]
+        }
+      );
+      if (type === "success") {
+        const response = await fetch(
+          `https://graph.facebook.com/me?access_token=${token}&fields=id,last_name,first_name,email`
+        );
+        Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
+        const { email, first_name, last_name } = await response.json();
+        console.log(email)
+        setLoading(false);
+      } else {
+        // type === 'cancel'
+      }
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`);
+    }
+  };
+
+  const googleLogin = async () => {
+    try {
+      setLoading(true);
+      const result = await Google.logInAsync({
+        iosClientId: "884516426746-mt2la4o92f6u7fgvr5opglt0conrebjl.apps.googleusercontent.com",
+        androidClientId: "884516426746-360kefsq27dgm0au8i1d52ff9bobgrkd.apps.googleusercontent.com",
+        scopes: ["profile", "email"]
+      });
+      if (result.type === "success") {
+        const user = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+          headers: { Authorization: `Bearer ${result.accessToken}` }
+        });
+        const { email, family_name, given_name } = await user.json();
+        console.log(email)
+      } else {
+        return { cancelled: true };
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Container>
     <Top/>
     <TitleCon>
       <Image 
@@ -88,10 +214,21 @@ export default ({ navigation }) => (
     </TitleCon>
     <Middle/>
     <ButtonContainer>
-      <AuthButton
-        text={"Login"}
-        onPress={() => navigation.navigate("Login")}
+      <AuthInput
+        {...emailInput}
+        /*placeholder="First name"*/
+        autoCapitalize="words"
+        label = "email"
       />
+      <AuthButton loading={loading} onPress={handleLogin} text="Login" />
+
+        <LoginButtonCon>
+            <OtherLoginCon>
+              <SocialIcon type="facebook" onPress={fbLogin} />
+              <SocialIcon type="google" onPress={googleLogin} />
+            </OtherLoginCon>
+        </LoginButtonCon>
+
       <SignUpCon>
        <Text>계정이 없으신가요?</Text>
         <Touchable onPress={() => navigation.navigate("Signup")}>
@@ -103,4 +240,6 @@ export default ({ navigation }) => (
     </ButtonContainer>
     <Bottom/>
   </Container>
-);
+  )
+  
+};

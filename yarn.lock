@@ -1631,11 +1631,6 @@ balanced-match@^1.0.0:
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
   integrity sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
 
-base-64@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/base-64/-/base-64-0.1.0.tgz#780a99c84e7d600260361511c4877613bf24f6bb"
-  integrity sha1-eAqZyE59YAJgNhURxId2E78k9rs=
-
 base64-js@^1.1.2, base64-js@^1.2.3:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.3.1.tgz#58ece8cb75dd07e71ed08c736abc5fac4dbf8df1"
@@ -2294,11 +2289,6 @@ electron-to-chromium@^1.3.295:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.296.tgz#a1d4322d742317945285d3ba88966561b67f3ac8"
   integrity sha512-s5hv+TSJSVRsxH190De66YHb50pBGTweT9XGWYu/LMR20KX6TsjFzObo36CjVAzM+PUeeKSBRtm/mISlCzeojQ==
 
-eme-encryption-scheme-polyfill@^1.0.2:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/eme-encryption-scheme-polyfill/-/eme-encryption-scheme-polyfill-1.0.3.tgz#6ee8d9633bfa5ab44a620ea33854f4e7aa58f3c2"
-  integrity sha512-BO98g91VkDSpFHHgWAeppz9hn1U3WRQWKh4O3mZk5JvaUvgYm0Q67t7/bC+8iEQsK+JA/K7+v2lhz1B+zXR/zA==
-
 emoji-regex@^7.0.1:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-7.0.3.tgz#933a04052860c85e83c122479c4748a8e4c72156"
@@ -2452,6 +2442,13 @@ expo-app-auth@~7.0.0:
   dependencies:
     invariant "^2.2.4"
 
+expo-app-auth@~8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/expo-app-auth/-/expo-app-auth-8.0.0.tgz#607813705bf7c56178cc427dfb2b67e0b180aa89"
+  integrity sha512-sb1gsmS4C2YB1ZnBKmQ2RBnjcW0oPfSJ6OTCyQkineY99qIQ37nqkOCReLEMj/fAhDDbGzIqrlLdCXUyzhr7zQ==
+  dependencies:
+    invariant "^2.2.4"
+
 expo-app-loader-provider@~7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/expo-app-loader-provider/-/expo-app-loader-provider-7.0.0.tgz#9bfff831a204d0a8896e0120bce2209c4304ef03"
@@ -2481,6 +2478,13 @@ expo-constants@~7.0.0:
   dependencies:
     ua-parser-js "^0.7.19"
 
+expo-constants@~8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-8.0.0.tgz#e2c5a072dacb4263ccfc57dcb4835ca791960d48"
+  integrity sha512-NGRwSWfhwNFA9WVLXwqnSDPJJ4DdXTqEkl9Fr9PcyW5VCoFgz7uke256E1YZsYhOE0Ph365lu/5jjZs+MRmRog==
+  dependencies:
+    ua-parser-js "^0.7.19"
+
 expo-facebook@~7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/expo-facebook/-/expo-facebook-7.0.0.tgz#532b42d67ec91df051fa1f41ee8a1322154fba2b"
@@ -2500,13 +2504,13 @@ expo-font@^7.0.0, expo-font@~7.0.0:
   dependencies:
     fontfaceobserver "^2.1.0"
 
-expo-google-app-auth@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/expo-google-app-auth/-/expo-google-app-auth-7.0.0.tgz#66d772339a2a61cdfb256f4094fa693eda02951b"
-  integrity sha512-sVVl5yYrKD0FTGpvxCo4M1xCLgdDGtAYostsavzZjRAui0GpmA96iS7jMePltSWpffg4r7dIjRZEUbLjQ03g6g==
+expo-google-app-auth@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/expo-google-app-auth/-/expo-google-app-auth-8.0.0.tgz#9a98be4767b59bfb15180d1cc3006e6f400d5820"
+  integrity sha512-fhh8DS41WoY1buUO19/06QZH0n4hpNNTz0rBiZw9w2JI+miq8WhC1M5VrJHGVPeVZjKSOOor4JPyDtNgS4C8Gg==
   dependencies:
-    expo-app-auth "~7.0.0"
-    expo-constants "~7.0.0"
+    expo-app-auth "~8.0.0"
+    expo-constants "~8.0.0"
 
 expo-keep-awake@~7.0.0:
   version "7.0.0"
@@ -3574,11 +3578,6 @@ jsonify@~0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
   integrity sha1-LHS27kHZPKUbe1qu6PUDYx0lKnM=
-
-keymirror@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/keymirror/-/keymirror-0.1.1.tgz#918889ea13f8d0a42e7c557250eee713adc95c35"
-  integrity sha1-kYiJ6hP40KQufFVyUO7nE63JXDU=
 
 kind-of@^1.1.0:
   version "1.1.0"
@@ -5021,13 +5020,6 @@ react-native-branch@~3.0.1:
   resolved "https://registry.yarnpkg.com/react-native-branch/-/react-native-branch-3.0.1.tgz#5b07b61cbd290168cd3c3662e017ebe0f356d2ca"
   integrity sha512-vbcYxPZlpF5f39GAEUF8kuGQqCNeD3E6zEdvtOq8oCGZunHXlWlKgAS6dgBKCvsHvXgHuMtpvs39VgOp8DaKig==
 
-react-native-camera@^1.8.0:
-  version "1.13.1"
-  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-1.13.1.tgz#19277ccae0a49dbf1b96049da5b95c847ea7aff2"
-  integrity sha512-wYjMi06ygYIiHRM4dSCH914xFUay7Wplx0bAej4iBkZeh54M4AxJDcF4vVZ5vdkpuAg8zvof3l+L1VhcKziMgw==
-  dependencies:
-    prop-types "^15.6.2"
-
 react-native-collapsible@^0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/react-native-collapsible/-/react-native-collapsible-0.9.0.tgz#207849faa15493820d19fa6a5e58f7c7b6c1b910"
@@ -5073,25 +5065,6 @@ react-native-elements@^1.2.7:
     prop-types "^15.7.2"
     react-native-ratings "^6.3.0"
     react-native-status-bar-height "^2.2.0"
-
-react-native-fs@^2.13.3:
-  version "2.16.2"
-  resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.16.2.tgz#a312ce5f418e6d91d13b51e50ba0c49b1da1ec79"
-  integrity sha512-N9V8cMAOE49+er0/Qnf/xSFzsVWVWPW7Uggr11KVh18uv7FEPLEfLwEsL1Gv9vdkTgAK+6SYT46nqrhKtJClSw==
-  dependencies:
-    base-64 "^0.1.0"
-    utf8 "^3.0.0"
-
-react-native-full-image-picker@^1.2.11:
-  version "1.2.11"
-  resolved "https://registry.yarnpkg.com/react-native-full-image-picker/-/react-native-full-image-picker-1.2.11.tgz#342953c5281adc8f8749ee52b96d21a41a57b47f"
-  integrity sha512-cOAyhfbjzl8FFICylcm+c1bwg4jZbuNBaevkAzXeYTtBPZRUOnvXHRFM2D/+IjmaBENFvQi0vSrNCxaaunCREg==
-  dependencies:
-    react-native-camera "^1.8.0"
-    react-native-fs "^2.13.3"
-    react-native-pure-navigation-bar "^1.4.7"
-    react-native-root-siblings "^3.1.7"
-    react-native-video "^4.3.0"
 
 react-native-geocoding@^0.4.0:
   version "0.4.0"
@@ -5163,11 +5136,6 @@ react-native-modals@^0.19.9:
     prop-types "^15.6.0"
     react-native-root-siblings "^3.2.2"
 
-react-native-pure-navigation-bar@^1.4.7:
-  version "1.4.9"
-  resolved "https://registry.yarnpkg.com/react-native-pure-navigation-bar/-/react-native-pure-navigation-bar-1.4.9.tgz#990d4da090300b57bf643f5e702c5181b62e7ffd"
-  integrity sha512-tDktla7L5aaq3T1AcnCGzwYb68o2QtCvaOHBdN0hOy+LI1nrvSp2IBofylHegJTkUYBh64mbyfgmJp/VSbGGww==
-
 react-native-ratings@^6.3.0:
   version "6.5.0"
   resolved "https://registry.yarnpkg.com/react-native-ratings/-/react-native-ratings-6.5.0.tgz#a1606ccba3c5b54eec8e6cfa4765a45cf0e4ab8d"
@@ -5181,7 +5149,7 @@ react-native-reanimated@1.2.0:
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.2.0.tgz#9219227a52a5dfa4d34c324596d6726ccd874293"
   integrity sha512-vkWRHrPK5qfHP/ZawlRoo38oeYe9NZaaOH/lmFxRcsKzaSK6x3H5ZPXI8lK6MfTLveqwo1QhJje3zIKXO4nQQw==
 
-react-native-root-siblings@^3.1.7, react-native-root-siblings@^3.2.2:
+react-native-root-siblings@^3.2.2:
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/react-native-root-siblings/-/react-native-root-siblings-3.2.3.tgz#df5a1cff3a3a1f433f57320e1cae719f1b15a3f2"
   integrity sha512-wOCCtKJteaSIW3K++hzhkfdWRikTqjrG34DnhNDVSzKatuNQyFY1fPBD1YFT/3+kxOIUmNsJdiaPMao9QgoZMA==
@@ -5246,15 +5214,6 @@ react-native-vector-icons@^6.0.0, react-native-vector-icons@^6.6.0:
     lodash "^4.0.0"
     prop-types "^15.6.2"
     yargs "^13.2.2"
-
-react-native-video@^4.3.0:
-  version "4.4.4"
-  resolved "https://registry.yarnpkg.com/react-native-video/-/react-native-video-4.4.4.tgz#e33da29990556a9b2d575d6b2e88190fc04d9b50"
-  integrity sha512-GzC9dqvEV3kPQDgfM41bxuhXK0pf6NF+/PSY0nCqzikaapUtOs/69gPHEoG0D6ykI5ru0TxKdc1ZYM6MfZfgRw==
-  dependencies:
-    keymirror "^0.1.1"
-    prop-types "^15.5.10"
-    shaka-player "^2.4.4"
 
 react-native-view-shot@2.6.0:
   version "2.6.0"
@@ -5747,13 +5706,6 @@ setprototypeof@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.1.1.tgz#7e95acb24aa92f5885e0abef5ba131330d4ae683"
   integrity sha512-JvdAWfbXeIGaZ9cILp38HntZSFSo3mWg6xGcJJsd+d4aRMOqauag1C63dJfDw7OaMYwEbHMOxEZ1lqVRYP2OAw==
-
-shaka-player@^2.4.4:
-  version "2.5.7"
-  resolved "https://registry.yarnpkg.com/shaka-player/-/shaka-player-2.5.7.tgz#d8cf3489fef2609957ae44a4faa46a38a5fcda20"
-  integrity sha512-Hcanwr1cnGru1E42EXml6XaoRCByutr3DRI9LRoknZKdIlsBG+F4kT5aWrMlwFw6foFNw9hoMpRsB6LWUPlrIw==
-  dependencies:
-    eme-encryption-scheme-polyfill "^1.0.2"
 
 shebang-command@^1.2.0:
   version "1.2.0"
@@ -6377,11 +6329,6 @@ use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
   integrity sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==
-
-utf8@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/utf8/-/utf8-3.0.0.tgz#f052eed1364d696e769ef058b183df88c87f69d1"
-  integrity sha512-E8VjFIQ/TyQgp+TZfS6l8yp/xWppSAHzidGiRrqe4bK4XP9pTRyKFgGJpO3SN7zdX4DeomTrwaseCHovfpFcqQ==
 
 util-deprecate@~1.0.1:
   version "1.0.2"

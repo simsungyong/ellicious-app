@@ -5,7 +5,7 @@ import Loader from "../components/Loader";
 import styled from "styled-components";
 import useInput from "../hooks/useInput";
 import KeyboardSpacer from 'react-native-keyboard-spacer';
-import { ScrollView, Text,TextInput,RefreshControl, KeyboardAvoidingView,Alert, TouchableOpacity, View, StyleSheet  } from "react-native";
+import { ScrollView, Text,TextInput,RefreshControl, KeyboardAvoidingView,Alert, TouchableOpacity, StyleSheet  } from "react-native";
 import { POST_COMMENT } from "../fragments";
 import PostOfComment from '../components/CommentComponents/PostOfComment';
 import { PointPink, CommentsBox, mainPink, TINT_COLOR, Grey, LightPink } from "../components/Color";
@@ -16,11 +16,14 @@ import {AntDesign} from '@expo/vector-icons'
 
 const Container = styled.View`
 flex : 1;
-padding : 10px;
+padding : 15px;
 `;
 
+const View = styled.View`
+flex:1
+`;
 const EditImage = styled.View`
-  flex : 4
+  height : 30%;
   alignItems: center;
   justifyContent: center;
 `;
@@ -54,7 +57,9 @@ flex : 4
 `;
 const EditCageDetail = styled.View`
 flex-direction : row;
-
+margin-right : 10px;
+alignItems: center;
+justifyContent: center;
 `;
 const EditProfile=({
     id,
@@ -75,19 +80,21 @@ const EditProfile=({
             />
           </ImageCon>
           <EditButton>
-            <EditId style={{fontSize : 30, fontWeight : "200"}}>
-              0._.min
-            </EditId>
+            <TextInput 
+            style={styles.EditId}
+            placeholder = '0._.min'
+            placeholderTextColor={TINT_COLOR} />
           </EditButton>
         </EditImage>
 
+      <ScrollView>
         <EditInfo>
           <EditName>
             <Text style={{fontSize : 17, color : PointPink}}>이름</Text>
             <TextInput 
               style={{ 
                 height: 26,
-                width: constants.width-20, 
+                width: constants.width-30, 
                 fontSize: 20, 
                 color: TINT_COLOR, 
                 borderBottomWidth: 1, 
@@ -101,7 +108,7 @@ const EditProfile=({
             <TextInput 
               style={{ 
                 height: 26,
-                width: constants.width-20, 
+                width: constants.width-30, 
                 fontSize: 20, 
                 color: TINT_COLOR, 
                 borderBottomWidth: 1, 
@@ -114,23 +121,35 @@ const EditProfile=({
         <EditCage>
           <Text style={{fontSize : 17, color : PointPink, marginTop : 13}}>카테고리</Text>
           <EditCageDetail>
-            
             <TextInput 
-              style={{
-                marginTop: 15,
-              }}
+              style={styles.EditCage}
               placeholder = '디져트 지배자'
               placeholderTextColor={TINT_COLOR}
-              placeholderTextSize = '50'
             />
+            <View/>
+            <TouchableOpacity>
+            <Text style={{fontSize : 17, color : PointPink, marginTop : 13}}>삭제</Text>
+            </TouchableOpacity>
           </EditCageDetail>  
           </EditCage>
+        </ScrollView>
       </Container>
         );
       }
-//사진 누르면 사진 앨범 뜨게, 이름 누르면 이름 바꿀 수 있도록 ->현재 둘다 버튼임 
+
     
 const styles = StyleSheet.create({
+    EditCage:{
+      height: 24,
+      //width: constants.width-20, 
+      marginTop: 15,
+      fontSize : 17
+    },
+    EditId : {
+      fontSize : 30, 
+      fontWeight : "200",
+      marginTop: 7
+    },
         header:{
             height:100,
         },

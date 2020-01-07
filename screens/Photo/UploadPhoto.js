@@ -85,7 +85,6 @@ const MoreInfoCon = styled.View`
   margin-horizontal : 10px;
   margin-top:7px;
   margin-bottom : 7px;
-  background-color : green
 `;
 
 const UploadCon = styled.TouchableOpacity`
@@ -127,16 +126,22 @@ margin-top : 10px;
 
 const ButtonCon = styled.View`
 flex-direction : row;
+alignItems: center;
+justifyContent: center;
 `;
 const Button = styled.View`
   alignItems: center;
   justifyContent: center;
-  borderRadius: 5;
-  background-color : ${LightGrey}
+  borderRadius: 7;
+  
   padding : 5px;
-  margin : 2px;
-  height : 10px;
+  margin : 4px;
+  width : ${constants.width /3.7}
+  borderColor: ${mainPink};
+  borderWidth: 1.5
 `;
+//background-color : ${LightGrey}
+
 export const seeCategory = gql`
   
   query seeCategory($userId: String){
@@ -271,12 +276,57 @@ export default ({navigation}) => {
         <SubTitleConMI>
           <SubTitle> More Information </SubTitle>
         </SubTitleConMI>
+
+        <ButtonCon>
+          <ScrollView>
+          <ButtonCon>
+          <TouchableOpacity>
+            <Button><Text>주차가능</Text></Button>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Button><Text>가성비</Text></Button>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Button><Text>서비스 좋음</Text></Button>
+          </TouchableOpacity>
+          </ButtonCon>
+
+          <ButtonCon>
+          <TouchableOpacity>
+            <Button><Text>24시간</Text></Button>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Button><Text>자리넓음</Text></Button>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Button><Text>혼밥가능</Text></Button>
+          </TouchableOpacity>
+          </ButtonCon>
+
+          <ButtonCon>
+          <TouchableOpacity>
+            <Button><Text>애견동반가능</Text></Button>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Button><Text>또오고싶은 맛집</Text></Button>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Button><Text>단체석 가능</Text></Button>
+          </TouchableOpacity>
+        </ButtonCon>
+
         <ButtonCon>
         <TouchableOpacity>
-          <Button>
-            <Text>주차가능</Text>
-          </Button>
+          <Button><Text>예약가능</Text></Button>
         </TouchableOpacity>
+        <TouchableOpacity>
+          <Button><Text>연인과 함께</Text></Button>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Button><Text>가족과 함께</Text></Button>
+        </TouchableOpacity>
+        </ButtonCon>
+        </ScrollView>
         </ButtonCon>
       </MoreInfoCon>
       
@@ -310,18 +360,7 @@ export default ({navigation}) => {
     </Container>
   );
 }
-const styles = StyleSheet.create({
-  button: {
-  alignItems: 'center',
-  justifyContent: 'center',
-  borderRadius: 2,
-  backgroundColor :LightGrey,
-  padding : 5,
-  margin : 2,
-  height : 100,
-  width : 100
-  }
-})
+
 
 
 

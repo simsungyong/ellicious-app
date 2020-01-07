@@ -6,7 +6,7 @@ import constants from "../constants";
 import SquarePhoto from "./SquarePhoto";
 import MapViews from "./MapView/MapViews";
 import { LightPink, Grey, TINT_COLOR, PointPink, mainPink, LightGrey, Line } from "./Color";
-import { AntDesign } from "@expo/vector-icons";
+import {Foundation } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import Hr from "hr-native";
 import MapView from "react-native-maps";
@@ -89,7 +89,9 @@ const NameBox = styled.View`
   justifyContent: center;
   height : 40px;
 `;
-
+const EditCon = styled.View`
+margin-vertical : 3px;
+`;
 const FollowCon = styled.View`
   alignItems: center;
   margin-right : 5px;
@@ -133,6 +135,7 @@ flex : 1;
 const Post = styled.View`
 flex-direction : column
 `;
+
 
 const Scene = ({ index, posts, userId }) => (
   
@@ -241,6 +244,19 @@ const handleFollow = async () =>{
             <NameBox>
             <View/>
               <BoldName>{username}</BoldName>
+              <EditCon>
+            {
+              isSelf ?
+              <TouchableOpacity onPress={()=>navigation.navigate("EditProfile")}>
+              <Foundation
+                  color={Grey}
+                  size={13}
+                  name={"pencil"}
+                  /></TouchableOpacity> : <FollowButton onPress={handleFollow} backgroundColor={followingConfirm ? LightGrey :mainPink }>
+                  <Text style={{color:"black"}}>Following</Text>
+                </FollowButton>
+            }
+          </EditCon>
             </NameBox>
           </NameCon>
           <FollowCon>
@@ -256,19 +272,6 @@ const handleFollow = async () =>{
             <Text>Following </Text>
               <Bold>{followingCount}</Bold>
             </FollowPick>
-          </FollowCon>
-          <FollowCon>
-            {
-              isSelf ?
-              <TouchableOpacity onPress={()=>navigation.navigate("EditProfile")}>
-              <AntDesign
-                  color={mainPink}
-                  size={27}
-                  name={"setting"}
-                  /></TouchableOpacity> : <FollowButton onPress={handleFollow} backgroundColor={followingConfirm ? LightGrey :mainPink }>
-                  <Text style={{color:"black"}}>Following</Text>
-                </FollowButton>
-            }
           </FollowCon>
           </Con>
           

@@ -5,15 +5,57 @@ import Loader from "../components/Loader";
 import styled from "styled-components";
 import useInput from "../hooks/useInput";
 import KeyboardSpacer from 'react-native-keyboard-spacer';
-import { ScrollView, Text,Image,TextInput,RefreshControl, KeyboardAvoidingView,Alert, TouchableOpacity, View, StyleSheet  } from "react-native";
+import { ScrollView, Text,TextInput,RefreshControl, KeyboardAvoidingView,Alert, TouchableOpacity, View, StyleSheet  } from "react-native";
 import { POST_COMMENT } from "../fragments";
 import PostOfComment from '../components/CommentComponents/PostOfComment';
-import { LightGrey, CommentsBox, mainPink, TINT_COLOR } from "../components/Color";
+import { PointPink, CommentsBox, mainPink, TINT_COLOR, Grey, LightPink } from "../components/Color";
 import { withNavigation } from "react-navigation";
+import constants from "../constants";
+import { FormLabel, FormInput } from 'react-native-elements'
+import {AntDesign} from '@expo/vector-icons'
 
+const Container = styled.View`
+flex : 1;
+padding : 10px;
+`;
 
-   
+const EditImage = styled.View`
+  flex : 4
+  alignItems: center;
+  justifyContent: center;
+`;
+const ImageCon = styled.TouchableOpacity`
+`;
 
+const Image = styled.Image`
+  width: 80;
+  height: 80;
+  borderRadius:30;
+`;
+const EditButton = styled.TouchableOpacity`
+alignItems: center;
+justifyContent: center;
+`;
+const EditId = styled.Text`
+margin-top : 5px;
+`;
+
+const EditInfo = styled.View`
+  flex : 2.5;
+  alignItems: center;
+  justifyContent: center;
+  
+`;
+const EditName = styled.View`
+`;
+const EditText = styled.View``;
+const EditCage = styled.View`
+flex : 4
+`;
+const EditCageDetail = styled.View`
+flex-direction : row;
+
+`;
 const EditProfile=({
     id,
     avatar,
@@ -25,31 +67,68 @@ const EditProfile=({
     bio
 })=>{
     return (
-        <View style={styles.container}>
-          <View style={styles.header}></View>
-          <Image 
-            style={styles.avatar}  
-            source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}
+      <Container>
+        <EditImage>
+          <ImageCon>
+            <Image  
+              source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}
             />
-            <View style={styles.editbox}>
-            <TouchableOpacity>
-            <Text style={styles.editImage}>수정</Text>
-            </TouchableOpacity>  
-            </View>
-          <View style={styles.body}>
-            <View style={styles.bodyContent}>
+          </ImageCon>
+          <EditButton>
+            <EditId style={{fontSize : 30, fontWeight : "200"}}>
+              0._.min
+            </EditId>
+          </EditButton>
+        </EditImage>
+
+        <EditInfo>
+          <EditName>
+            <Text style={{fontSize : 17, color : PointPink}}>이름</Text>
+            <TextInput 
+              style={{ 
+                height: 26,
+                width: constants.width-20, 
+                fontSize: 20, 
+                color: TINT_COLOR, 
+                borderBottomWidth: 1, 
+                borderBottomColor: mainPink 
+              }}
+            placeholderTextColor={Grey}
+            />
+          </EditName>
+          <EditText>
+          <Text style={{fontSize : 17, color : PointPink, marginTop : 13}}>소개</Text>
+            <TextInput 
+              style={{ 
+                height: 26,
+                width: constants.width-20, 
+                fontSize: 20, 
+                color: TINT_COLOR, 
+                borderBottomWidth: 1, 
+                borderBottomColor: mainPink, 
+              }}
+            placeholderTextColor={Grey}
+            />
+          </EditText>
+        </EditInfo>
+        <EditCage>
+          <Text style={{fontSize : 17, color : PointPink, marginTop : 13}}>카테고리</Text>
+          <EditCageDetail>
             
-    <Text style={styles.name}>유저 아이디</Text>
-    <Text style={styles.info}>풀 네임</Text>
-    <Text style={styles.description}>소개글~~~</Text>
-              
-              
-            </View>
-        </View>
-      </View>
+            <TextInput 
+              style={{
+                marginTop: 15,
+              }}
+              placeholder = '디져트 지배자'
+              placeholderTextColor={TINT_COLOR}
+              placeholderTextSize = '50'
+            />
+          </EditCageDetail>  
+          </EditCage>
+      </Container>
         );
       }
-
+//사진 누르면 사진 앨범 뜨게, 이름 누르면 이름 바꿀 수 있도록 ->현재 둘다 버튼임 
     
 const styles = StyleSheet.create({
         header:{
@@ -117,3 +196,30 @@ const styles = StyleSheet.create({
       });
 
 export default withNavigation(EditProfile);
+
+
+/* 
+<View style={styles.container}>
+          <View style={styles.header}></View>
+          <Image 
+            style={styles.avatar}  
+            source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}
+            />
+            <View style={styles.editbox}>
+            <TouchableOpacity>
+            <Text style={styles.editImage}>수정</Text>
+            </TouchableOpacity>  
+            </View>
+          <View style={styles.body}>
+            <View style={styles.bodyContent}>
+            
+    <Text style={styles.name}>유저 아이디</Text>
+    <Text style={styles.info}>풀 네임</Text>
+    <Text style={styles.description}>소개글~~~</Text>
+              
+              
+            </View>
+        </View>
+      </View>
+
+*/

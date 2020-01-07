@@ -8,6 +8,11 @@ import MapContainer from '../screens/Map/MapContainer';
 import UploadPhoto from "../screens/Photo/UploadPhoto";
 import { PhotostackStyles } from "./config";
 import { PointPink, TINT_COLOR, mainPink } from "../components/Color";
+import styled from 'styled-components';
+
+const HeaderRight = styled.TouchableOpacity`
+margin-right : 8px;
+`;
 
 const PhotoTabs = createMaterialTopTabNavigator(
   {
@@ -69,6 +74,11 @@ export default createStackNavigator({
             새 게시글
           </Text>
         </View>
+      ),
+      headerRight : (
+        <HeaderRight>
+          <Text style = {{ fontSize : 18}}>완료</Text>
+        </HeaderRight>
       )
     }
   },

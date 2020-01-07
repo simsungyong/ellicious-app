@@ -92,10 +92,11 @@ const UploadCon = styled.TouchableOpacity`
   justifyContent: center;
 `;
 const UploadButton = styled.View`
-  width: 80;
-  height: 80;
-  border-radius: 40px;
-  border: 10px solid ${mainPink};
+  margin-vertical : 5px;
+  width : ${constants.width}
+  height: 40;
+  border-radius: 7;
+  background-color : ${LightGrey};
 `;
 
 const ViewModal = styled.View`
@@ -330,10 +331,6 @@ export default ({navigation}) => {
         </ButtonCon>
       </MoreInfoCon>
       
-      <UploadCon onPress={handleSubmit}>
-        <UploadButton/>
-      </UploadCon>
-
       <Modal visible={isModalPick} transparent={true} animationType="slide" onRequestClose={()=>console.log(cancle)}>
         <ViewModal style={{padding:10}}>
           

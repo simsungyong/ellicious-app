@@ -48,7 +48,7 @@ export default ({ navigation }) => {
     });
     const asset = await MediaLibrary.createAssetAsync(uri);
     navigation.navigate("Map", {photo: asset});
-    console.log(asset);
+    //console.log(asset);
   }catch(e){
     console.log(e);
     setCanTakePhoto(true);
@@ -63,7 +63,7 @@ export default ({ navigation }) => {
         setHasPermission(true);
       }
     } catch(e){
-      console.log(e);
+      //console.log(e);
       setHasPermission(false);
     }finally{
       setLoading(false);

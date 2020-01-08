@@ -2,19 +2,34 @@ import React,{useState, useEffect} from "react";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
 import PropTypes from 'prop-types';
-import {Text,Image,ScrollView,Modal,TouchableOpacity, TextInput,Picker, Platform, TouchableHighlight, Alert} from 'react-native';
+import {Text,Image,ScrollView,Modal,TouchableOpacity, TextInput,Picker, Platform, TouchableHighlight, Alert, ActivityIndicator} from 'react-native';
 import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line, LightPink } from '../../components/Color';
-import {FontAwesome, EvilIcons} from "@expo/vector-icons";
+import {FontAwesome, EvilIcons, AntDesign} from "@expo/vector-icons";
 import Stars from 'react-native-stars';
 import {Icon} from 'native-base';
 import Hr from "hr-native";
-import { useQuery } from "react-apollo-hooks";
+import { useQuery, useMutation } from "react-apollo-hooks";
 import { CATEGORY_FRAGMENT } from "../../fragments";
 import Loader from "../../components/Loader";
 import axios from 'axios';
 import constants from "../../constants";
+import useInput from '../../hooks/useInput';
+import { FEED_QUERY } from "../Tabs/Home";
 
-
+const UPLOAD = gql`
+  mutation upload($caption: String, $storeName: String!, $files: [String!], $storeLocation: String!, $rating: Float!, $storeLat: Float, $storeLong: Float, $placeId: String, $category: String!, $details:[String!]){
+          upload(caption: $caption, storeName: $storeName, storeLocation: $storeLocation, files: $files, rating: $rating, storeLat: $storeLat, storeLong: $storeLong, placeId: $placeId, category: $category, details:$details){
+              id
+              storeName
+              rating
+              caption
+              details
+              category{
+                categoryName
+              }
+            }
+}
+`;
 const Container = styled.View`
   flex : 1;
   padding : 10px;
@@ -131,6 +146,13 @@ flex-direction : row;
 alignItems: center;
 justifyContent: center;
 `;
+
+const UploadBt = styled.View`
+margin-top: 30px;
+flex-direction : row;
+alignItems: center;
+justifyContent: center;
+`;
 const Button = styled.TouchableOpacity`
   alignItems: center;
   justifyContent: center;
@@ -155,24 +177,38 @@ export const seeCategory = gql`
 
 
 export default ({navigation}) => {
-  //let keys = [false,false,false,false,false,false,false,false,false,false,false,false];
+  //let keystemp = [false,false,false,false,false,false,false,false,false,false,false,false];
   const [keys, setKey] = useState([false,false,false,false,false,false,false,false,false,false,false,false]);
-  const keyword = ['주차가능', '가성비', '서비스 좋음', '24시간', '자리넓음', '혼밥가능', '애견동반가능', '또오고싶은 맛집', '단체석 가능','예약가능','연인과 함께','가족과 함께'];
+  const keyword = ['주차가능', '가성비', '서비스 좋음', '24시간', '자리넓음', '혼밥가능', '애견동반가능', '또 오고싶어', '단체석 구비','예약가능','연인과 함께','가족과 함께'];
+  //const [details, setDetails] = useState([]);
+  const details=[];
   const { loading, data } = useQuery(seeCategory);
+  const [isloading, setIsLoading] = useState(false);
   const [starValue, setStarValue] = useState(2.5);
   const [isModalPick, setModalPick] = useState(false);
   const [selectCate, setSelectCate] = useState();
   const [pickedName, setPickedName] = useState();
   const [fileUrl, setFileUrl] = useState("");
-
+  const captionInput = useInput();
   const photo = navigation.getParam("photo");
   const storeName = navigation.getParam("name");
   const storeAdr = navigation.getParam("formatted_address");
+  const placeId = navigation.getParam("place_id");
+  const storeLat = navigation.getParam("storeLat")
+  const storeLong = navigation.getParam("storeLong")
 
-  if(!loading){
-    //console.log(data);
-  }
+  const [uploadMutation] = useMutation(UPLOAD, {
+    refetchQueries: ()=>[{query: FEED_QUERY}]
+  });
+
   const handleSubmit=async()=>{
+    
+    for(let i =0; i<12; i++){
+      if(keys[i]){
+        details.push(keyword[i])
+      }
+    }
+
     const formData = new FormData();
     const name = photo.filename;
     const [, type] = name.split(".");
@@ -181,23 +217,56 @@ export default ({navigation}) => {
       type: "image/jpeg",
       uri: photo.uri
     });
-    
+
     try {
+      setIsLoading(true);
       const {
-        data: {path}
+        data: {location}
       } = await axios.post("http://192.168.0.135:4000/api/upload", formData, {
         headers:{
           "content-type" : "multipart/form-data"
         }
       });
+      setFileUrl(location);
+      
+      const {
+        data: { upload } 
+      } = await uploadMutation({
+        variables: {
+          caption: captionInput.value,
+          files: [location],
+          storeName,
+          placeId,
+          storeLat,
+          storeLong,
+          rating: starValue,
+          category: selectCate,
+          storeLocation: storeAdr,
+          details
+        }
+      });
+      if(upload.id){
+        navigation.navigate("TabNavigation");
+      }
+      console.log(upload);
+
     } catch (e) {
+      console.log(e)
       Alert.alert("can't upload ", "Try later");
-    }   
+    } finally{
+      setIsLoading(false);
+    }
 };
 
-  const handleKey= async(i)=>{
+  const handleDetail =()=>{
     
-    await setKey([!keys[i],...keys])
+    setDetails([...details])
+  }
+
+  const handleKey= async(i)=>{
+    keys[i] = !keys[i]
+    await setKey([...keys])
+
   }
 
   const togglePicker=(p)=>{
@@ -229,7 +298,10 @@ export default ({navigation}) => {
 
         <TextCon>
           <TextInput
-            placeholder="글쓰기..."/>
+            onChangeText={captionInput.onChange}
+            value={captionInput.value}
+            placeholder="글쓰기..."
+            placeholderTextColor={TINT_COLOR}/>
         </TextCon>
       </Top> 
 
@@ -301,16 +373,25 @@ export default ({navigation}) => {
           </ButtonCon>
 
           <ButtonCon>
-          <Button onPress={()=>handleKey(6)} backgroundColor={ keys[6] ? mainPink : LightGrey}><Text>24시간</Text></Button>
-          <Button onPress={()=>handleKey(7)} backgroundColor={ keys[7] ? mainPink : LightGrey}><Text>자리넓어</Text></Button>
-          <Button onPress={()=>handleKey(8)} backgroundColor={ keys[8] ? mainPink : LightGrey}><Text>혼밥가능</Text></Button>
+          <Button onPress={()=>handleKey(6)} backgroundColor={ keys[6] ? mainPink : LightGrey}><Text>애견동반가능</Text></Button>
+          <Button onPress={()=>handleKey(7)} backgroundColor={ keys[7] ? mainPink : LightGrey}><Text>또 오고싶어</Text></Button>
+          <Button onPress={()=>handleKey(8)} backgroundColor={ keys[8] ? mainPink : LightGrey}><Text>단체석 구비</Text></Button>
           </ButtonCon>
 
           <ButtonCon>
-          <Button onPress={()=>handleKey(9)} backgroundColor={ keys[9] ? mainPink : LightGrey}><Text>24시간</Text></Button>
-          <Button onPress={()=>handleKey(10)} backgroundColor={ keys[10] ? mainPink : LightGrey}><Text>자리넓어</Text></Button>
-          <Button onPress={()=>handleKey(11)} backgroundColor={ keys[11] ? mainPink : LightGrey}><Text>혼밥가능</Text></Button>
+          <Button onPress={()=>handleKey(9)} backgroundColor={ keys[9] ? mainPink : LightGrey}><Text>예약가능</Text></Button>
+          <Button onPress={()=>handleKey(10)} backgroundColor={ keys[10] ? mainPink : LightGrey}><Text>연인과 함께</Text></Button>
+          <Button onPress={()=>handleKey(11)} backgroundColor={ keys[11] ? mainPink : LightGrey}><Text>가족과 함께</Text></Button>
           </ButtonCon>
+          
+          <UploadBt>
+            <Button backgroundColor ={mainPink} onPress={handleSubmit}>{isloading ? (
+              <ActivityIndicator color="white" />
+            ): (
+              <Text>UPLOAD</Text>
+            )}</Button>
+          </UploadBt>
+        
         </ScrollView>
         </ButtonCon>
       </MoreInfoCon>

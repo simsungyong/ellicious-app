@@ -39,7 +39,8 @@ export default ({navigation}) => {
   const getPhotos = async () => {
     try {
       const { assets } = await MediaLibrary.getAssetsAsync({
-        sortBy:[[MediaLibrary.SortBy.creationTime, false]]
+        sortBy:[[MediaLibrary.SortBy.creationTime, false]],
+        first:2000
       });
       
       const [firstPhoto] = assets;

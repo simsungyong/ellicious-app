@@ -15,7 +15,7 @@ import axios from 'axios';
 import constants from "../../constants";
 import useInput from '../../hooks/useInput';
 import { FEED_QUERY } from "../Tabs/Home";
-
+import {ME} from '../Tabs/Profile/Profile';
 const UPLOAD = gql`
   mutation upload($caption: String, $storeName: String!, $files: [String!], $storeLocation: String!, $rating: Float!, $storeLat: Float, $storeLong: Float, $placeId: String, $category: String!, $details:[String!]){
           upload(caption: $caption, storeName: $storeName, storeLocation: $storeLocation, files: $files, rating: $rating, storeLat: $storeLat, storeLong: $storeLong, placeId: $placeId, category: $category, details:$details){
@@ -148,7 +148,7 @@ justifyContent: center;
 `;
 
 const UploadBt = styled.View`
-margin-top: 30px;
+margin-top: 50px;
 flex-direction : row;
 alignItems: center;
 justifyContent: center;
@@ -198,7 +198,7 @@ export default ({navigation}) => {
   const storeLong = navigation.getParam("storeLong")
 
   const [uploadMutation] = useMutation(UPLOAD, {
-    refetchQueries: ()=>[{query: FEED_QUERY}]
+    refetchQueries: ()=>[{query: FEED_QUERY},{query: ME }]
   });
 
   const handleSubmit=async()=>{
@@ -300,6 +300,7 @@ export default ({navigation}) => {
           <TextInput
             onChangeText={captionInput.onChange}
             value={captionInput.value}
+            multiline={true}
             placeholder="글쓰기..."
             placeholderTextColor={TINT_COLOR}/>
         </TextCon>
@@ -384,16 +385,17 @@ export default ({navigation}) => {
           <Button onPress={()=>handleKey(11)} backgroundColor={ keys[11] ? mainPink : LightGrey}><Text>가족과 함께</Text></Button>
           </ButtonCon>
           
-          <UploadBt>
+          
+        
+        </ScrollView>
+        </ButtonCon>
+        <UploadBt>
             <Button backgroundColor ={mainPink} onPress={handleSubmit}>{isloading ? (
               <ActivityIndicator color="white" />
             ): (
               <Text>UPLOAD</Text>
             )}</Button>
           </UploadBt>
-        
-        </ScrollView>
-        </ButtonCon>
       </MoreInfoCon>
       
       <Modal visible={isModalPick} transparent={true} animationType="slide" onRequestClose={()=>console.log(cancle)}>

@@ -74,11 +74,6 @@ export default createStackNavigator({
             새 게시글
           </Text>
         </View>
-      ),
-      headerRight : (
-        <HeaderRight>
-          <Text style = {{ fontSize : 18}}>완료</Text>
-        </HeaderRight>
       )
     }
   },

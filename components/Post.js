@@ -18,6 +18,7 @@ import Stars from 'react-native-stars';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
 import { POST_FRAGMENT } from "../fragments";
+import {ME} from '../screens/Tabs/Profile/Profile';
 
 export const FEED_QUERY = gql`
   {
@@ -185,7 +186,7 @@ const Post = ({
       });
       
       const [deleteMutation] = useMutation(DELETE_POST, {
-        refetchQueries: ()=>[{query: FEED_QUERY}]
+        refetchQueries: ()=>[{query: FEED_QUERY},{query: ME}]
       });
 
       const handleDelete =()=> {

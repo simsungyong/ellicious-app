@@ -118,6 +118,7 @@ flex-direction: row;
 `;
 const TagBox = styled.View`
 borderRadius:5;
+margin-right: 3px;
 height : 25;
 padding : 5px;
 background-color :  ${LightGrey}
@@ -132,6 +133,7 @@ const Post = ({
     storeName, 
     files=[],
     id,
+    details=[],
     likeCount: likeCountProp,
     caption,
     comments=[],
@@ -141,6 +143,7 @@ const Post = ({
     pickCount: pickCountProp,
     createdAt,
     rating}) => {
+        console.log(details);
         const avatar = user.avatar;
         const username = user.username;
         const [isLiked, setIsLiked] = useState(isLikedProp);
@@ -240,12 +243,17 @@ const Post = ({
                    source={{uri: file.url}}/>
               ))}
           </Swiper>
-          <Tag>
-                <TagBox>
-                  <TagText>#공릉동</TagText>
-                </TagBox>
-                <View/>
-          </Tag>
+          
+            <Tag>
+            {details.length >=1 ? (details.map((k,index)=>
+            <TagBox key={index}>
+              <TagText>{k}</TagText>
+            </TagBox>
+            )) : null
+    }
+            <View/>
+            </Tag>
+          
           <StoreInfo>
             <Store>
             <Touchable>
@@ -350,6 +358,7 @@ Post.propTypes = {
         url: PropTypes.string.isRequired
       })
     ).isRequired,
+    details: PropTypes.array,
     likeCount: PropTypes.number.isRequired,
     isLiked: PropTypes.bool.isRequired,
     pickCount: PropTypes.number.isRequired,

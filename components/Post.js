@@ -17,7 +17,16 @@ import Stars from 'react-native-stars';
 //import { PICK_ITEM } from "../screens/Tabs/MyPick";
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
+import { POST_FRAGMENT } from "../fragments";
 
+export const FEED_QUERY = gql`
+  {
+    seeFeed {
+      ...PostParts
+    }
+  }
+  ${POST_FRAGMENT}
+`;
 
 export const TOGGLE_LIKE = gql`
   mutation toggelLike($postId: String!) {
@@ -159,8 +168,9 @@ const Post = ({
       const [likeCount, setLikeCount] = useState(likeCountProp);
       const [isPicked, setIsPicked] = useState(isPickedProp);
       const [pickCount, setPickCount] = useState(pickCountProp);
-      
+      const [isloading, setIsLoading] = useState(false);
       const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
+      const [modalAndTitle, setmodalAndTitle] = useState(false);
 
       const [toggleLikeMutaton] = useMutation(TOGGLE_LIKE, {
       variables: {
@@ -175,11 +185,17 @@ const Post = ({
       });
       
       const [deleteMutation] = useMutation(DELETE_POST, {
-        variables:{
-          postId: id
-        }
+        refetchQueries: ()=>[{query: FEED_QUERY}]
       });
 
+      const handleDelete =()=> {
+        try{
+          setbottomModalAndTitle(false)
+          setmodalAndTitle(true)
+        }catch(e) {
+          console.log(e)
+        }
+      }
 
     const time=moment(createdAt).startOf('hour').fromNow();
 
@@ -209,6 +225,25 @@ const Post = ({
         console.log(e);
       }
     };
+
+    const handleSubmit = async() => {
+      try {
+        setIsLoading(true);
+        const { data } = await deleteMutation({
+          variables:{
+            postId: id
+          }
+        });
+        if(data) {
+          navigation.navigate("TabNavigation");
+        }
+      } catch (e) {
+        console.log(e)
+      } finally {
+        setmodalAndTitle(false);
+        setIsLoading(false);
+      }
+    }
 
     return (
       <Card>
@@ -369,7 +404,7 @@ const Post = ({
               {user.isSelf ? 
                 <ModalButton
                   text="삭제"
-                  onPress={() => deleteMutation()}
+                  onPress={() => handleDelete()}
                 />
                 :
                 <ModalButton
@@ -389,6 +424,27 @@ const Post = ({
               />
             </ModalFooter>
           </Modal.BottomModal>
+          <Modal
+            visible={modalAndTitle}
+            onTouchOutside={() => setmodalAndTitle(false)}
+            height={0.3}
+            width={0.8}
+            onSwipeOut={() => setmodalAndTitle(false)}
+          >
+            <ModalContent>
+              <Text>삭제하시겠습니까?</Text>
+            </ModalContent>
+            <ModalFooter>
+              <ModalButton
+                text="CANCEL"
+                onPress={() => setmodalAndTitle(false)}
+              />
+              <ModalButton
+                text="OK"
+                onPress={() => handleSubmit()}
+              />
+            </ModalFooter>
+          </Modal>
       </Card>
   );
 };

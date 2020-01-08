@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import Swiper from "react-native-swiper";
 import { gql } from "apollo-boost";
 import constants from "../constants";
-import { useMutation } from "react-apollo-hooks";
+import { useMutation, useQuery } from "react-apollo-hooks";
 import styles from "../styles";
 import moment from "moment";
 import { IconColor, StarColor, TINT_COLOR, Grey, PointPink, BG_COLOR, LightGrey, Line, LightPink } from '../components/Color';
@@ -15,6 +15,8 @@ import { withNavigation } from "react-navigation";
 import Hr from "hr-native";
 import Stars from 'react-native-stars';
 //import { PICK_ITEM } from "../screens/Tabs/MyPick";
+import KeyboardSpacer from 'react-native-keyboard-spacer';
+import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
 
 
 export const TOGGLE_LIKE = gql`
@@ -27,6 +29,14 @@ export const TOGGLE_PICK = gql`
     togglePick(postId: $postId)
   }
 `;
+export const DELETE_POST = gql`
+  mutation editPost($postId: String!) {
+    editPost(id: $postId action: DELETE){
+      id
+    }
+  }
+`;
+
 
 const Touchable = styled.TouchableOpacity``;
 
@@ -141,26 +151,34 @@ const Post = ({
     pickCount: pickCountProp,
     createdAt,
     rating}) => {
-        const avatar = user.avatar;
-        const username = user.username;
-        const [isLiked, setIsLiked] = useState(isLikedProp);
-        const [likeCount, setLikeCount] = useState(likeCountProp);
-        const [isPicked, setIsPicked] = useState(isPickedProp);
-        const [pickCount, setPickCount] = useState(pickCountProp);
-        
-
-        const [toggleLikeMutaton] = useMutation(TOGGLE_LIKE, {
-        variables: {
-        postId: id
-        }});
-
-        const [togglePickMutation] = useMutation(TOGGLE_PICK, {
-          variables:{
-            postId: id
-          }
-          
-        });
+      const avatar = user.avatar;
+      const username = user.username;
+      const [isLiked, setIsLiked] = useState(isLikedProp);
+      const [likeCount, setLikeCount] = useState(likeCountProp);
+      const [isPicked, setIsPicked] = useState(isPickedProp);
+      const [pickCount, setPickCount] = useState(pickCountProp);
       
+      const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
+
+      const [toggleLikeMutaton] = useMutation(TOGGLE_LIKE, {
+      variables: {
+      postId: id
+      }});
+
+      const [togglePickMutation] = useMutation(TOGGLE_PICK, {
+        variables:{
+          postId: id
+        }
+        
+      });
+      
+      const [deleteMutation] = useMutation(DELETE_POST, {
+        variables:{
+          postId: id
+        }
+      });
+
+
     const time=moment(createdAt).startOf('hour').fromNow();
 
     
@@ -215,7 +233,7 @@ const Post = ({
               <CommentCount>{time}</CommentCount>
             </UserInfo>
             <View/>
-            <Touchable>
+            <Touchable onPress={()=>setbottomModalAndTitle(true)}>
               <IconCon>
                 <MaterialCommunityIcons
                   color={IconColor}
@@ -333,6 +351,37 @@ const Post = ({
         </Touchable>
           </LikeCommentIcon>
         </Container>
+        <Modal.BottomModal
+            visible={bottomModalAndTitle}
+            onTouchOutside={() => setbottomModalAndTitle(false)}
+            height={0.3}
+            width={0.8}
+            onSwipeOut={() => setbottomModalAndTitle(false)}
+          >
+            <ModalContent>
+              {user.isSelf ? 
+                <ModalButton
+                  text="삭제"
+                  onPress={() => deleteMutation()}
+                />
+                :
+                <ModalButton
+                  text="숨기기"
+                  onPress={() => {}}
+                />
+              }
+              <ModalButton
+                text="수정"
+                onPress={() => {}}
+              />
+            </ModalContent>
+            <ModalFooter>
+              <ModalButton
+                text="CANCEL"
+                onPress={() => setbottomModalAndTitle(false)}
+              />
+            </ModalFooter>
+          </Modal.BottomModal>
       </Card>
   );
 };
@@ -342,7 +391,8 @@ Post.propTypes = {
     user: PropTypes.shape({
       id: PropTypes.string.isRequired,
       avatar: PropTypes.string,
-      username: PropTypes.string.isRequired
+      username: PropTypes.string.isRequired,
+      isSelf: PropTypes.bool
     }).isRequired,
     files: PropTypes.arrayOf(
       PropTypes.shape({

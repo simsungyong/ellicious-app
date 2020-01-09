@@ -19,6 +19,7 @@ import KeyboardSpacer from 'react-native-keyboard-spacer';
 import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
 import { POST_FRAGMENT } from "../fragments";
 import {ME} from '../screens/Tabs/Profile/Profile';
+import { UNFOLLOW } from "./UserProfile";
 
 export const FEED_QUERY = gql`
   {
@@ -189,6 +190,10 @@ const Post = ({
         refetchQueries: ()=>[{query: FEED_QUERY},{query: ME}]
       });
 
+      const [unFollowMutation] = useMutation(UNFOLLOW, {
+        refetchQueries: ()=>[{query: FEED_QUERY},{query: ME}]
+      });
+
       const handleDelete =()=> {
         try{
           setbottomModalAndTitle(false)
@@ -243,6 +248,23 @@ const Post = ({
       } finally {
         setmodalAndTitle(false);
         setIsLoading(false);
+      }
+    }
+
+    const handleUnfollow = async() => {
+      try {
+        const { data } = await unFollowMutation({
+          variables: {
+            id: user.id
+          }
+        });
+        if(data) {
+          navigation.navigate("TabNavigation");
+        }
+      } catch(e) {
+        console.log(e)
+      } finally {
+        setbottomModalAndTitle(false)
       }
     }
 
@@ -314,26 +336,27 @@ const Post = ({
             </Touchable>
             <Rating>
                 <Stars
-                      default={rating}
-                      count={5}
-                      half={true}
-                      starSize={50}
-                      fullStar={<FontAwesome
-                        color={StarColor}
-                        size={25}
-                        name={"star"}
-                      />}
-                      emptyStar={<FontAwesome
-                        color={StarColor}
-                        size={25}
-                        name={"star-o"}
-                      />}
-                      halfStar={<FontAwesome
-                        color={StarColor}
-                        size={25}
-                        name={"star-half-empty"}
-                      />}
-                    />           
+                  default={rating}
+                  count={5}
+                  half={true}
+                  disabled={true}
+                  starSize={50}
+                  fullStar={<FontAwesome
+                    color={StarColor}
+                    size={25}
+                    name={"star"}
+                  />}
+                  emptyStar={<FontAwesome
+                    color={StarColor}
+                    size={25}
+                    name={"star-o"}
+                  />}
+                  halfStar={<FontAwesome
+                    color={StarColor}
+                    size={25}
+                    name={"star-half-empty"}
+                  />}
+                />           
             </Rating>
             </Store>
           </StoreInfo>
@@ -403,20 +426,24 @@ const Post = ({
           >
             <ModalContent>
               {user.isSelf ? 
+              <>
                 <ModalButton
                   text="삭제"
                   onPress={() => handleDelete()}
                 />
-                :
                 <ModalButton
-                  text="숨기기"
+                  text="수정"
                   onPress={() => {}}
                 />
+              </>
+                :
+              <>
+                <ModalButton
+                  text="팔로우 취소"
+                  onPress={() => handleUnfollow()}
+                />
+              </>
               }
-              <ModalButton
-                text="수정"
-                onPress={() => {}}
-              />
             </ModalContent>
             <ModalFooter>
               <ModalButton

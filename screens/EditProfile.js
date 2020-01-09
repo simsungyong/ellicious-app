@@ -14,6 +14,16 @@ import constants from "../constants";
 import { FormLabel, FormInput } from 'react-native-elements'
 import {AntDesign, FontAwesome} from '@expo/vector-icons'
 import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
+import { FEED_QUERY } from "../screens/Tabs/Home";
+import {ME} from '../screens/Tabs/Profile/Profile';
+
+export const EDIT_USER = gql`
+  mutation editUser($newAvatar: String, $bio: String, $username: String) {
+    editUser(avatar: $newAvatar bio: $bio username: $username){
+      id
+    }
+  }
+`;
 
 const Container = styled.View`
 flex : 1;
@@ -78,19 +88,51 @@ const EditProfile=({
   const username =  navigation.getParam("username");
   const avatar =  navigation.getParam("avatar");
   const fullName =  navigation.getParam("fullName");
-  const categories =  navigation.getParam("categories");
+  const category =  navigation.getParam("category");
   const categoryCount =  navigation.getParam("categoryCount");
   const bio =  navigation.getParam("bio");
+  const email = navigation.getParam("email");
 
   const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
 
-  const handleSubmit = async() => {
+  const bioInput = useInput();
+  const usernameInput = useInput();
+
+  const [editProfilePictureMutation] = useMutation(EDIT_USER, {
+    refetchQueries: ()=>[{query: FEED_QUERY},{query: ME }]
+  });
+
+  const changePicture = async() => {
     try {
-      navigation.navigate("ProfilePicture", {id, username, avatar, fullName, categoryCount, categories, bio});
+      navigation.navigate("ProfilePicture", {id, username, avatar, fullName, categoryCount, category, bio, email});
     } catch (e) {
       console.log(e)
     } finally {
       setbottomModalAndTitle(false);
+    }
+  }
+
+  const handleSubmit = async() => {
+    let newbio = bio;
+    let newusername = username;
+    if(bioInput.value) {
+      newbio = bioInput.value;
+    }
+    if(usernameInput.value) {
+      newusername = usernameInput.value;
+    }
+
+    try {
+      await editProfilePictureMutation({
+        variables: {
+          newAvatar: avatar,
+          bio: newbio,
+          username: newusername
+        }
+      });
+      navigation.navigate("UserDetail",{id});
+    } catch (e) {
+      console.log(e)
     }
   }
 
@@ -121,16 +163,19 @@ const EditProfile=({
           <EditButton>
             <TextInput 
             style={styles.EditId}
-            placeholder = '0._.min'
-            placeholderTextColor={TINT_COLOR} />
+            onChangeText={usernameInput.onChange}
+            placeholder={username}
+            placeholderTextColor={TINT_COLOR} >
+              {username}
+            </TextInput>
           </EditButton>
         </EditImage>
 
       <ScrollView>
         <EditInfo>
           <EditName>
-            <Text style={{fontSize : 17, color : PointPink}}>이름</Text>
-            <TextInput 
+            <Text style={{fontSize : 17, color : PointPink}}>이메일</Text>
+            <Text 
               style={{ 
                 height: 26,
                 width: constants.width-30, 
@@ -139,8 +184,7 @@ const EditProfile=({
                 borderBottomWidth: 1, 
                 borderBottomColor: mainPink 
               }}
-            placeholderTextColor={Grey}
-            />
+            >{email}</Text>
           </EditName>
           <EditText>
           <Text style={{fontSize : 17, color : PointPink, marginTop : 13}}>소개</Text>
@@ -151,26 +195,39 @@ const EditProfile=({
                 fontSize: 20, 
                 color: TINT_COLOR, 
                 borderBottomWidth: 1, 
-                borderBottomColor: mainPink, 
+                borderBottomColor: mainPink,
               }}
+            onChangeText={bioInput.onChange}
+            placeholder={"자기소개를 입력하세요"}
             placeholderTextColor={Grey}
-            />
+            >
+              {bio}
+            </TextInput>
           </EditText>
         </EditInfo>
         <EditCage>
           <Text style={{fontSize : 17, color : PointPink, marginTop : 13}}>카테고리</Text>
-          <EditCageDetail>
-            <TextInput 
-              style={styles.EditCage}
-              placeholder = '디져트 지배자'
-              placeholderTextColor={TINT_COLOR}
-            />
-            <View/>
-            <TouchableOpacity>
-            <Text style={{fontSize : 17, color : PointPink, marginTop : 13}}>삭제</Text>
-            </TouchableOpacity>
-          </EditCageDetail>  
+          {category
+            .map(tag => (
+            <EditCageDetail key={tag.id}>
+              <TextInput 
+                style={styles.EditCage}
+                placeholder = {tag.categoryName}
+                placeholderTextColor={TINT_COLOR}
+              />
+              <View />
+              <TouchableOpacity>
+                <Text style={{fontSize : 17, color : PointPink, marginTop : 13, marginRight : 13}}>수정</Text>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Text style={{fontSize : 17, color : PointPink, marginTop : 13}}>삭제</Text>
+              </TouchableOpacity>
+            </EditCageDetail>
+            ))}
           </EditCage>
+          <TouchableOpacity onPress={() => handleSubmit()}>
+            <Text style={{fontSize : 17, color : PointPink, marginTop : 13}}>업로드</Text>
+          </TouchableOpacity>
         </ScrollView>
         <Modal.BottomModal
             visible={bottomModalAndTitle}
@@ -190,7 +247,7 @@ const EditProfile=({
               />
               <ModalButton
                 text="앨범에서 업로드"
-                onPress={()=>handleSubmit()}
+                onPress={()=>changePicture()}
               />
             </ModalContent>
             <ModalFooter>

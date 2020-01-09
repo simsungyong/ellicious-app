@@ -1,7 +1,5 @@
 import React,{useState, useEffect} from "react";
 import {Image,ScrollView,TouchableOpacity} from 'react-native';
-import { gql } from "apollo-boost";
-import { useQuery, useMutation } from "react-apollo-hooks";
 import { EvilIcons, AntDesign } from "@expo/vector-icons";
 import * as Permissions from 'expo-permissions';
 import * as MediaLibrary from 'expo-media-library';
@@ -12,14 +10,6 @@ import { mainPink, TINT_COLOR, IconColor, LightGrey } from "../components/Color"
 import axios from 'axios';
 import { FEED_QUERY } from "../screens/Tabs/Home";
 import {ME} from '../screens/Tabs/Profile/Profile';
-
-export const EDIT_USER = gql`
-  mutation editUser($newAvatar: String!) {
-    editUser(avatar: $newAvatar){
-      id
-    }
-  }
-`;
 
 const View = styled.View`
   flex: 1;
@@ -50,13 +40,10 @@ export default ({navigation}) => {
   const username =  navigation.getParam("username");
   const avatar =  navigation.getParam("avatar");
   const fullName =  navigation.getParam("fullName");
-  const categories =  navigation.getParam("categories");
+  const category =  navigation.getParam("category");
   const categoryCount =  navigation.getParam("categoryCount");
   const bio =  navigation.getParam("bio");
-
-  const [editProfilePictureMutation] = useMutation(EDIT_USER, {
-    refetchQueries: ()=>[{query: FEED_QUERY},{query: ME }]
-  });
+  const email = navigation.getParam("email");
 
   const changeSelected = (photo) => {
     setSelected(photo);
@@ -114,16 +101,9 @@ export default ({navigation}) => {
             "content-type" : "multipart/form-data"
           }
         });
-        console.log(location)
-        await editProfilePictureMutation({
-          variables: {
-            newAvatar: location
-          }
-        });
-        navigation.navigate("EditProfile", {id, username, avatar: location, fullName, categoryCount, categories, bio})
+        navigation.navigate("EditProfile", {id, username, avatar: location, fullName, categoryCount, category, bio, email})
       } catch (e) {
         console.log(e)
-        Alert.alert("can't upload ", "Try later");
       } finally{
         setLoading(false);
       }

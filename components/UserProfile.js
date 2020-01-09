@@ -189,8 +189,9 @@ const UserProfile = ({
   avatar,
   username,
   fullName,
-  categories,
+  category,
   firstName,
+  email,
   navigation,
   isSelf,
   isFollowing,
@@ -218,8 +219,6 @@ const UserProfile = ({
       id: id
     }
   });
-
-
 const handleFollow = async () =>{
   try{
     if(followingConfirm === true) {
@@ -260,7 +259,7 @@ const handleFollow = async () =>{
               <EditCon>
             {
               isSelf ?
-              <TouchableOpacity onPress={()=>navigation.navigate("EditProfile", { id, avatar, fullName, bio, categories, categoryCount, username })}>
+              <TouchableOpacity onPress={()=>navigation.navigate("EditProfile", { id, avatar, fullName, bio, category, categoryCount, username, email })}>
               <Foundation
                   color={Grey}
                   size={17}

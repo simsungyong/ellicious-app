@@ -240,9 +240,17 @@ const handleFollow = async () =>{
       <Profile>
         <Top>
           <ProfileImage>
-            <Image 
+            {avatar==null ? 
+              <Image
               style={{height: 90, width: 90, borderRadius:30}}
-              source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}/>
+                source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}
+              />
+            :
+              <Image
+                style={{height: 90, width: 90, borderRadius:30}}
+                source={{uri: avatar}}
+              />
+            }
           </ProfileImage>
           <Con>
           <NameCon>
@@ -252,7 +260,7 @@ const handleFollow = async () =>{
               <EditCon>
             {
               isSelf ?
-              <TouchableOpacity onPress={()=>navigation.navigate("EditProfile")}>
+              <TouchableOpacity onPress={()=>navigation.navigate("EditProfile", { id, avatar, fullName, bio, categories, categoryCount, username })}>
               <Foundation
                   color={Grey}
                   size={17}

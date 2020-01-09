@@ -14,6 +14,7 @@ import AlarmsLink from "../components/AlarmsLink";
 import { stackStyles, HomestackStyles, SearchstackStyles  } from "./config";
 import CommentDetail from "../screens/CommentDetail";
 import EditProfile from '../screens/EditProfile';
+import ProfilePicture from '../screens/ProfilePicture';
 import styles from "../styles";
 import UserDetail from "../screens/UserDetail";
 import StoreDetail from "../screens/StoreDetail";
@@ -53,6 +54,13 @@ const stackFactory = (initialRoute, customConfig) =>
       screen: EditProfile,
       navigationOptions: ({ navigation }) => ({
         title: "프로필 수정"
+      })
+    },
+
+    ProfilePicture: {
+      screen: ProfilePicture,
+      navigationOptions: ({ navigation }) => ({
+        title: "프로필 사진 변경"
       })
     },
     

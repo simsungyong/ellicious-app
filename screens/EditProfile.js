@@ -13,6 +13,7 @@ import { withNavigation } from "react-navigation";
 import constants from "../constants";
 import { FormLabel, FormInput } from 'react-native-elements'
 import {AntDesign, FontAwesome} from '@expo/vector-icons'
+import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
 
 const Container = styled.View`
 flex : 1;
@@ -71,24 +72,43 @@ const Button = styled.TouchableOpacity`
   
 `;
 const EditProfile=({
-    id,
-    avatar,
-    username,
-    fullName,
-    categories,
-    navigation,
-    categoryCount,
-    bio
+    navigation
 })=>{
+  const id = navigation.getParam("id");
+  const username =  navigation.getParam("username");
+  const avatar =  navigation.getParam("avatar");
+  const fullName =  navigation.getParam("fullName");
+  const categories =  navigation.getParam("categories");
+  const categoryCount =  navigation.getParam("categoryCount");
+  const bio =  navigation.getParam("bio");
+
+  const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
+
+  const handleSubmit = async() => {
+    try {
+      navigation.navigate("ProfilePicture", {id, username, avatar, fullName, categoryCount, categories, bio});
+    } catch (e) {
+      console.log(e)
+    } finally {
+      setbottomModalAndTitle(false);
+    }
+  }
+
     return (
       <Container>
         <EditImage>
           <ImageCon>
-            <Image  
-              source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}
-            />
+            {avatar==null ? 
+              <Image 
+                source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}
+              />
+            :
+              <Image 
+                source={{uri: avatar}}
+              />
+            }
             
-            <Button>
+            <Button onPress={() => setbottomModalAndTitle(true)}>
               <FontAwesome 
                 name = {'camera'}
                 color ={Grey}
@@ -152,7 +172,36 @@ const EditProfile=({
           </EditCageDetail>  
           </EditCage>
         </ScrollView>
+        <Modal.BottomModal
+            visible={bottomModalAndTitle}
+            onTouchOutside={() => setbottomModalAndTitle(false)}
+            height={0.3}
+            width={0.8}
+            onSwipeOut={() => setbottomModalAndTitle(false)}
+          >
+            <ModalContent>
+              <ModalButton
+                text="현재 사진 삭제"
+                onPress={() => {}}
+              />
+              <ModalButton
+                text="카메라에서 업로드"
+                onPress={() => {}}
+              />
+              <ModalButton
+                text="앨범에서 업로드"
+                onPress={()=>handleSubmit()}
+              />
+            </ModalContent>
+            <ModalFooter>
+              <ModalButton
+                text="CANCEL"
+                onPress={() => setbottomModalAndTitle(false)}
+              />
+            </ModalFooter>
+          </Modal.BottomModal>
       </Container>
+
         );
       }
 

@@ -1,12 +1,10 @@
 import React,{useState, useEffect} from "react";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
-import PropTypes from 'prop-types';
-import {Text,Image,ScrollView,Modal,TouchableOpacity, TextInput,Picker, Platform, TouchableHighlight, Alert, ActivityIndicator} from 'react-native';
+import {Text,Image,ScrollView,Modal,TouchableOpacity, TextInput, Platform, TouchableHighlight, Alert, ActivityIndicator} from 'react-native';
 import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line, LightPink } from '../../components/Color';
 import {FontAwesome, EvilIcons, AntDesign} from "@expo/vector-icons";
 import Stars from 'react-native-stars';
-import {Icon} from 'native-base';
 import Hr from "hr-native";
 import { useQuery, useMutation } from "react-apollo-hooks";
 import { CATEGORY_FRAGMENT } from "../../fragments";
@@ -16,6 +14,9 @@ import constants from "../../constants";
 import useInput from '../../hooks/useInput';
 import { FEED_QUERY } from "../Tabs/Home";
 import {ME} from '../Tabs/Profile/Profile';
+
+
+
 const UPLOAD = gql`
   mutation upload($caption: String, $storeName: String!, $files: [String!], $storeLocation: String!, $rating: Float!, $storeLat: Float, $storeLong: Float, $placeId: String, $category: String!, $details:[String!]){
           upload(caption: $caption, storeName: $storeName, storeLocation: $storeLocation, files: $files, rating: $rating, storeLat: $storeLat, storeLong: $storeLong, placeId: $placeId, category: $category, details:$details){
@@ -196,6 +197,8 @@ export default ({navigation}) => {
   const placeId = navigation.getParam("place_id");
   const storeLat = navigation.getParam("storeLat")
   const storeLong = navigation.getParam("storeLong")
+  const [modalAndTitle, setmodalAndTitle] = useState(false);
+
 
   const [uploadMutation] = useMutation(UPLOAD, {
     refetchQueries: ()=>[{query: FEED_QUERY},{query: ME }]
@@ -286,7 +289,7 @@ export default ({navigation}) => {
       <Top>
         <ImageBox>
           <Image
-            source={{ uri: photo.uri }}
+            source={{ uri: photo[0].uri }}
             style={{ 
               height: 100, 
               width: 100, 
@@ -412,15 +415,17 @@ export default ({navigation}) => {
             
             <View/>
             <TouchableHighlight onPress={()=>togglePicker(isModalPick)} style={{paddingTop:4, paddingBottom:4}}>
-              <Text style={{color:mainPink, fontSize:17}}>카테고리 추가하기</Text>
+              <Text style={{color:mainPink, fontSize:20}}>카테고리 추가하기</Text>
             </TouchableHighlight>
 
             <TouchableHighlight onPress={()=>togglePicker(isModalPick)} style={{paddingTop:4, paddingBottom:4}}>
-              <Text style={{color:Grey}}>Cancle</Text>
+              <Text style={{color:Grey, fontSize:18}}>Cancle</Text>
             </TouchableHighlight>
 
           </ViewModal>
       </Modal>
+
+      
     </Container>
   );
 }

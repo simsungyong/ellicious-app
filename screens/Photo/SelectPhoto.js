@@ -6,7 +6,8 @@ import * as MediaLibrary from 'expo-media-library';
 import styled from "styled-components";
 import Loader from "../../components/Loader";
 import constants from "../../constants";
-import { mainPink, TINT_COLOR, IconColor, LightGrey } from "../../components/Color";
+import { mainPink, TINT_COLOR, IconColor, LightGrey ,PointPink} from "../../components/Color";
+
 const View = styled.View`
   flex: 1;
 `;
@@ -19,6 +20,20 @@ const Button = styled.TouchableOpacity`
   margin-right : 15px;  
 `;
 
+const SelectBt = styled.TouchableOpacity`
+  alignItems: center;
+  justifyContent: center;
+  borderRadius: 9;
+  padding : 5px;
+  margin : 4px;
+  position: absolute;
+  background-color: ${props=>props.backgroundColor}
+  width : 20px;
+  height: 20px
+  borderColor: ${mainPink};
+  borderWidth: 1
+`; 
+
 
 const Text = styled.Text`
   color: ${TINT_COLOR};
@@ -30,12 +45,21 @@ export default ({navigation}) => {
   const [loading, setLoading] = useState(true);
   const [hasPermission, setHasPermission] = useState(false);
   const [selected, setSelected] = useState([]);
+  const [first, setFirst] = useState();
   const [allPhotos, setAllPhotos] = useState();
+  const temp = selected.map(a=>a);
 
   const changeSelected = (photo) => {
-    setSelected(photo);
-    //console.log(selected);
+    var temparr = selected;
+    var index = temparr.indexOf(photo);
+    if(index===-1){
+      temparr.push(photo)
+    }else{
+      temparr.splice(index, 1);
+    }
+    setSelected([...temparr]);
   };
+
   const getPhotos = async () => {
     try {
       const { assets } = await MediaLibrary.getAssetsAsync({
@@ -44,8 +68,7 @@ export default ({navigation}) => {
       });
       
       const [firstPhoto] = assets;
-      
-      setSelected(firstPhoto);
+      setFirst(firstPhoto);
       setAllPhotos(assets);
     } catch (e) {
       console.log(e);
@@ -86,7 +109,7 @@ return(
             <>
             <Image
                   style={{ width: constants.width, height: constants.height / 2 }}
-                  source={{ uri: selected.uri }}
+                  source={ temp.length>0 ? { uri: temp[temp.length-1].uri } : {uri:first.uri}}
                 />
               <Button onPress={handleSelected}>
                 <AntDesign
@@ -112,9 +135,13 @@ return(
                         style={{
                           width: constants.width / 4,
                           height: constants.height / 8,
-                          opacity: photo.id === selected.id ? 0.5 : 1
+                          opacity: temp.length>0 ? (photo.id === temp[temp.length-1].id ? 0.5 : 1) : null
                         }}
-                      />
+                      >
+                      </Image>
+                      <SelectBt backgroundColor={temp.indexOf(photo)===-1 ? LightGrey : mainPink}>
+                        <Text style={{fontSize:9, color: PointPink }}>{temp.indexOf(photo)===-1 ? null : temp.indexOf(photo)+1}</Text>
+                      </SelectBt>
                     </TouchableOpacity>
                   ))}
                 </ScrollView>

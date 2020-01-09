@@ -154,6 +154,15 @@ flex-direction : row;
 alignItems: center;
 justifyContent: center;
 `;
+
+const PhotoNum = styled.View`
+  alignItems: center;
+  justifyContent: center;
+  padding : 5px;
+  margin : 4px;
+  position: absolute;
+  `;
+
 const Button = styled.TouchableOpacity`
   alignItems: center;
   justifyContent: center;
@@ -231,6 +240,7 @@ export default ({navigation}) => {
         }
       });
       
+
       const {
         data: { upload } 
       } = await uploadMutation({

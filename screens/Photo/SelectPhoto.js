@@ -20,7 +20,7 @@ const Button = styled.TouchableOpacity`
   margin-right : 15px;  
 `;
 
-const SelectBt = styled.TouchableOpacity`
+const SelectBt = styled.View`
   alignItems: center;
   justifyContent: center;
   borderRadius: 9;
@@ -64,7 +64,7 @@ export default ({navigation}) => {
     try {
       const { assets } = await MediaLibrary.getAssetsAsync({
         sortBy:[[MediaLibrary.SortBy.creationTime, false]],
-        first:2000
+        first:500
       });
       
       const [firstPhoto] = assets;

@@ -189,7 +189,7 @@ export default ({navigation}) => {
   const [isModalPick, setModalPick] = useState(false);
   const [selectCate, setSelectCate] = useState();
   const [pickedName, setPickedName] = useState();
-  const [fileUrl, setFileUrl] = useState("");
+  //const [fileUrl, setFileUrl] = useState([]);
   const captionInput = useInput();
   const photo = navigation.getParam("photo");
   const storeName = navigation.getParam("name");
@@ -213,31 +213,30 @@ export default ({navigation}) => {
     }
 
     const formData = new FormData();
-    const name = photo.filename;
-    const [, type] = name.split(".");
-    formData.append("file", {
-      name,
-      type: "image/jpeg",
-      uri: photo.uri
-    });
+    photo.forEach((element, i) => {
+      formData.append("file", {
+        name: element.filename || `filename${i}.jpg`,
+        type: "image/jpeg",
+        uri: element.uri
+      });
+    });    
 
     try {
       setIsLoading(true);
       const {
-        data: {location}
+        data:{temp}
       } = await axios.post("http://192.168.0.135:4000/api/upload", formData, {
         headers:{
           "content-type" : "multipart/form-data"
         }
       });
-      setFileUrl(location);
       
       const {
         data: { upload } 
       } = await uploadMutation({
         variables: {
           caption: captionInput.value,
-          files: [location],
+          files: temp,
           storeName,
           placeId,
           storeLat,
@@ -261,10 +260,6 @@ export default ({navigation}) => {
     }
 };
 
-  const handleDetail =()=>{
-    
-    setDetails([...details])
-  }
 
   const handleKey= async(i)=>{
     keys[i] = !keys[i]

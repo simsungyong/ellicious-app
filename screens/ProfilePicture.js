@@ -95,13 +95,13 @@ export default ({navigation}) => {
     try {
         setLoading(true);
         const {
-          data: {location}
+          data: {temp}
         } = await axios.post("http://192.168.0.135:4000/api/upload", formData, {
           headers:{
             "content-type" : "multipart/form-data"
           }
         });
-        navigation.navigate("EditProfile", {id, username, avatar: location, fullName, categoryCount, category, bio, email})
+        navigation.navigate("EditProfile", {id, username, avatar: temp[0], fullName, categoryCount, category, bio, email})
       } catch (e) {
         console.log(e)
       } finally{

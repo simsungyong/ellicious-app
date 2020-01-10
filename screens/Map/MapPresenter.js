@@ -20,6 +20,7 @@ const Input = styled.TextInput`
     text-align:center;
     background-color : white;
     border-radius: 10px;
+    height : ${constants.height/22};
 `;
 
 const InputContainer = styled.View`

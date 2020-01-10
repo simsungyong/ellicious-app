@@ -10,9 +10,11 @@ import {MaterialCommunityIcons, Ionicons,EvilIcons, AntDesign } from "@expo/vect
 const Post = styled.View`
 background-color : ${LightPink}
 margin-right : 2px;
+margin-left : 2px;
 margin-bottom : 2px;
 margin-top : 2px;
 width: ${constants.width / 3.1};
+
 `;
 
 const Bold = styled.Text`

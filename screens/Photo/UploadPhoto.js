@@ -1,7 +1,7 @@
-import React,{useState, useEffect} from "react";
+import React,{useState, useEffect, Component} from "react";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
-import {Text,Image,ScrollView,Modal,TouchableOpacity, TextInput, Platform, TouchableHighlight, Alert, ActivityIndicator} from 'react-native';
+import {Text,Image,ScrollView,Modal,TouchableOpacity, TextInput, Platform, TouchableHighlight, Alert, ActivityIndicator, Keyboard, TouchableWithoutFeedback, } from 'react-native';
 import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line, LightPink } from '../../components/Color';
 import {FontAwesome, EvilIcons, AntDesign} from "@expo/vector-icons";
 import Stars from 'react-native-stars';
@@ -14,7 +14,6 @@ import constants from "../../constants";
 import useInput from '../../hooks/useInput';
 import { FEED_QUERY } from "../Tabs/Home";
 import {ME} from '../Tabs/Profile/Profile';
-
 
 const UPLOAD = gql`
   mutation upload($caption: String, $storeName: String!, $files: [String!], $storeLocation: String!, $rating: Float!, $storeLat: Float, $storeLong: Float, $placeId: String, $category: String!, $details:[String!]){
@@ -109,12 +108,14 @@ const UploadCon = styled.TouchableOpacity`
   alignItems: center;
   justifyContent: center;
 `;
-const UploadButton = styled.View`
+const UploadButton = styled.TouchableOpacity`
   margin-vertical : 5px;
-  width : ${constants.width}
   height: 40;
   border-radius: 7;
-  background-color : ${LightGrey};
+  background-color : ${LightPink};
+  flex : 1;
+  justifyContent: center;
+  alignItems: center;
 `;
 
 const ViewModal = styled.View`
@@ -172,8 +173,6 @@ const Button = styled.TouchableOpacity`
   margin : 4px;
   background-color: ${props=>props.backgroundColor};
   width : ${constants.width /3.7};
-  borderColor: ${mainPink};
-  borderWidth: 1.5
 `;
 
 export const seeCategory = gql`
@@ -185,7 +184,6 @@ export const seeCategory = gql`
   }
   ${CATEGORY_FRAGMENT}`
   ;
-
 
 export default ({navigation}) => {
   const [keys, setKey] = useState([false,false,false,false,false,false,false,false,false,false,false,false]);
@@ -405,11 +403,11 @@ export default ({navigation}) => {
         </ScrollView>
         </ButtonCon>
         <UploadBt>
-            <Button backgroundColor ={mainPink} onPress={handleSubmit}>{isloading ? (
+            <UploadButton backgroundColor ={mainPink} onPress={handleSubmit}>{isloading ? (
               <ActivityIndicator color="white" />
             ): (
               <Text>UPLOAD</Text>
-            )}</Button>
+            )}</UploadButton>
           </UploadBt>
       </MoreInfoCon>
       
@@ -436,8 +434,6 @@ export default ({navigation}) => {
 
           </ViewModal>
       </Modal>
-
-      
     </Container>
   );
 }

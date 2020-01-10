@@ -30,7 +30,6 @@ const SelectBt = styled.View`
   background-color: ${props=>props.backgroundColor}
   width : 20px;
   height: 20px
-  borderColor: ${mainPink};
   borderWidth: 1
 `; 
 
@@ -140,10 +139,15 @@ return(
                       >
                       </Image>
                       {temp.indexOf(photo)===-1 ? (
-                        <SelectBt backgroundColor={LightGrey}/>
+                        <SelectBt 
+                        backgroundColor={'#00ff0000'}
+                        borderColor= {'#00ff0000'}
+                        />
                         ) : (
-                          <SelectBt backgroundColor={mainPink}>
-                            <Text style={{fontSize:9, color: PointPink }}>{temp.indexOf(photo)+1}</Text>
+                          <SelectBt 
+                          backgroundColor={PointPink}
+                          borderColor= {'white'}>
+                            <Text style={{fontSize:9, color: 'white' }}>{temp.indexOf(photo)+1}</Text>
                           </SelectBt>
                         )}
                       

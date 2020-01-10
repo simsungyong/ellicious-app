@@ -16,7 +16,6 @@ import { FEED_QUERY } from "../Tabs/Home";
 import {ME} from '../Tabs/Profile/Profile';
 
 
-
 const UPLOAD = gql`
   mutation upload($caption: String, $storeName: String!, $files: [String!], $storeLocation: String!, $rating: Float!, $storeLat: Float, $storeLong: Float, $placeId: String, $category: String!, $details:[String!]){
           upload(caption: $caption, storeName: $storeName, storeLocation: $storeLocation, files: $files, rating: $rating, storeLat: $storeLat, storeLong: $storeLong, placeId: $placeId, category: $category, details:$details){
@@ -43,7 +42,9 @@ const Top = styled.View`
 const ImageBox = styled.View`
 margin-left : 3px;
 `;
-const TextCon = styled.View``;
+const TextCon = styled.View`
+flex:1;
+`;
 
 const InfoCon = styled.View`
   flex : 1
@@ -304,12 +305,16 @@ export default ({navigation}) => {
         </ImageBox>
 
         <TextCon>
-          <TextInput
-            onChangeText={captionInput.onChange}
-            value={captionInput.value}
-            multiline={true}
-            placeholder="글쓰기..."
-            placeholderTextColor={TINT_COLOR}/>
+          
+            <TextInput
+              onChangeText={captionInput.onChange}
+              value={captionInput.value}
+              multiline={true}
+              placeholder="글쓰기..."
+              placeholderTextColor={TINT_COLOR}
+              maxLength={235}
+            />
+          
         </TextCon>
       </Top> 
 

@@ -9,7 +9,7 @@ import constants from "../constants";
 import { useMutation, useQuery } from "react-apollo-hooks";
 import styles from "../styles";
 import moment from "moment";
-import { IconColor, StarColor, TINT_COLOR, Grey, PointPink, BG_COLOR, LightGrey, Line, LightPink } from '../components/Color';
+import { IconColor, StarColor, TINT_COLOR, Grey, PointPink, BG_COLOR, LightGrey, Line, LightPink, mainPink } from '../components/Color';
 import {Card} from 'native-base'
 import { withNavigation } from "react-navigation";
 import Hr from "hr-native";
@@ -20,6 +20,7 @@ import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-n
 import { POST_FRAGMENT } from "../fragments";
 import {ME} from '../screens/Tabs/Profile/Profile';
 import { UNFOLLOW } from "./UserProfile";
+import { ScrollView } from "react-native-gesture-handler";
 
 export const FEED_QUERY = gql`
   {
@@ -136,6 +137,8 @@ const Tag = styled.View`
 padding : 3px;
 padding-left : 5px;
 flex-direction: row;
+
+flex : 1;
 `;
 const TagBox = styled.View`
 borderRadius:5;
@@ -328,13 +331,17 @@ const Post = ({
           </Swiper>
           
             <Tag>
-            {details.length >=1 ? (details.map((k,index)=>
-            <TagBox key={index}>
-              <TagText>{k}</TagText>
-            </TagBox>
-            )) : null
-    }
-            <View/>
+              <ScrollView
+               horizontal={true}
+               showsHorizontalScrollIndicator={false}
+              >
+                {details.length >=1 ? (details.map((k,index)=>
+                <TagBox key={index}>
+                  <TagText>{k}</TagText>
+                </TagBox>
+                )) : null}
+                <View/>
+              </ScrollView>
             </Tag>
           
           <StoreInfo>

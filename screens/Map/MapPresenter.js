@@ -14,9 +14,9 @@ const Container = styled.View`
     flex:1;
 `;
 const Input = styled.TextInput`
-    width: ${constants.width /1.1 };
+    width: ${constants.width /1.2 };
     border-radius: 20px;
-    padding : 10px;
+    padding : 5px;
     text-align:center;
     background-color : white;
     border-radius: 10px;

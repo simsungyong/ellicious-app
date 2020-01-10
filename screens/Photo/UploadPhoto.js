@@ -185,6 +185,12 @@ export const seeCategory = gql`
   ${CATEGORY_FRAGMENT}`
   ;
 
+  const DismissKeyboard = ({ children }) => (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      {children}
+    </TouchableWithoutFeedback>
+  );
+  
 export default ({navigation}) => {
   const [keys, setKey] = useState([false,false,false,false,false,false,false,false,false,false,false,false]);
   const keyword = ['주차가능', '가성비', '서비스 좋음', '24시간', '자리넓음', '혼밥가능', '애견동반가능', '또 오고싶어', '단체석 구비','예약가능','연인과 함께','가족과 함께'];
@@ -205,7 +211,6 @@ export default ({navigation}) => {
   const storeLat = navigation.getParam("storeLat")
   const storeLong = navigation.getParam("storeLong")
   const [modalAndTitle, setmodalAndTitle] = useState(false);
-
 
   const [uploadMutation] = useMutation(UPLOAD, {
     refetchQueries: ()=>[{query: FEED_QUERY},{query: ME }]
@@ -288,6 +293,7 @@ export default ({navigation}) => {
     togglePicker(isModalPick);
   }
   return(
+    <DismissKeyboard>
     <Container>
       <Top>
         <ImageBox>
@@ -432,6 +438,7 @@ export default ({navigation}) => {
           </ViewModal>
       </Modal>
     </Container>
+    </DismissKeyboard>
   );
 }
 

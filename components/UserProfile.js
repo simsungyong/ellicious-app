@@ -43,7 +43,14 @@ const Top = styled.View`
   alignItems: flex-end;
 `;
 const View=styled.View`
-flex:1
+flex : 1;
+`;
+
+const ViewCon=styled.View`
+justifyContent: center;
+alignItems : center;
+
+
 `;
 
 const ViewBox=styled.View`
@@ -132,7 +139,8 @@ flex : 1;
 `;
 
 const Post = styled.View`
-flex-direction : column
+flex-direction : column,
+
 `;
 
 const BioCon = styled.View`
@@ -141,29 +149,39 @@ flex-direction : row;
 const Blank = styled.View`
 flex : 1;
 `;
+const Test = styled.View`
+justifyContent: center;
+
+background-color : green;
+flex-direction : row;
+`;
 
 const Scene = ({ index, posts, userId }) => (
   
-    <View >
+    <ViewCon >
       {(index == 1) ? (
         
         <ProfileMapContainer userId={userId}/>
        
       ) : (
+       
         <ScrollView
           contentContainerStyle={{
             flexDirection: "row",
-            flexWrap: "wrap"
+            flexWrap: "wrap",
+            
           }}
         >
+           
           {
           posts && posts.map(p =>
             <SquarePhoto key={p.id} {...p} />
           )}
-         
+           
         </ScrollView>
+       
       )}
-    </View>
+    </ViewCon>
 );
 
 const ROUTES = {
@@ -304,6 +322,7 @@ const handleFollow = async () =>{
           inactiveOpacity={1}
           fadeLabels={true}
           underlineStyle={Style.underlineStyle}
+          
         />
 
     </Container>

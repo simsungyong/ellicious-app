@@ -55,7 +55,7 @@ export default createStackNavigator({
       title:"사 진",
       headerBackTitle: null ,
       headerTitle : (
-        <View style = {{ alignItems : "center", flex : 1, padding : 5,  marginLeft : 5}}>
+        <View style = {{ justifyContent : 'center',alignItems : "center", flex : 1, padding : 5,  marginLeft : 5}}>
           <Text style = {{ fontSize : 25 , color : TINT_COLOR, fontWeight : "200"}}>
             사 진
           </Text>
@@ -69,7 +69,7 @@ export default createStackNavigator({
       title: "새 게시글",
       headerBackTitle:null,
       headerTitle : (
-        <View style = {{ alignItems : "center", flex : 1, padding : 5,  marginLeft : 5}}>
+        <View style = {{ justifyContent : 'center',alignItems : "center", flex : 1, padding : 5,  marginLeft : 5}}>
           <Text style = {{ fontSize : 22 , color : TINT_COLOR, fontWeight : "200"}}>
             새 게시글
           </Text>
@@ -84,7 +84,7 @@ export default createStackNavigator({
       title: "방문한 맛집은?",
       headerBackTitle:null,
       headerTitle : (
-        <View style = {{ alignItems : "center", flex : 1, padding : 5,  marginLeft : 5}}>
+        <View style = {{ justifyContent : 'center',alignItems : "center", flex : 1, padding : 5,  marginLeft : 5}}>
           <Text style = {{ fontSize : 22 , color : TINT_COLOR, fontWeight : "200"}}>
             방문한 맛집은?
           </Text>

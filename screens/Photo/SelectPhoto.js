@@ -135,13 +135,18 @@ return(
                         style={{
                           width: constants.width / 4,
                           height: constants.height / 8,
-                          opacity: temp.length>0 ? (photo.id === temp[temp.length-1].id ? 0.5 : 1) : null
+                          opacity: temp.length>0 ? (photo.id === temp[temp.length-1].id ? 0.5 : null) : null
                         }}
                       >
                       </Image>
-                      <SelectBt backgroundColor={temp.indexOf(photo)===-1 ? LightGrey : mainPink}>
-                        <Text style={{fontSize:9, color: PointPink }}>{temp.indexOf(photo)===-1 ? null : temp.indexOf(photo)+1}</Text>
-                      </SelectBt>
+                      {temp.indexOf(photo)===-1 ? (
+                        <SelectBt backgroundColor={LightGrey}/>
+                        ) : (
+                          <SelectBt backgroundColor={mainPink}>
+                            <Text style={{fontSize:9, color: PointPink }}>{temp.indexOf(photo)+1}</Text>
+                          </SelectBt>
+                        )}
+                      
                     </TouchableOpacity>
                   ))}
                 </ScrollView>

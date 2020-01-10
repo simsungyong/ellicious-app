@@ -187,7 +187,6 @@ export const seeCategory = gql`
 
 
 export default ({navigation}) => {
-  //let keystemp = [false,false,false,false,false,false,false,false,false,false,false,false];
   const [keys, setKey] = useState([false,false,false,false,false,false,false,false,false,false,false,false]);
   const keyword = ['주차가능', '가성비', '서비스 좋음', '24시간', '자리넓음', '혼밥가능', '애견동반가능', '또 오고싶어', '단체석 구비','예약가능','연인과 함께','가족과 함께'];
   //const [details, setDetails] = useState([]);
@@ -437,22 +436,5 @@ export default ({navigation}) => {
 
 
 
-
-/*<Select2
-          isSelectSingle
-          style={{ borderRadius: 5 }}
-          colorTheme={'blue'}
-          popupTitle='Select item'
-          title='Select item'
-          data={mockData}
-          searchPlaceHolderText   ='카테고리 검색'
-          cancelButtonText='취소'
-          selectButtonText='선택'
-          onSelect={data => {setSelectCate(data)}}
-          onRemoveItem={data => {setSelectCate(data);}} 
-          />
-        <Text>
-          업로드!
-        </Text>*/
 
 

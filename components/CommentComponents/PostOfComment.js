@@ -180,7 +180,7 @@ const PostOfComment = ({
               <Profile>
                 <Image 
                   style={{height: 30, width: 30, borderRadius:15}}
-                  source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}
+                  source={{uri: user.avatar}}
                 />
               </Profile>
 
@@ -220,7 +220,7 @@ const PostOfComment = ({
                 <Profile>
                   <Image 
                     style={{height: 40, width: 40, borderRadius:20}}
-                    source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}
+                    source={{uri: user.avatar}}
                   />
                 </Profile>
 

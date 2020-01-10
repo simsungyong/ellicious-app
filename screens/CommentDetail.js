@@ -6,7 +6,7 @@ import { Alert } from "react-native";
 import styled from "styled-components";
 import useInput from "../hooks/useInput";
 import KeyboardSpacer from 'react-native-keyboard-spacer';
-import { ScrollView, Text,Image,TextInput,RefreshControl, KeyboardAvoidingView } from "react-native";
+import { ScrollView, Text,Image,TextInput,RefreshControl, KeyboardAvoidingView,ActivityIndicator } from "react-native";
 import { POST_COMMENT } from "../fragments";
 import PostOfComment from '../components/CommentComponents/PostOfComment';
 import { LightGrey, CommentsBox, mainPink } from "../components/Color";
@@ -52,37 +52,35 @@ const GET_COMMENTS = gql`
         seeComment(postId: $postId, headComment: $headComment){
             ...CommentParts
         }
-    }
+    } 
     ${POST_COMMENT}
 `;
-
 const ADD_COMMENTS = gql`
     mutation addComment($text: String!, $headComment: String, $postId: String! ){
-      addComment(text: $text, headComment: $headComment, postId:$postId)
+      addComment(text: $text, headComment: $headComment, postId:$postId){
+        id
+        text
+      }
     }
 `
 
 export default ({navigation})=>{
     const [refreshing, setRefreshing] = useState(false);
-    const textInput = useInput("");
+    const commentInput = useInput();
+    const [isLoading, setIsLoading] = useState(false);
     const postId = navigation.getParam("postId");
     const focusing = navigation.getParam("focusing");
     const caption = navigation.getParam("caption");
     const avatar = navigation.getParam("avatar");
     const username = navigation.getParam("username");
-
     const {loading, data, refetch} = useQuery(GET_COMMENTS, {
         variables: { postId, headComment:null}
     });
-    const [addComment] = useMutation(ADD_COMMENTS, {
-      variables: {
-        postId: postId,
-        headComment: null,
-        text: textInput.value
-      }
+    const [addComments] = useMutation(ADD_COMMENTS, {
+      refetchQueries:()=>[{query:GET_COMMENTS, 
+      variables:{ postId, headComment:null} }]
     });
     
-    //console.log(data.seeComment);
     const refresh = async() =>{
         try{
           setRefreshing(true);
@@ -96,27 +94,32 @@ export default ({navigation})=>{
       };
 
     
-    /*const handleComment = async()=>{
-      const { value: text } = textInput;
-      if (text === "") {
-        return Alert.alert("한 글자는 쓰지?");
-      }
-
-      try {
-        const {
-          data: { addComment }
-        } = await addComment();
-        if (addComment) {
-          Alert.alert("댓글 성공!");
-        }
-      } catch (e) {
+    const handleComment = async()=>{
+      if (commentInput.value === undefined) {
+        Alert.alert("한 글자는 쓰지?");
+      }else{
+        setIsLoading(true);
+        try {
+          const {data:{addComment}} = await addComments({
+            variables: {
+              postId: postId,
+              headComment: null,
+              text: commentInput.value
+            }
+          });
+          if(addComment.id){
+            navigation.navigate("CommentDetail");
+          }
+      }catch (e) {
         console.log(e);
         Alert.alert("댓글 에러!");
         
       } finally {
-        
+        setIsLoading(false);
       }
-    };*/
+    }
+      
+};
     
     return (
       <InfoCon>
@@ -127,27 +130,31 @@ export default ({navigation})=>{
         }>
           <CaptionCon>
             <Image 
-              style={{height: 20, width: 20, borderRadius:10}}
+              style={{height: 30, width: 30, borderRadius:15}}
               source={{uri: avatar}}/>
             <Bold>{username}</Bold>
             <Text>{caption}</Text>
           </CaptionCon>
 
           <CommentBox>
-            <Image 
-                style={{height: 30, width: 30, borderRadius:15}}
-                source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}/>
             <TextBox>
               <TextInput
-                {...textInput}
+                onChangeText={commentInput.onChange}
                 returnKeyType="send"
-                //onSubmitEditing={handleLogin}
+                value={commentInput.value}
+                onSubmitEditing={handleComment}
                 autoFocus={focusing}
                 placeholder="Comment"
               />
             </TextBox>
-            <Touchable>
-              <Bold>Reply</Bold>
+            <Touchable onPress={handleComment}>
+              {isLoading ? (
+              <ActivityIndicator color="white" />
+            ): (
+              <Bold>
+              <Text>Reply</Text>
+              </Bold>
+            )}
             </Touchable>
           </CommentBox>
             {loading ? (

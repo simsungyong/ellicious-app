@@ -178,9 +178,9 @@ const Post = ({
       const [modalAndTitle, setmodalAndTitle] = useState(false);
 
       const [toggleLikeMutaton] = useMutation(TOGGLE_LIKE, {
-      variables: {
-      postId: id
-      }});
+        variables: {
+        postId: id
+        }});
 
       const [togglePickMutation] = useMutation(TOGGLE_PICK, {
         variables:{

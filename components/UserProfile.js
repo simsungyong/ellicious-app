@@ -119,7 +119,13 @@ const TopButton = styled.Text`
   font-size : 20;
   color : ${PointPink}
 `;
-const FollowPick = styled.View`
+const FollowPick = styled.TouchableOpacity`
+  flex-direction: row;
+  alignItems: center;
+  justifyContent: center;
+  margin-left : 5px;
+`;
+const PostNum = styled.View`
   flex-direction: row;
   alignItems: center;
   justifyContent: center;
@@ -204,6 +210,7 @@ const UserProfile = ({
   bio,
   posts
 }) => {
+  followers.map(item=>console.log(item.username))
   const [isGrid, setIsGrid] = useState(true);
   const toggleGrid = () => setIsGrid(i => !i);
   const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
@@ -276,11 +283,11 @@ const handleFollow = async () =>{
           </BioCon>
           </NameCon>
           <FollowCon>
-            <FollowPick>
+            <PostNum>
               <Text>게시물 </Text>
               <Bold>{postsCount}</Bold>
-            </FollowPick>
-            <FollowPick>
+            </PostNum>
+            <FollowPick onPress={()=>navigation.navigate("Users", {username})}>
               <Text>Follower </Text>
               <Bold>{followCount}</Bold>
             </FollowPick>

@@ -66,12 +66,12 @@ export default createStackNavigator({
   Upload: {
     screen: UploadPhoto,
     navigationOptions:{
-      title: "새 게시글",
+      title: "게시글",
       headerBackTitle:null,
       headerTitle : (
         <View style = {{ alignItems : "center", flex : 1, padding : 5,  marginLeft : 5}}>
           <Text style = {{ fontSize : 22 , color : TINT_COLOR, fontWeight : "200"}}>
-            새 게시글
+            게시글
           </Text>
         </View>
       )

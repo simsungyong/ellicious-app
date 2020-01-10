@@ -192,20 +192,23 @@ export default ({navigation}) => {
   const keyword = ['주차가능', '가성비', '서비스 좋음', '24시간', '자리넓음', '혼밥가능', '애견동반가능', '또 오고싶어', '단체석 구비','예약가능','연인과 함께','가족과 함께'];
   //const [details, setDetails] = useState([]);
   const details=[];
-  const { loading, data } = useQuery(seeCategory);
-  const [isloading, setIsLoading] = useState(false);
-  const [starValue, setStarValue] = useState(2.5);
-  const [isModalPick, setModalPick] = useState(false);
-  const [selectCate, setSelectCate] = useState();
-  const [pickedName, setPickedName] = useState();
-  //const [fileUrl, setFileUrl] = useState([]);
   const captionInput = useInput();
   const photo = navigation.getParam("photo");
   const storeName = navigation.getParam("name");
   const storeAdr = navigation.getParam("formatted_address");
   const placeId = navigation.getParam("place_id");
   const storeLat = navigation.getParam("storeLat")
+  const star = navigation.getParam("star")
   const storeLong = navigation.getParam("storeLong")
+  const { loading, data } = useQuery(seeCategory);
+  const [isloading, setIsLoading] = useState(false);
+  const [starValue, setStarValue] = useState(star);
+  const [isModalPick, setModalPick] = useState(false);
+  const [selectCate, setSelectCate] = useState();
+  const [pickedName, setPickedName] = useState();
+  //const [fileUrl, setFileUrl] = useState([]);
+  
+
   const [modalAndTitle, setmodalAndTitle] = useState(false);
 
 
@@ -339,7 +342,7 @@ export default ({navigation}) => {
         <Rating>
           <Stars
             half={true}
-            default={2.5}
+            default={starValue}
             update={(val)=>setStarValue(val)}
             spacing={6}
             count={5}

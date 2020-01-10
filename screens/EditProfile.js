@@ -130,7 +130,7 @@ const EditProfile=({
           username: newusername
         }
       });
-      navigation.navigate("UserDetail",{id});
+      navigation.goBack();
     } catch (e) {
       console.log(e)
     }

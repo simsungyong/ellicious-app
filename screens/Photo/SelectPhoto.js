@@ -108,7 +108,7 @@ return(
           {hasPermission ? (
             <>
             <Image
-                  style={{ width: constants.width, height: constants.height / 2 }}
+                  style={{ width: constants.width, height: constants.height / 2.2 }}
                   source={ temp.length>0 ? { uri: temp[temp.length-1].uri } : {uri:first.uri}}
                 />
               <Button onPress={handleSelected}>
@@ -135,7 +135,7 @@ return(
                         style={{
                           width: constants.width / 4,
                           height: constants.height / 8,
-                          opacity: temp.length>0 ? (photo.id === temp[temp.length-1].id ? 0.5 : null) : null
+                          opacity: temp.length>0 ? (photo === temp[temp.length-1] ? 0.5 : null) : null
                         }}
                       >
                       </Image>

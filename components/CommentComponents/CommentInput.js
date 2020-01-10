@@ -61,7 +61,7 @@ const CommentInput=({
             <Touchable>
                 <Image 
                     style={{height: 25, width: 25, borderRadius:15}}
-                    source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}
+                    source={{uri: user.avatar}}
                   />
             </Touchable>
             <Touchable>

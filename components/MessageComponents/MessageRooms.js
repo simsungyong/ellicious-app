@@ -78,7 +78,7 @@ const MessageRooms = ({ id, participants, navigation }) => {
             <Header>
               <Profile>
                 <Image 
-                  style={{height: 60, width: 60, borderRadius:'50%'}}
+                  style={{height: 40, width: 40, borderRadius:20}}
                   source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}
                   />
               </Profile>

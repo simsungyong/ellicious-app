@@ -32,6 +32,7 @@ const SearchStorePresenter = ({ term, shouldFetch }) => {
     skip: !shouldFetch,
     fetchPolicy: "network-only"
   });
+
   const onRefresh = async () => {
     try {
       setRefreshing(true);
@@ -41,6 +42,14 @@ const SearchStorePresenter = ({ term, shouldFetch }) => {
       setRefreshing(false);
     }
   };
+
+  function getUniqueObjectArray(array) {
+    return array.filter((item, i) => {
+      return array.findIndex(item2 => {
+        return item.placeId === item2.placeId;
+      }) === i;
+    });
+  }
 
   return (
       <ScrollView refreshControl={
@@ -52,7 +61,8 @@ const SearchStorePresenter = ({ term, shouldFetch }) => {
         ) : (
           data &&
           data.searchStore &&
-          data.searchStore.map(store => 
+          getUniqueObjectArray(data.searchStore)
+          .map(store => 
             <SearchStoreBox key={store.id} {...store} />
           )
         )}

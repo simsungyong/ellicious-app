@@ -19,13 +19,7 @@ import Following from "./Following";
 
 import TopBarNav from "top-bar-nav";
 
-export const EDIT_USER = gql`
-  mutation editUser($newAvatar: String, $bio: String, $username: String) {
-    editUser(avatar: $newAvatar bio: $bio username: $username){
-      id
-    }
-  }
-`;
+
 
 const Container = styled.View`
 flex : 1;
@@ -83,60 +77,52 @@ const Button = styled.TouchableOpacity`
   position: absolute;
   
 `;
-export default class extends React.Component{
-
-    render() {
-        const Scene = ({ index }) => (
-          <View style={{ flex: 1, justifyContent: 'center'}}>
-            {
-              (index == 0) ? 
-                <Followers/>
-                :
-                <Following/>
+export default ({navigation})=>{
+  const followerList = navigation.getParam("followers");
+  console.log(followerList);
+  const Scene = ({ index }) => (
+      <View style={{ flex: 1, justifyContent: 'center'}}>
+          {
+            (index == 0) ? 
+              <Followers followerList/> : <Following/>
               }
           </View>
-        );
+      );
         
-        const ROUTES = {
-          Scene
-          // ideally you would have a ROUTES object with multiple React component scenes
-        };
+  const ROUTES = {Scene};
         
-        // There are three types of labels (image, text, and element)
-        const ROUTESTACK = [
-          // { image: require('../'), title: 'Scene' },
-          { text: <Text>팔로워</Text>, title: 'Scene' },
-          // { element: <Text>World</Text>, title: 'Scene' },
-          { text: <Text>팔로잉</Text>, title: 'Scene' }
-        ];
+  const ROUTESTACK = [
+    { text: <Text>팔로워</Text>, title: 'Scene' },
+    { text: <Text>팔로잉</Text>, title: 'Scene' }
+    ];
     
-        return (
-          <View style={{ flex: 1, justifyContent: 'center'}}>
-            <TopBarNav
-              routeStack={ROUTESTACK}
-              renderScene={(route, i) => {
-                let Component = ROUTES[route.title];
-                return <Component index={i} />;
-              }}
+  return (
+      <View style={{ flex: 1, justifyContent: 'center'}}>
+        <TopBarNav
+            routeStack={ROUTESTACK}
+            renderScene={(route, i) => {
+            let Component = ROUTES[route.title];
+            return <Component index={i} />;
+          }
+        }
               // headerStyle={[styles.headerStyle, { paddingTop: 30 }]} // probably want to add paddingTop if using TopBarNav for the  entire height of screen to account for notches/status bars
               // labelStyle={styles.labelStyle}
               // underlineStyle={styles.underlineStyle}
               // imageStyle={styles.imageStyle}
-              headerStyle={{ paddingTop: 20 }}
-              //sidePadding={40}
-              inactiveOpacity={1}
-              fadeLabels={true}
-              underlineStyle={Style.underlineStyle}
-            />
-          </View>
+            headerStyle={{ paddingTop: 20 }}
+            //sidePadding={40}
+            inactiveOpacity={1}
+            fadeLabels={true}
+            underlineStyle={Style.underlineStyle}
+          />
+      </View>
         )
       }
-    }
     
-    const Style = StyleSheet.create ({
-      underlineStyle: {
-        height: 3.6,
-        backgroundColor: mainPink,
-        width: constants.width / 2
+const Style = StyleSheet.create ({
+  underlineStyle: {
+      height: 3.6,
+      backgroundColor: mainPink,
+      width: constants.width / 2
       }
     })

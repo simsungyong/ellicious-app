@@ -305,7 +305,7 @@ const handleFollow = async () =>{
               <Text>게시물 </Text>
               <Bold>{postsCount}</Bold>
             </PostNum>
-            <FollowPick onPress={()=>navigation.navigate("Users", {username})}>
+            <FollowPick onPress={()=>navigation.navigate("Users", {username, followers})}>
               <Text>Follower </Text>
               <Bold>{followCount}</Bold>
             </FollowPick>

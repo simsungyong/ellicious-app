@@ -99,7 +99,7 @@ const MessageRooms = ({ id, participants, navigation }) => {
           <TouchableOpacity onPress={() => {
             navigation.navigate("MessageDetail", {
               username: participants[0].username,
-              userId: participants[1].id,
+              userId: participants[0].id,
               roomId: id
               })} } >
             <Header>

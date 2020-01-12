@@ -79,7 +79,9 @@ const Button = styled.TouchableOpacity`
 `;
 export default ({navigation})=>{
   const followerList = navigation.getParam("followers");
-  console.log(followerList);
+  const followingList = navigation.getParam("followers");
+  const findex = navigation.getParam("index");
+
   const Scene = ({ index }) => (
       <View style={{ flex: 1, justifyContent: 'center'}}>
           {

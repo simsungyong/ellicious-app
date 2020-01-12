@@ -15,12 +15,13 @@ flex : 1;
 padding : 15px;
 `;
 
-const Followers=() => {
+const Followers=({}) => {
     return(
         <Container>
-            <Text>팔로워</Text>
+            <Text>1</Text>
         </Container>
     )
 };
+
 
 export default Followers;

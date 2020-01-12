@@ -18,7 +18,7 @@ padding : 15px;
 const Following=() => {
     return(
         <Container>
-            <Text>팔로잉</Text>
+            <Text>2</Text>
         </Container>
     )
 };

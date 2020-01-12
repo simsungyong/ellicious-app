@@ -78,15 +78,13 @@ const Button = styled.TouchableOpacity`
   
 `;
 export default ({navigation})=>{
-  const followerList = navigation.getParam("followers");
-  const followingList = navigation.getParam("followers");
-  const findex = navigation.getParam("index");
-
+  const userId = navigation.getParam("id")
+  console.log(userId)
   const Scene = ({ index }) => (
       <View style={{ flex: 1, justifyContent: 'center'}}>
           {
             (index == 0) ? 
-              <Followers followerList/> : <Following/>
+              <Followers userId/> : <Following userId/>
               }
           </View>
       );
@@ -95,7 +93,7 @@ export default ({navigation})=>{
         
   const ROUTESTACK = [
     { text: <Text>팔로워</Text>, title: 'Scene' },
-    { text: <Text>팔로잉</Text>, title: 'Scene' }
+    { text: <Text>팔로잉</Text>, title: 'Scene' },
     ];
     
   return (

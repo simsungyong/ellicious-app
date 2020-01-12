@@ -106,6 +106,11 @@ const FollowCon = styled.View`
   flex : 1;
 `;
 
+const FollowCon1 = styled.TouchableOpacity`
+  
+  flex-direction: row;
+`;
+
 const Bold = styled.Text`
   font-weight: 600;
   font-size : 15;
@@ -126,7 +131,7 @@ const TopButton = styled.Text`
   font-size : 20;
   color : ${PointPink}
 `;
-const FollowPick = styled.TouchableOpacity`
+const FollowPick = styled.View`
   flex-direction: row;
   alignItems: center;
   justifyContent: center;
@@ -305,14 +310,16 @@ const handleFollow = async () =>{
               <Text>게시물 </Text>
               <Bold>{postsCount}</Bold>
             </PostNum>
-            <FollowPick onPress={()=>navigation.navigate("Users", {username, followers, index:0})}>
-              <Text>Follower </Text>
-              <Bold>{followCount}</Bold>
-            </FollowPick>
-            <FollowPick onPress={()=>navigation.navigate("Users", {username, following, index:1})}>
-            <Text>Following </Text>
-              <Bold>{followingCount}</Bold>
-            </FollowPick>
+            <FollowCon1 onPress={()=>navigation.navigate("Users",{id})}>
+              <FollowPick>
+                <Text>Follower </Text>
+                <Bold>{followCount}</Bold>
+              </FollowPick>
+              <FollowPick>
+              <Text>Following </Text>
+                <Bold>{followingCount}</Bold>
+              </FollowPick>
+            </FollowCon1>
           </FollowCon>
           </Con>
           

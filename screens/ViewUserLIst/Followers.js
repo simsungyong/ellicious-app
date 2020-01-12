@@ -15,7 +15,7 @@ flex : 1;
 padding : 15px;
 `;
 
-const Followers=({}) => {
+const Followers=({navigation , id}) => {
     return(
         <Container>
             <Text>1</Text>

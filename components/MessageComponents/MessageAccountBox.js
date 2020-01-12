@@ -35,35 +35,39 @@ const Button = styled.View`
   justifyContent: center;
 `;
 
-const MessageAccountBox = ({ navigation, username, firstName, avatar, id, isSelf }) => (
-    <Container>
-        {!isSelf ? (
-            <TouchableOpacity onPress={() => {
-                navigation.navigate("MessageDetail", { username, userId: id }) } } >
-                <Header>
-                <Profile>
-                    <Image 
-                      style={{height: 40, width: 40, borderRadius:20}}
-                      source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}
-                    />
-                </Profile>
-                <UserInfo>
-                    <Bold>{ username }</Bold>
-                    <Text>{ firstName }</Text>
-                </UserInfo>
-                </Header>
-            </TouchableOpacity>
-        ) : null
-    }
-    </Container>
-);
+const MessageAccountBox = ({ navigation, username, firstName, avatar, id, isSelf, rooms }) => {
+    console.log(rooms)
+    return(
+      <Container>
+          {!isSelf ? (
+              <TouchableOpacity onPress={() => {
+                  navigation.navigate("MessageDetail", { username, userId: id }) } } >
+                  <Header>
+                  <Profile>
+                      <Image 
+                        style={{height: 40, width: 40, borderRadius:20}}
+                        source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}
+                      />
+                  </Profile>
+                  <UserInfo>
+                      <Bold>{ username }</Bold>
+                      <Text>{ firstName }</Text>
+                  </UserInfo>
+                  </Header>
+              </TouchableOpacity>
+          ) : null
+      }
+      </Container>
+    )
+    };
 
 MessageAccountBox.propTypes = {
   id: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
   firstName: PropTypes.string,
   avatar: PropTypes.string,
-  isSelf: PropTypes.bool
+  isSelf: PropTypes.bool,
+  rooms: PropTypes.array
 };
 
 export default withNavigation(MessageAccountBox);

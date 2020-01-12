@@ -23,9 +23,7 @@ export const Messages = gql`
 
 export default ({ navigation }) => {
   const { loading, data } = useQuery(Messages);
-  if(!loading) {
-    console.log(data.seeRooms)
-  }
+  
   return (
     <View>
       <ScrollView>

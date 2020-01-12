@@ -17,6 +17,7 @@ const SEARCH_USER = gql`
       username
       firstName
       avatar
+      isFollowing
       isSelf
       rooms{
         id

@@ -1,5 +1,6 @@
 import React, { useState, Component } from "react";
-import { Image, TouchableOpacity, ScrollView, StyleSheet, Button, FlatList, SafeAreaView } from "react-native";
+import { Image, TouchableOpacity, ScrollView, StyleSheet, Button, FlatList, SafeAreaView, Platform } from "react-native";
+import Modal from 'react-native-modalbox';
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import constants from "../constants";
@@ -15,7 +16,8 @@ import ProfileMapContainer from "../screens/Tabs/Profile/ProfileMapContainer";
 import { gql } from "apollo-boost";
 import { useMutation } from "react-apollo-hooks";
 import { withNavigation } from "react-navigation";
-import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
+import { refreshAsync } from "expo-app-auth";
+import SameFollowModal from "./SameFollowModal";
 
 
 export const FOLLOW = gql`
@@ -154,6 +156,9 @@ flex-direction : column,
 
 `;
 
+const SameCon = styled.TouchableOpacity`
+flex-direction : row;
+`;
 const BioCon = styled.View`
 flex-direction : row;
 `;
@@ -235,9 +240,11 @@ const UserProfile = ({
 }) => {
   const [isGrid, setIsGrid] = useState(true);
   const toggleGrid = () => setIsGrid(i => !i);
+  const [modalstate, setModalstate] = useState(false);
   const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
   const [followingConfirm, setFollowing] = useState(isFollowing);
   const [followCount, setFollowCount] = useState(followersCount);
+  const sametimeFollow = followers.filter(name=> name.isFollowing !== false || name.isSelf !== true)
   const [FollowMutation] = useMutation(FOLLOW, {
     variables: {
     id: id
@@ -303,6 +310,12 @@ const handleFollow = async () =>{
             <Blank/>
             <Text>{bio}</Text>
           </BioCon>
+          {!isSelf ? (
+          <SameCon onPress={()=>setModalstate(true)}>
+            <Blank/>
+            <Text>{sametimeFollow[0].username+`님 등 ${sametimeFollow.length-1} 명이 팔로우 해요!`}</Text>
+          </SameCon>) : null
+          }
           </NameCon>
           <FollowCon>
             <PostNum>
@@ -335,9 +348,23 @@ const handleFollow = async () =>{
           inactiveOpacity={1}
           fadeLabels={true}
           underlineStyle={Style.underlineStyle}
-          
         />
-
+        <Modal 
+          style={{
+          justifyContent: 'center',
+          borderRadius: Platform.OS === 'ios' ? 30 : 0,
+          shadowRadius: 10,
+          width: constants.width - 80,
+          height: 300
+        }}
+          onClosed={()=>setModalstate(false)}
+          position='center'
+          backdrop={true}
+          isOpen={modalstate}
+        >
+          <Text>내 친구중에 누가??</Text>
+          {sametimeFollow.map(user=><SameFollowModal key={user.id} {...user}/>)}
+        </Modal>
     </Container>
 
   )

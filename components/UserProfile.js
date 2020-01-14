@@ -366,7 +366,7 @@ const handleFollow = async () =>{
           coverScreen={true}
           style={{borderTop: 10,height : 500}}
           backdrop={true}
-          
+          swipeToClose={false}
         >
           <ModalHeader>
             <Text style={{fontSize : 19}}>함께 아는 친구</Text>

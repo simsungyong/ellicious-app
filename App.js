@@ -22,7 +22,8 @@ import { ApolloLink, split, Observable } from 'apollo-link';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 
-//AsyncStorage.clear();
+
+// AsyncStorage.clear();
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
@@ -37,11 +38,11 @@ export default function App() {
       await Font.loadAsync({'elli':require('./assets/fonts/Playball.ttf'), 'korElli' :require('./assets/fonts/TmonMonsori.ttf')}); 
       const cache = new InMemoryCache();
       const httpLink = new HttpLink({
-        //uri: 'http://192.168.0.135:4000/'
+        // uri: 'http://192.168.0.135:4000/'
         uri: 'http://3.134.176.171:4000/'
       });
       const wsLink = new WebSocketLink({
-        //uri: 'http://192.168.0.135:4000/',
+        // uri: 'http://192.168.0.135:4000/',
         uri: `ws://3.134.176.171:4000/`,
         options: {
             reconnect: true

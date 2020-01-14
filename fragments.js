@@ -35,6 +35,33 @@ export const POST_FRAGMENT = gql`
     createdAt
   }
 `;
+
+export const FOLLOWER_FRAGMENT = gql`
+  fragment FollowerParts on User {
+    followers{
+      username
+      avatar
+      firstName
+      isSelf
+      id
+      isFollowing
+    }
+  }
+`
+
+export const FOLLOWING_FRAGMENT = gql`
+  fragment FollowingParts on User {
+    following{
+      username
+      firstName
+      avatar
+      id
+      isSelf
+      isFollowing
+    }
+  }
+`
+
 export const USER_FRAGMENT = gql`
   fragment UserParts on User {
     id
@@ -55,13 +82,17 @@ export const USER_FRAGMENT = gql`
       username
       avatar
       id
+      firstName
       isFollowing
+      isSelf
     }
     followers{
       username
       avatar
+      firstName
       id
       isFollowing
+      isSelf
     }
     followingCount
     followersCount

@@ -1,5 +1,6 @@
 import React, { useState, Component } from "react";
-import { Image, TouchableOpacity, ScrollView, StyleSheet, Button, FlatList, SafeAreaView } from "react-native";
+import { Image, TouchableOpacity, ScrollView, StyleSheet, Button, FlatList, SafeAreaView, Platform } from "react-native";
+import Modal from 'react-native-modalbox';
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import constants from "../constants";
@@ -15,8 +16,8 @@ import ProfileMapContainer from "../screens/Tabs/Profile/ProfileMapContainer";
 import { gql } from "apollo-boost";
 import { useMutation } from "react-apollo-hooks";
 import { withNavigation } from "react-navigation";
-import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
-
+import { refreshAsync } from "expo-app-auth";
+import SameFollowModal from "./SameFollowModal";
 
 export const FOLLOW = gql`
   mutation follow($id: String!) {
@@ -49,8 +50,8 @@ flex : 1;
 const ViewCon=styled.View`
 justifyContent: center;
 alignItems : center;
-
-
+background-color : red;
+margin-bottom : 50px;
 `;
 
 const ViewBox=styled.View`
@@ -106,6 +107,11 @@ const FollowCon = styled.View`
   flex : 1;
 `;
 
+const FollowCon1 = styled.TouchableOpacity`
+  
+  flex-direction: row;
+`;
+
 const Bold = styled.Text`
   font-weight: 600;
   font-size : 15;
@@ -126,7 +132,7 @@ const TopButton = styled.Text`
   font-size : 20;
   color : ${PointPink}
 `;
-const FollowPick = styled.TouchableOpacity`
+const FollowPick = styled.View`
   flex-direction: row;
   alignItems: center;
   justifyContent: center;
@@ -149,6 +155,9 @@ flex-direction : column,
 
 `;
 
+const SameCon = styled.TouchableOpacity`
+flex-direction : row;
+`;
 const BioCon = styled.View`
 flex-direction : row;
 `;
@@ -160,6 +169,11 @@ justifyContent: center;
 
 background-color : green;
 flex-direction : row;
+`;
+
+const TapCon = styled.View`
+height : 40px;
+background-color : red;
 `;
 
 const Scene = ({ index, posts, userId }) => (
@@ -183,10 +197,11 @@ const Scene = ({ index, posts, userId }) => (
           posts && posts.map(p =>
             <SquarePhoto key={p.id} {...p} />
           )}
-           
+          <View/>
         </ScrollView>
        
       )}
+    
     </ViewCon>
 );
 
@@ -228,12 +243,13 @@ const UserProfile = ({
   bio,
   posts
 }) => {
-  followers.map(item=>console.log(item.username))
   const [isGrid, setIsGrid] = useState(true);
   const toggleGrid = () => setIsGrid(i => !i);
+  const [modalstate, setModalstate] = useState(false);
   const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
   const [followingConfirm, setFollowing] = useState(isFollowing);
   const [followCount, setFollowCount] = useState(followersCount);
+  const sametimeFollow = followers.filter(name=> name.isFollowing !== false || name.isSelf !== true)
   const [FollowMutation] = useMutation(FOLLOW, {
     variables: {
     id: id
@@ -260,6 +276,7 @@ const handleFollow = async () =>{
 
   return (
     <Container>
+      
       <ViewBox/>
       <Profile>
         <Top>
@@ -299,26 +316,36 @@ const handleFollow = async () =>{
             <Blank/>
             <Text>{bio}</Text>
           </BioCon>
+          {!isSelf ? (
+          <SameCon onPress={()=>setModalstate(true)}>
+            <Blank/>
+            <Text>{sametimeFollow[0].username+`님 등 ${sametimeFollow.length-1} 명이 팔로우 해요!`}</Text>
+          </SameCon>) : null
+          }
           </NameCon>
           <FollowCon>
             <PostNum>
               <Text>게시물 </Text>
               <Bold>{postsCount}</Bold>
             </PostNum>
-            <FollowPick onPress={()=>navigation.navigate("Users", {username, followers, index:0})}>
-              <Text>Follower </Text>
-              <Bold>{followCount}</Bold>
-            </FollowPick>
-            <FollowPick onPress={()=>navigation.navigate("Users", {username, following, index:1})}>
-            <Text>Following </Text>
-              <Bold>{followingCount}</Bold>
-            </FollowPick>
+            <FollowCon1 onPress={()=>navigation.navigate("Users",{id, username})}>
+              <FollowPick>
+                <Text>Follower </Text>
+                <Bold>{followCount}</Bold>
+              </FollowPick>
+              <FollowPick>
+              <Text>Following </Text>
+                <Bold>{followingCount}</Bold>
+              </FollowPick>
+            </FollowCon1>
           </FollowCon>
           </Con>
           
         </Top>
       </Profile>
       
+
+     
       <TopBarNav
           routeStack={ROUTESTACK}
           renderScene={(route, i) => {
@@ -329,11 +356,25 @@ const handleFollow = async () =>{
           inactiveOpacity={1}
           fadeLabels={true}
           underlineStyle={Style.underlineStyle}
-          
         />
-
+        <Modal 
+          style={{
+          justifyContent: 'center',
+          borderRadius: Platform.OS === 'ios' ? 30 : 0,
+          shadowRadius: 10,
+          width: constants.width - 80,
+          height: 300
+        }}
+          onClosed={()=>setModalstate(false)}
+          position='center'
+          backdrop={true}
+          isOpen={modalstate}
+        >
+          <Text>내 친구중에 누가??</Text>
+          {sametimeFollow.map(user=><SameFollowModal key={user.id} {...user}/>)}
+        </Modal>
     </Container>
-
+    
   )
 };
 

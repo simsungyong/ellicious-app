@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { TouchableOpacity, Image, Text } from "react-native";
 import { withNavigation } from "react-navigation";
 import PropTypes from "prop-types";
-import constants from "../../constants";
+import constants from "../constants";
 import styled from "styled-components";
 // import FollowButton from '../FollowButton';
 import { gql } from "apollo-boost";
 import { useQuery, useMutation } from "react-apollo-hooks";
-import { LightPink, Grey, TINT_COLOR, PointPink, mainPink, LightGrey, Line } from "../Color";
+import { LightPink, Grey, TINT_COLOR, PointPink, mainPink, LightGrey, Line } from "./Color";
 
 const SEE_USER = gql`
   query seeUser($id: String!) {
@@ -70,7 +70,7 @@ const Button = styled.View`
 
 
 
-const SearchAccountBox = ({ navigation, username, firstName, avatar, id, isSelf, isFollowing }) => {
+const SameFollowModal = ({ navigation, username, firstName, avatar, id, isSelf, isFollowing }) => {
   const [followingConfirm, setFollowing] = useState(isFollowing);
   const [FollowMutation] = useMutation(FOLLOW, {
     variables: {
@@ -130,7 +130,7 @@ const SearchAccountBox = ({ navigation, username, firstName, avatar, id, isSelf,
   );
 };
 
-SearchAccountBox.propTypes = {
+SameFollowModal.propTypes = {
   id: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
   firstName: PropTypes.string,
@@ -140,4 +140,4 @@ SearchAccountBox.propTypes = {
 
 };
 
-export default withNavigation(SearchAccountBox);
+export default withNavigation(SameFollowModal);

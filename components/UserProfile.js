@@ -1,5 +1,5 @@
 import React, { useState, Component } from "react";
-import { Image, TouchableOpacity, ScrollView, StyleSheet, Button, FlatList, SafeAreaView } from "react-native";
+import { Image, TouchableOpacity, ScrollView, StyleSheet, Button, FlatList, SafeAreaView, ScrollViewComponent, Animated } from "react-native";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import constants from "../constants";
@@ -16,6 +16,7 @@ import { gql } from "apollo-boost";
 import { useMutation } from "react-apollo-hooks";
 import { withNavigation } from "react-navigation";
 import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
+import ParallaxScrollView from 'react-native-parallax-scrollview';
 
 
 export const FOLLOW = gql`
@@ -49,8 +50,8 @@ flex : 1;
 const ViewCon=styled.View`
 justifyContent: center;
 alignItems : center;
-
-
+background-color : red;
+margin-bottom : 50px;
 `;
 
 const ViewBox=styled.View`
@@ -167,6 +168,11 @@ background-color : green;
 flex-direction : row;
 `;
 
+const TapCon = styled.View`
+height : 40px;
+background-color : red;
+`;
+
 const Scene = ({ index, posts, userId }) => (
   
     <ViewCon >
@@ -188,10 +194,11 @@ const Scene = ({ index, posts, userId }) => (
           posts && posts.map(p =>
             <SquarePhoto key={p.id} {...p} />
           )}
-           
+          <View/>
         </ScrollView>
        
       )}
+    
     </ViewCon>
 );
 
@@ -264,6 +271,7 @@ const handleFollow = async () =>{
 
   return (
     <Container>
+      
       <ViewBox/>
       <Profile>
         <Top>
@@ -325,6 +333,8 @@ const handleFollow = async () =>{
         </Top>
       </Profile>
       
+
+     
       <TopBarNav
           routeStack={ROUTESTACK}
           renderScene={(route, i) => {
@@ -335,11 +345,11 @@ const handleFollow = async () =>{
           inactiveOpacity={1}
           fadeLabels={true}
           underlineStyle={Style.underlineStyle}
-          
         />
-
+    
+   
     </Container>
-
+    
   )
 };
 

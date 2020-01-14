@@ -102,10 +102,17 @@ const SearchAccountBox = ({ navigation, username, firstName, avatar, id, isSelf,
         navigation.navigate("UserDetail", { id, username }) } } >
         <Header>
           <Profile>
-            <Image 
-              style={{height: 40, width: 40, borderRadius:20}}
-              source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}
+          {avatar==null ? 
+              <Image
+                style={{height: 40, width: 40, borderRadius:15}}
+                source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}
               />
+            :
+              <Image
+                style={{height: 40, width: 40, borderRadius:15}}
+                source={{uri: avatar}}
+              />
+            }
           </Profile>
           <UserInfo>
             <Bold>{ username }</Bold>
@@ -129,7 +136,8 @@ SearchAccountBox.propTypes = {
   firstName: PropTypes.string,
   avatar: PropTypes.string,
   isSelf: PropTypes.bool,
-  isFollowing: PropTypes.bool
+  isFollowing: PropTypes.bool,
+
 };
 
 export default withNavigation(SearchAccountBox);

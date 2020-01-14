@@ -16,6 +16,7 @@ import { FEED_QUERY } from "../Tabs/Home";
 import {ME} from '../Tabs/Profile/Profile';
 import Followers from "./Followers";
 import Following from "./Following";
+import {FOLLOWER_FRAGMENT} from '../../fragments';
 
 import TopBarNav from "top-bar-nav";
 
@@ -77,18 +78,32 @@ const Button = styled.TouchableOpacity`
   position: absolute;
   
 `;
+
+export const GET_FOLLOWERS = gql`
+  query seeUser($id: String!){
+    seeUser(id: $id) {
+      ...FollowerParts
+      }
+    }
+    ${FOLLOWER_FRAGMENT}
+`;
 export default ({navigation})=>{
   const userId = navigation.getParam("id")
-  console.log(userId)
+  const { loading, data, refetch } = useQuery(GET_FOLLOWERS, {
+    variables: {id: userId},
+    
+  });
+
   const Scene = ({ index }) => (
       <View style={{ flex: 1, justifyContent: 'center'}}>
           {
+            (loading ? <Loader/> : (
             (index == 0) ? 
-              <Followers userId/> : <Following userId/>
-              }
+              <Followers userId={userId}/> : <Following userId={userId}/>
+            ))}
           </View>
       );
-        
+  console.log(data)
   const ROUTES = {Scene};
         
   const ROUTESTACK = [

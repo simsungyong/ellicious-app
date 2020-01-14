@@ -233,7 +233,6 @@ const UserProfile = ({
   bio,
   posts
 }) => {
-  followers.map(item=>console.log(item.username))
   const [isGrid, setIsGrid] = useState(true);
   const toggleGrid = () => setIsGrid(i => !i);
   const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
@@ -310,7 +309,7 @@ const handleFollow = async () =>{
               <Text>게시물 </Text>
               <Bold>{postsCount}</Bold>
             </PostNum>
-            <FollowCon1 onPress={()=>navigation.navigate("Users",{id})}>
+            <FollowCon1 onPress={()=>navigation.navigate("Users",{id, username})}>
               <FollowPick>
                 <Text>Follower </Text>
                 <Bold>{followCount}</Bold>

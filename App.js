@@ -22,7 +22,6 @@ import { ApolloLink, split, Observable } from 'apollo-link';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 
-
 //AsyncStorage.clear();
 
 export default function App() {

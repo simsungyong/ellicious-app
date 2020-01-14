@@ -10,6 +10,11 @@ export const PhotostackStyles = {
   backgroundColor: "#FAFAFA",
 };
 
+export const UserstackStyles = {
+  backgroundColor: "#FAFAFA",
+};
+
+
 export const SearchstackStyles = {
   backgroundColor: "#FAFAFA",
 };

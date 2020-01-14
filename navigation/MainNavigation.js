@@ -3,6 +3,8 @@ import { createStackNavigator } from "react-navigation-stack";
 import TabNavigation from "./TabNavigation";
 import PhotoNavigation from "./PhotoNavigation";
 import MessageNavigation from "./MessageNavigation";
+import UsersNavigation from "./UsersNavigation";
+
 import AlarmNavigation from "./AlarmNavigation";
 import { stackStyles } from "./config";
 
@@ -13,6 +15,7 @@ const MainNavigation = createStackNavigator(
     PhotoNavigation,
     MessageNavigation,
     AlarmNavigation,
+    //UsersNavigatio0n
   },
   {
     defaultNavigationOptions: {

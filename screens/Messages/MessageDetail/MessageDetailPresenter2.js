@@ -53,14 +53,15 @@ padding : 10px;
 flex-direction:row
 background-color : ${LightGrey}
 `;
-const SEND_MESSAGE = gql`
-  mutation sendMessage($text: String!, $roomId: String!, $toId: String!) {
-    sendMessage(message: $text toId: $toId roomId: $roomId) {
-      id
-      text
-    }
-  }
-`;
+
+// const SEND_MESSAGE = gql`
+//   mutation sendMessage($text: String!, $roomId: String!, $toId: String!) {
+//     sendMessage(message: $text toId: $toId roomId: $roomId) {
+//       id
+//       text
+//     }
+//   }
+// `;
 
 const SEND_MESSAGE_WITHOUT_ROOMID = gql`
   mutation sendMessage($text: String!, $toId: String!) {
@@ -77,84 +78,97 @@ const SEND_MESSAGE_WITHOUT_ROOMID = gql`
   }
 `;
 
-const MESSAGES = gql`
-  query seeRoom($roomId: String!) {
-    seeRoom(id: $roomId) {
-      messages {
-        id
-        text
-        from {
-          username
-        }
-      }
-    }
-  }
-`;
+// const MESSAGES = gql`
+//   query seeRoom($roomId: String!) {
+//     seeRoom(id: $roomId) {
+//       messages {
+//         id
+//         text
+//         from {
+//           username
+//         }
+//       }
+//     }
+//   }
+// `;
 
-const NEW_MESSAGE = gql`
-  subscription newMessage($roomId: String!) {
-    newMessage(roomId: $roomId) {
-      id
-      text
-      from {
-        username
-      }
-    }
-  }
-`;
+// const NEW_MESSAGE = gql`
+//   subscription newMessage($roomId: String!) {
+//     newMessage(roomId: $roomId) {
+//       id
+//       text
+//       from {
+//         username
+//       }
+//     }
+//   }
+// `;
 
-const MessageDetailPresenter = ({username, userId, roomId}) => {
+const MessageDetailPresenter2 = ({navigation, username, userId, roomId}) => {
     const [roomNum, setRoom] = useState(roomId);
     const [message, setMessage] = useState("");
     const [chat_message, setMessages] = useState();
 
-    const [sendMessageMutation] = useMutation(SEND_MESSAGE, {
+    // const [sendMessageMutation] = useMutation(SEND_MESSAGE, {
+    //     variables: {
+    //     text: message,
+    //     roomId: roomNum,
+    //     toId: userId
+    //     }
+    // });
+
+    const [sendWithoutRoomIdMutation] = useMutation(SEND_MESSAGE_WITHOUT_ROOMID, {
         variables: {
         text: message,
-        roomId: roomNum,
         toId: userId
         }
-    });
-    
-    const { data } = useQuery(
-        MESSAGES,
-        { variables: { roomId: roomNum },
-            suspend: true
-        }
-        );
-        if(data !== undefined && chat_message == null) {
-        setMessages(data.seeRoom.messages)
+    })
+
+    const sendWithoutRoomId = async() => {
+        const { data: {sendMessage} } = await sendWithoutRoomIdMutation()
+        if(sendMessage) { navigation.navigate("MessageDetail",{username, userId, roomId: sendMessage.room.id}) }
     }
+    
+    // if(roomNum !== "") {
+    //     const { data } = useQuery(
+    //     MESSAGES,
+    //     { variables: { roomId: roomNum },
+    //         suspend: true
+    //     }
+    //     );
+    //     if(data !== undefined && chat_message == null) {
+    //     setMessages(data.seeRoom.messages)
+    //     }
+    // }
 
-    const { data: newMessage } = useSubscription(NEW_MESSAGE, {
-        variables: {
-        roomId: roomNum
-        }
-    });
+    // const { data: newMessage } = useSubscription(NEW_MESSAGE, {
+    //     variables: {
+    //     roomId: roomNum
+    //     }
+    // });
 
-    const updateMessages = () => {
-        if (newMessage !== undefined) {
-        const { newMessage: payload } = newMessage;
-        setMessages(previous => [...previous, payload]);
-        }
-    };
+    // const updateMessages = () => {
+    //     if (newMessage !== undefined) {
+    //     const { newMessage: payload } = newMessage;
+    //     setMessages(previous => [...previous, payload]);
+    //     }
+    // };
 
-    useEffect(() => {
-        updateMessages();
-    }, [newMessage]);
+    // useEffect(() => {
+    //     updateMessages();
+    // }, [newMessage]);
 
     const onChangeText = text => setMessage(text);
 
     const onSubmit = async () => {
         setMessage("")
         if (message === "") {
-          return;
+            return;
         }
         try {
-          await sendMessageMutation();
-          
+            sendWithoutRoomId();
         } catch (e) {
-          console.log(e);
+            console.log(e);
         }
     };
 
@@ -216,10 +230,10 @@ const MessageDetailPresenter = ({username, userId, roomId}) => {
     );
     }
 
-    MessageDetailPresenter.propTypes = {
+    MessageDetailPresenter2.propTypes = {
         username: PropTypes.string,
         userId: PropTypes.string,
         roomId: PropTypes.string
     };
 
-    export default MessageDetailPresenter;
+    export default MessageDetailPresenter2;

@@ -46,29 +46,10 @@ const View=styled.View`
 flex : 1;
 `;
 
-const SEARCH_USER = gql`
-query search($term: String!) {
-  searchUser(term: $term) {
-    id
-    username
-    isSelf
-  }
-}
-`;
-
 const MessageRooms = ({ id, participants, navigation }) => {
-  const { data, loading } = useQuery(SEARCH_USER, {
-    variables: {
-      term: participants[0].username
-    }
-  });
-  
   return (
     <Container>
-      { loading ? (
-        <Loader />
-      ) : (
-        data.searchUser[0].isSelf ? (
+      { participants[0].isSelf ? (
           <TouchableOpacity onPress={() => {
             navigation.navigate("MessageDetail", {
               username: participants[1].username,
@@ -123,8 +104,7 @@ const MessageRooms = ({ id, participants, navigation }) => {
               </State>
             </Header>
           </TouchableOpacity>
-        )
-      )}
+        )}
     </Container>
   );
 }

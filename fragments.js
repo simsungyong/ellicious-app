@@ -82,12 +82,14 @@ export const USER_FRAGMENT = gql`
       username
       avatar
       id
+      firstName
       isFollowing
       isSelf
     }
     followers{
       username
       avatar
+      firstName
       id
       isFollowing
       isSelf

@@ -16,8 +16,6 @@ import { gql } from "apollo-boost";
 import { useMutation } from "react-apollo-hooks";
 import { withNavigation } from "react-navigation";
 import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
-import ParallaxScrollView from 'react-native-parallax-scrollview';
-
 
 export const FOLLOW = gql`
   mutation follow($id: String!) {

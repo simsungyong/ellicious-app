@@ -40,8 +40,11 @@ const FollowButton =styled.TouchableOpacity`
   `;
 
 const Container = styled.View`
-  flex : 1;
   flex-direction: row;
+  margin-bottom : 5px;
+  height : 55;
+  alignItems: center;
+  justifyContent: center;
 `;
 const UserInfo = styled.View`
 `;
@@ -50,6 +53,7 @@ const Header = styled.View`
   padding: 5px;
   flex-direction: row;
   align-items: center;
+
 `;
 const Bold = styled.Text`
   font-weight: 600;
@@ -66,6 +70,7 @@ const Button = styled.View`
   margin-right : 10px;
   alignItems: center;
   justifyContent: center;
+
 `;
 
 

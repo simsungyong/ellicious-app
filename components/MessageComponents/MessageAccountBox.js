@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { TouchableOpacity, Image, Text } from "react-native";
 import { withNavigation } from "react-navigation";
 import PropTypes from "prop-types";
@@ -37,45 +37,41 @@ const Button = styled.View`
   justifyContent: center;
 `;
 
-export const ME = gql`
-  {
-    me {
-      id
-      username
-      rooms {
-        id
-      }
-    }
+export const CHECK_ROOM = gql`
+  query checkRoom($id: String!) {
+    checkRoom(id: $id)
   }
 `;
 
-const MessageAccountBox = ({ navigation, username, firstName, avatar, id, isSelf, rooms, isFollowing }) => {
-  const { loading, data } = useQuery(ME);
-  const roomArr = []
-  // if(data) {
-  //   data.me.rooms.forEach(element => {
-  //     console.log(element.id);
-  //   });
-  // }
-  
-  const handleRoom =() => {
-    if(rooms.length = 0) {
-      navigation.navigate("MessageDetail", { username, userId: id });
+const MessageAccountBox = ({ navigation, username, firstName, avatar, id, isSelf, isFollowing }) => {
+  const { data, loading } = useQuery(CHECK_ROOM, {
+    variables: {id}
+  })
+
+  const handleRoom = async() => {
+    if(!loading) {
+      if(data.checkRoom) {
+        navigation.navigate("MessageDetail", {
+          username,
+          userId: id,
+          roomId: data.checkRoom
+        })
+      } else {
+        navigation.navigate("MessageDetail", {
+          username,
+          userId: id,
+          roomId: ""
+        })
+      }
     }
-    
-    data.me.rooms.forEach(element => {
-      rooms.forEach(item => {
-        if(element.id === item.id) {
-          console.log("success")
-        }
-      });
-    });
   }
 
 
   return(
     <Container>
-        {!isSelf ? (
+        {!isSelf ? 
+        isFollowing ?
+          (
             <TouchableOpacity onPress={() => handleRoom() } >
                 <Header>
                 <Profile>
@@ -98,6 +94,7 @@ const MessageAccountBox = ({ navigation, username, firstName, avatar, id, isSelf
                 </Header>
             </TouchableOpacity>
         ) : null
+        : null
     }
     </Container>
   )
@@ -109,7 +106,6 @@ MessageAccountBox.propTypes = {
   firstName: PropTypes.string,
   avatar: PropTypes.string,
   isSelf: PropTypes.bool,
-  rooms: PropTypes.array,
   isFollowing: PropTypes.bool
 };
 

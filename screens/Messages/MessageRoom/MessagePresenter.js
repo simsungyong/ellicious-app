@@ -19,9 +19,6 @@ const SEARCH_USER = gql`
       avatar
       isFollowing
       isSelf
-      rooms{
-        id
-      }
     }
   }
 `;

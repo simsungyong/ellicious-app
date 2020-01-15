@@ -1,10 +1,7 @@
 import React, { Suspense  } from "react";
 import {  ActivityIndicator, View} from "react-native";
+import MessageDetailPresenter2 from "./MessageDetailPresenter2";
 import MessageDetailPresenter from "./MessageDetailPresenter";
-//import styled from "styled-components";
-// import styles from "../../../styles";
-// import constants from "../../../constants";
-// import { PointPink, mainPink } from "../../../components/Color";
 
 export default ({navigation})  => {
     const username = navigation.getParam("username");
@@ -20,7 +17,11 @@ export default ({navigation})  => {
                     </View>
                 }
             >
-                <MessageDetailPresenter username={username} userId={userId} roomId={roomId} />
+                { roomId === "" ? 
+                    <MessageDetailPresenter2 username={username} userId={userId} roomId={roomId} />
+                :
+                    <MessageDetailPresenter username={username} userId={userId} roomId={roomId} />
+                }
             </Suspense>
         </View>
     )

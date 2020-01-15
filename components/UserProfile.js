@@ -40,7 +40,7 @@ const Profile = styled.View`
 `;
 
 const Top = styled.View`
-  flex-direction: row;
+  flex-direction: row;  
   alignItems: flex-end;
 `;
 const View=styled.View`
@@ -50,8 +50,8 @@ flex : 1;
 const ViewCon=styled.View`
 justifyContent: center;
 alignItems : center;
-background-color : red;
-margin-bottom : 50px;
+
+alignItems:flex-start
 `;
 
 const ViewBox=styled.View`
@@ -172,8 +172,15 @@ flex-direction : row;
 `;
 
 const TapCon = styled.View`
+flex : 1;
+
+`;
+
+const ModalHeader=styled.View`
+background-color : ${LightPink}
 height : 40px;
-background-color : red;
+justifyContent: center;
+alignItems: center;
 `;
 
 const Scene = ({ index, posts, userId }) => (
@@ -185,20 +192,14 @@ const Scene = ({ index, posts, userId }) => (
        
       ) : (
        
-        <ScrollView
-          contentContainerStyle={{
-            flexDirection: "row",
-            flexWrap: "wrap",
-            
-          }}
-        >
+        <View flexDirection= "row" flexWrap= "wrap">
            
           {
           posts && posts.map(p =>
             <SquarePhoto key={p.id} {...p} />
           )}
           <View/>
-        </ScrollView>
+        </View>
        
       )}
     
@@ -350,31 +351,32 @@ const handleFollow = async () =>{
           routeStack={ROUTESTACK}
           renderScene={(route, i) => {
             let Component = ROUTES[route.title];
-            return <Component index={0} posts={posts} userId={id}/>;
+            return <Component index={0} posts={posts} userId={id} style={{justifyContent: 'flex-start'}}/>;
           }}
           headerStyle={{ paddingTop: 20 }}
           inactiveOpacity={1}
           fadeLabels={true}
           underlineStyle={Style.underlineStyle}
         />
+        
         <Modal 
-          style={{
-          justifyContent: 'center',
-          borderRadius: Platform.OS === 'ios' ? 30 : 0,
-          shadowRadius: 10,
-          width: constants.width - 80,
-          height: 300
-        }}
           onClosed={()=>setModalstate(false)}
-          position='center'
-          backdrop={true}
           isOpen={modalstate}
+          position='bottom'
+          coverScreen={true}
+          style={{borderTop: 10,height : 500}}
+          backdrop={true}
+          swipeToClose={false}
         >
-          <Text>내 친구중에 누가??</Text>
-          {sametimeFollow.map(user=><SameFollowModal key={user.id} {...user}/>)}
+          <ModalHeader>
+            <Text style={{fontSize : 19}}>함께 아는 친구</Text>
+          </ModalHeader>
+          <ScrollView>
+           {sametimeFollow.map(user=><SameFollowModal key={user.id} {...user}/>)}
+          </ScrollView>
+          <TapCon/>
         </Modal>
     </Container>
-    
   )
 };
 

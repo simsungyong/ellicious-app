@@ -14,7 +14,7 @@ margin-left : 2px;
 margin-bottom : 2px;
 margin-top : 2px;
 width: ${constants.width / 3.1};
-
+justifyContent: flex-start
 `;
 
 const Bold = styled.Text`
@@ -46,6 +46,7 @@ const SquarePhoto = ({
   commentCount,
   pickCount,
   likeCount,
+  storeName
 }) => (
   <Post>
     <TouchableOpacity onPress={() => navigation.navigate("Detail", { id })}>

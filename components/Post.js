@@ -154,7 +154,8 @@ const TagText = styled.Text``;
 const Post = ({
     user, 
     storeLocation,
-    storeName, 
+    storeName,
+    placeId,
     files=[],
     id,
     details=[],
@@ -346,7 +347,7 @@ const Post = ({
           
           <StoreInfo>
             <Store>
-            <Touchable>
+            <Touchable onPress={() => navigation.navigate("StoreDetail", { storeName, placeId })}>
               <StoreName>{storeName}</StoreName>
             </Touchable>
             <Rating>

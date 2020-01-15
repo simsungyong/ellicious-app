@@ -11,8 +11,8 @@ import PostOfComment from '../components/CommentComponents/PostOfComment';
 import { PointPink, CommentsBox, mainPink, TINT_COLOR, Grey, LightPink } from "../components/Color";
 import { withNavigation } from "react-navigation";
 import constants from "../constants";
-import { FormLabel, FormInput } from 'react-native-elements'
-import {AntDesign, FontAwesome} from '@expo/vector-icons'
+import { FormLabel, FormInput } from 'react-native-elements';
+import {AntDesign, FontAwesome} from '@expo/vector-icons';
 import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
 import { FEED_QUERY } from "../screens/Tabs/Home";
 import {ME} from '../screens/Tabs/Profile/Profile';
@@ -24,6 +24,13 @@ export const EDIT_USER = gql`
     }
   }
 `;
+export const CREATE_CATEGORY= gql`
+  mutation createCategory($categoryName:String!){
+    createCategory(categoryName: $categoryName){
+      id
+    }
+  }
+`
 
 const Container = styled.View`
 flex : 1;
@@ -92,15 +99,16 @@ const EditProfile=({
   const categoryCount =  navigation.getParam("categoryCount");
   const bio =  navigation.getParam("bio");
   const email = navigation.getParam("email");
-
+  const [addCategory, setAddCategory] = useState(false);
   const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
-
+  const [isloading, setIsLoading] = useState(false);
   const bioInput = useInput();
   const usernameInput = useInput();
-
+  const addedCategory = useInput();
   const [editProfilePictureMutation] = useMutation(EDIT_USER, {
     refetchQueries: ()=>[{query: FEED_QUERY},{query: ME }]
   });
+  const [createCategoryMutation] = useMutation(CREATE_CATEGORY);
 
   const changePicture = async() => {
     try {
@@ -112,7 +120,13 @@ const EditProfile=({
     }
   }
 
+  const handleCategory = async()=>{
+    await setAddCategory(p=>!p)
+  }
+  
+
   const handleSubmit = async() => {
+    setIsLoading(true);
     let newbio = bio;
     let newusername = username;
     if(bioInput.value) {
@@ -133,6 +147,8 @@ const EditProfile=({
       navigation.goBack();
     } catch (e) {
       console.log(e)
+    } finally{
+      setIsLoading(false);
     }
   }
 
@@ -207,6 +223,16 @@ const EditProfile=({
         </EditInfo>
         <EditCage>
           <Text style={{fontSize : 17, color : PointPink, marginTop : 13}}>카테고리</Text>
+          <TouchableOpacity onPress={handleCategory}>
+            <AntDesign name={'pluscircleo'} size={17}/>
+          </TouchableOpacity>
+          {addCategory ? (
+            <TextInput 
+            style={{fontSize:17}} 
+            placeholder={"카테고리 이름"}
+            onChangeText={addedCategory.onChange}/>
+          ) : null
+          }
           {category
             .map(tag => (
             <EditCageDetail key={tag.id}>

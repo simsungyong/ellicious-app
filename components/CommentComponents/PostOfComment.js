@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Image, ScrollView, TextInput, Text } from "react-native";
+import { Image, ScrollView,Alert, TextInput, Text } from "react-native";
 import { useQuery } from "react-apollo-hooks";
 import styled from "styled-components";
 import { Ionicons, FontAwesome, EvilIcons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
-import Swiper from "react-native-swiper";
+import useInput from "../../hooks/useInput";
 import { gql } from "apollo-boost";
 import constants from "../../constants";
 import { useMutation } from "react-apollo-hooks";
@@ -68,46 +68,7 @@ const Timebox = styled.Text`
   opacity: 0.5;
   font-size: 13px;
 `;
-/*
-const CaptionsCon = styled.View`
-  flex-direction: row;
-  margin-top : 5px;
-  
-`;
-const User = styled.View``;
 
-const CommentsCon = styled.View`
-  flex-direction : column;
-  flex : 1;
-`;
-const Comments = styled.View`
-  background-color : ${LightGrey};
-  border-radius: 4px;
-  justifyContent: center;
-  padding : 5px;
-  margin-right : 5px;
-  height : 30;
-`;
-const ReplyCon = styled.View`
-  alignItems: flex-end;
-  margin-right : 5px;
-`;
-const Caption = styled.Text``;
-const Bold = styled.Text`
-  font-weight: 600;
-  margin-bottom : 5px;
-  font-size : 15px;
-  margin-right : 5px;
-`;
-const Reply = styled.Text`
-  color : ${Grey};
-`;
-/*
-const CommentCount = styled.Text`
-  opacity: 0.5;
-  font-size: 13px;
-`;
-*/
 const TextInputCon=styled.View`
  margin-left : 5px;
  padding : 10px;
@@ -149,6 +110,15 @@ const GET_COMMENTS = gql`
     ${POST_COMMENT}
 `;
 
+const ADD_COMMENTS = gql`
+    mutation addComment($text: String!, $headComment: String, $postId: String! ){
+      addComment(text: $text, headComment: $headComment, postId:$postId){
+        id
+        text
+      }
+    }
+`
+
 const PostOfComment = ({
     id,
     headComment,
@@ -160,20 +130,46 @@ const PostOfComment = ({
     navigation,
     createdAt,
     }) => {
-        console.log(user.username);
-        console.log(text);
         const time=moment(createdAt).startOf('hour').fromNow();
-        const {loading, data} = useQuery(GET_COMMENTS, {
+        const {loading, data, refetch} = useQuery(GET_COMMENTS, {
          variables: { postId: post.id, headComment: id}
         });
-       // console.log(data.seeComment.length);
-
+        const [isLoading, setIsLoading] = useState(false);
+        const [addComments] = useMutation(ADD_COMMENTS, {
+          refetchQueries:()=>[{query:GET_COMMENTS, 
+          variables:{ postId, headComment:null} }]
+        });
+        const commentInput = useInput();
+        const [refreshing, setRefreshing] = useState(false);
         const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
         const navi = ()=>{
           setbottomModalAndTitle(false);
           navigation.navigate("UserDetail", { id: user.id, username:user.username });
         }
-
+        const handleComment = async()=>{
+          if (commentInput.value === undefined) {
+            Alert.alert("한 글자는 쓰지?");
+          }else{
+            setIsLoading(true);
+            try {
+              //const {data:{addComment}} = 
+              await addComments({
+                variables: {
+                  postId: postId,
+                  headComment: null,
+                  text: commentInput.value
+                }
+              });
+          }catch (e) {
+            console.log(e);
+            Alert.alert("댓글 에러!");
+            
+          } finally {
+            setIsLoading(false);
+          }
+        }
+          
+    };
         return (
           <Container>
             <CaptionsCon>
@@ -235,9 +231,7 @@ const PostOfComment = ({
 
                   <ReplyCon>
                     <Timebox>{time}</Timebox>
-                    <Touchable onPress={()=>setbottomModalAndTitle(true)}>
-                      <Reply>Reply</Reply>
-                    </Touchable>
+                    
                   </ReplyCon>
                 </CommentCon>
               </CaptionsCon>
@@ -251,14 +245,14 @@ const PostOfComment = ({
           <CommentBox>
             <TextBox>
               <TextInput
-                //{...textInput}
+                onChangeText={commentInput.onChange}
                 returnKeyType="send"
-                //onSubmitEditing={handleLogin}
-                //autoFocus={focusing}
+                value={commentInput.value}
+                onSubmitEditing={handleComment}
                 placeholder="Comment"
               />
             </TextBox>
-            <Touchable>
+            <Touchable onPress={handleComment}>
               <Bold>Reply</Bold>
             </Touchable>
           </CommentBox>

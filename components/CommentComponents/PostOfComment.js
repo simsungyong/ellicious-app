@@ -166,6 +166,7 @@ const PostOfComment = ({
                 }
               });
               if(addComment.id){
+                commentInput.setValue("")
                 navigation.navigate("CommentDetail")
                 
               }

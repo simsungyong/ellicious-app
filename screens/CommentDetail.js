@@ -110,6 +110,7 @@ export default ({navigation})=>{
             }
           });
           if(addComment.id){
+            commentInput.setValue("")
             navigation.navigate("CommentDetail");
           }
       }catch (e) {

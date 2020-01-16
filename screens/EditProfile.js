@@ -16,22 +16,22 @@ import {AntDesign, FontAwesome} from '@expo/vector-icons';
 import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
 import { FEED_QUERY } from "../screens/Tabs/Home";
 import {ME} from '../screens/Tabs/Profile/Profile';
-
+import {seeCategory} from '../screens/Photo/UploadPhoto'
 export const EDIT_USER = gql`
-  mutation editUser($newAvatar: String, $bio: String, $username: String) {
-    editUser(avatar: $newAvatar bio: $bio username: $username){
+  mutation editUser($newAvatar: String, $bio: String, $username: String, $lastName: String, $firstName: String) {
+    editUser(avatar: $newAvatar bio: $bio username: $username, firstName: $firstName, lastName: $lastName){
       id
     }
   }
 `;
-export const CREATE_CATEGORY= gql`
+/*export const CREATE_CATEGORY= gql`
   mutation createCategory($categoryName:String!){
     createCategory(categoryName: $categoryName){
       id
     }
   }
 `
-
+*/
 const Container = styled.View`
 flex : 1;
 padding : 15px;
@@ -70,7 +70,6 @@ const EditInfo = styled.View`
 `;
 const EditName = styled.View`
 `;
-const EditText = styled.View``;
 const EditCage = styled.View`
 flex : 4
 `;
@@ -94,21 +93,25 @@ const EditProfile=({
   const id = navigation.getParam("id");
   const username =  navigation.getParam("username");
   const avatar =  navigation.getParam("avatar");
-  const fullName =  navigation.getParam("fullName");
-  const category =  navigation.getParam("category");
-  const categoryCount =  navigation.getParam("categoryCount");
+  const firstName =  navigation.getParam("firstName");
+  const lastName =  navigation.getParam("lastName");
+  //const category =  navigation.getParam("category");
+  //const categoryCount =  navigation.getParam("categoryCount");
   const bio =  navigation.getParam("bio");
   const email = navigation.getParam("email");
-  const [addCategory, setAddCategory] = useState(false);
+  //const [addCategory, setAddCategory] = useState(false);
   const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
   const [isloading, setIsLoading] = useState(false);
   const bioInput = useInput();
   const usernameInput = useInput();
-  const addedCategory = useInput();
+  const firstnameInput = useInput();
+  const lastnameInput = useInput();
   const [editProfilePictureMutation] = useMutation(EDIT_USER, {
     refetchQueries: ()=>[{query: FEED_QUERY},{query: ME }]
   });
-  const [createCategoryMutation] = useMutation(CREATE_CATEGORY);
+  /*const [createCategoryMutation] = useMutation(CREATE_CATEGORY,{
+    refetchQueries: ()=>[{query: seeCategory}]
+  });*/
 
   const changePicture = async() => {
     try {
@@ -120,28 +123,36 @@ const EditProfile=({
     }
   }
 
-  const handleCategory = async()=>{
-    await setAddCategory(p=>!p)
-  }
   
 
   const handleSubmit = async() => {
     setIsLoading(true);
     let newbio = bio;
     let newusername = username;
+    let newfirstname = firstName;
+    let newlastname = lastName;
+
     if(bioInput.value) {
       newbio = bioInput.value;
     }
     if(usernameInput.value) {
       newusername = usernameInput.value;
     }
-
+    if(firstnameInput.value) {
+      newfirstname = firstnameInput.value;
+    }
+    if(lastnameInput.value) {
+      newlastname = lastnameInput.value;
+    }
+   
     try {
       await editProfilePictureMutation({
         variables: {
           newAvatar: avatar,
           bio: newbio,
-          username: newusername
+          username: newusername,
+          firstName: newfirstname,
+          lastName: newlastname
         }
       });
       navigation.goBack();
@@ -189,20 +200,58 @@ const EditProfile=({
 
       <ScrollView>
         <EditInfo>
-          <EditName>
-            <Text style={{fontSize : 17, color : PointPink}}>이메일</Text>
-            <Text 
+        <EditName>
+          <Text style={{fontSize : 17, color : PointPink, marginTop : 13}}>성</Text>
+            <TextInput 
               style={{ 
                 height: 26,
                 width: constants.width-30, 
                 fontSize: 20, 
                 color: TINT_COLOR, 
                 borderBottomWidth: 1, 
-                borderBottomColor: mainPink 
+                borderBottomColor: mainPink,
               }}
-            >{email}</Text>
+            onChangeText={lastName.onChange}
+            placeholderTextColor={Grey}
+            >
+              {lastName}
+            </TextInput>
           </EditName>
-          <EditText>
+          <EditName>
+          <Text style={{fontSize : 17, color : PointPink, marginTop : 13}}>이름</Text>
+            <TextInput 
+              style={{ 
+                height: 26,
+                width: constants.width-30, 
+                fontSize: 20, 
+                color: TINT_COLOR, 
+                borderBottomWidth: 1, 
+                borderBottomColor: mainPink,
+              }}
+            onChangeText={firstName.onChange}
+            placeholderTextColor={Grey}
+            >
+              {firstName}
+            </TextInput>
+          </EditName>
+          <EditName>
+          <Text style={{fontSize : 17, color : PointPink, marginTop : 13}}>이메일</Text>
+            <TextInput 
+              style={{ 
+                height: 26,
+                width: constants.width-30, 
+                fontSize: 20, 
+                color: TINT_COLOR, 
+                borderBottomWidth: 1, 
+                borderBottomColor: mainPink,
+              }}
+            onChangeText={email.onChange}
+            placeholderTextColor={Grey}
+            >
+              {email}
+            </TextInput>
+          </EditName>
+          <EditName>
           <Text style={{fontSize : 17, color : PointPink, marginTop : 13}}>소개</Text>
             <TextInput 
               style={{ 
@@ -219,40 +268,11 @@ const EditProfile=({
             >
               {bio}
             </TextInput>
-          </EditText>
+          </EditName>
         </EditInfo>
-        <EditCage>
-          <Text style={{fontSize : 17, color : PointPink, marginTop : 13}}>카테고리</Text>
-          <TouchableOpacity onPress={handleCategory}>
-            <AntDesign name={'pluscircleo'} size={17}/>
-          </TouchableOpacity>
-          {addCategory ? (
-            <TextInput 
-            style={{fontSize:17}} 
-            placeholder={"카테고리 이름"}
-            onChangeText={addedCategory.onChange}/>
-          ) : null
-          }
-          {category
-            .map(tag => (
-            <EditCageDetail key={tag.id}>
-              <TextInput 
-                style={styles.EditCage}
-                placeholder = {tag.categoryName}
-                placeholderTextColor={TINT_COLOR}
-              />
-              <View />
-              <TouchableOpacity>
-                <Text style={{fontSize : 17, color : PointPink, marginTop : 13, marginRight : 13}}>수정</Text>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Text style={{fontSize : 17, color : PointPink, marginTop : 13}}>삭제</Text>
-              </TouchableOpacity>
-            </EditCageDetail>
-            ))}
-          </EditCage>
+        
           <TouchableOpacity onPress={() => handleSubmit()}>
-            <Text style={{fontSize : 17, color : PointPink, marginTop : 13}}>업로드</Text>
+            <Text style={{fontSize : 17, color : PointPink, marginTop : 13}}>완 료</Text>
           </TouchableOpacity>
         </ScrollView>
         <Modal.BottomModal
@@ -368,28 +388,35 @@ const styles = StyleSheet.create({
 export default withNavigation(EditProfile);
 
 
-/* 
-<View style={styles.container}>
-          <View style={styles.header}></View>
-          <Image 
-            style={styles.avatar}  
-            source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}
-            />
-            <View style={styles.editbox}>
-            <TouchableOpacity>
-            <Text style={styles.editImage}>수정</Text>
-            </TouchableOpacity>  
-            </View>
-          <View style={styles.body}>
-            <View style={styles.bodyContent}>
-            
-    <Text style={styles.name}>유저 아이디</Text>
-    <Text style={styles.info}>풀 네임</Text>
-    <Text style={styles.description}>소개글~~~</Text>
-              
-              
-            </View>
-        </View>
-      </View>
-
-*/
+/*
+{category
+            .map(tag => (
+            <EditCageDetail key={tag.id}>
+              <TextInput 
+                style={styles.EditCage}
+                placeholder = {tag.categoryName}
+                placeholderTextColor={TINT_COLOR}
+              />
+              <View />
+              <TouchableOpacity>
+                <Text style={{fontSize : 17, color : PointPink, marginTop : 13, marginRight : 13}}>수정</Text>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Text style={{fontSize : 17, color : PointPink, marginTop : 13}}>삭제</Text>
+              </TouchableOpacity>
+            </EditCageDetail>
+            ))} */
+/* <EditCage>
+          <Text style={{fontSize : 17, color : PointPink, marginTop : 13}}>카테고리</Text>
+          <TouchableOpacity onPress={handleCategory}>
+            <AntDesign name={'pluscircleo'} size={17}/>
+          </TouchableOpacity>
+          {addCategory ? (
+            <TextInput 
+            style={{fontSize:17}} 
+            placeholder={"카테고리 이름"}
+            onChangeText={addedCategory.onChange}/>
+          ) : null
+          }
+          
+          </EditCage> */

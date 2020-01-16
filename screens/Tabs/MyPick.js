@@ -1,5 +1,6 @@
 import React, { Component,useState ,useEffect} from "react";
 import { gql } from "apollo-boost";
+//import {NavigationEvents} from 'react-navigation';
 import { useQuery } from "react-apollo-hooks";
 import {
   AppRegistry,
@@ -12,6 +13,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Button,
+  Alert,
 } from "react-native";
 import MapView from "react-native-maps";
 import MapViewPick from '../../components/MapView/MapViewPick';
@@ -38,7 +40,7 @@ const region = {
   longitudeDelta: 0.0540142817690068,
 };
 
-const GET_PICK = gql`
+export const GET_PICK = gql`
   {
     seePick {
         ...PickInfo
@@ -49,9 +51,8 @@ const GET_PICK = gql`
 const MyPick=({navigation})=>{
   //const [isLoading, setLoading] = useState(false);
   //const [qRefresh, setQRefresh] = useState(0)
-  const { loading, data, error } = useQuery(GET_PICK);
+  const { loading, data, refetch } = useQuery(GET_PICK);
   const [confirm, setConfirm] = useState(false);
-
 
   
   return(

@@ -152,7 +152,7 @@ justifyContent: center;
 const TagText = styled.Text``;
 
 const ModalButtonTest=styled.TouchableOpacity`
-margin-bottom : 5px;
+margin-bottom : 10px;
 align-items: center; 
 justifyContent: center;
 `;
@@ -452,35 +452,55 @@ const Post = ({
             <ModalContent>
               {user.isSelf ? 
               <> 
-              <ModalButtonTest onPress ={() => handleDelete()}>
-                <Text style={{fontSize:30}}>
-                  삭제
+              <ModalButtonTest onPress ={() => {}}>
+                <Text style={{fontSize:19}}>
+                  수정
                 </Text>
               </ModalButtonTest>
-              <ModalButtonTest onPress ={() => {}}>
-                <Text style={{fontSize:30}}>
-                  수정
+              <ModalButtonTest onPress ={() => handleDelete()}>
+                <Text style={{fontSize:19, color : 'red'}}>
+                  삭제
                 </Text>
               </ModalButtonTest>
               </>
               :
               <>
               <ModalButtonTest onPress ={() => handleUnfollow()}>
-                <Text style={{fontSize:30}}>
+                <Text style={{fontSize:17, color : 'red'}}>
                   팔로우 취소
                 </Text>
               </ModalButtonTest>
               </>
              } 
-             <ModalFooter>
+            </ModalContent>
+            <ModalFooter>
               <ModalButton
                 text="CANCEL"
                 onPress={() => setbottomModalAndTitle(false)}
               />
             </ModalFooter>
-            </ModalContent>
           </Modal.BottomModal>
-
+          <Modal
+            visible={modalAndTitle}
+            onTouchOutside={() => setmodalAndTitle(false)}
+            height={0.3}
+            width={0.8}
+            onSwipeOut={() => setmodalAndTitle(false)}
+          >
+            <ModalContent>
+              <Text>삭제하시겠습니까?</Text>
+            </ModalContent>
+            <ModalFooter>
+              <ModalButton
+                text="CANCEL"
+                onPress={() => setmodalAndTitle(false)}
+              />
+              <ModalButton
+                text="OK"
+                onPress={() => handleSubmit()}
+              />
+            </ModalFooter>
+          </Modal>
         
       </Card>
   );

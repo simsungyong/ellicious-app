@@ -435,6 +435,7 @@ const Post = ({
         </Touchable>
           </LikeCommentIcon>
         </Container>
+
         <Modal.BottomModal
             visible={bottomModalAndTitle}
             onTouchOutside={() => setbottomModalAndTitle(false)}
@@ -445,12 +446,18 @@ const Post = ({
             <ModalContent>
               {user.isSelf ? 
               <>
+              <View>
+                <Text>
+                  삭제
+                </Text>
+              </View>
                 <ModalButton
-                  text="삭제"
+                  Text="삭제"
                   onPress={() => handleDelete()}
+                 backgroundColor = 'red'
                 />
                 <ModalButton
-                  text="수정"
+                  Text="수정"
                   onPress={() => {}}
                 />
               </>

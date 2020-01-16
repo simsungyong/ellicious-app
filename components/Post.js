@@ -151,6 +151,12 @@ justifyContent: center;
 `;
 const TagText = styled.Text``;
 
+const ModalButtonTest=styled.TouchableOpacity`
+margin-bottom : 5px;
+align-items: center; 
+justifyContent: center;
+`;
+
 const Post = ({
     user, 
     storeLocation,
@@ -436,17 +442,45 @@ const Post = ({
           </LikeCommentIcon>
         </Container>
         
-        <Modal
-          visible={bottomModalAndTitle}
-          onTouchOutside={() => setbottomModalAndTitle(false)}
-          height={0.3}
-          width={0.8}
-          onSwipeOut={() => setbottomModalAndTitle(false)}
-          position='bottom'
-        >
-        >
-        <Text>HEllo</Text>
-        </Modal>
+        <Modal.BottomModal
+            visible={bottomModalAndTitle}
+            onTouchOutside={() => setbottomModalAndTitle(false)}
+            height={0.3}
+            width={0.8}
+            onSwipeOut={() => setbottomModalAndTitle(false)}
+          >
+            <ModalContent>
+              {user.isSelf ? 
+              <> 
+              <ModalButtonTest onPress ={() => handleDelete()}>
+                <Text style={{fontSize:30}}>
+                  삭제
+                </Text>
+              </ModalButtonTest>
+              <ModalButtonTest onPress ={() => {}}>
+                <Text style={{fontSize:30}}>
+                  수정
+                </Text>
+              </ModalButtonTest>
+              </>
+              :
+              <>
+              <ModalButtonTest onPress ={() => handleUnfollow()}>
+                <Text style={{fontSize:30}}>
+                  팔로우 취소
+                </Text>
+              </ModalButtonTest>
+              </>
+             } 
+             <ModalFooter>
+              <ModalButton
+                text="CANCEL"
+                onPress={() => setbottomModalAndTitle(false)}
+              />
+            </ModalFooter>
+            </ModalContent>
+          </Modal.BottomModal>
+
         
       </Card>
   );

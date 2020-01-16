@@ -10,6 +10,7 @@ import { POST_COMMENT } from "../fragments";
 import PostOfComment from '../components/CommentComponents/PostOfComment';
 import { LightGrey, CommentsBox, mainPink } from "../components/Color";
 import constants from "../constants";
+import { FEED_QUERY } from "../components/Post";
 
 const InfoCon=styled.View`
   flex:1;
@@ -77,7 +78,9 @@ export default ({navigation})=>{
     });
     const [addComments] = useMutation(ADD_COMMENTS, {
       refetchQueries:()=>[{query:GET_COMMENTS, 
-      variables:{ postId, headComment:null} }]
+      variables:{ postId, headComment:null} },
+      {query:FEED_QUERY}
+    ]
     });
     
     const refresh = async() =>{
@@ -148,7 +151,7 @@ export default ({navigation})=>{
             </TextBox>
             <Touchable onPress={handleComment}>
               {isLoading ? (
-              <ActivityIndicator color="white" />
+              <Loader/>
             ): (
               <Bold>
               <Text>Reply</Text>

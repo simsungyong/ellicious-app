@@ -251,7 +251,7 @@ const UserProfile = ({
   const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
   const [followingConfirm, setFollowing] = useState(isFollowing);
   const [followCount, setFollowCount] = useState(followersCount);
-  const sametimeFollow = followers.filter(name=> name.isFollowing !== false || name.isSelf !== true)
+  const sametimeFollow = followers.filter(name=> name.isFollowing !== false && name.isSelf !== true)
   const [FollowMutation] = useMutation(FOLLOW, {
     variables: {
     id: id

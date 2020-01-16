@@ -17,6 +17,7 @@ import { withNavigation } from "react-navigation";
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
 import CommentInput from './CommentInput';
+import { FEED_QUERY } from "../Post";
 
 const Touchable = styled.TouchableOpacity`
   margin-bottom:3px;
@@ -121,7 +122,6 @@ const ADD_COMMENTS = gql`
 
 const PostOfComment = ({
     id,
-    headComment,
     post,
     text,
     user,
@@ -131,16 +131,22 @@ const PostOfComment = ({
     createdAt,
     }) => {
         const time=moment(createdAt).startOf('hour').fromNow();
+
         const {loading, data, refetch} = useQuery(GET_COMMENTS, {
          variables: { postId: post.id, headComment: id}
         });
         const [isLoading, setIsLoading] = useState(false);
         const [addComments] = useMutation(ADD_COMMENTS, {
-          refetchQueries:()=>[{query:GET_COMMENTS, 
-          variables:{ postId, headComment:null} }]
+          refetchQueries:()=>[
+            {query:GET_COMMENTS, variables:{ 
+              postId: post.id, headComment: null}},
+              {query:GET_COMMENTS, variables:{
+                postId: post.id, headComment: id
+              }},
+              {query: FEED_QUERY}
+            ]
         });
         const commentInput = useInput();
-        const [refreshing, setRefreshing] = useState(false);
         const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
         const navi = ()=>{
           setbottomModalAndTitle(false);
@@ -152,14 +158,18 @@ const PostOfComment = ({
           }else{
             setIsLoading(true);
             try {
-              //const {data:{addComment}} = 
-              await addComments({
+              const {data:{addComment}} = await addComments({
                 variables: {
-                  postId: postId,
-                  headComment: null,
+                  postId: post.id,
+                  headComment: id,
                   text: commentInput.value
                 }
               });
+              if(addComment.id){
+                commentInput.setValue("")
+                navigation.navigate("CommentDetail")
+                
+              }
           }catch (e) {
             console.log(e);
             Alert.alert("댓글 에러!");
@@ -238,6 +248,7 @@ const PostOfComment = ({
                   </ReplyCon>
                 </CommentCon>
               </CaptionsCon>
+
                 {
                   data && data.seeComment && data.seeComment.map(comment=>
                   <CommentInput
@@ -255,7 +266,8 @@ const PostOfComment = ({
               />
             </TextBox>
             <Touchable onPress={handleComment}>
-              <Bold>Reply</Bold>
+              {isLoading ? <Loader/> : 
+              <Bold>Reply</Bold>  }
             </Touchable>
           </CommentBox>
 

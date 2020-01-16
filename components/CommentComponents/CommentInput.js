@@ -47,6 +47,8 @@ const Timebox = styled.Text`
 const CommentInput=({
     id,
     user,
+    headComment,
+    post,
     text,
     isLiked,
     likeCount,
@@ -87,8 +89,13 @@ CommentInput.propTypes={
     likeCount: PropTypes.number,
     isLiked: PropTypes.bool,
     text: PropTypes.string.isRequired,
-    createdAt: PropTypes.string.isRequired,
-
+    headComment: PropTypes.shape({
+      id:PropTypes.string
+    }),
+    post: PropTypes.shape({
+      id:PropTypes.string.isRequired
+    }),
+    createdAt: PropTypes.string.isRequired
 }
 
 export default CommentInput;

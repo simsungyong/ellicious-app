@@ -21,7 +21,7 @@ import { POST_FRAGMENT } from "../fragments";
 import {ME} from '../screens/Tabs/Profile/Profile';
 import { UNFOLLOW } from "./UserProfile";
 import { ScrollView } from "react-native-gesture-handler";
-
+import {GET_PICK} from '../screens/Tabs/MyPick'
 export const FEED_QUERY = gql`
   {
     seeFeed {
@@ -76,7 +76,7 @@ const StoreInfo = styled.View`
   padding : 5px;
 `;
 const StoreName = styled.Text`
-  font-size: 30px;
+  font-size: 24px;
   font-weight: 800;
   margin-bottom : 5px;
   color : ${TINT_COLOR};
@@ -154,7 +154,8 @@ const TagText = styled.Text``;
 const Post = ({
     user, 
     storeLocation,
-    storeName, 
+    storeName,
+    placeId,
     files=[],
     id,
     details=[],
@@ -183,10 +184,8 @@ const Post = ({
         }});
 
       const [togglePickMutation] = useMutation(TOGGLE_PICK, {
-        variables:{
-          postId: id
-        }
-        
+        refetchQueries:()=>[{query: GET_PICK}]
+
       });
       
       const [deleteMutation] = useMutation(DELETE_POST, {
@@ -229,7 +228,11 @@ const Post = ({
       }
       setIsPicked(p => !p);
       try{
-        await togglePickMutation();
+        await togglePickMutation({
+          variables:{
+            postId: id
+          },
+        });
       }catch (e){
         console.log(e);
       }
@@ -346,7 +349,7 @@ const Post = ({
           
           <StoreInfo>
             <Store>
-            <Touchable>
+            <Touchable onPress={() => navigation.navigate("StoreDetail", { storeName, placeId })}>
               <StoreName>{storeName}</StoreName>
             </Touchable>
             <Rating>

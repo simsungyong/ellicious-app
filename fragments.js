@@ -6,6 +6,7 @@ export const POST_FRAGMENT = gql`
     caption
     rating
     storeLocation
+    placeId
     storeName
     details
     user {

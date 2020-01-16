@@ -436,6 +436,9 @@ const Post = ({
           </LikeCommentIcon>
         </Container>
 
+
+
+
         <Modal.BottomModal
             visible={bottomModalAndTitle}
             onTouchOutside={() => setbottomModalAndTitle(false)}
@@ -443,17 +446,38 @@ const Post = ({
             width={0.8}
             onSwipeOut={() => setbottomModalAndTitle(false)}
           >
-          <Text>test</Text>
-          <ModalButton onPress={() => handleDelete()}>
-            <Text>삭제</Text>
-          </ModalButton>
-          <ModalFooter>
+            <ModalContent>
+              {user.isSelf ? 
+              <>
+              <View>
+                <Text>
+                  삭제
+                </Text>
+              </View>
+                <ModalButton
+                  Text="삭제"
+                  onPress={() => handleDelete()}
+                />
+                <ModalButton
+                  Text="수정"
+                  onPress={() => {}}
+                />
+              </>
+                :
+              <>
+                <ModalButton
+                  text="팔로우 취소"
+                  onPress={() => handleUnfollow()}
+                />
+              </>
+              }
+            </ModalContent>
+            <ModalFooter>
               <ModalButton
                 text="CANCEL"
                 onPress={() => setbottomModalAndTitle(false)}
               />
             </ModalFooter>
-      
           </Modal.BottomModal>
           <Modal
             visible={modalAndTitle}

@@ -50,8 +50,7 @@ flex : 1;
 const ViewCon=styled.View`
 justifyContent: center;
 alignItems : center;
-
-alignItems:flex-start
+alignItems:flex-start;
 `;
 
 const ViewBox=styled.View`
@@ -187,7 +186,7 @@ const Scene = ({ index, posts, userId }) => (
   
     <>
       {(index == 1) ? (
-        <View style={{height: constants.height/1.65}}>
+        <View style={{height: constants.height}}>
         <ProfileMapContainer userId={userId}/>
         </View>
       ) : (

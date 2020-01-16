@@ -185,25 +185,24 @@ alignItems: center;
 
 const Scene = ({ index, posts, userId }) => (
   
-    <ViewCon >
+    <>
       {(index == 1) ? (
-        
+        <View style={{height: constants.height/1.65}}>
         <ProfileMapContainer userId={userId}/>
-       
-      ) : (
-       
-        <View flexDirection= "row" flexWrap= "wrap">
-           
-          {
-          posts && posts.map(p =>
-            <SquarePhoto key={p.id} {...p} />
-          )}
-          <View/>
         </View>
-       
+      ) : (
+        <ViewCon >
+          <View flexDirection= "row" flexWrap= "wrap">
+            
+            {
+            posts && posts.map(p =>
+              <SquarePhoto key={p.id} {...p} />
+            )}
+          </View>
+        </ViewCon>
       )}
+    </>
     
-    </ViewCon>
 );
 
 const ROUTES = {
@@ -351,7 +350,7 @@ const handleFollow = async () =>{
           routeStack={ROUTESTACK}
           renderScene={(route, i) => {
             let Component = ROUTES[route.title];
-            return <Component index={0} posts={posts} userId={id} style={{justifyContent: 'flex-start'}}/>;
+            return <Component index={i} posts={posts} userId={id} style={{justifyContent: 'flex-start'}}/>;
           }}
           headerStyle={{ paddingTop: 20 }}
           inactiveOpacity={1}

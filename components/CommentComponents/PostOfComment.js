@@ -172,6 +172,7 @@ const PostOfComment = ({
     };
         return (
           <Container>
+            {loading ? null : (
             <CaptionsCon>
               <Profile>
                 <Image 
@@ -188,16 +189,18 @@ const PostOfComment = ({
                 <Comment>
                   <Caption>{text}</Caption>
                 </Comment>
-
                 <ReplyCon>
                   <Timebox>{time}</Timebox>
+                  {data.seeComment.length > 0 ? (
+                    <Timebox>{"+"+data.seeComment.length+"개"}</Timebox>
+                  ) : null }
                   <Touchable onPress={()=>setbottomModalAndTitle(true)}>
                     <Reply>Reply </Reply>
                   </Touchable>
                 </ReplyCon>
               </CommentCon>
             </CaptionsCon>
-
+            )}
           <Modal.BottomModal
             visible={bottomModalAndTitle}
             onTouchOutside={() => setbottomModalAndTitle(false)}
@@ -235,12 +238,11 @@ const PostOfComment = ({
                   </ReplyCon>
                 </CommentCon>
               </CaptionsCon>
-
-                { loading ? (<Loader/>) : (
+                {
                   data && data.seeComment && data.seeComment.map(comment=>
                   <CommentInput
                     key={comment.id}{...comment}/>)
-                )}
+                }
 
           <CommentBox>
             <TextBox>
@@ -261,8 +263,8 @@ const PostOfComment = ({
             </ModalContent>
           </Modal.BottomModal>
         </Container>
-        )
-    }
+        )    
+      }
 
 
 

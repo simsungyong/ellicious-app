@@ -435,47 +435,19 @@ const Post = ({
         </Touchable>
           </LikeCommentIcon>
         </Container>
-
-        <Modal.BottomModal
-            visible={bottomModalAndTitle}
-            onTouchOutside={() => setbottomModalAndTitle(false)}
-            height={0.3}
-            width={0.8}
-            onSwipeOut={() => setbottomModalAndTitle(false)}
-          >
-          <Text>test</Text>
-          <ModalButton onPress={() => handleDelete()}>
-            <Text>삭제</Text>
-          </ModalButton>
-          <ModalFooter>
-              <ModalButton
-                text="CANCEL"
-                onPress={() => setbottomModalAndTitle(false)}
-              />
-            </ModalFooter>
-      
-          </Modal.BottomModal>
-          <Modal
-            visible={modalAndTitle}
-            onTouchOutside={() => setmodalAndTitle(false)}
-            height={0.3}
-            width={0.8}
-            onSwipeOut={() => setmodalAndTitle(false)}
-          >
-            <ModalContent>
-              <Text>삭제하시겠습니까?</Text>
-            </ModalContent>
-            <ModalFooter>
-              <ModalButton
-                text="CANCEL"
-                onPress={() => setmodalAndTitle(false)}
-              />
-              <ModalButton
-                text="OK"
-                onPress={() => handleSubmit()}
-              />
-            </ModalFooter>
-          </Modal>
+        
+        <Modal
+          visible={bottomModalAndTitle}
+          onTouchOutside={() => setbottomModalAndTitle(false)}
+          height={0.3}
+          width={0.8}
+          onSwipeOut={() => setbottomModalAndTitle(false)}
+          position='bottom'
+        >
+        >
+        <Text>HEllo</Text>
+        </Modal>
+        
       </Card>
   );
 };

@@ -39,6 +39,11 @@ const CommentCon = styled.View`
   flex : 1;
 `;
 
+const CommentBig = styled.View`
+  flex-direction: row;
+
+`
+
 const Comment = styled.View`
   background-color : ${LightPink};
   border-radius: 4px;
@@ -119,6 +124,13 @@ const ADD_COMMENTS = gql`
       }
     }
 `
+const DELETE_COMMENT = gql`
+  mutation editComment($id: String!) {
+    editPost(id: $id action: DELETE){
+      id
+    }
+  }
+`;
 
 const PostOfComment = ({
     id,
@@ -130,6 +142,7 @@ const PostOfComment = ({
     navigation,
     createdAt,
     }) => {
+        console.log(user)
         const time=moment(createdAt).startOf('hour').fromNow();
 
         const {loading, data, refetch} = useQuery(GET_COMMENTS, {
@@ -146,12 +159,41 @@ const PostOfComment = ({
               {query: FEED_QUERY}
             ]
         });
+        const [deleteComment] = useMutation(DELETE_COMMENT, {
+          refetchQueries:()=>[
+            {query:GET_COMMENTS, variables:{ 
+              postId: post.id, headComment: null}},
+              {query: FEED_QUERY}
+            ]
+        })
         const commentInput = useInput();
         const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
         const navi = ()=>{
           setbottomModalAndTitle(false);
           navigation.navigate("UserDetail", { id: user.id, username:user.username });
         }
+
+        const handleDelete = async()=>{
+          setIsLoading(true);
+            try {
+              const {data:{delComment}} = await deleteComment({
+                variables: {
+                  id: id
+                }
+              });
+              if(delComment.id){
+                navigation.navigate("CommentDetail")
+              }
+          }catch (e) {
+            console.log(e);
+            Alert.alert("삭제 에러!");
+            
+          } finally {
+            setIsLoading(false);
+          }
+        }
+
+
         const handleComment = async()=>{
           if (commentInput.value === undefined) {
             Alert.alert("한 글자는 쓰지?");
@@ -192,10 +234,16 @@ const PostOfComment = ({
               </Profile>
 
               <CommentCon>
-                <Touchable onPress={navi}>
-                  <Bold>{user.username}</Bold>
-                </Touchable>
-
+                <CommentBig>
+                  <Touchable onPress={navi}>
+                    <Bold>{user.username}</Bold>
+                  </Touchable>
+                  {user.isSelf ? 
+                  <Touchable onPress={handleDelete}>
+                    <EvilIcons name={"trash"} size={20}/>
+                  </Touchable>: null}
+                  
+                </CommentBig>
                 <Comment>
                   <Caption>{text}</Caption>
                 </Comment>
@@ -307,6 +355,7 @@ PostOfComment.propTypes = {
     }).isRequired,
     user: PropTypes.shape({
       id: PropTypes.string.isRequired,
+      isSelf: PropTypes.bool,
       avatar: PropTypes.string,
       username: PropTypes.string.isRequired
     }).isRequired,

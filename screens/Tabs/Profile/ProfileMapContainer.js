@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 //import MapView,{Marker, PROVIDER_GOOGLE, Callout, Polygon} from 'react-native-maps';
-import { StyleSheet,Image, Text, View, Dimensions, TextBase } from 'react-native';
+import { StyleSheet,Image, Text, View, Dimensions, TextBase, ScrollView, TextInput } from 'react-native';
 import { IconColor, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useQuery } from "react-apollo-hooks";
 import { gql } from "apollo-boost";
@@ -8,7 +8,7 @@ import Loader from '../../../components/Loader';
 import {CATEGORYINFO_FRAGMENT} from '../../../fragments';
 import ProfileMapPresenter from '../../Tabs/Profile/ProfileMapPresenter';
 import styled from "styled-components";
-import { Dropdown } from 'react-native-material-dropdown';
+import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
 
 const Touchable = styled.TouchableOpacity`
     margin-bottom : 20px;
@@ -48,14 +48,15 @@ const GET_CATEGORYINFO = gql`
 const ProfileMapContainer=({navigation, userId})=> {
     const [mapIdx, setIndex] = useState(0);
     const [confirm, setConform] = useState(false);
+    const [modalAndTitle, setmodalAndTitle] = useState(false);
     const { loading, data } = useQuery(GET_CATEGORYINFO, {
         variables: { userId: userId }
       });
     const handleIndex = async (index) => {
+        await setmodalAndTitle(false)
         await setConform(true)
         await setIndex(index)
         await setConform(false)
-        console.log(index)
     }
     
     return(
@@ -66,30 +67,40 @@ const ProfileMapContainer=({navigation, userId})=> {
                 <>
                 <ProfileMapPresenter marker={data.seeCategory[mapIdx]} region={region} navigation={navigation}/>
                 <View style={styles.subContainer}>
-                    <Touchable onPress={()=>console.log(data.seeCategory)}>
+                    <Touchable onPress={() => setmodalAndTitle(true)}>
                         <MaterialCommunityIcons
                         color={IconColor}
                         size={25}
                         name={"dots-horizontal"}
                         />
                     </Touchable>
-                    <Dropdown
-                        label='Favorite Fruit'
-                        data={data.seeCategory}
+                    <Modal
+                        visible={modalAndTitle}
+                        onTouchOutside={() => setmodalAndTitle(false)}
+                        height={0.5}
+                        width={0.8}
+                        onSwipeOut={() => setmodalAndTitle(false)}
+                    >
+                        <ModalContent>
+                        <ScrollView>
+                        {data.seeCategory.map((category, index)=>(
+                            <ModalButton
+                                key={index}
+                                text={category.categoryName}
+                                onPress={() => handleIndex(index)}
+                            />
+                        ))}
+                        </ScrollView>
+                        </ModalContent>
                         
-                    />
-                    {data.seeCategory.map((category, index)=>(
-                        <Touchable
-                        key={index}
-                        onPress={() => handleIndex(index)}
-                        >
-                            <>
-                            <Text>{category.categoryName}</Text>
-                            </>
-                        </Touchable>
-                    ))}
+                        <ModalFooter>
+                        <ModalButton
+                            text="카테고리 추가"
+                            onPress={() => setmodalAndTitle(false)}
+                        />
+                        </ModalFooter>
+                    </Modal>
                 </View>
-                
                 </>
             )}
             </>

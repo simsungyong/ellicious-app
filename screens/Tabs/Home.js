@@ -48,7 +48,7 @@ export default () => {
   const {loading, data, refetch, fetchMore} = useQuery(FEED_QUERY,{
     variables: {
       pageNumber: 0,
-      items: 5
+      items: 7
     }
   });  //useQuery함수안에는 refetch 함수 담겨있다 .
   const refresh = async() =>{
@@ -79,12 +79,12 @@ export default () => {
   }
 
   return (
-    <Container>
-      {loading ? <Loader/> : (
+    
+      loading ? <Loader/> : (
       <FlatList
         data={data.seeFeed}
         onRefresh={refresh}
-        onEndReachedThreshold={1}
+        onEndReachedThreshold={1.5}
         refreshing={refreshing}
         onEndReached={onLoadMore}
         keyExtractor={item=>item.id}
@@ -93,8 +93,8 @@ export default () => {
             <Post {...item}/>
           )
         }}/>
-        )}
-    </Container>
+        )
+    
     
 
 

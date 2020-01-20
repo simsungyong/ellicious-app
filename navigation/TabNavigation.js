@@ -127,22 +127,6 @@ const Shadow = StyleSheet.create(
   });
 /* 탭 내비게이션 메뉴 설정 */
 export default createBottomTabNavigator({
-  Search: {
-    screen: stackFactory(Search, {
-      headerBackTitle: null,
-      headerStyle: SearchstackStyles 
-    }),
-    navigationOptions: {
-      tabBarIcon: ({ focused }) => (
-          <AntDesign
-            size={27}
-            color={focused ? mainPink : Grey}
-            focused={focused}
-            name={Platform.OS === "ios" ? "search1" : "search1"}
-          />
-      )
-    }
-  },
   Home: {
     screen: stackFactory(Home, {
      // title: "Ellicious",
@@ -180,22 +164,22 @@ export default createBottomTabNavigator({
       )
     }
   },
-  // Search: {
-  //   screen: stackFactory(Search, {
-  //     headerBackTitle: null,
-  //     headerStyle: SearchstackStyles 
-  //   }),
-  //   navigationOptions: {
-  //     tabBarIcon: ({ focused }) => (
-  //         <AntDesign
-  //           size={27}
-  //           color={focused ? mainPink : Grey}
-  //           focused={focused}
-  //           name={Platform.OS === "ios" ? "search1" : "search1"}
-  //         />
-  //     )
-  //   }
-  // },
+  Search: {
+    screen: stackFactory(Search, {
+      headerBackTitle: null,
+      headerStyle: SearchstackStyles 
+    }),
+    navigationOptions: {
+      tabBarIcon: ({ focused }) => (
+          <AntDesign
+            size={27}
+            color={focused ? mainPink : Grey}
+            focused={focused}
+            name={Platform.OS === "ios" ? "search1" : "search1"}
+          />
+      )
+    }
+  },
   Add: {
     screen: View,
     headerStyle: stackStyles,

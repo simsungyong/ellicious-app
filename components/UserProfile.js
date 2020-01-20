@@ -1,22 +1,17 @@
-import React, { useState, Component } from "react";
-import { Image, TouchableOpacity, ScrollView, StyleSheet, Button, FlatList, SafeAreaView, Platform } from "react-native";
+import React, { useState} from "react";
+import { Image, TouchableOpacity, ScrollView, StyleSheet} from "react-native";
 import Modal from 'react-native-modalbox';
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import constants from "../constants";
 import SquarePhoto from "./SquarePhoto";
-import MapViews from "./MapView/MapViews";
 import { LightPink, Grey, TINT_COLOR, PointPink, mainPink, LightGrey, Line } from "./Color";
 import {Foundation } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
-import Hr from "hr-native";
-import MapView from "react-native-maps";
 import TopBarNav from 'top-bar-nav';
 import ProfileMapContainer from "../screens/Tabs/Profile/ProfileMapContainer";
 import { gql } from "apollo-boost";
 import { useMutation } from "react-apollo-hooks";
 import { withNavigation } from "react-navigation";
-import { refreshAsync } from "expo-app-auth";
 import SameFollowModal from "./SameFollowModal";
 
 export const FOLLOW = gql`
@@ -30,10 +25,10 @@ export const UNFOLLOW = gql`
     unfollow(id: $id)
   }
 `;
-const Touchable = styled.TouchableOpacity``;
 
 const Container = styled.View`
   flex : 1;
+  height : ${constants.height-100};
 `;
 const Profile = styled.View`
   padding : 5px;
@@ -59,20 +54,6 @@ height : 30;
 const ProfileImage = styled.View`
   margin-left : 10px;
 `;
-
-const ImageCon = styled.View`
-flex-direction: row;
-margin-top : 5px;
-flex : 1
-`;
-
-const ButtonContainer = styled.View`
-  flex-direction: row;
-  margin-top: 5px;
-  padding-vertical: 5px;
-
-`;
-//border: 1px solid ${styles.lightGreyColor};
 
 const FollowButton =styled.TouchableOpacity`
   width: 70px;
@@ -149,11 +130,6 @@ flex-direction : column
 flex : 1;
 `;
 
-const Post = styled.View`
-flex-direction : column,
-
-`;
-
 const SameCon = styled.TouchableOpacity`
 flex-direction : row;
 `;
@@ -163,16 +139,9 @@ flex-direction : row;
 const Blank = styled.View`
 flex : 1;
 `;
-const Test = styled.View`
-justifyContent: center;
-
-background-color : green;
-flex-direction : row;
-`;
 
 const TapCon = styled.View`
 flex : 1;
-
 `;
 
 const ModalHeader=styled.View`
@@ -186,7 +155,7 @@ const Scene = ({ index, posts, userId }) => (
   
     <>
       {(index == 1) ? (
-        <View style={{height: constants.height}}>
+        <View style={{flex : 1}} >
         <ProfileMapContainer userId={userId}/>
         </View>
       ) : (

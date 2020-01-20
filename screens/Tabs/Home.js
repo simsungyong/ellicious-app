@@ -63,8 +63,7 @@ export default () => {
     }
   };
 
-  const onLoadMore = () =>{
-    setRefreshing(true)
+  const onLoadMore = async() =>{
     fetchMore({
       variables:{
         pageNumber: data.seeFeed.length,
@@ -77,20 +76,18 @@ export default () => {
         });
       }
     })
-    setRefreshing(false);
   }
 
   return (
-    
-    
     <Container>
       {loading ? <Loader/> : (
       <FlatList
         data={data.seeFeed}
-        onEndReachedThreshold={0}
+        onRefresh={refresh}
+        onEndReachedThreshold={1}
+        refreshing={refreshing}
         onEndReached={onLoadMore}
         keyExtractor={item=>item.id}
-        ListFooterComponent={refreshing ? <Loader/> : null}
         renderItem={({item})=>{
           return (
             <Post {...item}/>

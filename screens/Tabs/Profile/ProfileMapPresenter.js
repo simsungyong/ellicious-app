@@ -5,8 +5,13 @@ import {
   Text,
   View,
   Image,
+  Dimensions,
+  TouchableOpacity,
+  Button,
+  Platform
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE,Marker, Callout, Circle } from "react-native-maps";
+import Carousel from 'react-native-snap-carousel';
 import { withNavigation } from "react-navigation";
 
 class ProfileMapPresenter extends React.Component {
@@ -61,37 +66,59 @@ class ProfileMapPresenter extends React.Component {
 
 
     render(){
-        //console.log(this.state.marker.posts[0]);
         return (
             <View style={styles.container}>
-
+            
             <MapView
                 provider={PROVIDER_GOOGLE}
                 ref={map=>this._map = map}
                 style={styles.map}
                 showsUserLocation={true}
                 initialRegion={this.state.region}>
-                
-                {this.state.marker.posts.map((marker, index)=>(
-                    <Marker 
-                    key={index}
-                   // onPress={this.onMarkerPressed(marker,index)} 
-                    coordinate={{latitude:marker.storeLat, longitude:marker.storeLong}}
-                    //ref={ref=>this.state.markers[index] = ref}
-                
-                    >
-                    <Callout onPress={()=>this.props.navigation.navigate("Detail", {id:marker.id})}>
-                            <Text>라라브래드 공릉ㅈ</Text>
-                    </Callout>
-                    <Image source={{uri:marker.files[0].url}}
+                {this.state.marker.posts.map((marker, index)=>{
+                    if(Platform.OS === "ios"){
+                        console.log("hihi")
+                        return(
+                            <Marker 
+                            key={index}
+                           // onPress={this.onMarkerPressed(marker,index)} 
+                            coordinate={{latitude:marker.storeLat, longitude:marker.storeLong}}
+                            //ref={ref=>this.state.markers[index] = ref}
+                            title={marker.storeName}
+                            >
+                            <Callout onPress={()=>this.props.navigation.navigate("Detail", {id:marker.id})}>
+                                <Text>{marker.storeName}</Text>
+                            </Callout>
+                            <Image source={{uri:marker.files[0].url}}
                                 style={styles.markerImage}/>
-
-                    </Marker>
-                ))}
+        
+                            </Marker>
+                            )
+                    } else {
+                        return(
+                            <Marker 
+                            key={index}
+                           // onPress={this.onMarkerPressed(marker,index)} 
+                            coordinate={{latitude:marker.storeLat, longitude:marker.storeLong}}
+                            //ref={ref=>this.state.markers[index] = ref}
+                            title={marker.storeName}
+                            onCalloutPress={()=>this.props.navigation.navigate("Detail", {id:marker.id})}
+                            >
+                            
+                            {/* <Callout onPress={()=>this.props.navigation.navigate("Detail", {id:marker.id})}> */}
+                                {/* <Text>{marker.storeName}</Text> */}
+                            {/* </Callout> */}
+                            <Image source={{uri:marker.files[0].url}}
+                                style={styles.markerImage}/>
+        
+                            </Marker>
+                            )
+                    }
+                })}
                 
-                </MapView>
-                   
-                </View>
+            </MapView>
+                
+            </View>
 
         )
         

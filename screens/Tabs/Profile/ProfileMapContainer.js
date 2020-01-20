@@ -47,9 +47,6 @@ const ProfileMapContainer=({navigation, userId})=> {
     const { loading, data } = useQuery(GET_CATEGORYINFO, {
         variables: { userId: userId }
       });
-    if(!loading) {
-        console.log(data)
-    }
     const handleIndex = async (index) => {
         await setConform(true)
         await setIndex(index)

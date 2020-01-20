@@ -162,6 +162,7 @@ export const POST_COMMENT = gql`
     id
     user{
       id
+      isSelf
       username
       avatar
     }

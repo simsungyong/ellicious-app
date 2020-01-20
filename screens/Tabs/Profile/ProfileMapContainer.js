@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 //import MapView,{Marker, PROVIDER_GOOGLE, Callout, Polygon} from 'react-native-maps';
-import { StyleSheet,Image, Text, View, Dimensions, TextBase } from 'react-native';
+import { StyleSheet,Text, View } from 'react-native';
 import { useQuery } from "react-apollo-hooks";
 import { gql } from "apollo-boost";
 import Loader from '../../../components/Loader';

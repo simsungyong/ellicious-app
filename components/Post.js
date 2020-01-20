@@ -445,7 +445,7 @@ const Post = ({
         <Modal.BottomModal
             visible={bottomModalAndTitle}
             onTouchOutside={() => setbottomModalAndTitle(false)}
-            height={0.3}
+            
             width={0.8}
             onSwipeOut={() => setbottomModalAndTitle(false)}
           >

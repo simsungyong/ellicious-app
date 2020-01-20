@@ -1,25 +1,13 @@
-import React, { useState  } from "react";
+import React from "react";
 import { View, StyleSheet} from "react-native";
 import SearchBar from "../../../components/SearchComponents/SearchBar";
-import SearchPresenter from "./SearchPresenter";
 import SearchAccountPresenter from "./SearchAccountPresenter";
 import SearchStorePresenter from "./SearchStorePresenter";
 import TopBarNav from 'top-bar-nav';
 import styled from "styled-components";
-import styles from "../../../styles";
 import constants from "../../../constants";
-import { PointPink, mainPink } from "../../../components/Color";
+import { mainPink } from "../../../components/Color";
 
-const ButtonContainer = styled.View`
-  padding-vertical: 5px;
-  border: 1px solid ${styles.lightGreyColor};
-  flex-direction: row;
-`;
-
-const Button = styled.View`
-  width: ${constants.width / 2};
-  align-items: center;
-`;
 const Text = styled.Text`
 font-weight : 200
 font-size: 20
@@ -114,5 +102,6 @@ const Style = StyleSheet.create ({
     height: 3.6,
     backgroundColor: mainPink,
     width: constants.width / 2
-  }
+  },
+  
 })

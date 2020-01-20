@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ScrollView, Text, RefreshControl} from "react-native";
+import { ScrollView, RefreshControl} from "react-native";
 import { gql } from "apollo-boost";
 import { USER_FRAGMENT } from "../../../fragments";
 import Loader from "../../../components/Loader";

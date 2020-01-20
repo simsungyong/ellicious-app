@@ -1,23 +1,12 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   AppRegistry,
   StyleSheet,
   Text,
   View,
-  ScrollView,
-  Animated,
   Image,
-  Dimensions,
-  TouchableOpacity,
-  Button,
 } from "react-native";
-import styled from "styled-components";
-import Stars from 'react-native-stars';
-import {FontAwesome, EvilIcons} from "@expo/vector-icons";
-import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line } from '../../../components/Color';
 import MapView, { PROVIDER_GOOGLE,Marker, Callout, Circle } from "react-native-maps";
-import { Platform } from "@unimodules/core";
-import Carousel from 'react-native-snap-carousel';
 import { withNavigation } from "react-navigation";
 
 class ProfileMapPresenter extends React.Component {

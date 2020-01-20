@@ -29,6 +29,7 @@ export const UNFOLLOW = gql`
 const Container = styled.View`
   flex : 1;
   height : ${constants.height-100};
+  background-color : pink;
 `;
 const Profile = styled.View`
   padding : 5px;

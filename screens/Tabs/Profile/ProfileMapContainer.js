@@ -1,12 +1,14 @@
 import React, {useState, useEffect} from 'react';
 //import MapView,{Marker, PROVIDER_GOOGLE, Callout, Polygon} from 'react-native-maps';
 import { StyleSheet,Image, Text, View, Dimensions, TextBase } from 'react-native';
+import { IconColor, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useQuery } from "react-apollo-hooks";
 import { gql } from "apollo-boost";
 import Loader from '../../../components/Loader';
 import {CATEGORYINFO_FRAGMENT} from '../../../fragments';
 import ProfileMapPresenter from '../../Tabs/Profile/ProfileMapPresenter';
 import styled from "styled-components";
+import { Dropdown } from 'react-native-material-dropdown';
 
 const Touchable = styled.TouchableOpacity`
     margin-bottom : 20px;
@@ -18,10 +20,12 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'flex-end',
-        justifyContent: 'flex-end',
+        justifyContent: 'flex-start',
     },
     subContainer: {
-        justifyContent : 'flex-start'
+        marginTop: 10,
+        marginRight: 10,
+        alignItems: 'flex-end'
     }
 })
 
@@ -62,6 +66,18 @@ const ProfileMapContainer=({navigation, userId})=> {
                 <>
                 <ProfileMapPresenter marker={data.seeCategory[mapIdx]} region={region} navigation={navigation}/>
                 <View style={styles.subContainer}>
+                    <Touchable onPress={()=>console.log(data.seeCategory)}>
+                        <MaterialCommunityIcons
+                        color={IconColor}
+                        size={25}
+                        name={"dots-horizontal"}
+                        />
+                    </Touchable>
+                    <Dropdown
+                        label='Favorite Fruit'
+                        data={data.seeCategory}
+                        
+                    />
                     {data.seeCategory.map((category, index)=>(
                         <Touchable
                         key={index}
@@ -73,6 +89,7 @@ const ProfileMapContainer=({navigation, userId})=> {
                         </Touchable>
                     ))}
                 </View>
+                
                 </>
             )}
             </>

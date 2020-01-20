@@ -54,7 +54,6 @@ const MyPick=({navigation})=>{
   const { loading, data, refetch } = useQuery(GET_PICK);
   const [confirm, setConfirm] = useState(false);
 
-  
   return(
     <View style={styles.container}>
        {loading ? <Loader/> : <MapViewPick navigation={navigation} marker={data.seePick} region={region}/>}

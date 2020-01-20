@@ -116,20 +116,39 @@ export default class MapViewPick extends React.Component {
     
     renderCarouselItem = ({item})=>(
         <Container>
-            <Text style={styles.cardTitle}>{item.post.storeName}</Text>
+            <TouchableOpacity onPress={() => this.state.navigation.navigate("StoreDetail", { storeName: item.post.storeName, placeId:item.post.placeId })}>
+              <Text style={styles.cardTitle}>{item.post.storeName}</Text>
+            </TouchableOpacity>
+
             <View style={styles.viewSub}>
               <View style={styles.imageCon}>
-                    <Image source={{uri:item.post.files[0].url}}
-                          style={styles.cardImage, {width:130, height:130, borderRadius:10}}
-                          />
+                <TouchableOpacity onPress={() => this.state.navigation.navigate("StoreDetail", { storeName: item.post.storeName, placeId:item.post.placeId })}>
+
+                  <Image source={{uri:item.post.files[0].url}}
+                        style={styles.cardImage, {width:130, height:130, borderRadius:10}}
+                        />
+                </TouchableOpacity>
               </View>
               <View style={styles.viewDetailContiner}>
 
                 <View style={styles.viewSubDetail}>
-                  <Image 
+                  {item.post.user.avatar==null ? 
+                    <Image
                     style={{height: 40, width: 40, borderRadius:19, marginRight:5}}
-                    source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}/>
-                    <Text style={styles.cardUsername}>{item.post.user.username}</Text>
+                      source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}
+                    />
+                  :
+                    <Image
+                      style={{height: 40, width: 40, borderRadius:19, marginRight:5}}
+                      source={{uri: item.post.user.avatar}}
+                    />
+                  }
+                    <TouchableOpacity
+                    onPress={() =>
+                      this.state.navigation.navigate("UserDetail", { id: item.post.user.id, username: item.post.user.username })
+                    }>
+                      <Text style={styles.cardUsername}>{item.post.user.username}</Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.viewSubRating}>
                   <Stars

@@ -95,7 +95,8 @@ const SearchAccountBox = ({ navigation, username, firstName, avatar, id, isSelf,
       }
     } catch (e) {}
   };
-
+  if(isSelf){ return null }
+  else {
   return (
     <Container>
       <TouchableOpacity onPress={() => {
@@ -128,7 +129,7 @@ const SearchAccountBox = ({ navigation, username, firstName, avatar, id, isSelf,
       </Button>
     </Container>
   );
-};
+}};
 
 SearchAccountBox.propTypes = {
   id: PropTypes.string.isRequired,

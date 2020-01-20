@@ -83,7 +83,6 @@ class ProfileMapPresenter extends React.Component {
                 initialRegion={this.state.region}>
                 {this.state.marker.posts.map((marker, index)=>{
                     if(Platform.OS === "ios"){
-                        console.log("hihi")
                         return(
                             <Marker 
                             key={index}

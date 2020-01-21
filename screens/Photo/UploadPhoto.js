@@ -1,7 +1,7 @@
 import React,{useState, useEffect, Component} from "react";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
-import {Text,Image,ScrollView,Modal,TouchableOpacity, TextInput, Platform, TouchableHighlight, Alert, ActivityIndicator, Keyboard, TouchableWithoutFeedback, } from 'react-native';
+import {Text,Image,ScrollView,TouchableOpacity, TextInput, Platform, TouchableHighlight, Alert, ActivityIndicator, Keyboard, TouchableWithoutFeedback, } from 'react-native';
 import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line, LightPink } from '../../components/Color';
 import {FontAwesome, EvilIcons, AntDesign} from "@expo/vector-icons";
 import Stars from 'react-native-stars';
@@ -14,6 +14,7 @@ import constants from "../../constants";
 import useInput from '../../hooks/useInput';
 import { FEED_QUERY } from "../Tabs/Home";
 import {ME} from '../Tabs/Profile/Profile';
+import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
 
 const UPLOAD = gql`
   mutation upload($caption: String, $storeName: String!, $files: [String!], $storeLocation: String!, $rating: Float!, $storeLat: Float, $storeLong: Float, $placeId: String, $category: String!, $details:[String!]){
@@ -29,6 +30,7 @@ const UPLOAD = gql`
             }
 }
 `;
+
 const Container = styled.View`
   flex : 1;
   padding : 10px;
@@ -174,7 +176,13 @@ const Button = styled.TouchableOpacity`
   background-color: ${props=>props.backgroundColor};
   width : ${constants.width /3.7};
 `;
-
+export const CREATE_CATEGORY= gql`
+  mutation createCategory($categoryName:String!){
+    createCategory(categoryName: $categoryName){
+      id
+    }
+  }
+`
 export const seeCategory = gql`
   
   query seeCategory($userId: String){
@@ -210,11 +218,13 @@ export default ({navigation}) => {
   const [isModalPick, setModalPick] = useState(false);
   const [selectCate, setSelectCate] = useState();
   const [pickedName, setPickedName] = useState();
+  const [newCategory, setNewCategory] = useState(false);
   //const [fileUrl, setFileUrl] = useState([]);
-  
+  const categoryInput = useInput();
 
-  const [modalAndTitle, setmodalAndTitle] = useState(false);
-
+  const [createCategory] = useMutation(CREATE_CATEGORY, {
+    refetchQueries: ()=>[{query: seeCategory}]
+  });
   const [uploadMutation] = useMutation(UPLOAD, {
     refetchQueries: ()=>[{query: FEED_QUERY},{query: ME }]
   });
@@ -266,7 +276,6 @@ export default ({navigation}) => {
       if(upload.id){
         navigation.navigate("TabNavigation");
       }
-      console.log(upload);
 
     } catch (e) {
       console.log(e)
@@ -295,6 +304,28 @@ export default ({navigation}) => {
     nameValue(categoryName);
     togglePicker(isModalPick);
   }
+
+  const handleCreate = async ()=>{
+    if(categoryInput.value === undefined){
+        Alert.alert("한 글자는 쓰지?");
+    } else{
+        await setIsLoading(true);
+        try {
+            
+            await createCategory({
+            variables: {
+                categoryName: categoryInput.value
+            }
+            });
+        } catch (e) {
+            console.log(e)
+        } finally{
+            await setIsLoading(false);
+            await setNewCategory(false);
+            categoryInput.setValue("")
+        }
+    }
+}
   return(
     <DismissKeyboard>
     <Container>
@@ -417,28 +448,57 @@ export default ({navigation}) => {
           </UploadBt>
       </MoreInfoCon>
       
-      <Modal visible={isModalPick} transparent={true} animationType="slide" onRequestClose={()=>console.log(cancle)}>
-        <ViewModal style={{padding:10}}>
+      <Modal 
+      visible={isModalPick}
+      onTouchOutside={() => togglePicker(isModalPick)}
+      width={0.8}
+      onSwipeOut={() => togglePicker(isModalPick)}
+      >
+          <ModalContent>
           
             <ViewText>카테고리</ViewText>
             <Hr lineStyle={{ backgroundColor : Line}}/>
-
+            <ScrollView height={200}>
             {data && data.seeCategory.map((value, index)=>{
               return <TouchableHighlight key={index } onPress={()=>pickValue(value.id, value.categoryName)} style={{paddingTop:4, paddingBottom:4}}>
                 <CategoryName>{value.categoryName}</CategoryName>
               </TouchableHighlight>
             })}
-            
-            <View/>
-            <TouchableHighlight onPress={()=>togglePicker(isModalPick)} style={{paddingTop:4, paddingBottom:4}}>
-              <Text style={{color:mainPink, fontSize:20}}>카테고리 추가하기</Text>
-            </TouchableHighlight>
+            </ScrollView>
+          </ModalContent>
 
-            <TouchableHighlight onPress={()=>togglePicker(isModalPick)} style={{paddingTop:4, paddingBottom:4}}>
-              <Text style={{color:Grey, fontSize:18}}>Cancle</Text>
-            </TouchableHighlight>
+          <ModalFooter>
+            <ModalButton onPress={()=>setNewCategory(true)} text="카테고리 추가하기" />
 
-          </ViewModal>
+            <ModalButton onPress={()=>togglePicker(isModalPick)} text="취소" />
+
+          </ModalFooter>
+      </Modal>
+      <Modal
+          visible={newCategory}
+          onTouchOutside={() => setNewCategory(false)}
+          width={0.8}
+          onSwipeOut={() => setNewCategory(false)}
+      >
+          <ModalContent>
+          <TextInput 
+              onChangeText={categoryInput.onChange}
+              placeholder={"새 카테고리 이름"}
+              placeholderTextColor={TINT_COLOR}/>
+          
+          </ModalContent>
+          
+          <ModalFooter>
+          {!isloading ? (
+          <ModalButton
+              text="확인"
+              onPress={()=>handleCreate()}
+          />) : <Loader/> }
+          <ModalButton
+              text= "취소"
+              onPress={()=>setNewCategory(false)}
+              />
+          </ModalFooter>
       </Modal>
     </Container>
     </DismissKeyboard>

@@ -115,7 +115,7 @@ const EditProfile=({
 
   const changePicture = async() => {
     try {
-      navigation.navigate("ProfilePicture", {id, username, avatar, fullName, categoryCount, category, bio, email});
+      navigation.navigate("ProfilePicture", {id, username, avatar, bio, email});
     } catch (e) {
       console.log(e)
     } finally {

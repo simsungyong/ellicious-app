@@ -39,7 +39,6 @@ export default ({navigation}) => {
   const id = navigation.getParam("id");
   const username =  navigation.getParam("username");
   const avatar =  navigation.getParam("avatar");
-  const fullName =  navigation.getParam("fullName");
   const category =  navigation.getParam("category");
   const categoryCount =  navigation.getParam("categoryCount");
   const bio =  navigation.getParam("bio");
@@ -101,7 +100,7 @@ export default ({navigation}) => {
             "content-type" : "multipart/form-data"
           }
         });
-        navigation.navigate("EditProfile", {id, username, avatar: temp[0], fullName, categoryCount, category, bio, email})
+        navigation.navigate("EditProfile", {id, username, avatar: temp[0], bio, email})
       } catch (e) {
         console.log(e)
       } finally{

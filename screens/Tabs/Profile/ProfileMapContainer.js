@@ -67,6 +67,14 @@ const GET_CATEGORYINFO = gql`
     ${CATEGORYINFO_FRAGMENT}
 `;
 
+const DELETE_CATEGORY = gql`
+mutation editCategory($id: String!){
+    editCategory(id: $id, action: DELETE){
+        id
+    }
+}
+    `
+
 export const CREATE_CATEGORY= gql`
   mutation createCategory($categoryName:String!){
     createCategory(categoryName: $categoryName){
@@ -90,13 +98,36 @@ const ProfileMapContainer=({navigation, userId})=> {
     const [createCategory] = useMutation(CREATE_CATEGORY, {
         refetchQueries: ()=>[{query: GET_CATEGORYINFO, variables:{userId:userId}}]
       });
-    
+
+    const [deleteCategory] = useMutation(DELETE_CATEGORY, {
+        refetchQueries: ()=>[{query: GET_CATEGORYINFO, variables:{userId:userId}}]
+      });
+
+
     const handleIndex = async (index) => {
         await setmodalAndTitle(false)
         await setConform(true)
         await setIndex(index)
         await setConform(false)
     }
+
+    const handleDelete = async (id)=>{
+        await setIsLoading(true);
+        try {
+            await deleteCategory({
+                variables:{
+                    id: id
+                }
+            });
+        } catch (e) {
+            console.log(e);
+        } finally {
+            await setIsLoading(false);
+            await setDelCategory(false);
+        }
+    }
+
+
     const handleCreate = async ()=>{
         if(categoryInput.value === undefined){
             Alert.alert("한 글자는 쓰지?");
@@ -155,9 +186,33 @@ const ProfileMapContainer=({navigation, userId})=> {
                                     <ModalButton
                                         text={"삭제"}
                                         textStyle={{color:PointPink}}
-                                        onPress={() => setDelCategory(true)}
+                                        onPress={()=>setDelCategory(true)}
                                     />
                                 </ModalDelContainer>
+                                <Modal
+                                visible={delCategory}
+                                onTouchOutside={() => setDelCategory(false)}
+                                width={0.8}
+                                onSwipeOut={() => setDelCategory(false)}
+                            >
+                                <ModalContent>
+                                    <Text>
+                                        삭제하시면 카테고리에 포함 되어있던 포스트가 모두 사라집니다. 그래서 삭제하시겠습니까? 
+                                    </Text>   
+                                </ModalContent>
+                                
+                                <ModalFooter>
+                                {!isloading ? (
+                                <ModalButton
+                                    text="확인"
+                                    onPress={()=>handleDelete(category.id)}
+                                />) : <Loader/> }
+                                <ModalButton
+                                    text= "취소"
+                                    onPress={()=>setDelCategory(false)}
+                                    />
+                                </ModalFooter>
+                                </Modal>
                             </ModalContainer>
                         ))}
                         </ScrollView>
@@ -200,30 +255,7 @@ const ProfileMapContainer=({navigation, userId})=> {
                             />
                         </ModalFooter>
                     </Modal>
-                    <Modal
-                        visible={delCategory}
-                        onTouchOutside={() => setDelCategory(false)}
-                        width={0.8}
-                        onSwipeOut={() => setDelCategory(false)}
-                    >
-                        <ModalContent>
-                        <Text>
-                            삭제하시면 카테고리에 포함 되어있던 포스트가 모두 사라집니다. 그래서 삭제하시겠습니까? 
-                        </Text>   
-                        </ModalContent>
-                        
-                        <ModalFooter>
-                        {!isloading ? (
-                        <ModalButton
-                            text="확인"
-                            //onPress={handleCreate}
-                        />) : <Loader/> }
-                        <ModalButton
-                            text= "취소"
-                            onPress={()=>setDelCategory(false)}
-                            />
-                        </ModalFooter>
-                    </Modal>
+                    
                 </View>
                 </>
             )}

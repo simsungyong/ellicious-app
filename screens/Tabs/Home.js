@@ -10,7 +10,7 @@ import {BG_COLOR, BG_POST_COLOR} from "../../components/Color";
 import { POST_FRAGMENT } from "../../fragments";
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-/*
+
 export const FEED_QUERY = gql`
   {
     seeFeed {
@@ -19,8 +19,8 @@ export const FEED_QUERY = gql`
   }
   ${POST_FRAGMENT}
 `;  
-*/
 
+/*
 export const FEED_QUERY = gql`
   query seeFeed($pageNumber: Int!, $items: Int!){
     seeFeed(pageNumber: $pageNumber, items: $items){
@@ -29,7 +29,7 @@ export const FEED_QUERY = gql`
   }
   ${POST_FRAGMENT}
 `
-
+*/
 const View = styled.View`
   justify-content: center;
   align-items: center;
@@ -79,7 +79,15 @@ export default () => {
   }
 
   return (
-    
+    <Container>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={refresh}/>
+        }>
+        {loading ? (<Loader/>): (data && data.seeFeed && data.seeFeed.map(post=> <Post key={post.id}{...post} />))}
+      </ScrollView>
+    </Container>
+     /*
       loading ? <Loader/> : (
       <FlatList
         data={data.seeFeed}
@@ -93,21 +101,10 @@ export default () => {
             <Post {...item}/>
           )
         }}/>
+        
         )
+    */
     
-    
 
-
-
-    /*
-    <Container>
-      <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={refresh}/>
-        }>
-        {loading ? (<Loader/>): (data && data.seeFeed && data.seeFeed.map(post=> <Post key={post.id}{...post} />))}
-      </ScrollView>
-    </Container>
-  */
   );
 }

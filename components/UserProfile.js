@@ -164,6 +164,7 @@ const Scene = ({ index, posts, userId }) => (
             
             {
             posts && posts.map(p =>
+             
               <SquarePhoto key={p.id} {...p} />
             )}
           </View>

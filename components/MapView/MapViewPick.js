@@ -14,7 +14,7 @@ import {
 import styled from "styled-components";
 
 import Stars from 'react-native-stars';
-import {FontAwesome, EvilIcons} from "@expo/vector-icons";
+import {FontAwesome, EvilIcons,MaterialCommunityIcons} from "@expo/vector-icons";
 import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line } from '../Color';
 import MapView, { PROVIDER_GOOGLE,Marker, Callout, Circle } from "react-native-maps";
 import { Platform } from "@unimodules/core";
@@ -116,39 +116,20 @@ export default class MapViewPick extends React.Component {
     
     renderCarouselItem = ({item})=>(
         <Container>
-            <TouchableOpacity onPress={() => this.state.navigation.navigate("StoreDetail", { storeName: item.post.storeName, placeId:item.post.placeId })}>
-              <Text style={styles.cardTitle}>{item.post.storeName}</Text>
-            </TouchableOpacity>
-
+            <Text style={styles.cardTitle}>{item.post.storeName}</Text>
             <View style={styles.viewSub}>
               <View style={styles.imageCon}>
-                <TouchableOpacity onPress={() => this.state.navigation.navigate("StoreDetail", { storeName: item.post.storeName, placeId:item.post.placeId })}>
-
-                  <Image source={{uri:item.post.files[0].url}}
-                        style={styles.cardImage, {width:130, height:130, borderRadius:10}}
-                        />
-                </TouchableOpacity>
+                    <Image source={{uri:item.post.files[0].url}}
+                          style={styles.cardImage, {width:130, height:130, borderRadius:10}}
+                          />
               </View>
               <View style={styles.viewDetailContiner}>
 
                 <View style={styles.viewSubDetail}>
-                  {item.post.user.avatar==null ? 
-                    <Image
+                  <Image 
                     style={{height: 40, width: 40, borderRadius:19, marginRight:5}}
-                      source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}
-                    />
-                  :
-                    <Image
-                      style={{height: 40, width: 40, borderRadius:19, marginRight:5}}
-                      source={{uri: item.post.user.avatar}}
-                    />
-                  }
-                    <TouchableOpacity
-                    onPress={() =>
-                      this.state.navigation.navigate("UserDetail", { id: item.post.user.id, username: item.post.user.username })
-                    }>
-                      <Text style={styles.cardUsername}>{item.post.user.username}</Text>
-                    </TouchableOpacity>
+                    source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}/>
+                    <Text style={styles.cardUsername}>{item.post.user.username}</Text>
                 </View>
                 <View style={styles.viewSubRating}>
                   <Stars
@@ -220,8 +201,10 @@ export default class MapViewPick extends React.Component {
                         //ref={ref=>this.state.markers[index] = ref}
                         >
                         <Animated.View style={opacityStyle}>
-                            <Image source={{uri:marker.post.files[0].url}}
-                                    style={styles.markerImage}/>
+                                <MaterialCommunityIcons
+                                        name={"map-marker-outline"}
+                                        size={34}
+                                        color={PointPink}/>
                         </Animated.View>
                         </Marker> )
                         })}

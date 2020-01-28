@@ -14,27 +14,34 @@ import {
 } from "react-native";
 import styled from "styled-components";
 import Stars from 'react-native-stars';
-import {FontAwesome, EvilIcons} from "@expo/vector-icons";
-import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line } from '../../../components/Color';
+import {FontAwesome, EvilIcons, MaterialCommunityIcons} from "@expo/vector-icons";
+import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line , LightPink} from '../../../components/Color';
 import { PROVIDER_GOOGLE,Marker, Callout, Circle } from "react-native-maps";
 import MapView from 'react-native-map-clustering';
-import Carousel from 'react-native-snap-carousel';
+import Modal from 'react-native-modalbox';
 import { withNavigation } from "react-navigation";
+
+const Container = styled.View`
+padding : 10px;
+background-color : 'rgba(0,0,0,0.6)'
+border-radius : 24;
+
+`;
+const ModalContainer =styled.View`
+  padding: 5px;
+  flex-direction: row;
+  align-items: center;  
+  padding : 5px;
+`;
+
 
 class ProfileMapPresenter extends React.Component {
     
-    state = {
-        
-        coordinate:{
-            latitude:0,
-            longitude:0
-        }
-    }
     constructor(props) {
         super(props);
         const {navigation} = props;
         const {marker, region} = props;
-        this.state = {marker, region, navigation};
+        this.state = {marker, region, navigation, isClick:false};
     }
 
     
@@ -60,31 +67,92 @@ class ProfileMapPresenter extends React.Component {
         )
     }
 
-    /*onMarkerPressed=(marker,index)=>{
-        this._map.animateToRegion({
-            latitude: marker.posts[index].storeLat,
-            longitude: marker.posts[index].storeLong,
-            latitudeDelta: 0.047864195044303443,
-            longitudeDelta: 0.0540142817690068
-        })
+    animate(coordinate){
+        //console.log("로그"+this.mapView.state)
+        let newRegion = {
+             latitude: coordinate.storeLat,
+             longitude: coordinate.storeLong,
+             
+             //latitudeDelta: this.state.region.latitudeDelta - this.state.region.latitudeDelta/2,
+             //longitudeDelta: this.state.region.longitudeDelta - this.state.region.longitudeDelta/2,
+         };
+         //this.mapView.root.animateToRegion(newRegion,2000);
+     }
 
-    }*/
+     clickMarker(marker){
+         console.log(marker.storeName)
+     }
+    
+    
 
 
 
     render(){
         return (
             <View style={styles.container}>
-                <MapView initialRegion={this.state.region} style={{flex:1}}>
-                    {
-                        this.state.marker.posts.map((marker, index)=>{
-                            <Marker key={index} 
-                            coordinate={{latitude: marker.storeLat, longitude: marker.storeLong}}/>
-                        })
-                    }
-                </MapView>
-            
-                
+                <MapView
+                mapRef={(ref)=>mapView=ref}
+                initialRegion={this.state.region}
+                style={{flex:1}} 
+                showsUserLocation={true}>
+                    {this.state.marker.posts.map((p,index)=>{
+                        return(
+                            <Marker key={index}
+                            coordinate = {{latitude: p.storeLat, longitude: p.storeLong}}
+                            onPress={()=>this.setState({isClick:true})}
+
+                            //onPress={()=>{this.setState({isClick:true})}}
+                            >
+                            <View style={styles.ratingBox}>
+                                <MaterialCommunityIcons
+                                        name={"map-marker-outline"}
+                                        size={34}
+                                        color={PointPink}/>
+                            
+                                <View style={styles.viewSubRating}>
+                                    <Stars
+                                        default={p.rating}
+                                        count={5}
+                                        disabled={true}
+                                        half={true}
+                                        fullStar={<FontAwesome
+                                            color={PointPink}
+                                            size={10}
+                                            name={"star"}
+                                        />}
+                                        emptyStar={<FontAwesome
+                                            color={PointPink}
+                                            size={10}
+                                            name={"star-o"}
+                                        />}
+                                        halfStar={<FontAwesome
+                                            color={PointPink}
+                                            size={10}
+                                            name={"star-half-empty"}
+                                        />}
+                                        />
+                                        </View>
+                                    </View>
+                                    
+                            </Marker>
+                            
+  
+                        )
+                    })}
+                    </MapView>
+                    <Modal
+                                onClosed={()=>this.setState({isClick:false})}
+                                isOpen={this.state.isClick}
+                                position='bottom'
+                                coverScreen={true}
+                                style={{height : 200, borderBottomLeftRadius:20,borderTopRightRadius: 20, borderTopLeftRadius:20, borderBottomRightRadius:20}}
+                                backdrop={true}
+                                swipeToClose={true}
+                                >
+                            <ModalContainer>
+                            </ModalContainer>
+                    </Modal>
+                    
             </View>
 
         )
@@ -120,17 +188,16 @@ const styles = StyleSheet.create({
     viewSub:{
         flexDirection:'row'
     },
-    ratingCard:{
-        color:"white",
-        fontSize:14,
-        alignSelf:'center',
-        marginBottom:10
+    ratingBox:{
+        alignItems: "center",
+        justifyContent: "center"
     
     },
     cardImage:{
         height:120,
         width:300,
         bottom:0,
+        color:"red",
         position:'absolute',
         borderBottomLeftRadius:24,
         borderBottomRightRadius:24
@@ -141,15 +208,20 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         marginBottom:10
     },
+    viewSubRating:{
+        flexDirection:'row',
+        alignItems: "center",
+        justifyContent: "center"
+      },
     markerImage:{
-        width:30,
-        height:30,
+        width:32,
+        height:32,
         opacity:1,
         borderWidth:2,
-        borderBottomLeftRadius:10,
-        borderBottomRightRadius:10,
-        borderTopLeftRadius:10,
-        borderTopRightRadius:10,
+        borderBottomLeftRadius:15,
+        borderBottomRightRadius:15,
+        borderTopLeftRadius:15,
+        borderTopRightRadius:15,
 
     }
 })

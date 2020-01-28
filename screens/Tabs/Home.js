@@ -11,7 +11,7 @@ import { POST_FRAGMENT } from "../../fragments";
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 
-export const FEED_QUERY = gql`
+/*export const FEED_QUERY = gql`
   {
     seeFeed {
       ...PostParts
@@ -19,8 +19,8 @@ export const FEED_QUERY = gql`
   }
   ${POST_FRAGMENT}
 `;  
+*/
 
-/*
 export const FEED_QUERY = gql`
   query seeFeed($pageNumber: Int!, $items: Int!){
     seeFeed(pageNumber: $pageNumber, items: $items){
@@ -29,7 +29,7 @@ export const FEED_QUERY = gql`
   }
   ${POST_FRAGMENT}
 `
-*/
+
 const View = styled.View`
   justify-content: center;
   align-items: center;

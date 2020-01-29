@@ -7,6 +7,7 @@ import {
   ScrollView,
   Animated,
   Image,
+  TextInput,
   Dimensions,
   TouchableOpacity,
   Button,
@@ -18,7 +19,7 @@ import {FontAwesome, EvilIcons, MaterialCommunityIcons} from "@expo/vector-icons
 import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line , LightPink} from '../../../components/Color';
 import { PROVIDER_GOOGLE,Marker, Callout, Circle } from "react-native-maps";
 import MapView from 'react-native-map-clustering';
-import Modal from 'react-native-modalbox';
+import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
 import { withNavigation } from "react-navigation";
 
 const Container = styled.View`
@@ -41,7 +42,7 @@ class ProfileMapPresenter extends React.Component {
         super(props);
         const {navigation} = props;
         const {marker, region} = props;
-        this.state = {marker, region, navigation, isClick:false};
+        this.state = {marker, region, navigation, isClick:false, indexNum:-1};
     }
 
     
@@ -73,14 +74,21 @@ class ProfileMapPresenter extends React.Component {
              latitude: coordinate.storeLat,
              longitude: coordinate.storeLong,
              
-             //latitudeDelta: this.state.region.latitudeDelta - this.state.region.latitudeDelta/2,
-             //longitudeDelta: this.state.region.longitudeDelta - this.state.region.longitudeDelta/2,
+             latitudeDelta: this.state.region.latitudeDelta/2,
+             longitudeDelta: this.state.region.longitudeDelta/2,
          };
-         //this.mapView.root.animateToRegion(newRegion,2000);
+         mapView.animateToRegion(newRegion,2000);
      }
 
-     clickMarker(marker){
-         console.log(marker.storeName)
+     clickMarker(coordinate, index){
+        let newRegion = {
+            latitude: coordinate.storeLat,
+            longitude: coordinate.storeLong,
+            latitudeDelta: this.state.region.latitudeDelta/2,
+            longitudeDelta: this.state.region.longitudeDelta/2,
+        };
+         this.setState({indexNum:index, isClick:true})
+         mapView.animateToRegion(newRegion,2000);
      }
     
     
@@ -92,14 +100,15 @@ class ProfileMapPresenter extends React.Component {
             <View style={styles.container}>
                 <MapView
                 mapRef={(ref)=>mapView=ref}
-                initialRegion={this.state.region}
+                initialRegion={{latitude: 36.519959, longitude:127.889604,
+                                latitudeDelta: 3, longitudeDelta:3}}
                 style={{flex:1}} 
                 showsUserLocation={true}>
                     {this.state.marker.posts.map((p,index)=>{
                         return(
                             <Marker key={index}
                             coordinate = {{latitude: p.storeLat, longitude: p.storeLong}}
-                            onPress={()=>this.setState({isClick:true})}
+                            onPress={()=>this.clickMarker(p,index)}
 
                             //onPress={()=>{this.setState({isClick:true})}}
                             >
@@ -140,18 +149,25 @@ class ProfileMapPresenter extends React.Component {
                         )
                     })}
                     </MapView>
-                    <Modal
-                                onClosed={()=>this.setState({isClick:false})}
-                                isOpen={this.state.isClick}
-                                position='bottom'
-                                coverScreen={true}
-                                style={{height : 200, borderBottomLeftRadius:20,borderTopRightRadius: 20, borderTopLeftRadius:20, borderBottomRightRadius:20}}
-                                backdrop={true}
-                                swipeToClose={true}
-                                >
-                            <ModalContainer>
-                            </ModalContainer>
-                    </Modal>
+                    {this.state.indexNum > -1 ? (
+                    <Modal.BottomModal
+                        visible={this.state.isClick}
+                        onTouchOutside={() =>this.setState({isClick:false})}
+                        width={0.1}
+                        height={170}
+                        onSwipeOut={() => this.setState({isClick:false})}
+                    >   
+                        <ModalTitle
+                        title={this.state.marker.posts[this.state.indexNum].storeName}
+                        />
+                        <ModalContent>
+                        <Image source={{uri:this.state.marker.posts[this.state.indexNum].files[0].url}}
+                          style={styles.cardImage, {width:80, height:80, borderRadius:10}}
+                          />
+                        </ModalContent>
+                        
+                    </Modal.BottomModal>
+                    ): null }
                     
             </View>
 

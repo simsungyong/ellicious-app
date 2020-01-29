@@ -44,7 +44,7 @@ class ProfileMapPresenter extends React.Component {
         const {marker, region} = props;
         this.state = {marker, region, navigation, isClick:false, indexNum:-1};
     }
-
+    
     
 
     componentDidMount(){
@@ -84,9 +84,10 @@ class ProfileMapPresenter extends React.Component {
         let newRegion = {
             latitude: coordinate.storeLat,
             longitude: coordinate.storeLong,
-            latitudeDelta: this.state.region.latitudeDelta/2,
-            longitudeDelta: this.state.region.longitudeDelta/2,
+            latitudeDelta: this.state.region.latitudeDelta/20,
+            longitudeDelta: this.state.region.longitudeDelta/20,
         };
+
          this.setState({indexNum:index, isClick:true})
          mapView.animateToRegion(newRegion,2000);
      }
@@ -149,7 +150,7 @@ class ProfileMapPresenter extends React.Component {
                         )
                     })}
                     </MapView>
-                    {this.state.indexNum > -1 ? (
+                    {this.state.indexNum >-1 ? (
                     <Modal.BottomModal
                         visible={this.state.isClick}
                         onTouchOutside={() =>this.setState({isClick:false})}

@@ -54,13 +54,15 @@ export default ({ navigation }) => {
   const lNameInput = useInput("");
   const emailInput = useInput(navigation.getParam("email", ""));
   const usernameInput = useInput("");
+  const cellPhoneInput = useInput("");
   const [loading, setLoading] = useState(false);
   const [createAccountMutation] = useMutation(CREATE_ACCOUNT, {
     variables: {
       username: usernameInput.value,
       email: emailInput.value,
       firstName: fNameInput.value,
-      lastName: lNameInput.value
+      lastName: lNameInput.value,
+      cellPhone: cellPhoneInput.value
     }
   });
   const handleSingup = async () => {
@@ -68,6 +70,7 @@ export default ({ navigation }) => {
     const { value: fName } = fNameInput;
     const { value: lName } = lNameInput;
     const { value: username } = usernameInput;
+    const { value: cellPhoneInput } = cellPhoneInput;
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!emailRegex.test(email)) {
       return Alert.alert("That email is invalid");
@@ -80,6 +83,9 @@ export default ({ navigation }) => {
     }
     if (username === "") {
       return Alert.alert("Invalid username");
+    }
+    if (username === "") {
+      return Alert.alert("Invalid cellphone number");
     }
     try {
       setLoading(true);
@@ -135,6 +141,14 @@ export default ({ navigation }) => {
             returnKeyType="send"
             autoCorrect={false}
             label = "User Name"
+          />
+          <AuthInput
+            {...cellPhoneInput}
+            placeholder="cellphone number"
+            returnKeyType="send"
+            autoCorrect={false}
+            keyboardType="number-pad"
+            label = "CellPhone"
           />
         </InfoCon>
         <View>

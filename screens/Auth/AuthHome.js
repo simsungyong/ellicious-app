@@ -5,13 +5,15 @@ import constants from "../../constants";
 import AuthButton from "../../components/AuthButton";
 import AuthInput from "../../components/AuthInput";
 import { useMutation } from "react-apollo-hooks";
-import { LOG_IN, CREATE_ACCOUNT } from "./AuthQueries";
+import { LOG_IN, CREATE_ACCOUNT, CONFIRM_SECRET } from "./AuthQueries";
 import { Alert } from "react-native";
 import {mainPink, TINT_COLOR, PointPink, BG_COLOR } from "../../components/Color";
 import { SocialIcon } from 'react-native-elements';
 import useInput from "../../hooks/useInput";
 import * as Facebook from "expo-facebook";
 import * as Google from 'expo-google-app-auth';
+import { useLogIn } from "../../AuthContext";
+
 
 const Container = styled.View`
   justify-content: center;
@@ -103,48 +105,63 @@ export default ({ navigation }) => {
   const fNameInput = useInput("");
   const lNameInput = useInput("");
   const emailInput = useInput(navigation.getParam("email", ""));
+  const passwordInput = useInput("")
   const usernameInput = useInput("");
+  const logIn = useLogIn();
 
   const [loading, setLoading] = useState(false);
 
-  const [createAccountMutation] = useMutation(CREATE_ACCOUNT, {
-    variables: {
-      username: usernameInput.value,
-      email: emailInput.value,
-      firstName: fNameInput.value,
-      lastName: lNameInput.value
-    }
-  });
+  // const [createAccountMutation] = useMutation(CREATE_ACCOUNT, {
+  //   variables: {
+  //     username: usernameInput.value,
+  //     email: emailInput.value,
+  //     firstName: fNameInput.value,
+  //     lastName: lNameInput.value
+  //   }
+  // });
 
-  const [requestSecretMutation] = useMutation(LOG_IN, {
+  const [confirmSecretMutation] = useMutation(CONFIRM_SECRET, {
     variables: {
+      password: passwordInput.value,
       email: emailInput.value
     }
   });
 
+  // const [requestSecretMutation] = useMutation(LOG_IN, {
+  //   variables: {
+  //     email: emailInput.value
+  //   }
+  // });
+
 
   const handleLogin = async () => {
-    const { value } = emailInput;
+    const { value: email } = emailInput;
+    const { value: password } = passwordInput;
+
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (value === "") {
+    if (email === "") {
       return Alert.alert("Email can't be empty");
-    } else if (!value.includes("@") || !value.includes(".")) {
+    } else if (!email.includes("@") || !email.includes(".")) {
       return Alert.alert("Please write an email");
-    } else if (!emailRegex.test(value)) {
+    } else if (!emailRegex.test(email)) {
       return Alert.alert("That email is invalid");
     }
+    
     try {
       setLoading(true);
+      // const {
+      //   data: { requestSecret }
+      // } = await requestSecretMutation();
+
       const {
-        data: { requestSecret }
-      } = await requestSecretMutation();
-      if (requestSecret) {
-        // Alert.alert("Check your email");
-        navigation.navigate("Confirm", { email: value });
-        return;
+        data: { confirmSecret }
+      } = await confirmSecretMutation();
+
+
+      if (confirmSecret !== "" || confirmSecret !== false) {
+        logIn(confirmSecret);
       } else {
-        Alert.alert("Account not found");
-        return;
+        Alert.alert("계정 또는 비밀번호를 확인해주세요");
       }
     } catch (e) {
       console.log(e);
@@ -216,9 +233,13 @@ export default ({ navigation }) => {
     <ButtonContainer>
       <AuthInput
         {...emailInput}
-        /*placeholder="First name"*/
         autoCapitalize="words"
         label = "email"
+      />
+      <AuthInput
+        {...passwordInput}
+        autoCapitalize="words"
+        label = "password"
       />
       <AuthButton loading={loading} onPress={handleLogin} text="Login" />
 

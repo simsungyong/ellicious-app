@@ -16,11 +16,12 @@ import {
 import styled from "styled-components";
 import Stars from 'react-native-stars';
 import {FontAwesome, EvilIcons, MaterialCommunityIcons} from "@expo/vector-icons";
-import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line , LightPink} from '../../../components/Color';
+import { TINT_COLOR,IconColor, PointPink, StarColor,BG_COLOR, LightGrey, mainPink, Grey, Line , LightPink} from '../../../components/Color';
 import { PROVIDER_GOOGLE,Marker, Callout, Circle } from "react-native-maps";
 import MapView from 'react-native-map-clustering';
 import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
 import { withNavigation } from "react-navigation";
+import Star from '../../../components/Star';
 
 const Container = styled.View`
 padding : 10px;
@@ -34,7 +35,10 @@ const ModalContainer =styled.View`
   align-items: center;  
   padding : 5px;
 `;
-
+const SubContainer =styled.View`
+  padding: 5px;
+  align-items: center;  
+`;
 
 class ProfileMapPresenter extends React.Component {
     
@@ -74,8 +78,8 @@ class ProfileMapPresenter extends React.Component {
              latitude: coordinate.storeLat,
              longitude: coordinate.storeLong,
              
-             latitudeDelta: this.state.region.latitudeDelta/2,
-             longitudeDelta: this.state.region.longitudeDelta/2,
+             latitudeDelta: this.state.region.latitudeDelta/20,
+             longitudeDelta: this.state.region.longitudeDelta/20,
          };
          mapView.animateToRegion(newRegion,2000);
      }
@@ -89,7 +93,7 @@ class ProfileMapPresenter extends React.Component {
         };
 
          this.setState({indexNum:index, isClick:true})
-         mapView.animateToRegion(newRegion,2000);
+         mapView.animateToRegion(newRegion,1000);
      }
     
     
@@ -118,31 +122,9 @@ class ProfileMapPresenter extends React.Component {
                                         name={"map-marker-outline"}
                                         size={34}
                                         color={PointPink}/>
-                            
-                                <View style={styles.viewSubRating}>
-                                    <Stars
-                                        default={p.rating}
-                                        count={5}
-                                        disabled={true}
-                                        half={true}
-                                        fullStar={<FontAwesome
-                                            color={PointPink}
-                                            size={10}
-                                            name={"star"}
-                                        />}
-                                        emptyStar={<FontAwesome
-                                            color={PointPink}
-                                            size={10}
-                                            name={"star-o"}
-                                        />}
-                                        halfStar={<FontAwesome
-                                            color={PointPink}
-                                            size={10}
-                                            name={"star-half-empty"}
-                                        />}
-                                        />
-                                        </View>
-                                    </View>
+                                <Star rating={p.rating} size={10} color={PointPink}/>
+                                
+                            </View>
                                     
                             </Marker>
                             
@@ -162,9 +144,15 @@ class ProfileMapPresenter extends React.Component {
                         title={this.state.marker.posts[this.state.indexNum].storeName}
                         />
                         <ModalContent>
-                        <Image source={{uri:this.state.marker.posts[this.state.indexNum].files[0].url}}
-                          style={styles.cardImage, {width:80, height:80, borderRadius:10}}
-                          />
+                        <ModalContainer>
+                            <Image source={{uri:this.state.marker.posts[this.state.indexNum].files[0].url}}
+                            style={styles.cardImage, {width:80, height:80, borderRadius:10}}
+                            />
+                            <SubContainer>
+                                <Text>{this.state.marker.posts[this.state.indexNum].storeLocation.length > 25 ? `${this.state.marker.posts[this.state.indexNum].storeLocation.substring(0,23)}...` :this.state.marker.posts[this.state.indexNum].storeLocation}</Text>
+                                <Star rating={this.state.marker.posts[this.state.indexNum].rating} size={25} color={StarColor}/>
+                            </SubContainer>
+                         </ModalContainer>
                         </ModalContent>
                         
                     </Modal.BottomModal>

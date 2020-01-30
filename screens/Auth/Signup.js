@@ -69,7 +69,7 @@ export default ({ navigation }) => {
     }
   });
 
-  const { data } = useQuery(ID_CHECK, {
+  const { data: userAccount } = useQuery(ID_CHECK, {
     variables: {
       account: idInput.value
     },
@@ -82,9 +82,8 @@ export default ({ navigation }) => {
     } else {
       try {
         setCheck(true);
-        if(data) {
-          console.log(data.checkAccount)
-          if(!data.checkAccount) {
+        if(userAccount) {
+          if(!userAccount.checkAccount) {
             setConfirmAccount(true)
           } else {
             return Alert.alert("이미 존재하는 아이디입니다.");

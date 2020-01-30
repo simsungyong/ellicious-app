@@ -171,54 +171,54 @@ export default ({ navigation }) => {
     }
   };
 
-  const fbLogin = async () => {
-    try {
-      setLoading(true);
-      const { type, token } = await Facebook.logInWithReadPermissionsAsync(
-        "1849127108565501",
-        {
-          permissions: ["public_profile", "email"]
-        }
-      );
-      if (type === "success") {
-        const response = await fetch(
-          `https://graph.facebook.com/me?access_token=${token}&fields=id,last_name,first_name,email`
-        );
-        Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
-        const { email, first_name, last_name } = await response.json();
-        console.log(email)
-        setLoading(false);
-      } else {
-        // type === 'cancel'
-      }
-    } catch ({ message }) {
-      alert(`Facebook Login Error: ${message}`);
-    }
-  };
+  // const fbLogin = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const { type, token } = await Facebook.logInWithReadPermissionsAsync(
+  //       "1849127108565501",
+  //       {
+  //         permissions: ["public_profile", "email"]
+  //       }
+  //     );
+  //     if (type === "success") {
+  //       const response = await fetch(
+  //         `https://graph.facebook.com/me?access_token=${token}&fields=id,last_name,first_name,email`
+  //       );
+  //       Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
+  //       const { email, first_name, last_name } = await response.json();
+  //       console.log(email)
+  //       setLoading(false);
+  //     } else {
+  //       // type === 'cancel'
+  //     }
+  //   } catch ({ message }) {
+  //     alert(`Facebook Login Error: ${message}`);
+  //   }
+  // };
 
-  const googleLogin = async () => {
-    try {
-      setLoading(true);
-      const result = await Google.logInAsync({
-        iosClientId: "884516426746-mt2la4o92f6u7fgvr5opglt0conrebjl.apps.googleusercontent.com",
-        androidClientId: "884516426746-360kefsq27dgm0au8i1d52ff9bobgrkd.apps.googleusercontent.com",
-        scopes: ["profile", "email"]
-      });
-      if (result.type === "success") {
-        const user = await fetch("https://www.googleapis.com/userinfo/v2/me", {
-          headers: { Authorization: `Bearer ${result.accessToken}` }
-        });
-        const { email, family_name, given_name } = await user.json();
-        console.log(email)
-      } else {
-        return { cancelled: true };
-      }
-    } catch (e) {
-      console.log(e);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const googleLogin = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const result = await Google.logInAsync({
+  //       iosClientId: "884516426746-mt2la4o92f6u7fgvr5opglt0conrebjl.apps.googleusercontent.com",
+  //       androidClientId: "884516426746-360kefsq27dgm0au8i1d52ff9bobgrkd.apps.googleusercontent.com",
+  //       scopes: ["profile", "email"]
+  //     });
+  //     if (result.type === "success") {
+  //       const user = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+  //         headers: { Authorization: `Bearer ${result.accessToken}` }
+  //       });
+  //       const { email, family_name, given_name } = await user.json();
+  //       console.log(email)
+  //     } else {
+  //       return { cancelled: true };
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <Container>
@@ -243,12 +243,12 @@ export default ({ navigation }) => {
       />
       <AuthButton loading={loading} onPress={handleLogin} text="Login" />
 
-        <LoginButtonCon>
+        {/* <LoginButtonCon>
             <OtherLoginCon>
               <SocialIcon type="facebook" onPress={fbLogin} />
               <SocialIcon type="google" onPress={googleLogin} />
             </OtherLoginCon>
-        </LoginButtonCon>
+        </LoginButtonCon> */}
 
       <SignUpCon>
        <Text>계정이 없으신가요?</Text>

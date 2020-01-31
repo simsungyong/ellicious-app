@@ -23,13 +23,13 @@ export const CREATE_ACCOUNT = gql`
 `;
 
 export const ID_CHECK = gql`
-  query checkAccount($account: String!){
-    checkAccount(account: $account)
+  query checkAccount($cellPhone: String!){
+    checkAccount(phoneNum: $cellPhone)
   }
 `;
 
 export const CONFIRM_SECRET = gql`
-  mutation confirmSecret($id: String!, $password: String!) {
-    confirmSecret(password: $password, account: $id)
+  mutation confirmSecret($cellPhone: String!, $password: String!) {
+    confirmSecret(password: $password, phoneNum: $cellPhone)
   }
 `;

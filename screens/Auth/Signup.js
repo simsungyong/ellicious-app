@@ -52,63 +52,87 @@ const styles = StyleSheet.create({
 export default ({ navigation }) => {
   const fNameInput = useInput("");
   const lNameInput = useInput("");
-  const idInput = useInput("");
-  const usernameInput = useInput("");
+  // const idInput = useInput("");
   const cellPhoneInput = useInput("");
   const passwordInput = useInput("");
   const [loading, setLoading] = useState(false);
-  const [check, setCheck] = useState(false);
+  // const [check, setCheck] = useState(false);
+  const [checkPhone, setCheckPhone] = useState(false);
   const [confirmAccount, setConfirmAccount] = useState(false);
   const [createAccountMutation] = useMutation(CREATE_ACCOUNT, {
     variables: {
-      username: usernameInput.value,
-      id: idInput.value,
+      // id: idInput.value,
+      password: passwordInput.value,
+      // username: idInput.value,
       firstName: fNameInput.value,
       lastName: lNameInput.value,
-      cellPhone: cellPhoneInput.value
+      phoneNum: cellPhoneInput.value
     }
   });
 
   const { data: userAccount } = useQuery(ID_CHECK, {
     variables: {
-      account: idInput.value
+      cellPhone: cellPhoneInput.value
     },
-    skip: check
+    skip: checkPhone
   });
 
-  const confirmID = async () => {
-    if(idInput.value=="") {
-      return Alert.alert("아이디를 입력하세요");
-    } else {
-      try {
-        setCheck(true);
-        if(userAccount) {
-          if(!userAccount.checkAccount) {
-            setConfirmAccount(true)
-          } else {
-            return Alert.alert("이미 존재하는 아이디입니다.");
-          }
-        }
-      } catch (e) {
-        console.log(e);
-      } finally {
-        setCheck(false)
-      }
-    }
+  // const confirmID = async () => {
+  //   if(idInput.value=="") {
+  //     return Alert.alert("아이디를 입력하세요");
+  //   } else {
+  //     try {
+  //       setCheck(true);
+  //       if(userAccount) {
+  //         if(!userAccount.checkAccount) {
+  //           setConfirmAccount(true)
+  //         } else {
+  //           return Alert.alert("이미 존재하는 아이디입니다.");
+  //         }
+  //       }
+  //     } catch (e) {
+  //       console.log(e);
+  //     } finally {
+  //       setCheck(false)
+  //     }
+  //   }
+  // }
+
+  const confirmPhone = async () => {
+    if(cellPhoneInput.value=="") {
+      return Alert.alert("핸드폰 번호를 입력하세요");
+    } 
+    console.log(cellPhoneInput.value)
+    // else {
+    //   try {
+    //     setCheckPhone(true);
+    //     if(userAccount) {
+    //       if(!userAccount.checkAccount) {
+    //         setConfirmAccount(true)
+    //       } else {
+    //         return Alert.alert("이미 존재하는 아이디입니다.");
+    //       }
+    //     }
+    //   } catch (e) {
+    //     console.log(e);
+    //   } finally {
+    //     setCheckPhone(false)
+    //   }
+    // }
   }
 
   const handleSingup = async () => {
-    const { value: id } = idInput;
     const { value: fName } = fNameInput;
     const { value: lName } = lNameInput;
     const { value: password } = passwordInput;
-    const { value: username } = usernameInput;
-    const { value: cellPhoneInput } = cellPhoneInput;
-    if(!confirmAccount) {
-      return Alert.alert("아이디를 확인하세요");
-    }
-    if (id === "") {
-      return Alert.alert("I need id");
+    const { value: cellPhone } = cellPhoneInput;
+    // if(!confirmAccount) {
+    //   return Alert.alert("아이디를 확인하세요");
+    // }
+    if (password === "") {
+      return Alert.alert("비밀번호를 입력하세요");
+    } else if(password.length < 8) {
+      return Alert.alert("비밀번호를 8자이상 입력하세요");
     }
     if (fName === "") {
       return Alert.alert("I need first name");
@@ -119,7 +143,7 @@ export default ({ navigation }) => {
     if (username === "") {
       return Alert.alert("Invalid username");
     }
-    if (cellPhoneInput === "") {
+    if (cellPhone === "") {
       return Alert.alert("Invalid cellphone number");
     }
 
@@ -152,7 +176,7 @@ export default ({ navigation }) => {
           <View style = {styles.lineStyle} />
         </Title>
         <InfoCon>
-          <View flexDirection="row">
+          {/* <View flexDirection="row">
             <AuthInput
               {...idInput}
               placeholder="ID"
@@ -168,28 +192,26 @@ export default ({ navigation }) => {
               </TouchableOpacity>
             )}
             
-          </View>
+          </View> */}
+          <AuthInput
+            {...cellPhoneInput}
+            placeholder="cellphone number"
+            returnKeyType="send"
+            autoCorrect={false}
+            keyboardType="number-pad"
+            label = "CellPhone"
+          />
+          <TouchableOpacity onPress={() => confirmPhone()}>
+            <Text>확인</Text>
+          </TouchableOpacity>
           <AuthInput
             {...passwordInput}
             placeholder="Password"
             keyboardType="email-address"
             returnKeyType="send"
             autoCorrect={false}
-            label = "Password"
+            label = "Password(8자이상)"
           />
-          <View flexDirection="row">
-            <AuthInput
-              {...cellPhoneInput}
-              placeholder="cellphone number"
-              returnKeyType="send"
-              autoCorrect={false}
-              keyboardType="number-pad"
-              label = "CellPhone"
-            />
-            <TouchableOpacity onPress={() => {console.log("cellphone")}}>
-              <Text>확인</Text>
-            </TouchableOpacity>
-          </View>
           <AuthInput
             {...fNameInput}
             /*placeholder="First name"*/
@@ -201,13 +223,6 @@ export default ({ navigation }) => {
             placeholder="Last name"
             autoCapitalize="words"
             label = "성"
-          />
-          <AuthInput
-            {...usernameInput}
-            placeholder="Username"
-            returnKeyType="send"
-            autoCorrect={false}
-            label = "User Name"
           />
         </InfoCon>
         <View>

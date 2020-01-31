@@ -104,7 +104,7 @@ const Bottom =styled.View`
 export default ({ navigation }) => {
   const emailInput = useInput(navigation.getParam("email", ""));
   const passwordInput = useInput("");
-  const idInput = useInput("");
+  const cellPhoneInput = useInput("");
   const logIn = useLogIn();
   
 
@@ -123,7 +123,7 @@ export default ({ navigation }) => {
     variables: {
       password: passwordInput.value,
       // email: emailInput.value
-      id: idInput.value
+      cellPhone: cellPhoneInput.value
     }
   });
 
@@ -233,14 +233,14 @@ export default ({ navigation }) => {
     <Middle/>
     <ButtonContainer>
       <AuthInput
-        {...idInput}
+        {...cellPhoneInput}
         autoCapitalize="words"
-        label = "email"
+        label = "CellPhone"
       />
       <AuthInput
         {...passwordInput}
         autoCapitalize="words"
-        label = "password"
+        label = "Password"
       />
       <AuthButton loading={loading} onPress={handleLogin} text="Login" />
 

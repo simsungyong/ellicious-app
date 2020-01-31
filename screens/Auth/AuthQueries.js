@@ -29,7 +29,7 @@ export const ID_CHECK = gql`
 `;
 
 export const CONFIRM_SECRET = gql`
-  mutation confirmSecret($email: String!, $password: String!) {
-    confirmSecret(password: $password, email: $email)
+  mutation confirmSecret($id: String!, $password: String!) {
+    confirmSecret(password: $password, account: $id)
   }
 `;

@@ -102,12 +102,11 @@ const Bottom =styled.View`
 `;
 
 export default ({ navigation }) => {
-  const fNameInput = useInput("");
-  const lNameInput = useInput("");
   const emailInput = useInput(navigation.getParam("email", ""));
-  const passwordInput = useInput("")
-  const usernameInput = useInput("");
+  const passwordInput = useInput("");
+  const idInput = useInput("");
   const logIn = useLogIn();
+  
 
   const [loading, setLoading] = useState(false);
 
@@ -123,7 +122,8 @@ export default ({ navigation }) => {
   const [confirmSecretMutation] = useMutation(CONFIRM_SECRET, {
     variables: {
       password: passwordInput.value,
-      email: emailInput.value
+      // email: emailInput.value
+      id: idInput.value
     }
   });
 
@@ -135,17 +135,18 @@ export default ({ navigation }) => {
 
 
   const handleLogin = async () => {
-    const { value: email } = emailInput;
-    const { value: password } = passwordInput;
+    // const { value: email } = emailInput;
+    // const { value: password } = passwordInput;
+    // const { value: id } = idInput;
 
-    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (email === "") {
-      return Alert.alert("Email can't be empty");
-    } else if (!email.includes("@") || !email.includes(".")) {
-      return Alert.alert("Please write an email");
-    } else if (!emailRegex.test(email)) {
-      return Alert.alert("That email is invalid");
-    }
+    // const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    // if (email === "") {
+    //   return Alert.alert("Email can't be empty");
+    // } else if (!email.includes("@") || !email.includes(".")) {
+    //   return Alert.alert("Please write an email");
+    // } else if (!emailRegex.test(email)) {
+    //   return Alert.alert("That email is invalid");
+    // }
     
     try {
       setLoading(true);
@@ -232,7 +233,7 @@ export default ({ navigation }) => {
     <Middle/>
     <ButtonContainer>
       <AuthInput
-        {...emailInput}
+        {...idInput}
         autoCapitalize="words"
         label = "email"
       />

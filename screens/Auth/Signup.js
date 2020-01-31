@@ -177,14 +177,19 @@ export default ({ navigation }) => {
             autoCorrect={false}
             label = "Password"
           />
-          <AuthInput
-            {...cellPhoneInput}
-            placeholder="cellphone number"
-            returnKeyType="send"
-            autoCorrect={false}
-            keyboardType="number-pad"
-            label = "CellPhone"
-          />
+          <View flexDirection="row">
+            <AuthInput
+              {...cellPhoneInput}
+              placeholder="cellphone number"
+              returnKeyType="send"
+              autoCorrect={false}
+              keyboardType="number-pad"
+              label = "CellPhone"
+            />
+            <TouchableOpacity onPress={() => {console.log("cellphone")}}>
+              <Text>확인</Text>
+            </TouchableOpacity>
+          </View>
           <AuthInput
             {...fNameInput}
             /*placeholder="First name"*/

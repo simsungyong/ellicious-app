@@ -102,7 +102,6 @@ const Bottom =styled.View`
 `;
 
 export default ({ navigation }) => {
-  const emailInput = useInput(navigation.getParam("email", ""));
   const passwordInput = useInput("");
   const cellPhoneInput = useInput("");
   const logIn = useLogIn();

@@ -55,6 +55,7 @@ export default ({ navigation }) => {
   // const idInput = useInput("");
   const cellPhoneInput = useInput("");
   const passwordInput = useInput("");
+  const passwordConfirmInput = useInput("");
   const [loading, setLoading] = useState(false);
   // const [check, setCheck] = useState(false);
   const [checkPhone, setCheckPhone] = useState(false);
@@ -66,7 +67,7 @@ export default ({ navigation }) => {
       // username: idInput.value,
       firstName: fNameInput.value,
       lastName: lNameInput.value,
-      phoneNum: cellPhoneInput.value
+      cellPhone: cellPhoneInput.value
     }
   });
 
@@ -125,45 +126,45 @@ export default ({ navigation }) => {
     const { value: fName } = fNameInput;
     const { value: lName } = lNameInput;
     const { value: password } = passwordInput;
+    const { value: passwordConfirm } = passwordConfirmInput;
     const { value: cellPhone } = cellPhoneInput;
     // if(!confirmAccount) {
     //   return Alert.alert("아이디를 확인하세요");
     // }
+    if (cellPhone === "") {
+      return Alert.alert("Invalid cellphone number");
+    }
     if (password === "") {
       return Alert.alert("비밀번호를 입력하세요");
     } else if(password.length < 8) {
       return Alert.alert("비밀번호를 8자이상 입력하세요");
     }
+    if( passwordConfirm !== password ) {
+      return Alert.alert("비밀번호가 다릅니다.")
+    }
     if (fName === "") {
-      return Alert.alert("I need first name");
+      return Alert.alert("이름을 입력하세요");
     }
     if (lName === "") {
-      return Alert.alert("I need last name");
-    }
-    if (username === "") {
-      return Alert.alert("Invalid username");
-    }
-    if (cellPhone === "") {
-      return Alert.alert("Invalid cellphone number");
+      return Alert.alert("성을 입력하세요");
     }
 
-
-    // try {
-    //   setLoading(true);
-    //   const {
-    //     data: { createAccount }
-    //   } = await createAccountMutation();
-    //   if (createAccount) {
-    //     Alert.alert("Account created", "Log in now!");
-    //     navigation.navigate("AuthHome", { email });
-    //   }
-    // } catch (e) {
-    //   console.log(e);
-    //   Alert.alert("Username or email is already used", "Log in instead");
-    //   navigation.navigate("AuthHome", { email });
-    // } finally {
-    //   setLoading(false);
-    // }
+    try {
+      setLoading(true);
+      const {
+        data: { createAccount }
+      } = await createAccountMutation();
+      if (createAccount) {
+        Alert.alert("Account created", "Log in now!");
+        navigation.navigate("AuthHome");
+      }
+    } catch (e) {
+      console.log(e);
+      Alert.alert("This Phone number is already used", "Log in instead");
+      navigation.navigate("AuthHome");
+    } finally {
+      setLoading(false);
+    }
   };
 
 
@@ -210,19 +211,27 @@ export default ({ navigation }) => {
             keyboardType="email-address"
             returnKeyType="send"
             autoCorrect={false}
-            label = "Password(8자이상)"
+            label = "Password (8자이상)"
+          />
+          <AuthInput
+            {...passwordConfirmInput}
+            placeholder="Password"
+            keyboardType="email-address"
+            returnKeyType="send"
+            autoCorrect={false}
+            label = "비밀번호 확인"
           />
           <AuthInput
             {...fNameInput}
             /*placeholder="First name"*/
             autoCapitalize="words"
-            label = "이름"
+            label = "이름 (ex 길동)"
           />
           <AuthInput
             {...lNameInput}
             placeholder="Last name"
             autoCapitalize="words"
-            label = "성"
+            label = "성 (ex 홍)"
           />
         </InfoCon>
         <View>

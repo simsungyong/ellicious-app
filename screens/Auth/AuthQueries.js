@@ -12,12 +12,14 @@ export const CREATE_ACCOUNT = gql`
     $password: String!
     $firstName: String
     $lastName: String
+    $username: String!
   ) {
     createAccount(
       phoneNum: $cellPhone
       password: $password
       firstName: $firstName
       lastName: $lastName
+      username: $username
     )
   }
 `;

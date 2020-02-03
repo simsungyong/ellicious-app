@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ScrollView, RefreshControl , FlatList,SafeAreaView} from "react-native";
+import {Image,ScrollView,FlatList,TouchableOpacity, RefreshControl, Platform, TouchableHighlight, Alert, ActivityIndicator, Keyboard, TouchableWithoutFeedback, } from 'react-native';
 //scrollview는 요소가 많은 경우 최적화 잘안된다~-> flatList가 좋다
 import styled from "styled-components";
 import { gql } from "apollo-boost";
@@ -8,6 +8,7 @@ import { useQuery } from "react-apollo-hooks";
 import Post from "../../components/Post";
 import {BG_COLOR, BG_POST_COLOR} from "../../components/Color";
 import { POST_FRAGMENT } from "../../fragments";
+import SearchAccountBox from '../../components/SearchComponents/SearchAccountBox'
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 
@@ -30,6 +31,17 @@ export const FEED_QUERY = gql`
   ${POST_FRAGMENT}
 `
 
+export const RECOMMEND = gql`
+  query recommendUser($pageNumber: Int!, $items: Int!){
+    recommendUser(pageNumber: $pageNumber, items: $items){
+      username
+      id
+      avatar
+      firstName
+      bio
+    }
+  }
+  `
 const View = styled.View`
   justify-content: center;
   align-items: center;
@@ -45,12 +57,37 @@ const Text = styled.Text``;
 
 export default () => {
   const [refreshing, setRefreshing] = useState(false);
+  const [check, setCheck] = useState(false)
   const {loading, data, refetch, fetchMore} = useQuery(FEED_QUERY,{
     variables: {
       pageNumber: 0,
       items: 15
     }
   });  //useQuery함수안에는 refetch 함수 담겨있다 .
+  const {loading:loading2, data:data2, refetch:refetch2} = useQuery(RECOMMEND,{
+    skip: check,
+    variables: {
+      pageNumber: 0,
+      items: 15
+    }
+  });
+
+  const recommendCheck= async()=>{
+    setCheck(true);
+    try{
+      if(!loading2){
+        console.log(data2)
+      }
+    }catch(e){
+      console.log(e)
+    }finally{
+      setCheck(false); 
+    }
+   
+     
+  }
+
+
   const refresh = async() =>{
     try{
       setRefreshing(true);
@@ -80,15 +117,7 @@ export default () => {
 
   return (
     <Container>
-      <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={refresh}/>
-        }>
-        {loading ? (<Loader/>): (data && data.seeFeed && data.seeFeed.map(post=> <Post key={post.id}{...post} />))}
-      </ScrollView>
-    </Container>
-     /*
-      loading ? <Loader/> : (
+      {loading ? <Loader/> : (
       <FlatList
         data={data.seeFeed}
         onRefresh={refresh}
@@ -100,11 +129,42 @@ export default () => {
           return (
             <Post {...item}/>
           )
-        }}/>
-        
-        )
-    */
+        }}
+        ListEmptyComponent={()=>{
+          recommendCheck();
+          return(
+            <Container>
+              
+              {loading2 ? (
+                <Loader />
+              ) : (
+                data2 &&
+                data2.recommendUser &&
+                data2.recommendUser.map(user => 
+              <SearchAccountBox key={user.id} {...user} />
+              )
+              )
+                }
+            <TouchableOpacity onPress={refresh}>
+              <Text>완료</Text>
+            </TouchableOpacity>
+          </Container>
+          )
+        }
+      }
+        />
+        )}
+    </Container>
     
 
   );
 }
+
+
+/*
+<ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={refresh}/>
+        }>
+        {loading ? (<Loader/>): (data && data.seeFeed && data.seeFeed.map(post=> <Post key={post.id}{...post} />))}
+      </ScrollView>*/

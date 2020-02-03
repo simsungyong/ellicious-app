@@ -157,7 +157,7 @@ const ProfileMapContainer=({navigation, userId})=> {
             <>
             {confirm ? <Loader/> : (
                 <>
-                <ProfileMapPresenter marker={data.seeCategory[mapIdx]} region={region} navigation={navigation}/>
+                <ProfileMapPresenter marker={data.seeCategory[mapIdx] ? data.seeCategory[mapIdx]: null} region={region} navigation={navigation}/>
                 <View style={styles.subContainer}>
                     <Touchable onPress={() => setmodalAndTitle(true)}>
                         <MaterialCommunityIcons
@@ -239,7 +239,8 @@ const ProfileMapContainer=({navigation, userId})=> {
                         <TextInput 
                             onChangeText={categoryInput.onChange}
                             placeholder={"새 카테고리 이름"}
-                            placeholderTextColor={TINT_COLOR}/>
+                            placeholderTextColor={TINT_COLOR}
+                            />
                        
                         </ModalContent>
                         

@@ -87,11 +87,13 @@ const SearchAccountBox = ({ navigation, username, firstName, avatar, id, isSelf,
   const handleFollow = async () =>{
     try{
       if(followingConfirm === true) {
+        setFollowing(f => !f);
         await UnFollowMutation();
-        setFollowing(f => !f);
+       
       } else {
-        await FollowMutation();
         setFollowing(f => !f);
+        await FollowMutation();
+        
       }
     } catch (e) {}
   };

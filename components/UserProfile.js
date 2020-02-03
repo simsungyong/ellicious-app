@@ -118,6 +118,10 @@ const FollowPick = styled.View`
   justifyContent: center;
   margin-left : 5px;
 `;
+const BlankPost = styled.View`
+  alignItems: center;
+  justifyContent: center;
+`;
 const PostNum = styled.View`
   flex-direction: row;
   alignItems: center;
@@ -158,17 +162,24 @@ const Scene = ({ index, posts, userId }) => (
         <View style={{flex : 1}} >
         <ProfileMapContainer userId={userId}/>
         </View>
-      ) : (
-        <ViewCon >
-          <View flexDirection= "row" flexWrap= "wrap">
-            
-            {
-            posts && posts.map(p =>
-             
-              <SquarePhoto key={p.id} {...p} />
-            )}
-          </View>
-        </ViewCon>
+      ) : (   
+      
+        <View style={{flex : 1}} >
+          {posts[0] === undefined ? (
+            <BlankPost>
+              <Text style={{ color:mainPink}}>게시물을 등록해주세요</Text>
+            </BlankPost>
+          ) : (
+          <ViewCon>  
+            <View flexDirection= "row" flexWrap= "wrap">
+              {posts && posts.map(p =>
+                <SquarePhoto key={p.id} {...p} />)
+              }
+            </View>
+          </ViewCon>
+          )
+        }
+        </View>
       )}
     </>
     
@@ -233,12 +244,12 @@ const UserProfile = ({
 const handleFollow = async () =>{
   try{
     if(followingConfirm === true) {
-      await UnFollowMutation();
       setFollowing(f => !f);
+      await UnFollowMutation();
       setFollowCount(l=>l-1)
     } else {
-      await FollowMutation();
       setFollowing(f => !f);
+      await FollowMutation();
       setFollowCount(l=>l+1)
     }
   } catch (e) {}
@@ -289,7 +300,10 @@ const handleFollow = async () =>{
           {!isSelf ? (
           <SameCon onPress={()=>setModalstate(true)}>
             <Blank/>
+            {sametimeFollow[0] ? 
             <Text>{sametimeFollow[0].username+`님 등 ${sametimeFollow.length-1} 명이 팔로우 해요!`}</Text>
+            : null
+          }
           </SameCon>) : null
           }
           </NameCon>

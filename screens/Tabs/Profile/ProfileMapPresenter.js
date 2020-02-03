@@ -109,7 +109,8 @@ class ProfileMapPresenter extends React.Component {
                                 latitudeDelta: 3, longitudeDelta:3}}
                 style={{flex:1}} 
                 showsUserLocation={true}>
-                    {this.state.marker.posts.map((p,index)=>{
+                    {this.state.marker ? (
+                        this.state.marker.posts.map((p,index)=>{
                         return(
                             <Marker key={index}
                             coordinate = {{latitude: p.storeLat, longitude: p.storeLong}}
@@ -130,7 +131,9 @@ class ProfileMapPresenter extends React.Component {
                             
   
                         )
-                    })}
+                    })
+                    ) : null
+                }
                     </MapView>
                     {this.state.indexNum >-1 ? (
                     <Modal.BottomModal

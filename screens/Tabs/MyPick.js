@@ -19,7 +19,6 @@ import MapView from "react-native-maps";
 import MapViewPick from '../../components/MapView/MapViewPick';
 import Loader from "../../components/Loader";
 import {PICK_FRAGMENT} from '../../fragments';
-import ClusteringTest from './ClusteringTest';
 
 const styles = StyleSheet.create({
   container: {

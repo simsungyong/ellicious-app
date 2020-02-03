@@ -67,7 +67,7 @@ export default ({ navigation }) => {
       // username: idInput.value,
       firstName: fNameInput.value,
       lastName: lNameInput.value,
-      cellPhone: cellPhoneInput.value
+      cellPhone: cellPhoneInput.value,
     }
   });
 
@@ -102,24 +102,24 @@ export default ({ navigation }) => {
   const confirmPhone = async () => {
     if(cellPhoneInput.value=="") {
       return Alert.alert("핸드폰 번호를 입력하세요");
-    } 
-    console.log(cellPhoneInput.value)
-    // else {
-    //   try {
-    //     setCheckPhone(true);
-    //     if(userAccount) {
-    //       if(!userAccount.checkAccount) {
-    //         setConfirmAccount(true)
-    //       } else {
-    //         return Alert.alert("이미 존재하는 아이디입니다.");
-    //       }
-    //     }
-    //   } catch (e) {
-    //     console.log(e);
-    //   } finally {
-    //     setCheckPhone(false)
-    //   }
-    // }
+    } else if(cellPhoneInput.value.length !== 11) {
+      return Alert.alert("잘못된 형식입니다.");
+    } else {
+      try {
+        setCheckPhone(true);
+        if(userAccount) {
+          if(!userAccount.checkAccount) {
+            setConfirmAccount(true)
+          } else {
+            return Alert.alert("이미 존재하는 아이디입니다.");
+          }
+        }
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setCheckPhone(false)
+      }
+    }
   }
 
   const handleSingup = async () => {
@@ -194,17 +194,35 @@ export default ({ navigation }) => {
             )}
             
           </View> */}
-          <AuthInput
+          {confirmAccount ?
+          (
+            <AuthInput
             {...cellPhoneInput}
             placeholder="cellphone number"
             returnKeyType="send"
             autoCorrect={false}
             keyboardType="number-pad"
             label = "CellPhone"
+            editable={false}
           />
-          <TouchableOpacity onPress={() => confirmPhone()}>
-            <Text>확인</Text>
-          </TouchableOpacity>
+          )
+          :
+          (
+            <>
+            <AuthInput
+              {...cellPhoneInput}
+              placeholder="cellphone number"
+              returnKeyType="send"
+              autoCorrect={false}
+              keyboardType="number-pad"
+              label = "CellPhone"
+            />
+            <TouchableOpacity onPress={() => confirmPhone()}>
+              <Text>확인</Text>
+            </TouchableOpacity>
+            </>
+          )
+          }
           <AuthInput
             {...passwordInput}
             placeholder="Password"
@@ -221,6 +239,7 @@ export default ({ navigation }) => {
             returnKeyType="send"
             autoCorrect={false}
             label = "비밀번호 확인"
+            secureTextEntry = {true}
           />
           <AuthInput
             {...fNameInput}

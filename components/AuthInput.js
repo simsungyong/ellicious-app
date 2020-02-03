@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import constants from "../constants";
 import {PointPink, TINT_COLOR} from './Color'
 
-const FloatingLabelInput = ({label, onChangeText,value, keyboardType,secureTextEntry})=>{
+const FloatingLabelInput = ({label, onChangeText,value, keyboardType,secureTextEntry, editable})=>{
   
   const [focus, setFocus] = useState(false);
   const [animation, setAnimation] = useState(new Animated.Value(0));
@@ -47,6 +47,7 @@ const FloatingLabelInput = ({label, onChangeText,value, keyboardType,secureTextE
           onFocus={handleFocus}
           onBlur={handleBlur}
           blurOnSubmit
+          editable={editable}
           autoCapitalize='none'
           keyboardType={keyboardType}
           secureTextEntry={secureTextEntry}
@@ -59,7 +60,7 @@ const FloatingLabelInput = ({label, onChangeText,value, keyboardType,secureTextE
   
 }
 
-const AuthInputClass =({value,label,onChangeText, keyboardType, secureTextEntry}) => {
+const AuthInputClass =({value,label,onChangeText, keyboardType, secureTextEntry, editable}) => {
   
     return (
       <View style={{padding: 8 }}> 
@@ -67,6 +68,7 @@ const AuthInputClass =({value,label,onChangeText, keyboardType, secureTextEntry}
         <FloatingLabelInput
           label={label}
           value={value}
+          editable={editable}
           onChangeText={onChangeText}
           keyboardType={keyboardType}
           secureTextEntry={secureTextEntry}
@@ -85,6 +87,7 @@ const AuthInput = ({
     keyboardType = "default",
     autoCapitalize = "none",
     returnKeyType = "done",
+    editable = true,
     onChange,
     secureTextEntry=false,
     label=null,
@@ -104,6 +107,7 @@ const AuthInput = ({
         autoCorrect={autoCorrect}
         value={value}
         label={label}
+        editable={editable}
       />
     </Container>
   );
@@ -124,7 +128,8 @@ AuthInput.propTypes = {
   returnKeyType: PropTypes.oneOf(["done", "go", "next", "search", "send"]),
   onSubmitEditing: PropTypes.func,
   autoCorrect: PropTypes.bool,
-  secureTextEntry: PropTypes.bool
+  secureTextEntry: PropTypes.bool,
+  editable: PropTypes.bool
 };
 
 export default AuthInput;

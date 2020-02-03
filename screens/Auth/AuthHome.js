@@ -6,7 +6,7 @@ import AuthButton from "../../components/AuthButton";
 import AuthInput from "../../components/AuthInput";
 import { useMutation } from "react-apollo-hooks";
 import { LOG_IN, CREATE_ACCOUNT, CONFIRM_SECRET } from "./AuthQueries";
-import { Alert } from "react-native";
+import { Alert, TouchableWithoutFeedback, Keyboard } from "react-native";
 import {mainPink, TINT_COLOR, PointPink, BG_COLOR } from "../../components/Color";
 import { SocialIcon } from 'react-native-elements';
 import useInput from "../../hooks/useInput";
@@ -221,6 +221,7 @@ export default ({ navigation }) => {
   // };
 
   return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <Container>
     <Top/>
     <TitleCon>
@@ -235,11 +236,13 @@ export default ({ navigation }) => {
         {...cellPhoneInput}
         autoCapitalize="words"
         label = "CellPhone"
+        keyboardType = "number-pad"
       />
       <AuthInput
         {...passwordInput}
         autoCapitalize="words"
         label = "Password"
+        secureTextEntry = {true}
       />
       <AuthButton loading={loading} onPress={handleLogin} text="Login" />
 
@@ -261,6 +264,7 @@ export default ({ navigation }) => {
     </ButtonContainer>
     <Bottom/>
   </Container>
+  </TouchableWithoutFeedback>
   )
   
 };

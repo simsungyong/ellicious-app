@@ -140,7 +140,7 @@ export default ({ navigation }) => {
       return Alert.alert("비밀번호를 8자이상 입력하세요");
     }
     if( passwordConfirm !== password ) {
-      return Alert.alert("비밀번호가 다릅니다.")
+      return Alert.alert("비밀번호가 다릅니다.");
     }
     if (fName === "") {
       return Alert.alert("이름을 입력하세요");
@@ -212,6 +212,7 @@ export default ({ navigation }) => {
             returnKeyType="send"
             autoCorrect={false}
             label = "Password (8자이상)"
+            secureTextEntry = {true}
           />
           <AuthInput
             {...passwordConfirmInput}

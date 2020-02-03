@@ -41,6 +41,7 @@ const FloatingLabelInput = ({label, onChangeText,value, keyboardType,secureTextE
         <Animated.Text style={labelStyle}>
           {label}
         </ Animated.Text>
+        
         <TextInput
           onChangeText={onChangeText}
           style={{ height: 26,width: constants.width/1.5, fontSize: 20, color: TINT_COLOR, borderBottomWidth: 1, borderBottomColor: PointPink }}
@@ -92,7 +93,7 @@ const AuthInput = ({
     secureTextEntry=false,
     label=null,
     onSubmitEditing = () => null,
-    autoCorrect = true
+    autoCorrect = true,
   }) => (
     
     <Container>
@@ -129,7 +130,7 @@ AuthInput.propTypes = {
   onSubmitEditing: PropTypes.func,
   autoCorrect: PropTypes.bool,
   secureTextEntry: PropTypes.bool,
-  editable: PropTypes.bool
+  editable: PropTypes.bool,
 };
 
 export default AuthInput;

@@ -22,6 +22,12 @@ export const CREATE_ACCOUNT = gql`
   }
 `;
 
+export const CHECK_USERNAME = gql`
+  query checkUsername($term: String!){
+    checkUsername(term: $term)
+  }
+`;
+
 export const ID_CHECK = gql`
   query checkAccount($cellPhone: String!){
     checkAccount(phoneNum: $cellPhone)

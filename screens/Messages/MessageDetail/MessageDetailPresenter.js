@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
-import Platform, { KeyboardAvoidingView, TextInput, View,Text, ScrollView, TextComponent } from "react-native";
+import Platform, { KeyboardAvoidingView, TextInput, View,Text, ScrollView, TextComponent, TouchableOpacity, Alert } from "react-native";
 import styled from "styled-components";
 import { useMutation, useQuery, useSubscription } from "react-apollo-hooks";
 import gql from "graphql-tag";
@@ -8,6 +8,7 @@ import Loader from "../../../components/Loader";
 import constants from "../../../constants";
 import { LightPink, TINT_COLOR, LightGrey, mainPink } from "../../../components/Color";
 import { Feather, EvilIcons } from "@expo/vector-icons";
+import { SEE_ROOMS } from '../Messages';
 
 
 const Container = styled.View`
@@ -53,6 +54,7 @@ padding : 10px;
 flex-direction:row
 background-color : ${LightGrey}
 `;
+
 const SEND_MESSAGE = gql`
   mutation sendMessage($text: String!, $roomId: String!, $toId: String!) {
     sendMessage(message: $text toId: $toId roomId: $roomId) {
@@ -104,122 +106,135 @@ const NEW_MESSAGE = gql`
 `;
 
 const MessageDetailPresenter = ({username, userId, roomId}) => {
-    const [roomNum, setRoom] = useState(roomId);
-    const [message, setMessage] = useState("");
-    const [chat_message, setMessages] = useState();
+  const [roomNum, setRoomNum] = useState(roomId);
+  const [message, setMessage] = useState("");
+  const [chat_message, setMessages] = useState();
 
-    const [sendMessageMutation] = useMutation(SEND_MESSAGE, {
-        variables: {
-        text: message,
-        roomId: roomNum,
-        toId: userId
-        }
-    });
-    
-    const { data } = useQuery(
-        MESSAGES,
-        { variables: { roomId: roomNum },
-            suspend: true
-        }
-        );
-        if(data !== undefined && chat_message == null) {
-        setMessages(data.seeRoom.messages)
+  const [sendMessageMutation] = useMutation(SEND_MESSAGE, {
+    variables: {
+    text: message,
+    roomId: roomNum,
+    toId: userId
     }
+  });
 
-    const { data: newMessage } = useSubscription(NEW_MESSAGE, {
-        variables: {
+  const [sendMessageWithoutRoomIdMutation] = useMutation(SEND_MESSAGE_WITHOUT_ROOMID, {
+    variables: {
+    text: message,
+    toId: userId
+    }, refetchQueries:()=>[{query: SEE_ROOMS}]
+  });
+
+  const { data } = useQuery(
+    MESSAGES, {
+      variables: { 
         roomId: roomNum
-        }
-    });
-
-    const updateMessages = () => {
-        if (newMessage !== undefined) {
-        const { newMessage: payload } = newMessage;
-        setMessages(previous => [...previous, payload]);
-        }
-    };
-
-    useEffect(() => {
-        updateMessages();
-    }, [newMessage]);
-
-    const onChangeText = text => setMessage(text);
-
-    const onSubmit = async () => {
-        setMessage("")
-        if (message === "") {
-          return;
-        }
-        try {
-          await sendMessageMutation();
-          
-        } catch (e) {
-          console.log(e);
-        }
-    };
-
-    return (
-        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null} enabled>
-            <ScrollView
-            style={{ height : constants.height / 1.32 }}
-            >
-            {chat_message==undefined ?
-            null
-            : (
-                chat_message.map(m => (
-                m.from.username === username ? (
-                    <MSG key={m.id} style={{ marginBottom: 10, alignItems: "flex-start", marginLeft: 10 }}>
-                    <Img>
-                    {m.avatar==null ? 
-                        <Image
-                        source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}
-                        />
-                    :
-                        <Image
-                        source={{uri: avatar}}
-                        />
-                    }
-                    </Img>
-                    <TextCon>
-                        <Text>{m.from.username}</Text>
-                        <TextBox>
-                        <TextMSG>{m.text}</TextMSG>
-                        </TextBox>
-                    </TextCon>
-                    </MSG>
-                ) : (
-                    <View key={m.id} style={{ marginBottom: 10, alignItems: "flex-end", marginRight: 10}}>
-                    <TextBox>
-                        <TextMSG>{m.text}</TextMSG>
-                    </TextBox>
-                    </View>
-                )
-                ))
-            )}
-            </ScrollView>
-            <InputCon>
-            <Input
-                placeholder={"Type your message"}
-                onChangeText={onChangeText}
-                onSubmitEditing={onSubmit}
-                returnKeyType="send"
-                value={message}
-            />
-            <EvilIcons
-            name={'arrow-up'}
-            color={mainPink}
-            size={35}
-            onSubmit={onSubmit}
-            />
-            </InputCon>
-        </KeyboardAvoidingView>
-    );
+      }, suspend: true
     }
+  );
 
-    MessageDetailPresenter.propTypes = {
-        username: PropTypes.string,
-        userId: PropTypes.string,
-        roomId: PropTypes.string
-    };
+  if(data !== undefined && chat_message == null && data.seeRoom !== undefined) {
+    setMessages(data.seeRoom.messages)
+  }
 
-    export default MessageDetailPresenter;
+  const { data: newMessage } = useSubscription(NEW_MESSAGE, {
+      variables: {
+      roomId: roomNum
+      }, suspend: true
+  });
+  
+  const updateMessages = () => {
+    if (newMessage !== undefined) {
+    const { newMessage: payload } = newMessage;
+    setMessages(previous => [...previous, payload]);
+    }
+  };
+
+  useEffect(() => {
+      updateMessages();
+  }, [newMessage]);
+
+  const onChangeText = text => setMessage(text);
+
+  const onSubmit = async () => {
+      setMessage("")
+      if (message === "") {
+        return;
+      }
+      try {
+        if(roomNum !== "") {
+          await sendMessageMutation();
+        } else {
+          const {data} = await sendMessageWithoutRoomIdMutation();
+          setRoomNum(data.sendMessage.room.id);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+  };
+
+  return (
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null} enabled>
+        <ScrollView
+        style={{ height : constants.height / 1.32 }}
+        >
+        {chat_message==undefined ?
+        null
+        : (
+            chat_message.map(m => (
+            m.from.username === username ? (
+                <MSG key={m.id} style={{ marginBottom: 10, alignItems: "flex-start", marginLeft: 10 }}>
+                <Img>
+                {m.avatar==null ? 
+                    <Image
+                    source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}
+                    />
+                :
+                    <Image
+                    source={{uri: avatar}}
+                    />
+                }
+                </Img>
+                <TextCon>
+                    <Text>{m.from.username}</Text>
+                    <TextBox>
+                    <TextMSG>{m.text}</TextMSG>
+                    </TextBox>
+                </TextCon>
+                </MSG>
+            ) : (
+                <View key={m.id} style={{ marginBottom: 10, alignItems: "flex-end", marginRight: 10}}>
+                <TextBox>
+                    <TextMSG>{m.text}</TextMSG>
+                </TextBox>
+                </View>
+            )
+            ))
+        )}
+        </ScrollView>
+        <InputCon>
+        <Input
+            placeholder={"Type your message"}
+            onChangeText={onChangeText}
+            onSubmitEditing={onSubmit}
+            returnKeyType="send"
+            value={message}
+        />
+        <EvilIcons
+        name={'arrow-up'}
+        color={mainPink}
+        size={35}
+        onSubmit={onSubmit}
+        />
+        </InputCon>
+    </KeyboardAvoidingView>
+  );
+}
+
+  MessageDetailPresenter.propTypes = {
+      username: PropTypes.string,
+      userId: PropTypes.string,
+      roomId: PropTypes.string
+  };
+
+  export default MessageDetailPresenter;

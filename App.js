@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { AppLoading } from "expo";
+import { AppLoading, Notifications } from "expo";
 import * as Font from 'expo-font';
 import {Asset} from 'expo-asset';
 import { AsyncStorage } from "react-native";
@@ -29,6 +29,10 @@ export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [client, setClient] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
+
+   
+    
+
   const preLoad = async () => {
     //await AsyncStorage.clear();
     try {
@@ -38,12 +42,12 @@ export default function App() {
       await Font.loadAsync({'elli':require('./assets/fonts/Playball.ttf'), 'korElli' :require('./assets/fonts/TmonMonsori.ttf')}); 
       const cache = new InMemoryCache();
       const httpLink = new HttpLink({
-        uri: 'http://192.168.0.135:4000/'
-        // uri: 'http://3.134.176.171:4000/'
+        //uri: 'http://192.168.0.135:4000/'
+         uri: 'http://3.134.176.171:4000/'
       });
       const wsLink = new WebSocketLink({
-        uri: 'http://192.168.0.135:4000/',
-        // uri: `ws://3.134.176.171:4000/`,
+        //uri: 'http://192.168.0.135:4000/',
+        uri: `ws://3.134.176.171:4000/`,
         options: {
             reconnect: true
         }
@@ -58,6 +62,8 @@ export default function App() {
           }
         });
       };
+
+      
       
       const requestLink = new ApolloLink((operation, forward) =>
         new Observable(observer => {
@@ -137,6 +143,7 @@ export default function App() {
   };
   useEffect(() => {
     preLoad();
+    
   }, []);
 
   return loaded && client && isLoggedIn !== null ? (

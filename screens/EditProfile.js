@@ -287,14 +287,14 @@ const EditProfile=({
                 text="현재 사진 삭제"
                 onPress={() => {}}
               />
-              <ModalButton
+              {/* <ModalButton
                 text="카메라에서 업로드"
                 onPress={() => {}}
               />
               <ModalButton
                 text="앨범에서 업로드"
                 onPress={()=>changePicture()}
-              />
+              /> */}
             </ModalContent>
             <ModalFooter>
               <ModalButton

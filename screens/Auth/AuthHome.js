@@ -6,7 +6,7 @@ import AuthButton from "../../components/AuthButton";
 import AuthInput from "../../components/AuthInput";
 import { useMutation } from "react-apollo-hooks";
 import { LOG_IN, CREATE_ACCOUNT, CONFIRM_SECRET } from "./AuthQueries";
-import { Alert, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { Alert, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from "react-native";
 import {mainPink, TINT_COLOR, PointPink, BG_COLOR } from "../../components/Color";
 import { SocialIcon } from 'react-native-elements';
 import useInput from "../../hooks/useInput";
@@ -221,50 +221,55 @@ export default ({ navigation }) => {
   // };
 
   return (
+
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-    <Container>
-    <Top/>
-    <TitleCon>
-      <Image 
-        style={{height:'100%',width:'100%',resizeMode:'contain'}}
-        source={{uri:'https://user-images.githubusercontent.com/52433798/68202438-17114400-0007-11ea-9e3c-31ef780daeef.png'}}
-      />
-    </TitleCon>
-    <Middle/>
-    <ButtonContainer>
-      <AuthInput
-        {...cellPhoneInput}
-        autoCapitalize="words"
-        label = "CellPhone"
-        keyboardType = "number-pad"
-      />
-      <AuthInput
-        {...passwordInput}
-        autoCapitalize="words"
-        label = "Password"
-        secureTextEntry = {true}
-      />
-      <AuthButton loading={loading} onPress={handleLogin} text="Login" />
+      <Container>
+      <Top/>
+      <TitleCon>
+        <Image 
+          style={{height:'100%',width:'100%',resizeMode:'contain'}}
+          source={{uri:'https://user-images.githubusercontent.com/52433798/68202438-17114400-0007-11ea-9e3c-31ef780daeef.png'}}
+        />
+      </TitleCon>
+      <Middle/>
+      
 
-        {/* <LoginButtonCon>
-            <OtherLoginCon>
-              <SocialIcon type="facebook" onPress={fbLogin} />
-              <SocialIcon type="google" onPress={googleLogin} />
-            </OtherLoginCon>
-        </LoginButtonCon> */}
+      <ButtonContainer>
 
-      <SignUpCon>
-       <Text>계정이 없으신가요?</Text>
-        <Touchable onPress={() => navigation.navigate("Signup")}>
-            <LoginLink>
-              <LoginLinkText>회원가입</LoginLinkText>
-            </LoginLink>
-        </Touchable>
-      </SignUpCon>
-    </ButtonContainer>
-    <Bottom/>
-  </Container>
-  </TouchableWithoutFeedback>
+        <AuthInput
+          {...cellPhoneInput}
+          autoCapitalize="words"
+          label = "CellPhone"
+          keyboardType = "number-pad"
+        />
+        <AuthInput
+          {...passwordInput}
+          autoCapitalize="words"
+          label = "Password"
+          secureTextEntry = {true}
+        />
+        <AuthButton loading={loading} onPress={handleLogin} text="Login" />
+
+          {/* <LoginButtonCon>
+              <OtherLoginCon>
+                <SocialIcon type="facebook" onPress={fbLogin} />
+                <SocialIcon type="google" onPress={googleLogin} />
+              </OtherLoginCon>
+          </LoginButtonCon> */}
+        
+        <SignUpCon>
+        <Text>계정이 없으신가요?</Text>
+          <Touchable onPress={() => navigation.navigate("Signup")}>
+              <LoginLink>
+                <LoginLinkText>회원가입</LoginLinkText>
+              </LoginLink>
+          </Touchable>
+        </SignUpCon>
+      </ButtonContainer>
+      <Bottom/>
+    </Container>
+    </TouchableWithoutFeedback>
+
   )
   
 };

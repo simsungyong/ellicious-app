@@ -1,6 +1,5 @@
 import React, { Suspense  } from "react";
 import {  ActivityIndicator, View} from "react-native";
-import MessageDetailPresenter2 from "./MessageDetailPresenter2";
 import MessageDetailPresenter from "./MessageDetailPresenter";
 
 export default ({navigation})  => {
@@ -17,11 +16,7 @@ export default ({navigation})  => {
                     </View>
                 }
             >
-                { roomId === "" ? 
-                    <MessageDetailPresenter2 username={username} userId={userId} roomId={roomId} />
-                :
-                    <MessageDetailPresenter username={username} userId={userId} roomId={roomId} />
-                }
+                <MessageDetailPresenter username={username} userId={userId} roomId={roomId} />
             </Suspense>
         </View>
     )

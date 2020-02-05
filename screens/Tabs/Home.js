@@ -14,7 +14,7 @@ import SearchAccountBox from '../../components/SearchComponents/SearchAccountBox
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 
-/*export const FEED_QUERY = gql`
+export const FEED_QUERY = gql`
   {
     seeFeed {
       ...PostParts
@@ -22,7 +22,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
   }
   ${POST_FRAGMENT}
 `;  
-*/
+
 export const EDIT_USER = gql`
   mutation editUser($notifyToken: String) {
     editUser(notifyToken:$notifyToken){
@@ -31,14 +31,14 @@ export const EDIT_USER = gql`
   }
 `;
 
-export const FEED_QUERY = gql`
-  query seeFeed($pageNumber: Int!, $items: Int!){
-    seeFeed(pageNumber: $pageNumber, items: $items){
-      ...PostParts
-    }
-  }
-  ${POST_FRAGMENT}
-`
+// export const FEED_QUERY = gql`
+//   query seeFeed($pageNumber: Int!, $items: Int!){
+//     seeFeed(pageNumber: $pageNumber, items: $items){
+//       ...PostParts
+//     }
+//   }
+//   ${POST_FRAGMENT}
+// `
 
 export const RECOMMEND = gql`
   query recommendUser($pageNumber: Int!, $items: Int!){
@@ -70,12 +70,12 @@ export default () => {
   const [notificationStatus, setStatus] = useState(false);
   const [check, setCheck] = useState(false)
   const [tokenMutation] = useMutation(EDIT_USER);
-  const {loading, data, refetch, fetchMore} = useQuery(FEED_QUERY,{
-    variables: {
-      pageNumber: 0,
-      items: 15
-    }
-  });  //useQuery함수안에는 refetch 함수 담겨있다 .
+  const {loading, data, refetch, fetchMore} = useQuery(FEED_QUERY)//,{
+    // variables: {
+    //   pageNumber: 0,
+    //   items: 15
+    // }
+  //});  //useQuery함수안에는 refetch 함수 담겨있다 .
   const {loading:loading2, data:data2, refetch:refetch2} = useQuery(RECOMMEND,{
     skip: check,
     variables: {
@@ -133,20 +133,20 @@ export default () => {
     }
   };
 
-  const onLoadMore = async() =>{
-    fetchMore({
-      variables:{
-        pageNumber: data.seeFeed.length,
-        items: 5
-      },
-      updateQuery: (prev, {fetchMoreResult})=>{
-        if(!fetchMoreResult) return prev;
-        return Object.assign({}, prev, {
-          seeFeed: [...prev.seeFeed, ...fetchMoreResult.seeFeed]
-        });
-      }
-    })
-  }
+  // const onLoadMore = async() =>{
+  //   fetchMore({
+  //     variables:{
+  //       pageNumber: data.seeFeed.length,
+  //       items: 5
+  //     },
+  //     updateQuery: (prev, {fetchMoreResult})=>{
+  //       if(!fetchMoreResult) return prev;
+  //       return Object.assign({}, prev, {
+  //         seeFeed: [...prev.seeFeed, ...fetchMoreResult.seeFeed]
+  //       });
+  //     }
+  //   })
+  // }
   useEffect(() => {
     ask();
     
@@ -159,7 +159,7 @@ export default () => {
         onRefresh={refresh}
         onEndReachedThreshold={1.5}
         refreshing={refreshing}
-        onEndReached={onLoadMore}
+        //onEndReached={onLoadMore}
         keyExtractor={item=>item.id}
         renderItem={({item})=>{
           return (

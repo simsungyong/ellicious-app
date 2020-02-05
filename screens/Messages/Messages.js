@@ -22,10 +22,13 @@ export const SEE_ROOMS = gql`
   }
 `;
 
+
 export default ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
 
   const { loading, data, refetch } = useQuery(SEE_ROOMS);
+
+  if(!loading) { console.log(data.seeRooms) }
 
   const refresh = async() =>{
     try{

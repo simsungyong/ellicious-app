@@ -4,7 +4,7 @@ import {Image,ScrollView,FlatList,TouchableOpacity, RefreshControl, Platform, To
 import styled from "styled-components";
 import { gql } from "apollo-boost";
 import Loader from "../../components/Loader";
-import { useQuery } from "react-apollo-hooks";
+import { useQuery,useMutation } from "react-apollo-hooks";
 import { Notifications } from "expo";
 import * as Permissions from 'expo-permissions';
 import Post from "../../components/Post";
@@ -23,6 +23,13 @@ import InfiniteScroll from 'react-infinite-scroll-component';
   ${POST_FRAGMENT}
 `;  
 */
+export const EDIT_USER = gql`
+  mutation editUser($notifyToken: String) {
+    editUser(notifyToken:$notifyToken){
+      id
+    }
+  }
+`;
 
 export const FEED_QUERY = gql`
   query seeFeed($pageNumber: Int!, $items: Int!){
@@ -44,6 +51,7 @@ export const RECOMMEND = gql`
     }
   }
   `
+
 const View = styled.View`
   justify-content: center;
   align-items: center;
@@ -61,6 +69,7 @@ export default () => {
   const [refreshing, setRefreshing] = useState(false);
   const [notificationStatus, setStatus] = useState(false);
   const [check, setCheck] = useState(false)
+  const [tokenMutation] = useMutation(EDIT_USER);
   const {loading, data, refetch, fetchMore} = useQuery(FEED_QUERY,{
     variables: {
       pageNumber: 0,
@@ -75,12 +84,26 @@ export default () => {
     }
   });
   const ask = async()=>{
-      const {status} = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-      setStatus(status);
+      const {status: existingStatus} = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      let finalStatus = existingStatus;
+      if(existingStatus !=='granted'){
+        const {status} = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        finalStatus = status;
+      }
+      if(finalStatus !== 'granted'){
+        return;
+      }
       let token = await Notifications.getExpoPushTokenAsync();
-      console.log(notificationStatus)
-      console.log(status)
-      };
+      try{
+        await tokenMutation({
+          variables:{
+            notifyToken: token
+          }
+        })
+      }catch (e) {
+        console.log(e)
+      }
+    };
 
   const recommendCheck= async()=>{
     setCheck(true);

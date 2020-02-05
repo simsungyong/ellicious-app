@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {Image,ScrollView,FlatList,TouchableOpacity, RefreshControl, Platform, TouchableHighlight, Alert, ActivityIndicator, Keyboard, TouchableWithoutFeedback, } from 'react-native';
 //scrollview는 요소가 많은 경우 최적화 잘안된다~-> flatList가 좋다
 import styled from "styled-components";
 import { gql } from "apollo-boost";
 import Loader from "../../components/Loader";
-import { useQuery } from "react-apollo-hooks";
+import { useQuery,useMutation } from "react-apollo-hooks";
+import { Notifications } from "expo";
+import * as Permissions from 'expo-permissions';
 import Post from "../../components/Post";
 import {BG_COLOR, BG_POST_COLOR} from "../../components/Color";
 import { POST_FRAGMENT } from "../../fragments";
@@ -21,6 +23,13 @@ import InfiniteScroll from 'react-infinite-scroll-component';
   ${POST_FRAGMENT}
 `;  
 */
+export const EDIT_USER = gql`
+  mutation editUser($notifyToken: String) {
+    editUser(notifyToken:$notifyToken){
+      id
+    }
+  }
+`;
 
 export const FEED_QUERY = gql`
   query seeFeed($pageNumber: Int!, $items: Int!){
@@ -42,6 +51,7 @@ export const RECOMMEND = gql`
     }
   }
   `
+
 const View = styled.View`
   justify-content: center;
   align-items: center;
@@ -57,7 +67,9 @@ const Text = styled.Text``;
 
 export default () => {
   const [refreshing, setRefreshing] = useState(false);
+  const [notificationStatus, setStatus] = useState(false);
   const [check, setCheck] = useState(false)
+  const [tokenMutation] = useMutation(EDIT_USER);
   const {loading, data, refetch, fetchMore} = useQuery(FEED_QUERY,{
     variables: {
       pageNumber: 0,
@@ -71,6 +83,27 @@ export default () => {
       items: 15
     }
   });
+  const ask = async()=>{
+      const {status: existingStatus} = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      let finalStatus = existingStatus;
+      if(existingStatus !=='granted'){
+        const {status} = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        finalStatus = status;
+      }
+      if(finalStatus !== 'granted'){
+        return;
+      }
+      let token = await Notifications.getExpoPushTokenAsync();
+      try{
+        await tokenMutation({
+          variables:{
+            notifyToken: token
+          }
+        })
+      }catch (e) {
+        console.log(e)
+      }
+    };
 
   const recommendCheck= async()=>{
     setCheck(true);
@@ -114,7 +147,10 @@ export default () => {
       }
     })
   }
-
+  useEffect(() => {
+    ask();
+    
+  }, []);
   return (
     <Container>
       {loading ? <Loader/> : (

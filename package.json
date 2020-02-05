@@ -71,7 +71,8 @@
     "top-bar-nav": "^1.2.2"
   },
   "devDependencies": {
-    "babel-preset-expo": "^7.1.0"
+    "babel-preset-expo": "^7.1.0",
+    "exp": "^57.2.1"
   },
   "private": true
 }

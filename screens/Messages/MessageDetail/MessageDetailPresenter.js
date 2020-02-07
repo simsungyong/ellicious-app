@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
-import Platform, { KeyboardAvoidingView, TextInput, View,Text, ScrollView, TextComponent, TouchableOpacity, Alert } from "react-native";
+import Platform, { KeyboardAvoidingView, TextInput, View,Text, ScrollView, TextComponent, TouchableOpacity, Alert, RefreshControl } from "react-native";
 import styled from "styled-components";
 import { useMutation, useQuery, useSubscription } from "react-apollo-hooks";
 import gql from "graphql-tag";
@@ -80,7 +80,7 @@ const SEND_MESSAGE_WITHOUT_ROOMID = gql`
 `;
 
 export const MESSAGES = gql`
-  query seeRoom($roomId: String!) {
+  query seeRoom($roomId: String) {
     seeRoom(id: $roomId) {
       messages {
         id
@@ -94,7 +94,7 @@ export const MESSAGES = gql`
 `;
 
 const NEW_MESSAGE = gql`
-  subscription newMessage($roomId: String!) {
+  subscription newMessage($roomId: String) {
     newMessage(roomId: $roomId) {
       id
       text
@@ -109,6 +109,7 @@ const MessageDetailPresenter = ({username, userId, roomId}) => {
   const [roomNum, setRoomNum] = useState(roomId);
   const [message, setMessage] = useState("");
   const [chat_message, setMessages] = useState();
+  const [refreshing, setRefreshing] = useState(false);
 
   const [sendMessageMutation] = useMutation(SEND_MESSAGE, {
     variables: {
@@ -146,7 +147,7 @@ const MessageDetailPresenter = ({username, userId, roomId}) => {
   const updateMessages = () => {
     if (newMessage !== undefined) {
     const { newMessage: payload } = newMessage;
-    setMessages(previous => [...previous, payload]);
+      setMessages(previous => [...previous, payload]);
     }
   };
 
@@ -173,10 +174,24 @@ const MessageDetailPresenter = ({username, userId, roomId}) => {
       }
   };
 
+  const refresh = async() => {
+    try {
+      setRefreshing(true);
+      await refetch();
+    } catch (e) {
+      console.log(e)
+    } finally {
+      setRefreshing(false);
+    }
+  }
+
   return (
     <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null} enabled>
         <ScrollView
         style={{ height : constants.height / 1.32 }}
+        refreshControl= {
+          <RefreshControl refreshing={refreshing} onRefresh={refresh} />
+        }
         >
         {chat_message==undefined ?
         null

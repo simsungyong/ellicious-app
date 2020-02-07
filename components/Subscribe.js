@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { View, Alert } from "react-native";
 import PropTypes from "prop-types";
-import { useQuery, useSubscription } from "react-apollo-hooks";
+import { useQuery, useSubscription, useMutation } from "react-apollo-hooks";
 import gql from "graphql-tag";
 import MainNavigation from "../navigation/MainNavigation";
-import {MESSAGES} from "../screens/Messages/MessageDetail/MessageDetailPresenter";
+import {MESSAGES, MessageDetailPresenter} from "../screens/Messages/MessageDetail/MessageDetailPresenter";
 import {SEE_ROOMS} from "../screens/Messages/Messages"
 
 const ME = gql`
@@ -16,83 +16,64 @@ const ME = gql`
 `;
 
 const NEW_MESSAGE = gql`
-  subscription newMessage($roomId: String!) {
-    newMessage(roomId: $roomId) {
+  subscription newMessage($userId: String) {
+    newMessage(userId: $userId) {
       id
       text
       from {
         username
       }
+      room {
+        id
+      }
     }
   }
 `;
 
-const NEW_ROOM = gql`
-  subscription newRoom($id: String!) {
-    newRoom(id: $id) {
-      id
-    }
-  }
-`;
 
 const Subscribe = () => {
-  const [OK, setOK] = useState(false)
-  const [roomOK, setRoomOK] = useState(false)
-  const [checkSub, setCheckSub] = useState(false)
-  const [messageOK, setMessageOK] = useState(false)
   const [userId, setUserId] = useState("")
+  const [roomId, setRoomId] = useState("")
+  const [messageOK, setMessageOK] = useState(false)
 
   const { data } = useQuery(ME);
   if(data && userId=="") {
       setUserId(data.me.id);
   }
 
-  const { data: newRoom } = useSubscription(NEW_ROOM, {
+  const { data: newMessage } = useSubscription(NEW_MESSAGE, {
     variables: {
-    id: userId
+      userId: userId
     }, suspend: true
   });
-
-  const { data: data2, refetch:refetch2 } = useQuery(SEE_ROOMS, { skip: !roomOK });
-
+  const { data: data2, refetch:refetch2 } = useQuery(SEE_ROOMS);
+  
+  
   const update = async() => {
-      if(userId!=="" && newRoom !== undefined) {
-          setRoomOK(true);
-          if(data2){ 
-            refetch2().then(() => {()=>setRoomOK(false)})
+    if(userId!=="" && newMessage !== undefined) {
+      try {
+        await refetch2();
+        const { data: data3,  refetch:refetch3 } = useQuery(
+          MESSAGES, {
+            variables: {
+              roomId: newMessage.newMessage.room.id
+            }
           }
+        ).then(refetch3);
+      } catch (e) {
+        console.log(e)
+      } finally {
+        console.log("hello!")
       }
+    }
   }
   
   
 
   useEffect(() => {
     update();
-}, newRoom)
-
-
+  }, [newMessage])
   
-
-
-  // const { data: newMessage } = useSubscription(NEW_MESSAGE, {
-  //   variables: {
-  //   roomId: "ck6btbokqj4nh0b091x707mxr"
-  //   }, suspend: true, skip: !OK
-  // });
-  // const { data:data3, refetch:refetch3 } = useQuery(
-  //   MESSAGES, {
-  //     variables: { 
-  //       roomId: "ck6btbokqj4nh0b091x707mxr"
-  //     }, suspend: true, skip: messageOK
-  //   }
-  // );
-  // if(data3) {
-  //   setMessageOK(true);
-  // }
-  // if(newMessage && messageOK) {
-  //   refetch3().then(()=> {setMessageOK(false)})
-  // }
-    
     
 
 

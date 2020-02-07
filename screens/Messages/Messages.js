@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ScrollView, View, Button, Text, RefreshControl } from "react-native";
 import { gql } from "apollo-boost";
 // import { USER_FRAGMENT } from "../../fragments";
@@ -22,13 +22,10 @@ export const SEE_ROOMS = gql`
   }
 `;
 
-
 export default ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
 
   const { loading, data, refetch } = useQuery(SEE_ROOMS);
-
-  if(!loading) { console.log(data.seeRooms) }
 
   const refresh = async() =>{
     try{

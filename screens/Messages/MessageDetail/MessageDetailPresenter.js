@@ -79,7 +79,7 @@ const SEND_MESSAGE_WITHOUT_ROOMID = gql`
   }
 `;
 
-const MESSAGES = gql`
+export const MESSAGES = gql`
   query seeRoom($roomId: String!) {
     seeRoom(id: $roomId) {
       messages {
@@ -125,7 +125,7 @@ const MessageDetailPresenter = ({username, userId, roomId}) => {
     }, refetchQueries:()=>[{query: SEE_ROOMS}]
   });
 
-  const { data } = useQuery(
+  const { data, refetch } = useQuery(
     MESSAGES, {
       variables: { 
         roomId: roomNum

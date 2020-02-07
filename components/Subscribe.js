@@ -38,6 +38,7 @@ const NEW_ROOM = gql`
 const Subscribe = () => {
   const [OK, setOK] = useState(false)
   const [roomOK, setRoomOK] = useState(false)
+  const [checkSub, setCheckSub] = useState(false)
   const [messageOK, setMessageOK] = useState(false)
   const [userId, setUserId] = useState("")
 
@@ -46,28 +47,31 @@ const Subscribe = () => {
       setUserId(data.me.id);
   }
 
-  useEffect(() => {
-      startSubscription()
-  }, userId)
+  const { data: newRoom } = useSubscription(NEW_ROOM, {
+    variables: {
+    id: userId
+    }, suspend: true
+  });
 
-  const startSubscription = async() => {
-      if(userId!=="") {
-          setOK(true);
+  const { data: data2, refetch:refetch2 } = useQuery(SEE_ROOMS, { skip: !roomOK });
+
+  const update = async() => {
+      if(userId!=="" && newRoom !== undefined) {
+          setRoomOK(true);
+          if(data2){ 
+            refetch2().then(() => {()=>setRoomOK(false)})
+          }
       }
   }
   
-  const { data: newRoom } = useSubscription(NEW_ROOM, {
-      variables: {
-      id: userId
-      }, suspend: true, skip: !OK
-  });
-  const { data: data2, refetch:refetch2 } = useQuery(SEE_ROOMS, { skip: roomOK });
-  if(data2) {
-    setRoomOK(true);
-  }
-  if(newRoom && roomOK) {
-    refetch2().then(() => {setRoomOK(false)})
-  }
+  
+
+  useEffect(() => {
+    update();
+}, newRoom)
+
+
+  
 
 
   // const { data: newMessage } = useSubscription(NEW_MESSAGE, {

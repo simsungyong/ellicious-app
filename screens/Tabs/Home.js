@@ -157,7 +157,7 @@ export default () => {
       <FlatList
         data={data.seeFeed}
         onRefresh={refresh}
-        onEndReachedThreshold={1.5}
+        //onEndReachedThreshold={1.5}
         refreshing={refreshing}
         //onEndReached={onLoadMore}
         keyExtractor={item=>item.id}

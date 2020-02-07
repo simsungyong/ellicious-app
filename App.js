@@ -64,7 +64,6 @@ export default function App() {
       };
 
       
-      
       const requestLink = new ApolloLink((operation, forward) =>
         new Observable(observer => {
           let handle;

@@ -53,13 +53,13 @@ const Subscribe = () => {
     if(userId!=="" && newMessage !== undefined) {
       try {
         await refetch2();
-        const { data: data3,  refetch:refetch3 } = useQuery(
-          MESSAGES, {
-            variables: {
-              roomId: newMessage.newMessage.room.id
-            }
-          }
-        ).then(refetch3);
+        // const { data: data3,  refetch:refetch3 } = useQuery(
+        //   MESSAGES, {
+        //     variables: {
+        //       roomId: newMessage.newMessage.room.id
+        //     }
+        //   }
+        // ).then(refetch3);
       } catch (e) {
         console.log(e)
       } finally {

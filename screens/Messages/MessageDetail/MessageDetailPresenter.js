@@ -110,7 +110,7 @@ const MessageDetailPresenter = ({username, userId, roomId}) => {
   const [message, setMessage] = useState("");
   const [chat_message, setMessages] = useState();
   const [refreshing, setRefreshing] = useState(false);
-
+  
   const [sendMessageMutation] = useMutation(SEND_MESSAGE, {
     variables: {
     text: message,
@@ -126,6 +126,8 @@ const MessageDetailPresenter = ({username, userId, roomId}) => {
     }, refetchQueries:()=>[{query: SEE_ROOMS}]
   });
 
+
+
   const { data, refetch } = useQuery(
     MESSAGES, {
       variables: { 
@@ -136,6 +138,7 @@ const MessageDetailPresenter = ({username, userId, roomId}) => {
 
   if(data !== undefined && chat_message == null && data.seeRoom !== undefined) {
     setMessages(data.seeRoom.messages)
+    console.log("a");
   }
 
   const { data: newMessage } = useSubscription(NEW_MESSAGE, {

@@ -152,45 +152,51 @@ export default () => {
     
   }, []);
   return (
-    <Container>
-      {loading ? <Loader/> : (
-      <FlatList
-        data={data.seeFeed}
-        onRefresh={refresh}
-        //onEndReachedThreshold={1.5}
-        refreshing={refreshing}
-        //onEndReached={onLoadMore}
-        keyExtractor={item=>item.id}
-        renderItem={({item})=>{
-          return (
-            <Post {...item}/>
-          )
-        }}
-        ListEmptyComponent={()=>{
-          recommendCheck();
-          return(
-            <Container>
+    <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={refresh}/>
+        }>
+        {loading ? (<Loader/>): (data && data.seeFeed && data.seeFeed.map(post=> <Post key={post.id}{...post} />))}
+      </ScrollView>
+    // <Container>
+    //   {loading ? <Loader/> : (
+    //   <FlatList
+    //     data={data.seeFeed}
+    //     onRefresh={refresh}
+    //     //onEndReachedThreshold={1.5}
+    //     refreshing={refreshing}
+    //     //onEndReached={onLoadMore}
+    //     keyExtractor={item=>item.id}
+    //     renderItem={({item})=>{
+    //       return (
+    //         <Post {...item}/>
+    //       )
+    //     }}
+    //     ListEmptyComponent={()=>{
+    //       recommendCheck();
+    //       return(
+    //         <Container>
               
-              {loading2 ? (
-                <Loader />
-              ) : (
-                data2 &&
-                data2.recommendUser &&
-                data2.recommendUser.map(user => 
-              <SearchAccountBox key={user.id} {...user} />
-              )
-              )
-                }
-            <TouchableOpacity onPress={refresh}>
-              <Text>완료</Text>
-            </TouchableOpacity>
-          </Container>
-          )
-        }
-      }
-        />
-        )}
-    </Container>
+    //           {loading2 ? (
+    //             <Loader />
+    //           ) : (
+    //             data2 &&
+    //             data2.recommendUser &&
+    //             data2.recommendUser.map(user => 
+    //           <SearchAccountBox key={user.id} {...user} />
+    //           )
+    //           )
+    //             }
+    //         <TouchableOpacity onPress={refresh}>
+    //           <Text>완료</Text>
+    //         </TouchableOpacity>
+    //       </Container>
+    //       )
+    //     }
+    //   }
+    //     />
+    //     )}
+    // </Container>
     
 
   );

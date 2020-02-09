@@ -21,16 +21,22 @@ import { onError } from 'apollo-link-error';
 import { ApolloLink, split, Observable } from 'apollo-link';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
+import firebase from 'firebase';
+import firebaseConfig from "./firebase.config";
 
 
 //AsyncStorage.clear();
+
+
+if(!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig)
+}
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [client, setClient] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
 
-   
     
 
   const preLoad = async () => {

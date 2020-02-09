@@ -20,8 +20,11 @@ export const CREATE_ACCOUNT = gql`
       firstName: $firstName
       lastName: $lastName
       username: $username
-    )
-  }
+    ) {
+      id
+      username
+    }
+  } 
 `;
 
 export const CHECK_USERNAME = gql`

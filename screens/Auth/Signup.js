@@ -8,6 +8,7 @@ import { Alert } from "react-native";
 import { useMutation, useQuery } from "react-apollo-hooks";
 import { CREATE_ACCOUNT, ID_CHECK, CHECK_USERNAME } from "./AuthQueries";
 import { TINT_COLOR, PointPink, BG_COLOR } from '../../components/Color'
+import firebase from 'firebase';
 
 const Container = styled.View`
   flex: 1;
@@ -114,6 +115,7 @@ export default ({ navigation }) => {
           data: { createAccount }
         } = await createAccountMutation();
         if (createAccount) {
+          firebase.database().ref("users/"+createAccount.id).set({ID: createAccount.username});
           Alert.alert("Account created", "Log in now!");
           navigation.navigate("AuthHome");
         }
@@ -123,6 +125,7 @@ export default ({ navigation }) => {
     } catch (e) {
       console.log(e);
     } finally {
+      
       setCheckUsername(false);
     }
   }

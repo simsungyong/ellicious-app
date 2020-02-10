@@ -26,7 +26,6 @@ export default class ChatScreen extends React.Component {
 
 
     componentDidMount(){
-        console.log(User.userId)
         firebase.database().ref('messages').child(User.userId).child(this.state.person.userId)
         .on("child_added",(value)=>{
             this.setState((prevState)=>{
@@ -37,31 +36,46 @@ export default class ChatScreen extends React.Component {
         })
     }
 
+    convertTime = (time)=>{
+        let d = new Date(time);
+        let result = (d.getHours() < 10 ? '0' : '') + d.getHours() + ':';
+        result += (d.getMinutes()< 10 ? '0' : '') + d.getMinutes();
+        return result;
+    }
+
     handleChange = key => val => {
         this.setState({ [key]: val })
     }
 
+    getlast(){
+        let a = firebase.database().ref('messages').child(User.userId).child(this.state.person.userId).limitToLast(1);
+        a.on("value",(value)=>{
+            console.log(value.message)
+            console.log(value.val())
+        })
+        
+    }
+
     sendMessage = async () => {
-        console.log(User.userId);
-        console.log(User.username);
+        this.getlast()
+        // if(this.state.textMessage.length > 0){
+        //     let msgId = firebase.database().ref('messages').child(User.userId).child(this.state.person.userId).push().key;
+        //     let updates={};
+        //     let message={
+        //         message:this.state.textMessage,
+        //         time:firebase.database.ServerValue.TIMESTAMP,
+        //         from: User.username
+        //     }
+        //     firebase.database().ref('users/'+User.userId+'/friends/'+this.state.person.userId).set({ID: this.state.person.username, userId: this.state.person.userId});
+        //     firebase.database().ref('users/'+this.state.person.userId+'/friends/'+User.userId).set({ID: User.username, userId: User.userId});
 
-        if(this.state.textMessage.length > 0){
-            let msgId = firebase.database().ref('messages').child(User.userId).child(this.state.person.userId).push().key;
-            let updates={};
-            let message={
-                message:this.state.textMessage,
-                time:firebase.database.ServerValue.TIMESTAMP,
-                from: User.username
-            }
-            firebase.database().ref('users/'+User.userId+'/friends/').set({ID: this.state.person.username});
-            firebase.database().ref('users/'+this.state.person.userId+'/friends/').set({ID: User.username});
+            
 
-
-            updates['messages/'+User.userId+'/'+this.state.person.userId+'/'+msgId] = message;
-            updates['messages/'+this.state.person.userId+'/'+User.userId+'/'+msgId] = message;
-            firebase.database().ref().update(updates);
-            this.setState({textMessage:''})
-        }
+        //     updates['messages/'+User.userId+'/'+this.state.person.userId+'/'+msgId] = message;
+        //     updates['messages/'+this.state.person.userId+'/'+User.userId+'/'+msgId] = message;
+        //     firebase.database().ref().update(updates);
+        //     this.setState({textMessage:''})
+        //}
     }
 
 
@@ -78,7 +92,7 @@ export default class ChatScreen extends React.Component {
                 <Text style={{color:'#fff', padding:7, fontSize:16}}>
                     {item.message}
                 </Text>
-                <Text style={{color:'#eee', padding:3,fontSize:12}}>{item.time}</Text>
+                <Text style={{color:'#eee', padding:3,fontSize:12}}>{this.convertTime(item.time)}</Text>
             </View>
         )
     }

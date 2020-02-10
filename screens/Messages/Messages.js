@@ -18,7 +18,7 @@ export default class Messages extends React.Component {
   state = {
     chatting: []
   }
-  componentWillMount() {
+  componentDidMount() {
     let dbRef = firebase.database().ref('users/' + User.userId + '/friends');
     dbRef.on("child_added", (val) => {
       let people = val.val()
@@ -33,22 +33,26 @@ export default class Messages extends React.Component {
 
   renderRow = ({ item }) => {
     return (
-        <TouchableOpacity style={{ padding: 10, borderBottomColor: '#ccc', borderBottomWidth: 1 }}
-            onPress={() => this.props.navigation.navigate('MessageDetail',{ userId: item.userId, username: item.ID})}>
-            <Text style={{ fontSize: 20 }}>{item.ID}</Text>
-        </TouchableOpacity>
+      <TouchableOpacity style={{ padding: 10, borderBottomColor: '#ccc', borderBottomWidth: 1 }}
+        onPress={() => this.props.navigation.navigate('MessageDetail', { userId: item.userId, username: item.ID })}>
+        <Text style={{ fontSize: 20 }}>{item.ID}</Text>
+      </TouchableOpacity>
     )
-}
+  }
 
 
   render() {
     return (
       <SafeAreaView>
         <FlatList
-        data={this.state.chatting}
-        renderItem={this.renderRow}
-        keyExtractor={(item)=>item.userId}
+          data={this.state.chatting}
+          renderItem={this.renderRow}
+          keyExtractor={(item) => item.userId}
         />
+        <View>
+
+          <Button title="대화상대 추가" onPress={() => this.props.navigation.navigate("MessageRoom")}></Button>
+        </View>
       </SafeAreaView>
     )
   }

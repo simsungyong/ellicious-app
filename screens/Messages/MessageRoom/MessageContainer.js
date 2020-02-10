@@ -23,7 +23,7 @@ export default class extends React.Component {
       const { navigation } = props;
       this.state = {
         term: "",
-        shouldFetch: false
+        shouldFetch: true
       };
       navigation.setParams({
         term: this.state.term,
@@ -36,9 +36,7 @@ export default class extends React.Component {
       navigation.setParams({
         term: text
       });
-      if(text.length == 0) {
-        this.setState({ term: text, shouldFetch: false });
-      } else this.setState({ term: text, shouldFetch: true });
+      this.setState({ term: text, shouldFetch: true });
   };
   onSubmit = () => {
     

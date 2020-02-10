@@ -3,7 +3,7 @@ import { View, Text, Dimensions , TextInput, AsyncStorage} from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 import firebase from 'firebase';
-
+import User from '../../../User'
 export default class ChatScreen extends React.Component {
     static navigationOptions = ({ navigation }) => {
         return {
@@ -19,17 +19,15 @@ export default class ChatScreen extends React.Component {
                 username: props.navigation.getParam('username')
             },
             textMessage: '',
-            messageList:[],
-            meId:'ck24ln3jzud670b09fyije6pt',
-            meName:'yong_ari'
+            messageList:[]
         }
         //console.log(this.state.meName)
     }
 
 
-
     componentDidMount(){
-        firebase.database().ref('messages').child(this.state.meId).child(this.state.person.userId)
+        console.log(User.userId)
+        firebase.database().ref('messages').child(User.userId).child(this.state.person.userId)
         .on("child_added",(value)=>{
             this.setState((prevState)=>{
                 return{
@@ -44,21 +42,23 @@ export default class ChatScreen extends React.Component {
     }
 
     sendMessage = async () => {
-        
+        console.log(User.userId);
+        console.log(User.username);
+
         if(this.state.textMessage.length > 0){
-            let msgId = firebase.database().ref('messages').child(this.state.meId).child(this.state.person.userId).push().key;
+            let msgId = firebase.database().ref('messages').child(User.userId).child(this.state.person.userId).push().key;
             let updates={};
             let message={
                 message:this.state.textMessage,
                 time:firebase.database.ServerValue.TIMESTAMP,
-                from: this.state.meName
+                from: User.username
             }
-            firebase.database().ref('users/'+this.state.meId+'/friends/').set({ID: this.state.person.username});
-            firebase.database().ref('users/'+this.state.person.userId+'/friends/').set({ID: this.state.meName});
+            firebase.database().ref('users/'+User.userId+'/friends/').set({ID: this.state.person.username});
+            firebase.database().ref('users/'+this.state.person.userId+'/friends/').set({ID: User.username});
 
 
-            updates['messages/'+this.state.meId+'/'+this.state.person.userId+'/'+msgId] = message;
-            updates['messages/'+this.state.person.userId+'/'+this.state.meId+'/'+msgId] = message;
+            updates['messages/'+User.userId+'/'+this.state.person.userId+'/'+msgId] = message;
+            updates['messages/'+this.state.person.userId+'/'+User.userId+'/'+msgId] = message;
             firebase.database().ref().update(updates);
             this.setState({textMessage:''})
         }
@@ -70,8 +70,8 @@ export default class ChatScreen extends React.Component {
             <View style={{
                 flexDirection:'row',
                 width:'60%',
-                alignSelf: item.from === this.state.meName ? 'flex-end' : 'flex-start',
-                backgroundColor: item.from ===this.state.meName ? '#00897b' : '#7cb342',
+                alignSelf: item.from === User.username ? 'flex-end' : 'flex-start',
+                backgroundColor: item.from ===User.username ? '#00897b' : '#7cb342',
                 borderRadius: 5,
                 marginBottom: 10
             }}>

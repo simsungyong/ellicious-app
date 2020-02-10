@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, View, Button, Text, RefreshControl, Alert } from "react-native";
+import { ScrollView, View, Button, Text, RefreshControl, Alert, TouchableOpacity } from "react-native";
 import { gql } from "apollo-boost";
 // import { USER_FRAGMENT } from "../../fragments";
 import Loader from "../../components/Loader";
@@ -7,61 +7,82 @@ import { useQuery } from "react-apollo-hooks";
 import MessageRooms from "../../components/MessageComponents/MessageRooms";
 import { mainPink } from "../../components/Color";
 import firebase from 'firebase';
+import User from '../../User'
+import { SafeAreaView } from "react-navigation";
+import { FlatList } from "react-native-gesture-handler";
 
-export const SEE_ROOMS = gql`
-  {
-    seeRooms {
-      id
-      participants {
-        id
-        username
-        firstName
-        avatar
-        isSelf
-      }
-    }
+
+
+
+export default class Messages extends React.Component {
+  state = {
+    chatting: []
   }
-`;
+  componentWillMount() {
+    let dbRef = firebase.database().ref('users/' + User.userId + '/friends');
+    dbRef.on("child_added", (val) => {
+      let people = val.val()
+      people.userId = val.key;
+      this.setState((prevState) => {
+        return {
+          chatting: [...prevState.chatting, people]
+        }
+      })
+    })
+  }
 
-
-export default ({ navigation }) => {
-  const dbRef = firebase.database().ref('users')
-  dbRef.on('value', (val) => {
-  })
-
-  
-  const [refreshing, setRefreshing] = useState(false);
-
-    const { loading, data, refetch } = useQuery(SEE_ROOMS);
-
-    const refresh = async () => {
-      try {
-        setRefreshing(true);
-        await refetch();
-
-      } catch (e) {
-        console.log(e);
-      } finally {
-        setRefreshing(false);
-      }
-    };
-
+  renderRow = ({ item }) => {
     return (
-      <ScrollView refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} />
-      }>
-        {loading ? <Loader /> : (
-          <View>
-            {
-              data && data.seeRooms && data.seeRooms.map(room =>
-                <MessageRooms key={room.id} {...room} />)
-            }
-            <Button title="대화상대 추가" onPress={() => navigation.navigate("MessageRoom")}></Button>
-          </View>
-        )}
-      </ScrollView>
-    );
-  
+        <TouchableOpacity style={{ padding: 10, borderBottomColor: '#ccc', borderBottomWidth: 1 }}
+            onPress={() => this.props.navigation.navigate('MessageDetail',{ userId: item.userId, username: item.ID})}>
+            <Text style={{ fontSize: 20 }}>{item.ID}</Text>
+        </TouchableOpacity>
+    )
+}
+
+
+  render() {
+    return (
+      <SafeAreaView>
+        <FlatList
+        data={this.state.chatting}
+        renderItem={this.renderRow}
+        keyExtractor={(item)=>item.userId}
+        />
+      </SafeAreaView>
+    )
+  }
+  // const dbRef = firebase.database().ref('users/'+User.userId+'friends')
+  // dbRef.on('child_added', (val) => {
+  //   console.log(val)
+  // })
+  // console.log(User.username)
+
+  // const [refreshing, setRefreshing] = useState(false);
+
+
+  //   const refresh = async () => {
+  //     try {
+  //       setRefreshing(true);
+  //       await refetch();
+
+  //     } catch (e) {
+  //       console.log(e);
+  //     } finally {
+  //       setRefreshing(false);
+  //     }
+  //   };
+
+  //   return (
+  //     <ScrollView>
+
+  //         <View>
+
+  //           <Button title="대화상대 추가" onPress={() => navigation.navigate("MessageRoom")}></Button>
+  //         </View>
+  //     </ScrollView>
+  //   );
+
 
 
 

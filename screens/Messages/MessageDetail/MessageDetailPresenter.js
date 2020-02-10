@@ -197,6 +197,8 @@ const MessageDetailPresenter = ({username, userId, roomId}) => {
                 ))
             )}
             </ScrollView>
+            
+            <KeyboardAvoidingView  behavior="padding">
             <InputCon>
             <Input
                 placeholder={"Type your message"}
@@ -212,6 +214,7 @@ const MessageDetailPresenter = ({username, userId, roomId}) => {
             onSubmit={onSubmit}
             />
             </InputCon>
+            </KeyboardAvoidingView>
         </KeyboardAvoidingView>
     );
     }

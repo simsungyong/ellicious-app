@@ -87,15 +87,18 @@ const SearchAccountBox = ({ navigation, username, firstName, avatar, id, isSelf,
   const handleFollow = async () =>{
     try{
       if(followingConfirm === true) {
+        setFollowing(f => !f);
         await UnFollowMutation();
-        setFollowing(f => !f);
+       
       } else {
-        await FollowMutation();
         setFollowing(f => !f);
+        await FollowMutation();
+        
       }
     } catch (e) {}
   };
-
+  if(isSelf){ return null }
+  else {
   return (
     <Container>
       <TouchableOpacity onPress={() => {
@@ -128,7 +131,7 @@ const SearchAccountBox = ({ navigation, username, firstName, avatar, id, isSelf,
       </Button>
     </Container>
   );
-};
+}};
 
 SearchAccountBox.propTypes = {
   id: PropTypes.string.isRequired,

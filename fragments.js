@@ -118,6 +118,7 @@ export const PICK_FRAGMENT = gql`
       storeLat
       storeLong
       rating
+      placeId
       storeLocation
       storeName
       files{
@@ -162,6 +163,7 @@ export const POST_COMMENT = gql`
     id
     user{
       id
+      isSelf
       username
       avatar
     }

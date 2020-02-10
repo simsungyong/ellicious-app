@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import constants from "../constants";
 import {PointPink, TINT_COLOR} from './Color'
 
-const FloatingLabelInput = ({label, onChangeText,value})=>{
+const FloatingLabelInput = ({label, onChangeText,value, keyboardType,secureTextEntry, editable})=>{
   
   const [focus, setFocus] = useState(false);
   const [animation, setAnimation] = useState(new Animated.Value(0));
@@ -41,13 +41,17 @@ const FloatingLabelInput = ({label, onChangeText,value})=>{
         <Animated.Text style={labelStyle}>
           {label}
         </ Animated.Text>
+        
         <TextInput
           onChangeText={onChangeText}
           style={{ height: 26,width: constants.width/1.5, fontSize: 20, color: TINT_COLOR, borderBottomWidth: 1, borderBottomColor: PointPink }}
           onFocus={handleFocus}
           onBlur={handleBlur}
           blurOnSubmit
+          editable={editable}
           autoCapitalize='none'
+          keyboardType={keyboardType}
+          secureTextEntry={secureTextEntry}
           label={label}
           value={value}
         />
@@ -57,7 +61,7 @@ const FloatingLabelInput = ({label, onChangeText,value})=>{
   
 }
 
-const AuthInputClass =({value,label,onChangeText}) => {
+const AuthInputClass =({value,label,onChangeText, keyboardType, secureTextEntry, editable}) => {
   
     return (
       <View style={{padding: 8 }}> 
@@ -65,7 +69,10 @@ const AuthInputClass =({value,label,onChangeText}) => {
         <FloatingLabelInput
           label={label}
           value={value}
+          editable={editable}
           onChangeText={onChangeText}
+          keyboardType={keyboardType}
+          secureTextEntry={secureTextEntry}
         />
       </View>
     );
@@ -81,10 +88,12 @@ const AuthInput = ({
     keyboardType = "default",
     autoCapitalize = "none",
     returnKeyType = "done",
+    editable = true,
     onChange,
+    secureTextEntry=false,
     label=null,
     onSubmitEditing = () => null,
-    autoCorrect = true
+    autoCorrect = true,
   }) => (
     
     <Container>
@@ -95,9 +104,11 @@ const AuthInput = ({
         autoCapitalize={autoCapitalize}
        // placeholder={placeholder}
         onSubmitEditing={onSubmitEditing}
+        secureTextEntry={secureTextEntry}
         autoCorrect={autoCorrect}
         value={value}
         label={label}
+        editable={editable}
       />
     </Container>
   );
@@ -117,7 +128,9 @@ AuthInput.propTypes = {
   onChange: PropTypes.func.isRequired,
   returnKeyType: PropTypes.oneOf(["done", "go", "next", "search", "send"]),
   onSubmitEditing: PropTypes.func,
-  autoCorrect: PropTypes.bool
+  autoCorrect: PropTypes.bool,
+  secureTextEntry: PropTypes.bool,
+  editable: PropTypes.bool,
 };
 
 export default AuthInput;

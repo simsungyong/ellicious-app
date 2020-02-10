@@ -5,31 +5,48 @@ import {
   Text,
   View,
   Image,
+  TextInput,
   Dimensions,
   TouchableOpacity,
   Button,
   Platform
 } from "react-native";
-import MapView, { PROVIDER_GOOGLE,Marker, Callout, Circle } from "react-native-maps";
-import Carousel from 'react-native-snap-carousel';
+import styled from "styled-components";
+import Stars from 'react-native-stars';
+import {FontAwesome, EvilIcons, MaterialCommunityIcons} from "@expo/vector-icons";
+import { TINT_COLOR,IconColor, PointPink, StarColor,BG_COLOR, LightGrey, mainPink, Grey, Line , LightPink} from '../../../components/Color';
+import { PROVIDER_GOOGLE,Marker, Callout, Circle } from "react-native-maps";
+import MapView from 'react-native-map-clustering';
+import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
 import { withNavigation } from "react-navigation";
+import Star from '../../../components/Star';
+
+const Container = styled.View`
+padding : 10px;
+background-color : 'rgba(0,0,0,0.6)'
+border-radius : 24;
+
+`;
+const ModalContainer =styled.View`
+  padding: 5px;
+  flex-direction: row;
+  align-items: center;  
+  padding : 5px;
+`;
+const SubContainer =styled.View`
+  padding: 5px;
+  align-items: center;  
+`;
 
 class ProfileMapPresenter extends React.Component {
     
-    state = {
-        
-        coordinate:{
-            latitude:0,
-            longitude:0
-        }
-    }
     constructor(props) {
         super(props);
         const {navigation} = props;
         const {marker, region} = props;
-        this.state = {marker, region, navigation};
+        this.state = {marker, region, navigation, isClick:false, indexNum:-1};
     }
-
+    
     
 
     componentDidMount(){
@@ -53,71 +70,95 @@ class ProfileMapPresenter extends React.Component {
         )
     }
 
-    /*onMarkerPressed=(marker,index)=>{
-        this._map.animateToRegion({
-            latitude: marker.posts[index].storeLat,
-            longitude: marker.posts[index].storeLong,
-            latitudeDelta: 0.047864195044303443,
-            longitudeDelta: 0.0540142817690068
-        })
+    animate(coordinate){
+        //console.log("로그"+this.mapView.state)
+        let newRegion = {
+             latitude: coordinate.storeLat,
+             longitude: coordinate.storeLong,
+             
+             latitudeDelta: this.state.region.latitudeDelta/20,
+             longitudeDelta: this.state.region.longitudeDelta/20,
+         };
+         mapView.animateToRegion(newRegion,2000);
+     }
 
-    }*/
+     clickMarker(coordinate, index){
+        let newRegion = {
+            latitude: coordinate.storeLat,
+            longitude: coordinate.storeLong,
+            latitudeDelta: this.state.region.latitudeDelta/20,
+            longitudeDelta: this.state.region.longitudeDelta/20,
+        };
+
+         this.setState({indexNum:index, isClick:true})
+         mapView.animateToRegion(newRegion,1000);
+     }
+    
+    
 
 
 
     render(){
         return (
             <View style={styles.container}>
-            
-            <MapView
-                provider={PROVIDER_GOOGLE}
-                ref={map=>this._map = map}
-                style={styles.map}
-                showsUserLocation={true}
-                initialRegion={this.state.region}>
-                {this.state.marker.posts.map((marker, index)=>{
-                    if(Platform.OS === "ios"){
-                        console.log("hihi")
+                <MapView
+                mapRef={(ref)=>mapView=ref}
+                initialRegion={{latitude: 36.519959, longitude:127.889604,
+                                latitudeDelta: 3, longitudeDelta:3}}
+                style={{flex:1}} 
+                showsUserLocation={true}>
+                    {this.state.marker ? (
+                        this.state.marker.posts.map((p,index)=>{
                         return(
-                            <Marker 
-                            key={index}
-                           // onPress={this.onMarkerPressed(marker,index)} 
-                            coordinate={{latitude:marker.storeLat, longitude:marker.storeLong}}
-                            //ref={ref=>this.state.markers[index] = ref}
-                            title={marker.storeName}
+                            <Marker key={index}
+                            coordinate = {{latitude: p.storeLat, longitude: p.storeLong}}
+                            onPress={()=>this.clickMarker(p,index)}
+
+                            //onPress={()=>{this.setState({isClick:true})}}
                             >
-                            <Callout onPress={()=>this.props.navigation.navigate("Detail", {id:marker.id})}>
-                                <Text>{marker.storeName}</Text>
-                            </Callout>
-                            <Image source={{uri:marker.files[0].url}}
-                                style={styles.markerImage}/>
-        
+                            <View style={styles.ratingBox}>
+                                <MaterialCommunityIcons
+                                        name={"map-marker-outline"}
+                                        size={34}
+                                        color={PointPink}/>
+                                <Star rating={p.rating} size={10} color={PointPink}/>
+                                
+                            </View>
+                                    
                             </Marker>
-                            )
-                    } else {
-                        return(
-                            <Marker 
-                            key={index}
-                           // onPress={this.onMarkerPressed(marker,index)} 
-                            coordinate={{latitude:marker.storeLat, longitude:marker.storeLong}}
-                            //ref={ref=>this.state.markers[index] = ref}
-                            title={marker.storeName}
-                            onCalloutPress={()=>this.props.navigation.navigate("Detail", {id:marker.id})}
-                            >
                             
-                            {/* <Callout onPress={()=>this.props.navigation.navigate("Detail", {id:marker.id})}> */}
-                                {/* <Text>{marker.storeName}</Text> */}
-                            {/* </Callout> */}
-                            <Image source={{uri:marker.files[0].url}}
-                                style={styles.markerImage}/>
-        
-                            </Marker>
-                            )
-                    }
-                })}
-                
-            </MapView>
-                
+  
+                        )
+                    })
+                    ) : null
+                }
+                    </MapView>
+                    {this.state.indexNum >-1 ? (
+                    <Modal.BottomModal
+                        visible={this.state.isClick}
+                        onTouchOutside={() =>this.setState({isClick:false})}
+                        width={0.1}
+                        height={170}
+                        onSwipeOut={() => this.setState({isClick:false})}
+                    >   
+                        <ModalTitle
+                        title={this.state.marker.posts[this.state.indexNum].storeName}
+                        />
+                        <ModalContent>
+                        <ModalContainer>
+                            <Image source={{uri:this.state.marker.posts[this.state.indexNum].files[0].url}}
+                            style={styles.cardImage, {width:80, height:80, borderRadius:10}}
+                            />
+                            <SubContainer>
+                                <Text>{this.state.marker.posts[this.state.indexNum].storeLocation.length > 25 ? `${this.state.marker.posts[this.state.indexNum].storeLocation.substring(0,23)}...` :this.state.marker.posts[this.state.indexNum].storeLocation}</Text>
+                                <Star rating={this.state.marker.posts[this.state.indexNum].rating} size={25} color={StarColor}/>
+                            </SubContainer>
+                         </ModalContainer>
+                        </ModalContent>
+                        
+                    </Modal.BottomModal>
+                    ): null }
+                    
             </View>
 
         )
@@ -153,17 +194,16 @@ const styles = StyleSheet.create({
     viewSub:{
         flexDirection:'row'
     },
-    ratingCard:{
-        color:"white",
-        fontSize:14,
-        alignSelf:'center',
-        marginBottom:10
+    ratingBox:{
+        alignItems: "center",
+        justifyContent: "center"
     
     },
     cardImage:{
         height:120,
         width:300,
         bottom:0,
+        color:"red",
         position:'absolute',
         borderBottomLeftRadius:24,
         borderBottomRightRadius:24
@@ -174,15 +214,20 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         marginBottom:10
     },
+    viewSubRating:{
+        flexDirection:'row',
+        alignItems: "center",
+        justifyContent: "center"
+      },
     markerImage:{
-        width:30,
-        height:30,
+        width:32,
+        height:32,
         opacity:1,
         borderWidth:2,
-        borderBottomLeftRadius:10,
-        borderBottomRightRadius:10,
-        borderTopLeftRadius:10,
-        borderTopRightRadius:10,
+        borderBottomLeftRadius:15,
+        borderBottomRightRadius:15,
+        borderTopLeftRadius:15,
+        borderTopRightRadius:15,
 
     }
 })

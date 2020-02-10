@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { AppLoading } from "expo";
+import { AppLoading, Notifications } from "expo";
 import * as Font from 'expo-font';
 import {Asset} from 'expo-asset';
 import { AsyncStorage } from "react-native";
@@ -21,14 +21,24 @@ import { onError } from 'apollo-link-error';
 import { ApolloLink, split, Observable } from 'apollo-link';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
+import firebase from 'firebase';
+import firebaseConfig from "./firebase.config";
 
 
 //AsyncStorage.clear();
+
+
+if(!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig)
+}
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [client, setClient] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
+
+    
+
   const preLoad = async () => {
     //await AsyncStorage.clear();
     try {
@@ -58,6 +68,7 @@ export default function App() {
           }
         });
       };
+
       
       const requestLink = new ApolloLink((operation, forward) =>
         new Observable(observer => {
@@ -137,6 +148,7 @@ export default function App() {
   };
   useEffect(() => {
     preLoad();
+    
   }, []);
 
   return loaded && client && isLoggedIn !== null ? (

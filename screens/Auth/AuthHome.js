@@ -5,13 +5,15 @@ import constants from "../../constants";
 import AuthButton from "../../components/AuthButton";
 import AuthInput from "../../components/AuthInput";
 import { useMutation } from "react-apollo-hooks";
-import { LOG_IN, CREATE_ACCOUNT } from "./AuthQueries";
-import { Alert } from "react-native";
+import { LOG_IN, CREATE_ACCOUNT, CONFIRM_SECRET } from "./AuthQueries";
+import { Alert, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from "react-native";
 import {mainPink, TINT_COLOR, PointPink, BG_COLOR } from "../../components/Color";
 import { SocialIcon } from 'react-native-elements';
 import useInput from "../../hooks/useInput";
 import * as Facebook from "expo-facebook";
 import * as Google from 'expo-google-app-auth';
+import { useLogIn } from "../../AuthContext";
+
 
 const Container = styled.View`
   justify-content: center;
@@ -100,51 +102,66 @@ const Bottom =styled.View`
 `;
 
 export default ({ navigation }) => {
-  const fNameInput = useInput("");
-  const lNameInput = useInput("");
-  const emailInput = useInput(navigation.getParam("email", ""));
-  const usernameInput = useInput("");
+  const passwordInput = useInput("");
+  const cellPhoneInput = useInput("");
+  const logIn = useLogIn();
+  
 
   const [loading, setLoading] = useState(false);
 
-  const [createAccountMutation] = useMutation(CREATE_ACCOUNT, {
+  // const [createAccountMutation] = useMutation(CREATE_ACCOUNT, {
+  //   variables: {
+  //     username: usernameInput.value,
+  //     email: emailInput.value,
+  //     firstName: fNameInput.value,
+  //     lastName: lNameInput.value
+  //   }
+  // });
+
+  const [confirmSecretMutation] = useMutation(CONFIRM_SECRET, {
     variables: {
-      username: usernameInput.value,
-      email: emailInput.value,
-      firstName: fNameInput.value,
-      lastName: lNameInput.value
+      password: passwordInput.value,
+      // email: emailInput.value
+      cellPhone: cellPhoneInput.value
     }
   });
 
-  const [requestSecretMutation] = useMutation(LOG_IN, {
-    variables: {
-      email: emailInput.value
-    }
-  });
+  // const [requestSecretMutation] = useMutation(LOG_IN, {
+  //   variables: {
+  //     email: emailInput.value
+  //   }
+  // });
 
 
   const handleLogin = async () => {
-    const { value } = emailInput;
-    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (value === "") {
-      return Alert.alert("Email can't be empty");
-    } else if (!value.includes("@") || !value.includes(".")) {
-      return Alert.alert("Please write an email");
-    } else if (!emailRegex.test(value)) {
-      return Alert.alert("That email is invalid");
-    }
+    // const { value: email } = emailInput;
+    // const { value: password } = passwordInput;
+    // const { value: id } = idInput;
+
+    // const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    // if (email === "") {
+    //   return Alert.alert("Email can't be empty");
+    // } else if (!email.includes("@") || !email.includes(".")) {
+    //   return Alert.alert("Please write an email");
+    // } else if (!emailRegex.test(email)) {
+    //   return Alert.alert("That email is invalid");
+    // }
+    
     try {
       setLoading(true);
+      // const {
+      //   data: { requestSecret }
+      // } = await requestSecretMutation();
+
       const {
-        data: { requestSecret }
-      } = await requestSecretMutation();
-      if (requestSecret) {
-        // Alert.alert("Check your email");
-        navigation.navigate("Confirm", { email: value });
-        return;
+        data: { confirmSecret }
+      } = await confirmSecretMutation();
+
+
+      if (confirmSecret !== "" || confirmSecret !== false) {
+        logIn(confirmSecret);
       } else {
-        Alert.alert("Account not found");
-        return;
+        Alert.alert("계정 또는 비밀번호를 확인해주세요");
       }
     } catch (e) {
       console.log(e);
@@ -154,92 +171,105 @@ export default ({ navigation }) => {
     }
   };
 
-  const fbLogin = async () => {
-    try {
-      setLoading(true);
-      const { type, token } = await Facebook.logInWithReadPermissionsAsync(
-        "1849127108565501",
-        {
-          permissions: ["public_profile", "email"]
-        }
-      );
-      if (type === "success") {
-        const response = await fetch(
-          `https://graph.facebook.com/me?access_token=${token}&fields=id,last_name,first_name,email`
-        );
-        Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
-        const { email, first_name, last_name } = await response.json();
-        console.log(email)
-        setLoading(false);
-      } else {
-        // type === 'cancel'
-      }
-    } catch ({ message }) {
-      alert(`Facebook Login Error: ${message}`);
-    }
-  };
+  // const fbLogin = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const { type, token } = await Facebook.logInWithReadPermissionsAsync(
+  //       "1849127108565501",
+  //       {
+  //         permissions: ["public_profile", "email"]
+  //       }
+  //     );
+  //     if (type === "success") {
+  //       const response = await fetch(
+  //         `https://graph.facebook.com/me?access_token=${token}&fields=id,last_name,first_name,email`
+  //       );
+  //       Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
+  //       const { email, first_name, last_name } = await response.json();
+  //       console.log(email)
+  //       setLoading(false);
+  //     } else {
+  //       // type === 'cancel'
+  //     }
+  //   } catch ({ message }) {
+  //     alert(`Facebook Login Error: ${message}`);
+  //   }
+  // };
 
-  const googleLogin = async () => {
-    try {
-      setLoading(true);
-      const result = await Google.logInAsync({
-        iosClientId: "884516426746-mt2la4o92f6u7fgvr5opglt0conrebjl.apps.googleusercontent.com",
-        androidClientId: "884516426746-360kefsq27dgm0au8i1d52ff9bobgrkd.apps.googleusercontent.com",
-        scopes: ["profile", "email"]
-      });
-      if (result.type === "success") {
-        const user = await fetch("https://www.googleapis.com/userinfo/v2/me", {
-          headers: { Authorization: `Bearer ${result.accessToken}` }
-        });
-        const { email, family_name, given_name } = await user.json();
-        console.log(email)
-      } else {
-        return { cancelled: true };
-      }
-    } catch (e) {
-      console.log(e);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const googleLogin = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const result = await Google.logInAsync({
+  //       iosClientId: "884516426746-mt2la4o92f6u7fgvr5opglt0conrebjl.apps.googleusercontent.com",
+  //       androidClientId: "884516426746-360kefsq27dgm0au8i1d52ff9bobgrkd.apps.googleusercontent.com",
+  //       scopes: ["profile", "email"]
+  //     });
+  //     if (result.type === "success") {
+  //       const user = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+  //         headers: { Authorization: `Bearer ${result.accessToken}` }
+  //       });
+  //       const { email, family_name, given_name } = await user.json();
+  //       console.log(email)
+  //     } else {
+  //       return { cancelled: true };
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
-    <Container>
-    <Top/>
-    <TitleCon>
-      <Image 
-        style={{height:'100%',width:'100%',resizeMode:'contain'}}
-        source={{uri:'https://user-images.githubusercontent.com/52433798/68202438-17114400-0007-11ea-9e3c-31ef780daeef.png'}}
-      />
-    </TitleCon>
-    <Middle/>
-    <ButtonContainer>
-      <AuthInput
-        {...emailInput}
-        /*placeholder="First name"*/
-        autoCapitalize="words"
-        label = "email"
-      />
-      <AuthButton loading={loading} onPress={handleLogin} text="Login" />
 
-        <LoginButtonCon>
-            <OtherLoginCon>
-              <SocialIcon type="facebook" onPress={fbLogin} />
-              <SocialIcon type="google" onPress={googleLogin} />
-            </OtherLoginCon>
-        </LoginButtonCon>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <Container>
+      <Top/>
+      <TitleCon>
+        <Image 
+          style={{height:'100%',width:'100%',resizeMode:'contain'}}
+          source={{uri:'https://user-images.githubusercontent.com/52433798/68202438-17114400-0007-11ea-9e3c-31ef780daeef.png'}}
+        />
+      </TitleCon>
+      <Middle/>
+      
 
-      <SignUpCon>
-       <Text>계정이 없으신가요?</Text>
-        <Touchable onPress={() => navigation.navigate("Signup")}>
-            <LoginLink>
-              <LoginLinkText>회원가입</LoginLinkText>
-            </LoginLink>
-        </Touchable>
-      </SignUpCon>
-    </ButtonContainer>
-    <Bottom/>
-  </Container>
+      <ButtonContainer>
+
+        <AuthInput
+          {...cellPhoneInput}
+          autoCapitalize="words"
+          label = "CellPhone"
+          keyboardType = "number-pad"
+        />
+        <AuthInput
+          {...passwordInput}
+          autoCapitalize="words"
+          label = "Password"
+          secureTextEntry = {true}
+        />
+        <AuthButton loading={loading} onPress={handleLogin} text="Login" />
+
+          {/* <LoginButtonCon>
+              <OtherLoginCon>
+                <SocialIcon type="facebook" onPress={fbLogin} />
+                <SocialIcon type="google" onPress={googleLogin} />
+              </OtherLoginCon>
+          </LoginButtonCon> */}
+        
+        <SignUpCon>
+        <Text>계정이 없으신가요?</Text>
+          <Touchable onPress={() => navigation.navigate("Signup")}>
+              <LoginLink>
+                <LoginLinkText>회원가입</LoginLinkText>
+              </LoginLink>
+          </Touchable>
+        </SignUpCon>
+      </ButtonContainer>
+      <Bottom/>
+    </Container>
+    </TouchableWithoutFeedback>
+
   )
   
 };

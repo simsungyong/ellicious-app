@@ -14,7 +14,7 @@ import {
 import styled from "styled-components";
 
 import Stars from 'react-native-stars';
-import {FontAwesome, EvilIcons} from "@expo/vector-icons";
+import {FontAwesome, EvilIcons,MaterialCommunityIcons} from "@expo/vector-icons";
 import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line } from '../Color';
 import MapView, { PROVIDER_GOOGLE,Marker, Callout, Circle } from "react-native-maps";
 import { Platform } from "@unimodules/core";
@@ -201,8 +201,10 @@ export default class MapViewPick extends React.Component {
                         //ref={ref=>this.state.markers[index] = ref}
                         >
                         <Animated.View style={opacityStyle}>
-                            <Image source={{uri:marker.post.files[0].url}}
-                                    style={styles.markerImage}/>
+                                <MaterialCommunityIcons
+                                        name={"map-marker-outline"}
+                                        size={34}
+                                        color={PointPink}/>
                         </Animated.View>
                         </Marker> )
                         })}

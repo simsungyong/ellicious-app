@@ -4,6 +4,7 @@ import { gql } from "apollo-boost";
 import Loader from "../components/Loader";
 import styled from "styled-components";
 import useInput from "../hooks/useInput";
+import {Evilcons} from '@expo/vector-icons';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { ScrollView,Alert, Text,Image,TextInput,RefreshControl, KeyboardAvoidingView,ActivityIndicator } from "react-native";
 import { POST_COMMENT } from "../fragments";

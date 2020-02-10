@@ -115,7 +115,7 @@ const EditProfile=({
 
   const changePicture = async() => {
     try {
-      navigation.navigate("ProfilePicture", {id, username, avatar, fullName, categoryCount, category, bio, email});
+      navigation.navigate("ProfilePicture", {id, username, avatar, bio, email});
     } catch (e) {
       console.log(e)
     } finally {
@@ -287,14 +287,14 @@ const EditProfile=({
                 text="현재 사진 삭제"
                 onPress={() => {}}
               />
-              <ModalButton
+              {/* <ModalButton
                 text="카메라에서 업로드"
                 onPress={() => {}}
               />
               <ModalButton
                 text="앨범에서 업로드"
                 onPress={()=>changePicture()}
-              />
+              /> */}
             </ModalContent>
             <ModalFooter>
               <ModalButton

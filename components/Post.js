@@ -22,6 +22,7 @@ import {ME} from '../screens/Tabs/Profile/Profile';
 import { UNFOLLOW } from "./UserProfile";
 import { ScrollView } from "react-native-gesture-handler";
 import {GET_PICK} from '../screens/Tabs/MyPick'
+import Star from '../components/Star'
 export const FEED_QUERY = gql`
   {
     seeFeed {
@@ -358,30 +359,7 @@ const Post = ({
             <Touchable onPress={() => navigation.navigate("StoreDetail", { storeName, placeId })}>
               <StoreName>{storeName}</StoreName>
             </Touchable>
-            <Rating>
-                <Stars
-                  default={rating}
-                  count={5}
-                  half={true}
-                  disabled={true}
-                  starSize={50}
-                  fullStar={<FontAwesome
-                    color={StarColor}
-                    size={25}
-                    name={"star"}
-                  />}
-                  emptyStar={<FontAwesome
-                    color={StarColor}
-                    size={25}
-                    name={"star-o"}
-                  />}
-                  halfStar={<FontAwesome
-                    color={StarColor}
-                    size={25}
-                    name={"star-half-empty"}
-                  />}
-                />           
-            </Rating>
+            <Star rating={rating} size={25} color={StarColor}/>
             </Store>
           </StoreInfo>
 

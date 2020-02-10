@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from "react";
-import {Image,ScrollView,TouchableOpacity} from 'react-native';
+import {Image,ScrollView,Alert,TouchableOpacity} from 'react-native';
 import { EvilIcons, AntDesign } from "@expo/vector-icons";
 import * as Permissions from 'expo-permissions';
 import * as MediaLibrary from 'expo-media-library';
@@ -92,7 +92,8 @@ export default ({navigation}) => {
   };
 
   const handleSelected = () => {
-    navigation.navigate("Map", { photo: selected });
+    if(selected.length === 0) { Alert.alert("사진을 선택해 주세요") }
+    else { navigation.navigate("Map", { photo: selected }); }
   };
 
   useEffect(()=>{

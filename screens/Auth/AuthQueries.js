@@ -8,22 +8,39 @@ export const LOG_IN = gql`
 
 export const CREATE_ACCOUNT = gql`
   mutation createAccount(
-    $username: String!
-    $email: String!
+    $cellPhone: String!
+    $password: String!
     $firstName: String
     $lastName: String
+    $username: String!
   ) {
     createAccount(
-      username: $username
-      email: $email
+      phoneNum: $cellPhone
+      password: $password
       firstName: $firstName
       lastName: $lastName
-    )
+      username: $username
+    ) {
+      id
+      username
+    }
+  } 
+`;
+
+export const CHECK_USERNAME = gql`
+  query checkUsername($term: String!){
+    checkUsername(term: $term)
+  }
+`;
+
+export const ID_CHECK = gql`
+  query checkAccount($cellPhone: String!){
+    checkAccount(phoneNum: $cellPhone)
   }
 `;
 
 export const CONFIRM_SECRET = gql`
-  mutation confirmSecret($secret: String!, $email: String!) {
-    confirmSecret(secret: $secret, email: $email)
+  mutation confirmSecret($cellPhone: String!, $password: String!) {
+    confirmSecret(password: $password, phoneNum: $cellPhone)
   }
 `;

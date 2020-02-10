@@ -1,2 +1,4 @@
-import MessageDetail from "./MessageDetailContainer";
-export default MessageDetail;
+import ChatScreen from "./ChatScreen";
+import firebase from 'firebase';
+
+export default ChatScreen;

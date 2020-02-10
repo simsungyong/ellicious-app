@@ -27,7 +27,10 @@ export const SEE_ROOMS = gql`
 export default ({ navigation }) => {
   const dbRef = firebase.database().ref('users')
   dbRef.on('value', (val) => {
-    const [refreshing, setRefreshing] = useState(false);
+  })
+
+  
+  const [refreshing, setRefreshing] = useState(false);
 
     const { loading, data, refetch } = useQuery(SEE_ROOMS);
 
@@ -58,7 +61,7 @@ export default ({ navigation }) => {
         )}
       </ScrollView>
     );
-  })
+  
 
 
 

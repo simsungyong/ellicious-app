@@ -49,7 +49,8 @@ const MessageAccountBox = ({ navigation, username, firstName, avatar, id, isSelf
           (
             <TouchableOpacity onPress={() =>navigation.navigate("MessageDetail",{
               username,
-              userId:id
+              userId:id,
+              avatar
             }) } >
                 <Header>
                 <Profile>

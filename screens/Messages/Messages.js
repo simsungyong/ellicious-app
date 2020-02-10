@@ -7,6 +7,7 @@ import { useQuery } from "react-apollo-hooks";
 import MessageRooms from "../../components/MessageComponents/MessageRooms";
 import { mainPink } from "../../components/Color";
 import firebase from 'firebase';
+import User from '../../User'
 
 export const SEE_ROOMS = gql`
   {
@@ -25,8 +26,9 @@ export const SEE_ROOMS = gql`
 
 
 export default ({ navigation }) => {
-  const dbRef = firebase.database().ref('users')
+  const dbRef = firebase.database().ref('users/'+User.userId)
   dbRef.on('value', (val) => {
+    console.log(val.val().friends)
   })
 
   
@@ -47,9 +49,7 @@ export default ({ navigation }) => {
     };
 
     return (
-      <ScrollView refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} />
-      }>
+      <ScrollView>
         {loading ? <Loader /> : (
           <View>
             {

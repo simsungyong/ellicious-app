@@ -70,16 +70,20 @@ export default class ChatScreen extends React.Component {
 
     sendMessage = async () => {
         if (this.state.textMessage.length > 0) {
+
             let msgId = firebase.database().ref('messages').child(User.userId).child(this.state.person.userId).push().key;
             let updates = {};
             let message = {
                 message: this.state.textMessage,
                 time: firebase.database.ServerValue.TIMESTAMP,
-                from: User.username
+                from: User.username,
             }
-            firebase.database().ref('users/' + User.userId + '/friends/' + this.state.person.userId).set({ ID: this.state.person.username, userId: this.state.person.userId });
-            firebase.database().ref('users/' + this.state.person.userId + '/friends/' + User.userId).set({ ID: User.username, userId: User.userId });
+            let recentMessage = message.message;
+            let recentTime = message.time
+            firebase.database().ref('users/' + User.userId + '/friends/' + this.state.person.userId).set({ ID: this.state.person.username, userId: this.state.person.userId, recentTime:recentTime, recentMessage:recentMessage});
+            firebase.database().ref('users/' + this.state.person.userId + '/friends/' + User.userId).set({ ID: User.username, userId: User.userId, recentTime:recentTime, recentMessage:recentMessage });
 
+            
 
 
             updates['messages/' + User.userId + '/' + this.state.person.userId + '/' + msgId] = message;

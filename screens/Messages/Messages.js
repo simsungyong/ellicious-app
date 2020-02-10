@@ -10,6 +10,7 @@ import firebase from 'firebase';
 import User from '../../User'
 import { SafeAreaView } from "react-navigation";
 import { FlatList } from "react-native-gesture-handler";
+import { SortBy } from "expo-media-library";
 
 
 
@@ -27,6 +28,19 @@ export default class Messages extends React.Component {
         return {
           chatting: [...prevState.chatting, people]
         }
+      })
+    })
+  }
+
+  test() {
+    let dbRef = firebase.database().ref('messages/' + User.userId).orderByChild('time');
+    let user;
+    dbRef.on("value", (val) => {
+      val.forEach((item) => {
+        let test = firebase.database().ref('messages/' + User.userId).child(item.key).limitToLast(1);
+        test.on("child_added", (value) => {
+
+        })
       })
     })
   }
@@ -52,8 +66,10 @@ export default class Messages extends React.Component {
         <View>
 
           <Button title="대화상대 추가" onPress={() => this.props.navigation.navigate("MessageRoom")}></Button>
+
+             
         </View>
-      </SafeAreaView>
+      </SafeAreaView >
     )
   }
   // const dbRef = firebase.database().ref('users/'+User.userId+'friends')
@@ -88,6 +104,6 @@ export default class Messages extends React.Component {
   //   );
 
 
-
+  //this.props.navigation.navigate("MessageRoom")}>
 
 };

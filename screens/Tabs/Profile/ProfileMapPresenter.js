@@ -1,11 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   AppRegistry,
   StyleSheet,
   Text,
   View,
-  ScrollView,
-  Animated,
   Image,
   TextInput,
   Dimensions,

@@ -164,6 +164,7 @@ export default createBottomTabNavigator({
       )
     }
   },
+  
   Search: {
     screen: stackFactory(Search, {
       headerBackTitle: null,
@@ -195,29 +196,8 @@ export default createBottomTabNavigator({
       )
     }
   },
-  Profile: {
-    screen: stackFactory(Profile, {
-      headerStyle: stackStyles,
-      title: "프로필",
-      headerTitle : (
-        <View style = {{ alignItems : "center", flex : 1}}>
-          <Text style = {{ fontSize : 30 , color : PointPink, fontWeight: "200"}}>
-            Profile
-          </Text>
-        </View>
-      )
-    }),
-    navigationOptions: {
-        tabBarIcon: ({ focused }) => (
-            <AntDesign
-              size={28}
-              color={focused ? mainPink : Grey}
-              focused={focused}
-              name={Platform.OS === "ios" ? "user" : "user"}
-            />
-        )
-    }
-  },
+  
+  
   MyPick: {
     screen: stackFactory(MyPick, {
       headerStyle: stackStyles ,
@@ -254,8 +234,10 @@ export default createBottomTabNavigator({
   tabBarOptions: {
     showLabel: false,
     style : {
-      height:50
+      height:50,
       //backgroundColor : mainPink
+      //height : 50
+      height : 50
     }
 }  
 }

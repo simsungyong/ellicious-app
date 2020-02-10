@@ -1,15 +1,10 @@
 import React, { useState } from "react";
 import { ScrollView, RefreshControl, Platform, View, Text} from "react-native";
-import styled from "styled-components";
 import PropTypes from "prop-types";
 import { gql } from "apollo-boost";
 import { useQuery } from "react-apollo-hooks";
 import Loader from "../../../components/Loader";
-import { Ionicons } from "@expo/vector-icons";
-import styles from "../../../styles";
-
 import SquarePhoto from "../../../components/SquarePhoto";
-
 
 const SEARCH = gql`
   query search($term: String!) {

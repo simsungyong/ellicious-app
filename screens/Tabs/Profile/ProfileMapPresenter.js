@@ -13,13 +13,14 @@ import {
 } from "react-native";
 import styled from "styled-components";
 import Stars from 'react-native-stars';
-import {FontAwesome, EvilIcons, MaterialCommunityIcons} from "@expo/vector-icons";
+import {FontAwesome, EvilIcons, MaterialCommunityIcons, Entypo} from "@expo/vector-icons";
 import { TINT_COLOR,IconColor, PointPink, StarColor,BG_COLOR, LightGrey, mainPink, Grey, Line , LightPink} from '../../../components/Color';
 import { PROVIDER_GOOGLE,Marker, Callout, Circle } from "react-native-maps";
 import MapView from 'react-native-map-clustering';
 import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
 import { withNavigation } from "react-navigation";
 import Star from '../../../components/Star';
+
 
 const Container = styled.View`
 padding : 10px;
@@ -93,16 +94,13 @@ class ProfileMapPresenter extends React.Component {
          this.setState({indexNum:index, isClick:true})
          mapView.animateToRegion(newRegion,1000);
      }
-    
-    
-
-
 
     render(){
         return (
             <View style={styles.container}>
                 <MapView
                 mapRef={(ref)=>mapView=ref}
+                clusterColor={PointPink}
                 initialRegion={{latitude: 36.519959, longitude:127.889604,
                                 latitudeDelta: 3, longitudeDelta:3}}
                 style={{flex:1}} 
@@ -113,18 +111,16 @@ class ProfileMapPresenter extends React.Component {
                             <Marker key={index}
                             coordinate = {{latitude: p.storeLat, longitude: p.storeLong}}
                             onPress={()=>this.clickMarker(p,index)}
-
                             //onPress={()=>{this.setState({isClick:true})}}
                             >
-                            <View style={styles.ratingBox}>
-                                <MaterialCommunityIcons
-                                        name={"map-marker-outline"}
+                                <View style={styles.ratingBox}>
+                                    <Entypo
+                                        name={"location-pin"}
                                         size={34}
-                                        color={PointPink}/>
-                                <Star rating={p.rating} size={10} color={PointPink}/>
-                                
+                                        color={PointPink}
+                                    />
                             </View>
-                                    
+                                
                             </Marker>
                             
   
@@ -228,6 +224,8 @@ const styles = StyleSheet.create({
         borderBottomRightRadius:15,
         borderTopLeftRadius:15,
         borderTopRightRadius:15,
+    },
+    marker:{
 
     }
 })

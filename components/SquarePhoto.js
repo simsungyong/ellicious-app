@@ -14,7 +14,8 @@ margin-left : 2px;
 margin-bottom : 2px;
 margin-top : 2px;
 width: ${constants.width / 3.1};
-justifyContent: flex-start
+height : ${constants.height/4.6}
+justifyContent: flex-start;
 `;
 
 const Bold = styled.Text`
@@ -49,13 +50,14 @@ const SquarePhoto = ({
   storeName
 }) => (
   <Post>
+
     <TouchableOpacity onPress={() => navigation.navigate("Detail", { id })}>
       <Image
         source={{ uri: files[0].url }}
         style={{ width: constants.width / 3.1, height: constants.height / 6 }}
       />
       <Imagecon>
-        <Bold>#디저트 #공릉 #카페</Bold>
+        <Bold>{storeName}</Bold>
         <Icons>
           <Icon>
             <MaterialCommunityIcons 
@@ -81,6 +83,7 @@ const SquarePhoto = ({
         </Icons>
       </Imagecon>
     </TouchableOpacity>
+
   </Post>
 );
 

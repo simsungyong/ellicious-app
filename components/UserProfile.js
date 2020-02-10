@@ -40,12 +40,14 @@ const Top = styled.View`
 `;
 const View=styled.View`
 flex : 1;
+
 `;
 
 const ViewCon=styled.View`
 justifyContent: center;
 alignItems : center;
 alignItems:flex-start;
+
 `;
 
 const ViewBox=styled.View`
@@ -340,6 +342,7 @@ const handleFollow = async () =>{
           inactiveOpacity={1}
           fadeLabels={true}
           underlineStyle={Style.underlineStyle}
+          
         />
         
         <Modal 

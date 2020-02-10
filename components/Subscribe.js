@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Alert } from "react-native";
+import { View, Alert,AsyncStorage } from "react-native";
 import PropTypes from "prop-types";
 import { useQuery, useSubscription, useMutation } from "react-apollo-hooks";
 import gql from "graphql-tag";
@@ -23,8 +23,10 @@ const Subscribe = () => {
 
   const { data } = useQuery(ME);
   if (data && userId == "") {
-    setUserId(data.me.id);
+    // AsyncStorage.setItem('userId', data.me.id);
+    // AsyncStorage.setItem('username', data.me.username);
   }
+
 
   return <MainNavigation />
 }

@@ -37,34 +37,9 @@ const Button = styled.View`
   justifyContent: center;
 `;
 
-export const CHECK_ROOM = gql`
-  query checkRoom($id: String!) {
-    checkRoom(id: $id)
-  }
-`;
 
 const MessageAccountBox = ({ navigation, username, firstName, avatar, id, isSelf, isFollowing }) => {
-  const { data, loading } = useQuery(CHECK_ROOM, {
-    variables: {id}
-  })
-
-  const handleRoom = async() => {
-    if(!loading) {
-      if(data.checkRoom) {
-        navigation.navigate("MessageDetail", {
-          username,
-          userId: id,
-          roomId: data.checkRoom
-        })
-      } else {
-        navigation.navigate("MessageDetail", {
-          username,
-          userId: id,
-          roomId: ""
-        })
-      }
-    }
-  }
+  
 
 
   return(
@@ -72,7 +47,10 @@ const MessageAccountBox = ({ navigation, username, firstName, avatar, id, isSelf
         {!isSelf ? 
         isFollowing ?
           (
-            <TouchableOpacity onPress={() => handleRoom() } >
+            <TouchableOpacity onPress={() =>navigation.navigate("MessageDetail",{
+              username,
+              userId:id
+            }) } >
                 <Header>
                 <Profile>
                     {avatar==null ? 

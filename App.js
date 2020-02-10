@@ -11,7 +11,6 @@ import { persistCache } from "apollo-cache-persist";
 // import ApolloClient from "apollo-boost";
 import { ThemeProvider } from "styled-components";
 import { ApolloProvider } from "react-apollo-hooks";
-// import apolloClientOptions from "./apollo";
 import styles from "./styles";
 import NavController from "./components/NavController";
 import { AuthProvider } from "./AuthContext";

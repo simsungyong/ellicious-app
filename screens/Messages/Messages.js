@@ -4,7 +4,6 @@ import { gql } from "apollo-boost";
 // import { USER_FRAGMENT } from "../../fragments";
 import Loader from "../../components/Loader";
 import { useQuery } from "react-apollo-hooks";
-import MessageRooms from "../../components/MessageComponents/MessageRooms";
 import { mainPink } from "../../components/Color";
 import firebase from 'firebase';
 import User from '../../User'
@@ -16,66 +15,87 @@ import { SortBy } from "expo-media-library";
 
 
 export default class Messages extends React.Component {
-  state = {
-    chatting: []
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: "Message"
+    }
   }
-  
-  
+  _isMounted = false;
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      chatting: [],
+    }
+    //console.log(this.state.meName)
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
+  }
 
   componentDidMount() {
-    let dbRef = firebase.database().ref('users/' + User.userId+'/friends').orderByChild('recentTime');
-    dbRef.on("value", (val)=> {
+    this._isMounted = true;
+
+    let dbRef = firebase.database().ref('users/' + User.userId + '/friends').orderByChild('recentTime');
+    dbRef.on("value", (val) => {
       let people = [];
-      val.forEach((item)=>{
+      val.forEach((item) => {
         people.push(item.val())
       })
-      
+
       //people.userId = val.key;
-      this.setState((prevState) => {
-        return {
-          chatting: people
-        }
-      })
+      if (this._isMounted) {
+        this.setState((prevState) => {
+          return {
+            chatting: people
+          }
+        })
+      }
     })
-
-    
   }
-
+  // checkRead=(userId)=>{
+  //     firebase.database().ref('users/' + User.userId + '/friends/' + userId).update({isRead:true});
+  // }
   convertTime = (time) => {
     let d = new Date(time);
     let result = (d.getHours() < 10 ? '0' : '') + d.getHours() + ':';
     result += (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
     return result;
-}
-  test() {
-    let dbRef = firebase.database().ref('users').orderByChild('friends');
-    dbRef.on("value", (val) => {
-      
-      val.forEach((item) => {
-        if(item.val().ID === "yong_ari"){
-          console.log(item.val());
-        }
-      })
-      //   let test = firebase.database().ref('messages/' + User.userId).child(item.key).limitToLast(1);
-      //   test.on("child_added", (value) => {
+  }
+  // test() {
+  //   let dbRef = firebase.database().ref('users').orderByChild('friends');
+  //   dbRef.on("value", (val) => {
 
-      //   })
-      })
-    }
-  
+  //     val.forEach((item) => {
+  //       if(item.val().ID === "yong_ari"){
+  //         console.log(item.val());
+  //       }
+  //     })
+  //     //   let test = firebase.database().ref('messages/' + User.userId).child(item.key).limitToLast(1);
+  //     //   test.on("child_added", (value) => {
+
+  //     //   })
+  //     })
+  //   }
+
 
   renderRow = ({ item }) => {
 
     return (
       <TouchableOpacity style={{ padding: 10, borderBottomColor: '#ccc', borderBottomWidth: 1 }}
         onPress={() => this.props.navigation.navigate('MessageDetail', { userId: item.userId, username: item.ID })}>
-        <Text style={{ fontSize: 15 }}>{item.ID}</Text>
-        <Text style={{ fontSize: 15 }}>{item.recentMessage}</Text>
+        <Text style={{ fontSize: 15, fontWeight: "600" }}>{item.ID}</Text>
+        {item.isRead ?
+          <Text style={{ fontSize: 13 }}>{item.recentMessage}</Text>
+          :
+          <Text style={{ fontSize: 13, fontWeight: "600" }}>{item.recentMessage}</Text>
+        }
+
         <Text style={{ fontSize: 10 }}>{this.convertTime(item.recentTime)}</Text>
 
 
 
-        
       </TouchableOpacity>
     )
   }
@@ -91,10 +111,10 @@ export default class Messages extends React.Component {
           keyExtractor={(item) => item.userId}
         />
         <View>
-        <Button title="대화상대 추가" onPress={() => this.props.navigation.navigate("MessageRoom")}></Button>
-          <Button title="test" onPress={this.test}></Button>
+          <Button title="대화상대 추가" onPress={() => this.props.navigation.navigate("MessageRoom")}></Button>
 
-             
+
+
         </View>
       </SafeAreaView >
     )

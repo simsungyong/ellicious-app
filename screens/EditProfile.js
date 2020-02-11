@@ -17,6 +17,8 @@ import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-n
 import { FEED_QUERY } from "../screens/Tabs/Home";
 import {ME} from '../screens/Tabs/Profile/Profile';
 import {seeCategory} from '../screens/Photo/UploadPhoto'
+import firebase from 'firebase';
+
 export const EDIT_USER = gql`
   mutation editUser($newAvatar: String, $bio: String, $username: String, $lastName: String, $firstName: String) {
     editUser(avatar: $newAvatar bio: $bio username: $username, firstName: $firstName, lastName: $lastName){
@@ -155,6 +157,7 @@ const EditProfile=({
           lastName: newlastname
         }
       });
+      firebase.database().ref('users').child(id).update({ID: newusername})
       navigation.goBack();
     } catch (e) {
       console.log(e)

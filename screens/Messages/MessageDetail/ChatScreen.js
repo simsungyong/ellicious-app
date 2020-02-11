@@ -61,12 +61,12 @@ export default class ChatScreen extends React.Component {
         this.setState({ [key]: val })
     }
 
-    getlast() {
-        let a = firebase.database().ref('messages').child(User.userId).child(this.state.person.userId).limitToLast(1);
-        a.on("child_added", (value) => {
-            console.log(value.val().message)
-        })
-    }
+    // getlast() {
+    //     let a = firebase.database().ref('messages').child(User.userId).child(this.state.person.userId).limitToLast(1);
+    //     a.on("child_added", (value) => {
+    //         console.log(value.val().message)
+    //     })
+    // }
 
     sendMessage = async () => {
         if (this.state.textMessage.length > 0) {
@@ -82,10 +82,8 @@ export default class ChatScreen extends React.Component {
             let recentTime = message.time
             firebase.database().ref('users/' + User.userId + '/friends/' + this.state.person.userId).set({ ID: this.state.person.username, userId: this.state.person.userId, recentTime:recentTime, recentMessage:recentMessage});
             firebase.database().ref('users/' + this.state.person.userId + '/friends/' + User.userId).set({ ID: User.username, userId: User.userId, recentTime:recentTime, recentMessage:recentMessage });
-
             
-
-
+            
             updates['messages/' + User.userId + '/' + this.state.person.userId + '/' + msgId] = message;
             updates['messages/' + this.state.person.userId + '/' + User.userId + '/' + msgId] = message;
             firebase.database().ref().update(updates);

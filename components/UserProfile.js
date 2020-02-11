@@ -138,6 +138,7 @@ flex : 1;
 
 const SameCon = styled.TouchableOpacity`
 flex-direction : row;
+padding:4px;
 `;
 const BioCon = styled.View`
 flex-direction : row;

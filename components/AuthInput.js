@@ -3,7 +3,7 @@ import { View, StatusBar, TextInput, Animated } from 'react-native';
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import constants from "../constants";
-import {PointPink, TINT_COLOR} from './Color'
+import {PointPink, TINT_COLOR, mainPink} from './Color'
 
 const FloatingLabelInput = ({label, onChangeText,value, keyboardType,secureTextEntry, editable})=>{
   
@@ -33,7 +33,7 @@ const FloatingLabelInput = ({label, onChangeText,value, keyboardType,secureTextE
       }),
       color: animation.interpolate({
         inputRange: [0, 1],
-        outputRange: ['#aaa', PointPink],
+        outputRange: ['#aaa', mainPink],
       }),
     };
     return (
@@ -44,7 +44,7 @@ const FloatingLabelInput = ({label, onChangeText,value, keyboardType,secureTextE
         
         <TextInput
           onChangeText={onChangeText}
-          style={{ height: 26,width: constants.width/1.5, fontSize: 20, color: TINT_COLOR, borderBottomWidth: 1, borderBottomColor: PointPink }}
+          style={{ height: 30,width: constants.width/1.25, fontSize: 20, color: TINT_COLOR, borderBottomWidth: 1, borderBottomColor: mainPink }}
           onFocus={handleFocus}
           onBlur={handleBlur}
           blurOnSubmit

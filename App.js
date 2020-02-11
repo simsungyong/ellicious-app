@@ -39,12 +39,12 @@ export default function App() {
     
 
   const preLoad = async () => {
-    //await AsyncStorage.clear();
+    await AsyncStorage.clear();
     try {
       await Font.loadAsync({
         ...Ionicons.font
       });
-      await Font.loadAsync({'elli':require('./assets/fonts/Playball.ttf'), 'korElli' :require('./assets/fonts/TmonMonsori.ttf')}); 
+      await Font.loadAsync({'elli':require('./assets/fonts/TmonMonsori.ttf'), 'korElli' :require('./assets/fonts/TmonMonsori.ttf')}); 
       const cache = new InMemoryCache();
       const httpLink = new HttpLink({
         uri: 'http://192.168.0.135:4000/'

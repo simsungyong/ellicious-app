@@ -8,16 +8,15 @@ import { BG_COLOR, mainPink, mainBlue, TINT_COLOR } from './Color'
 const Touchable = styled.TouchableOpacity``;
 
 const Container = styled.View`
-  background-color: #e6e6e6 ;
+  background-color: ${mainPink} ;
   padding: 14px;
   margin: 0px 50px;
-  border-radius: 30;
-  width: ${constants.width / 1.5};
+  width: ${constants.width};
   margin-top : 30px;
 `;
 
 const Text = styled.Text`
-  color: ${TINT_COLOR};
+  color: ${BG_COLOR};
   text-align: center;
   font-weight: 600;
   font-size : 27

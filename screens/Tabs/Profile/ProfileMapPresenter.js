@@ -17,7 +17,7 @@ import {FontAwesome, EvilIcons, MaterialCommunityIcons, Entypo} from "@expo/vect
 import { TINT_COLOR,IconColor, PointPink, StarColor,BG_COLOR, LightGrey, mainPink, Grey, Line , LightPink} from '../../../components/Color';
 import { PROVIDER_GOOGLE,Marker, Callout, Circle } from "react-native-maps";
 import MapView from 'react-native-map-clustering';
-import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
+import Modal, {ModalTitle, ModalFooter, ModalButton} from 'react-native-modals';
 import { withNavigation } from "react-navigation";
 import Star from '../../../components/Star';
 
@@ -26,17 +26,41 @@ const Container = styled.View`
 padding : 10px;
 background-color : 'rgba(0,0,0,0.6)'
 border-radius : 24;
-
 `;
 const ModalContainer =styled.View`
-  padding: 5px;
+  padding: 10px;
   flex-direction: row;
-  align-items: center;  
-  padding : 5px;
+  align-items: center; 
+flex : 1;
+margin-left : 5px;
 `;
+
 const SubContainer =styled.View`
   padding: 5px;
-  align-items: center;  
+  flex : 1;
+  margin-left : 5px;
+`;
+const Info = styled.View`
+margin-top : 2px;
+`;
+
+const ModalContent = styled.View`
+flex:1;
+justifyContent: center;
+alignItems: center;
+`;
+
+const Title=styled.View`
+justifyContent: center;
+alignItems: flex-start;
+
+`;
+
+const Bold = styled.Text`
+  font-weight: 600;
+  margin-bottom : 5px;
+  font-size : 23px;
+  margin-right : 5px;
 `;
 
 class ProfileMapPresenter extends React.Component {
@@ -116,9 +140,10 @@ class ProfileMapPresenter extends React.Component {
                                 <View style={styles.ratingBox}>
                                     <Entypo
                                         name={"location-pin"}
-                                        size={34}
+                                        size={37}
                                         color={PointPink}
                                     />
+                                    
                             </View>
                                 
                             </Marker>
@@ -129,6 +154,7 @@ class ProfileMapPresenter extends React.Component {
                     ) : null
                 }
                     </MapView>
+
                     {this.state.indexNum >-1 ? (
                     <Modal.BottomModal
                         visible={this.state.isClick}
@@ -137,19 +163,31 @@ class ProfileMapPresenter extends React.Component {
                         height={170}
                         onSwipeOut={() => this.setState({isClick:false})}
                     >   
-                        <ModalTitle
-                        title={this.state.marker.posts[this.state.indexNum].storeName}
-                        />
+                        
                         <ModalContent>
-                        <ModalContainer>
-                            <Image source={{uri:this.state.marker.posts[this.state.indexNum].files[0].url}}
-                            style={styles.cardImage, {width:80, height:80, borderRadius:10}}
-                            />
-                            <SubContainer>
-                                <Text>{this.state.marker.posts[this.state.indexNum].storeLocation.length > 25 ? `${this.state.marker.posts[this.state.indexNum].storeLocation.substring(0,23)}...` :this.state.marker.posts[this.state.indexNum].storeLocation}</Text>
-                                <Star rating={this.state.marker.posts[this.state.indexNum].rating} size={25} color={StarColor}/>
-                            </SubContainer>
-                         </ModalContainer>
+                            <ModalContainer>
+                                <Image 
+                                    source={{uri:this.state.marker.posts[this.state.indexNum].files[0].url}}
+                                    style={styles.cardImage, {width:120, height:120, borderRadius:10}}
+                                />
+
+                                <SubContainer>
+                                <Title>
+                                    <Bold>가정초밥</Bold>
+                                    <Star rating={this.state.marker.posts[this.state.indexNum].rating} size={25} color={StarColor}/>
+                                </Title>
+                                <Info>
+                                    <Text>
+                                        {this.state.marker.posts[this.state.indexNum].storeLocation.length > 25 
+                                        ? `${this.state.marker.posts[this.state.indexNum].storeLocation.substring(0,23)}...` 
+                                        :this.state.marker.posts[this.state.indexNum].storeLocation}
+                                    </Text>
+                                    <Text>
+                                        여기에 태그 넣고 싶다....
+                                    </Text>
+                                </Info>
+                                </SubContainer>
+                            </ModalContainer>
                         </ModalContent>
                         
                     </Modal.BottomModal>
@@ -202,7 +240,11 @@ const styles = StyleSheet.create({
         color:"red",
         position:'absolute',
         borderBottomLeftRadius:24,
-        borderBottomRightRadius:24
+        borderBottomRightRadius:24,
+        alignContent : 'center',
+        justifyContent : 'center',
+    
+        
     },
     cardTitle:{
         color:"white",
@@ -225,9 +267,10 @@ const styles = StyleSheet.create({
         borderTopLeftRadius:15,
         borderTopRightRadius:15,
     },
-    marker:{
-
-    }
+   titleModal:{
+    fontSize:22,
+    alignSelf:'center',
+   }
 })
 
 AppRegistry.registerComponent("mapfocus", () => screens);

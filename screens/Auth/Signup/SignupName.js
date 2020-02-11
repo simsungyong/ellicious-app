@@ -1,54 +1,55 @@
 import React, { useState }  from "react";
 import styled from "styled-components";
 import { TouchableWithoutFeedback, Keyboard, StyleSheet, TouchableOpacity } from "react-native";
-import AuthButton from "../../components/AuthButton";
-import AuthInput from "../../components/AuthInput";
-import useInput from "../../hooks/useInput";
+import AuthButton from "../../../components/AuthConfirmButton";
+import AuthInput from "../../../components/AuthInput";
+import useInput from "../../../hooks/useInput";
 import { Alert } from "react-native";
 import { useMutation, useQuery } from "react-apollo-hooks";
-import { CREATE_ACCOUNT, ID_CHECK, CHECK_USERNAME } from "./AuthQueries";
-import { TINT_COLOR, PointPink, BG_COLOR } from '../../components/Color'
+import { CREATE_ACCOUNT, ID_CHECK, CHECK_USERNAME } from "../AuthQueries";
+import { TINT_COLOR, PointPink, BG_COLOR } from '../../../components/Color'
 import firebase from 'firebase';
 
 const Container = styled.View`
   flex: 1;
   background-color : ${BG_COLOR}
 `;
+const TitleCon = styled.View`
+flex : 1;
+justifyContent: center;
+alignItems: center;
+`;
+const Title = styled.Text`
+fontSize : 30px;
+`;
+
+const SubTitleCon = styled.View`
+flex : 1
+justifyContent: center;
+alignItems: flex-start;
+margin-left : 5px;
+`;
+const SubTitle = styled.Text`
+margin-left : 10px;
+font-Size : 28px;
+color: ${TINT_COLOR};
+font-weight : 800;
+`;
+
 const View = styled.View`
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
-  flex : 1;
+  flex : 2;
+ 
 `;
-const Title = styled.View`
-  flex:1;
-  
-`;
-const Text = styled.Text`
-  margin-left : 20px;
-  font-Size : 40px;
-  color: ${TINT_COLOR};
-  margin-bottom : 5px;
-`;
+
 const InfoCon = styled.View`
   justify-content: center;
   align-items: center;
-  flex : 5;
+  flex : 3;
+
 `;
 
-const OtherSignUP = styled.View`
-  flex-direction : row;
-  margin-top : 10px;
-  justify-content: center;
-  flex:1;
-`;
-
-const styles = StyleSheet.create({
-  lineStyle:{
-        borderWidth: 1,
-        borderColor: '#919191',
-        margin:10,
-   }
- });
 
 export default ({ navigation }) => {
   const fNameInput = useInput("");
@@ -200,11 +201,13 @@ export default ({ navigation }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}> 
       <Container>
-        <View/>
-        <Title>
-          <Text>회원가입</Text>
-          <View style = {styles.lineStyle} />
-        </Title>
+        <TitleCon>
+          <Title>회원가입</Title>
+        </TitleCon>
+        <SubTitleCon>
+          <SubTitle>이름을 입력해 주세요.</SubTitle>
+        </SubTitleCon>
+        
         <InfoCon>
           {/* <View flexDirection="row">
             <AuthInput
@@ -223,59 +226,7 @@ export default ({ navigation }) => {
             )}
             
           </View> */}
-          {confirmAccount ?
-          (
-            <AuthInput
-            {...cellPhoneInput}
-            placeholder="cellphone number"
-            returnKeyType="send"
-            autoCorrect={false}
-            keyboardType="number-pad"
-            label = "CellPhone"
-            editable={false}
-          />
-          )
-          :
-          (
-            <>
-            <AuthInput
-              {...cellPhoneInput}
-              placeholder="cellphone number"
-              returnKeyType="send"
-              autoCorrect={false}
-              keyboardType="number-pad"
-              label = "CellPhone"
-            />
-            <TouchableOpacity onPress={() => confirmPhone()}>
-              <Text>확인</Text>
-            </TouchableOpacity>
-            </>
-          )
-          }
-          <AuthInput
-            {...passwordInput}
-            placeholder="Password"
-            keyboardType="email-address"
-            returnKeyType="send"
-            autoCorrect={false}
-            label = "Password (8자이상)"
-            secureTextEntry = {true}
-          />
-          <AuthInput
-            {...passwordConfirmInput}
-            placeholder="Password"
-            keyboardType="email-address"
-            returnKeyType="send"
-            autoCorrect={false}
-            label = "비밀번호 확인"
-            secureTextEntry = {true}
-          />
-          <AuthInput
-            {...usernameInput}
-            /*placeholder="First name"*/
-            autoCapitalize="words"
-            label = "UserName (ex GD_HONG)"
-          />
+          
           <AuthInput
             {...fNameInput}
             /*placeholder="First name"*/
@@ -290,9 +241,9 @@ export default ({ navigation }) => {
           />
         </InfoCon>
         <View>
-          <AuthButton loading={loading} onPress={handleSingup} text="회원가입" />
+          <AuthButton loading={loading} onPress={() => navigation.navigate("SignupPhone")} text="확 인" />
         </View>
-        <View/>
+
       </Container>
     </TouchableWithoutFeedback>
   );

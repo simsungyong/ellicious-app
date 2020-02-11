@@ -1,58 +1,76 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import AuthButton from "../../components/AuthButton";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import constants from "../../../constants";
+import AuthButton from "../../../components/AuthButton";
+import AuthInput from "../../../components/AuthInput";
 import { useMutation } from "react-apollo-hooks";
-import { CONFIRM_SECRET } from "./AuthQueries";
-import { Alert, TouchableWithoutFeedback, Keyboard } from "react-native";
-import {mainPink, TINT_COLOR, BG_COLOR, Grey } from "../../components/Color";
-import useInput from "../../hooks/useInput";
-import { useLogIn } from "../../AuthContext";
+import { LOG_IN, CREATE_ACCOUNT, CONFIRM_SECRET } from "../AuthQueries";
+import { Alert, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from "react-native";
+import {mainPink, TINT_COLOR, PointPink, BG_COLOR } from "../../../components/Color";
+import { SocialIcon } from 'react-native-elements';
+import useInput from "../../../hooks/useInput";
+import * as Facebook from "expo-facebook";
+import * as Google from 'expo-google-app-auth';
+import { useLogIn } from "../../../AuthContext";
+
 
 const Container = styled.View`
   justify-content: center;
   flex: 1;
-  background-color : ${mainPink}
+  background-color : ${BG_COLOR}
   padding : 10px;
 `;
 const Top = styled.View`
   flex: 1;
-  background-color : ${mainPink}
 `;
 
 const TitleCon = styled.View`
-  flex: 6;
-  background-color : ${mainPink}
+  flex: 2;
 `;
 
 const Subtitle = styled.Text `
   font-Family: "elli";
   font-Size : 27px;
-  color: ${BG_COLOR};
+  color: #646464;
   margin-left:3px;
 `;
 
 const Title = styled.Text `
   font-Family: "elli";
   font-Size : 65px;
-  color: ${BG_COLOR};
+  color: ${mainPink};
 `;
 const Middle = styled.View`
+`;
+
+const InfoCon = styled.View`
+  flex : 2;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ButtonContainer = styled.View`
   justify-content: center;
   align-items: center;
   flex: 2;
-  background-color : ${mainPink}
 `;
-//배경 디자인 넣기
+const View = styled.View`
+  justify-content: center;
+  align-items: center;
+`;
+
+const Image = styled.Image`
+`; /* 로고 이미지 크기 비율 설정 */
 
 const Text = styled.Text`
-  color: ${BG_COLOR}};
+  color: ${TINT_COLOR};
   margin-top: 20px;
   font-weight: 600;
   margin-right : 10px;
 `;
+
+
 
 const Touchable = styled.TouchableOpacity``;
 
@@ -64,11 +82,24 @@ const LoginLink = styled.View`
 `;
 
 const LoginLinkText = styled.Text`
-  color: ${BG_COLOR}};
+  color: ${TINT_COLOR};
   margin-top: 20px;
-  font-weight: 800;
+  font-weight: 600;
 `;
-//글자색 바구기
+const LoginButtonCon = styled.View`
+justify-content: center;
+align-items: center;
+flex : 2;
+`;
+
+const OtherLoginCon = styled.View`
+  flex-direction : row;
+  margin-top : 10px;
+`;
+const Bottom =styled.View`
+  flex: 1;
+  background-color : ${BG_COLOR}
+`;
 
 export default ({ navigation }) => {
   const passwordInput = useInput("");
@@ -202,7 +233,20 @@ export default ({ navigation }) => {
       
 
       <ButtonContainer>
-        <AuthButton loading={loading} onPress={() => navigation.navigate("SignupName")} text="회원가입하기" />
+
+        <AuthInput
+          {...cellPhoneInput}
+          autoCapitalize="words"
+          label = "CellPhone"
+          keyboardType = "number-pad"
+        />
+        <AuthInput
+          {...passwordInput}
+          autoCapitalize="words"
+          label = "Password"
+          secureTextEntry = {true}
+        />
+        <AuthButton loading={loading} onPress={handleLogin} text="Login" />
 
           {/* <LoginButtonCon>
               <OtherLoginCon>
@@ -211,16 +255,16 @@ export default ({ navigation }) => {
               </OtherLoginCon>
           </LoginButtonCon> */}
         
-       <SignUpCon>
-        <Text>이미 회원이신가요?</Text>
-          <Touchable onPress={handleLogin}>
+        <SignUpCon>
+        <Text>계정이 없으신가요?</Text>
+          <Touchable onPress={() => navigation.navigate("Signup")}>
               <LoginLink>
-                <LoginLinkText>Login</LoginLinkText>
+                <LoginLinkText>회원가입</LoginLinkText>
               </LoginLink>
           </Touchable>
         </SignUpCon>
       </ButtonContainer>
-      
+      <Bottom/>
     </Container>
     </TouchableWithoutFeedback>
 

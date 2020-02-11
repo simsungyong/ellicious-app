@@ -1,13 +1,13 @@
 import React, { useState }  from "react";
 import styled from "styled-components";
 import { TouchableWithoutFeedback, Keyboard, StyleSheet, TouchableOpacity } from "react-native";
-import AuthButton from "../../../components/AuthConfirmButton";
-import AuthInput from "../../../components/AuthInput";
-import useInput from "../../../hooks/useInput";
+import AuthButton from "../../components/AuthConfirmButton";
+import AuthInput from "../../components/AuthInput";
+import useInput from "../../hooks/useInput";
 import { Alert } from "react-native";
 import { useMutation, useQuery } from "react-apollo-hooks";
-import { CREATE_ACCOUNT, ID_CHECK, CHECK_USERNAME } from "../AuthQueries";
-import { TINT_COLOR, PointPink, BG_COLOR } from '../../../components/Color'
+import { CREATE_ACCOUNT, ID_CHECK, CHECK_USERNAME } from "./AuthQueries";
+import { TINT_COLOR, PointPink, BG_COLOR, Grey } from '../../components/Color'
 import firebase from 'firebase';
 
 const Container = styled.View`
@@ -34,6 +34,12 @@ margin-left : 10px;
 font-Size : 28px;
 color: ${TINT_COLOR};
 font-weight : 800;
+`;
+const Text = styled.Text`
+margin-left : 10px;
+font-Size : 17px;
+color: ${Grey};
+
 `;
 
 const View = styled.View`
@@ -205,7 +211,7 @@ export default ({ navigation }) => {
           <Title>회원가입</Title>
         </TitleCon>
         <SubTitleCon>
-          <SubTitle>이름을 입력해 주세요.</SubTitle>
+          <SubTitle>정보를 확인해 주세요.</SubTitle>
         </SubTitleCon>
         
         <InfoCon>
@@ -239,9 +245,25 @@ export default ({ navigation }) => {
             autoCapitalize="words"
             label = "Last Name (ex 홍)"
           />
+
+            <AuthInput
+              {...cellPhoneInput}
+              placeholder="cellphone number"
+              returnKeyType="send"
+              autoCorrect={false}
+              keyboardType="number-pad"
+              label = "CellPhone"
+            />
+            <AuthInput
+            {...usernameInput}
+            /*placeholder="First name"*/
+            autoCapitalize="words"
+            label = "UserName (ex GD_HONG)"
+          />
+
         </InfoCon>
         <View>
-          <AuthButton loading={loading} onPress={() => navigation.navigate("SignupPhone")} text="확 인" />
+          <AuthButton loading={loading} onPress={() => navigation.navigate("SignUpPW")} text="확 인" />
         </View>
 
       </Container>

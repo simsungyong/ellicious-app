@@ -202,7 +202,7 @@ export default ({ navigation }) => {
       
 
       <ButtonContainer>
-        <AuthButton loading={loading} onPress={() => navigation.navigate("SignupName")} text="회원가입하기" />
+        <AuthButton loading={loading} onPress={() => navigation.navigate("SignUpName")} text="회원가입하기" />
 
           {/* <LoginButtonCon>
               <OtherLoginCon>

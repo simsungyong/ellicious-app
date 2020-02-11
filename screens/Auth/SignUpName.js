@@ -1,13 +1,12 @@
 import React, { useState }  from "react";
 import styled from "styled-components";
-import { TouchableWithoutFeedback, Keyboard, StyleSheet, TouchableOpacity } from "react-native";
-import AuthButton from "../../../components/AuthConfirmButton";
-import AuthInput from "../../../components/AuthInput";
-import useInput from "../../../hooks/useInput";
-import { Alert } from "react-native";
+import { TouchableWithoutFeedback, Keyboard, Alert,StyleSheet, TouchableOpacity } from "react-native";
+import AuthButton from "../../components/AuthConfirmButton";
+import AuthInput from "../../components/AuthInput";
+import useInput from "../../hooks/useInput";
 import { useMutation, useQuery } from "react-apollo-hooks";
-import { CREATE_ACCOUNT, ID_CHECK, CHECK_USERNAME } from "../AuthQueries";
-import { TINT_COLOR, PointPink, BG_COLOR, Grey } from '../../../components/Color'
+import { CREATE_ACCOUNT, ID_CHECK, CHECK_USERNAME } from "./AuthQueries";
+import { TINT_COLOR, PointPink, BG_COLOR } from '../../components/Color'
 import firebase from 'firebase';
 
 const Container = styled.View`
@@ -34,12 +33,6 @@ margin-left : 10px;
 font-Size : 28px;
 color: ${TINT_COLOR};
 font-weight : 800;
-`;
-const Text = styled.Text`
-margin-left : 10px;
-font-Size : 17px;
-color: ${Grey};
-
 `;
 
 const View = styled.View`
@@ -211,8 +204,7 @@ export default ({ navigation }) => {
           <Title>회원가입</Title>
         </TitleCon>
         <SubTitleCon>
-          <SubTitle>휴대폰 번호를 입력해 주세요.</SubTitle>
-          <Text>본인 인증을 위해 필요합니다.</Text>
+          <SubTitle>이름을 입력해 주세요.</SubTitle>
         </SubTitleCon>
         
         <InfoCon>
@@ -248,7 +240,7 @@ export default ({ navigation }) => {
           />
         </InfoCon>
         <View>
-          <AuthButton loading={loading} onPress={() => navigation.navigate("SignupPhone")} text="확 인" />
+          <AuthButton loading={loading} onPress={() => navigation.navigate("SignUpPhone")} text="확 인" />
         </View>
 
       </Container>

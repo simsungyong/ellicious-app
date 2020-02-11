@@ -1,13 +1,13 @@
 import React, { useState }  from "react";
 import styled from "styled-components";
 import { TouchableWithoutFeedback, Keyboard, StyleSheet, TouchableOpacity } from "react-native";
-import AuthButton from "../../../components/AuthConfirmButton";
-import AuthInput from "../../../components/AuthInput";
-import useInput from "../../../hooks/useInput";
+import AuthButton from "../../components/AuthConfirmButton";
+import AuthInput from "../../components/AuthInput";
+import useInput from "../../hooks/useInput";
 import { Alert } from "react-native";
 import { useMutation, useQuery } from "react-apollo-hooks";
-import { CREATE_ACCOUNT, ID_CHECK, CHECK_USERNAME } from "../AuthQueries";
-import { TINT_COLOR, PointPink, BG_COLOR, Grey } from '../../../components/Color'
+import { CREATE_ACCOUNT, ID_CHECK, CHECK_USERNAME } from "./AuthQueries";
+import { TINT_COLOR, PointPink, BG_COLOR, Grey } from '../../components/Color'
 import firebase from 'firebase';
 
 const Container = styled.View`
@@ -211,8 +211,8 @@ export default ({ navigation }) => {
           <Title>회원가입</Title>
         </TitleCon>
         <SubTitleCon>
-          <SubTitle>휴대폰 번호를 입력해 주세요.</SubTitle>
-          <Text>본인 인증을 위해 필요합니다.</Text>
+          <SubTitle>사용할 아이디를 입력해 주세요.</SubTitle>
+          <Text>프로필에서 언제든지 변경이 가능합니다.</Text>
         </SubTitleCon>
         
         <InfoCon>
@@ -235,20 +235,15 @@ export default ({ navigation }) => {
           </View> */}
           
           <AuthInput
-            {...fNameInput}
+            {...usernameInput}
             /*placeholder="First name"*/
             autoCapitalize="words"
-            label = "First Name (ex 길동)"
+            label = "UserName (ex GD_HONG)"
           />
-          <AuthInput
-            {...lNameInput}
-            placeholder="Last name"
-            autoCapitalize="words"
-            label = "Last Name (ex 홍)"
-          />
+            
         </InfoCon>
         <View>
-          <AuthButton loading={loading} onPress={() => navigation.navigate("SignupPhone")} text="확 인" />
+          <AuthButton loading={loading} onPress={() => navigation.navigate("SignUpCheckInfo")} text="확 인" />
         </View>
 
       </Container>

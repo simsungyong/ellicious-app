@@ -19,37 +19,63 @@ export default class Messages extends React.Component {
   state = {
     chatting: []
   }
+  
+  
+
   componentDidMount() {
-    let dbRef = firebase.database().ref('users/' + User.userId + '/friends');
-    dbRef.on("child_added", (val) => {
-      let people = val.val()
-      people.userId = val.key;
+    let dbRef = firebase.database().ref('users/' + User.userId+'/friends').orderByChild('recentTime');
+    dbRef.on("value", (val)=> {
+      let people = [];
+      val.forEach((item)=>{
+        people.push(item.val())
+      })
+      
+      //people.userId = val.key;
       this.setState((prevState) => {
         return {
-          chatting: [...prevState.chatting, people]
+          chatting: people
         }
       })
     })
+
+    
   }
 
+  convertTime = (time) => {
+    let d = new Date(time);
+    let result = (d.getHours() < 10 ? '0' : '') + d.getHours() + ':';
+    result += (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
+    return result;
+}
   test() {
-    let dbRef = firebase.database().ref('messages/' + User.userId).orderByChild('time');
-    let user;
+    let dbRef = firebase.database().ref('users').orderByChild('friends');
     dbRef.on("value", (val) => {
+      
       val.forEach((item) => {
-        let test = firebase.database().ref('messages/' + User.userId).child(item.key).limitToLast(1);
-        test.on("child_added", (value) => {
-
-        })
+        if(item.val().ID === "yong_ari"){
+          console.log(item.val());
+        }
       })
-    })
-  }
+      //   let test = firebase.database().ref('messages/' + User.userId).child(item.key).limitToLast(1);
+      //   test.on("child_added", (value) => {
+
+      //   })
+      })
+    }
+  
 
   renderRow = ({ item }) => {
+
     return (
       <TouchableOpacity style={{ padding: 10, borderBottomColor: '#ccc', borderBottomWidth: 1 }}
         onPress={() => this.props.navigation.navigate('MessageDetail', { userId: item.userId, username: item.ID })}>
-        <Text style={{ fontSize: 20 }}>{item.ID}</Text>
+        <Text style={{ fontSize: 15 }}>{item.ID}</Text>
+        <Text style={{ fontSize: 15 }}>{item.recentMessage}</Text>
+        <Text style={{ fontSize: 10 }}>{this.convertTime(item.recentTime)}</Text>
+
+
+
+        
       </TouchableOpacity>
     )
   }
@@ -59,13 +85,14 @@ export default class Messages extends React.Component {
     return (
       <SafeAreaView>
         <FlatList
+          inverted
           data={this.state.chatting}
           renderItem={this.renderRow}
           keyExtractor={(item) => item.userId}
         />
         <View>
-
-          <Button title="대화상대 추가" onPress={() => this.props.navigation.navigate("MessageRoom")}></Button>
+        <Button title="대화상대 추가" onPress={() => this.props.navigation.navigate("MessageRoom")}></Button>
+          <Button title="test" onPress={this.test}></Button>
 
              
         </View>

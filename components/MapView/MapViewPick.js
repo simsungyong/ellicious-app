@@ -15,17 +15,17 @@ import {
 import styled from "styled-components";
 
 import Stars from 'react-native-stars';
-import { FontAwesome, EvilIcons, MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
+import { FontAwesome, EvilIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { TINT_COLOR, IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line } from '../Color';
 import MapView, { PROVIDER_GOOGLE, Marker, Callout, Circle } from "react-native-maps";
 import { Platform } from "@unimodules/core";
 import Carousel from 'react-native-snap-carousel';
+import DeleteButton from './DeleteButton';
 
 const Container = styled.View`
 padding : 10px;
 background-color : 'rgba(0,0,0,0.6)'
 border-radius : 24;
-
 `;
 
 export default class MapViewPick extends React.Component {
@@ -40,9 +40,14 @@ export default class MapViewPick extends React.Component {
   }
   constructor(props) {
     super(props);
-
     const { marker, region, navigation } = props;
     this.state = { marker, region, navigation };
+  }
+  
+  _isMount = false
+
+  componentWillUnmount() {
+    this._isMount = false
   }
 
   componentWillMount() {
@@ -51,6 +56,7 @@ export default class MapViewPick extends React.Component {
   }
 
   componentDidMount() {
+    this._isMount = true
     this.locationCurrentPosition();
     this.animation.addListener(({ value }) => {
 
@@ -62,16 +68,15 @@ export default class MapViewPick extends React.Component {
       if (index <= 0) {
         index = 0;
       }
-
-      clearTimeout(this.regionTimeout);
-      this.regionTimeout = setTimeout(() => {
-        if (this.index !== index) {
-          this.index = index;
-          this.setState({ coordinate: { latitude: this.state.marker[index].post.storeLat, longitude: this.state.marker[index].post.storeLong } })
-
-        }
-      }, 10);
-
+      if (this._isMount) {
+        clearTimeout(this.regionTimeout);
+        this.regionTimeout = setTimeout(() => {
+          if (this.index !== index) {
+            this.index = index;
+            this.setState({ coordinate: { latitude: this.state.marker[index].post.storeLat, longitude: this.state.marker[index].post.storeLong } })
+          }
+        }, 10);
+      }
     });
   }
 
@@ -121,9 +126,14 @@ export default class MapViewPick extends React.Component {
 
   renderCarouselItem = ({ item }) => (
     <Container>
-      <TouchableOpacity onPress={() => this.state.navigation.navigate("Detail", { id: item.post.id })}>
-        <Text style={styles.cardTitle}>{item.post.storeName}</Text>
-      </ TouchableOpacity>
+      <View style={styles.viewNameContainer}>
+        <TouchableOpacity onPress={() => this.state.navigation.navigate("Detail", { id: item.post.id })}>
+          <Text style={styles.cardTitle}>{item.post.storeName}</Text>
+        </ TouchableOpacity>
+        <View style={{ marginLeft: 15 }}>
+          <DeleteButton postId={item.post.id} navigation={this.state.navigation} />
+        </View>
+      </View>
       <View style={styles.viewSub}>
         <View style={styles.imageCon}>
           <TouchableOpacity onPress={() => this.state.navigation.navigate("Detail", { id: item.post.id })}>
@@ -173,16 +183,6 @@ export default class MapViewPick extends React.Component {
               />}
             />
           </View>
-
-        </View>
-        <View style={styles.viewDelete}>
-          <TouchableOpacity onPress={()=>{Alert.alert("눌러버렷노")}}>
-            <AntDesign
-              name={"minuscircleo"}
-              color={"red"}
-              size={25}
-            />
-          </TouchableOpacity>
         </View>
       </View>
     </Container>
@@ -291,6 +291,11 @@ const styles = StyleSheet.create({
   viewSub: {
     flexDirection: 'row'
   },
+  viewNameContainer: {
+    flexDirection: 'row',
+    alignItems: "center",
+    justifyContent: "center"
+  },
   viewDetailContiner: {
     alignItems: "center",
     //justifyContent: "center"
@@ -305,10 +310,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: "center",
     justifyContent: "center"
-  },
-  viewDelete: {
-    alignItems: "flex-end",
-    justifyContent: "flex-end"
   },
   markerWrap: {
     alignItems: "center",

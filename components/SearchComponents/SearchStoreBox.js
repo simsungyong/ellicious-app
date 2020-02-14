@@ -29,7 +29,7 @@ const SearchStoreBox = ({ navigation, storeName, storeLocation, id, placeId }) =
         </Profile>
         <View>
           <Bold>{ storeName }</Bold>
-          <Text>{ (storeLocation.length >= 30) ? `${storeLocation.substring(0, 27)}...` : storeLocation }</Text>
+          <Text>{ (storeLocation.length >= 27) ? `${storeLocation.substring(0, 25)}...` : storeLocation }</Text>
         </View>
     </Header>
   </TouchableOpacity>

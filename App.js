@@ -44,6 +44,7 @@ export default function App() {
       await Font.loadAsync({
         ...Ionicons.font
       });
+      
       await Font.loadAsync({'elli':require('./assets/fonts/TmonMonsori.ttf'), 'korElli' :require('./assets/fonts/TmonMonsori.ttf')}); 
       const cache = new InMemoryCache();
       const httpLink = new HttpLink({

@@ -128,7 +128,7 @@ export default class MapViewPick extends React.Component {
     <Container>
       <View style={styles.viewNameContainer}>
         <TouchableOpacity onPress={() => this.state.navigation.navigate("Detail", { id: item.post.id })}>
-          <Text style={styles.cardTitle}>{item.post.storeName}</Text>
+          <Text style={styles.cardTitle}>{(item.post.storeName.length >= 16) ? `${item.post.storeName.substring(0,14)}...` : item.post.storeName}</Text>
         </ TouchableOpacity>
         <View style={{ marginLeft: 15 }}>
           <DeleteButton postId={item.post.id} navigation={this.state.navigation} />
@@ -138,7 +138,7 @@ export default class MapViewPick extends React.Component {
         <View style={styles.imageCon}>
           <TouchableOpacity onPress={() => this.state.navigation.navigate("Detail", { id: item.post.id })}>
             <Image source={{ uri: item.post.files[0].url }}
-              style={styles.cardImage, { width: 130, height: 130, borderRadius: 10 }}
+              style={{ width: 100, height: 100, borderRadius: 10, marginLeft:20 }}
             />
           </TouchableOpacity>
         </View>
@@ -147,12 +147,12 @@ export default class MapViewPick extends React.Component {
             <View style={styles.viewSubDetail}>
               {item.post.user.avatar == null ?
                 <Image
-                  style={{ height: 40, width: 40, borderRadius: 19, marginRight: 5 }}
+                  style={{ height: 30, width: 30, borderRadius: 10, marginRight: 5 }}
                   source={{ uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704" }}
                 />
                 :
                 <Image
-                  style={{ height: 40, width: 40, borderRadius: 19, marginRight: 5 }}
+                  style={{ height: 30, width: 30, borderRadius: 10, marginRight: 5  }}
                   source={{ uri: item.post.user.avatar }}
                 />
               }
@@ -307,6 +307,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   viewSubRating: {
+    marginLeft: 10,
     flexDirection: 'row',
     alignItems: "center",
     justifyContent: "center"
@@ -332,13 +333,13 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     color: "white",
-    fontSize: 22,
+    fontSize: 17,
     alignSelf: 'center',
     marginBottom: 10
   },
   cardUsername: {
     color: "white",
-    fontSize: 18,
+    fontSize: 15,
     alignSelf: 'center',
     marginBottom: 10
   },

@@ -33,8 +33,8 @@ export const FEED_QUERY = gql`
 `;
 
 export const TOGGLE_LIKE = gql`
-  mutation toggelLike($postId: String!) {
-    toggleLike(postId: $postId)
+  mutation toggelLike($postId: String!, $toId: String) {
+    toggleLike(postId: $postId, toId: $toId)
   }
 `;
 export const TOGGLE_PICK = gql`
@@ -187,7 +187,9 @@ const Post = ({
 
       const [toggleLikeMutaton] = useMutation(TOGGLE_LIKE, {
         variables: {
-        postId: id
+        postId: id,
+        toId: user.id
+
         }});
 
       const [togglePickMutation] = useMutation(TOGGLE_PICK, {

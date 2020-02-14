@@ -9,6 +9,12 @@ export const POST_FRAGMENT = gql`
     placeId
     storeName
     details
+    likes {
+      id
+    }
+    picked {
+      id
+    }
     user {
       id
       avatar

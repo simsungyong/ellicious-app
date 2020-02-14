@@ -26,7 +26,6 @@ class MessagesLink extends React.Component {
 
   componentDidMount=async()=>{
     let id = await AsyncStorage.getItem("userId")
-    console.log(this.state.newMs)
     let people =[]
     if(id){
       let dbRef = firebase.database().ref('users/' + id + '/friends').orderByChild('isRead');

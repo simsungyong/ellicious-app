@@ -26,26 +26,25 @@ export default class Messages extends React.Component {
     super(props);
     this.state = {
       chatting: [],
+      dbRef : firebase.database().ref('users/' + User.userId + '/friends')
     }
     //console.log(this.state.meName)
   }
 
   componentWillUnmount(){
-    this._isMounted = false;
+    this.state._isMounted = false;
   }
 
   componentDidMount() {
-    this._isMounted = true;
-
-    let dbRef = firebase.database().ref('users/' + User.userId + '/friends').orderByChild('recentTime');
-    dbRef.on("value", (val) => {
+    this.state._isMounted = true;
+    this.state.dbRef.orderByChild('recentTime').on("value", (val) => {
       let people = [];
       val.forEach((item) => {
         people.push(item.val())
       })
 
       //people.userId = val.key;
-      if (this._isMounted) {
+      if(this.state._isMounted === true){
         this.setState((prevState) => {
           return {
             chatting: people
@@ -58,8 +57,17 @@ export default class Messages extends React.Component {
   //     firebase.database().ref('users/' + User.userId + '/friends/' + userId).update({isRead:true});
   // }
   convertTime = (time) => {
+    let now = new Date();
     let d = new Date(time);
-    let result = (d.getHours() < 10 ? '0' : '') + d.getHours() + ':';
+    let result;
+    if(now.getDay()===d.getDay()){
+      result = "오늘 ";
+    }else if(now.getDay()-d.getDay()===1){
+      result = "어제 "
+    }else{
+      result = (d.getMonth()+1)+"월 "+(d.getDate()-1)+"일 "
+    }
+    result += (d.getHours() < 10 ? '0' : '') + d.getHours() + ':';
     result += (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
     return result;
   }
@@ -85,16 +93,18 @@ export default class Messages extends React.Component {
     return (
       <TouchableOpacity style={{ padding: 10, borderBottomColor: '#ccc', borderBottomWidth: 1 }}
         onPress={() => this.props.navigation.navigate('MessageDetail', { userId: item.userId, username: item.ID })}>
-        <Text style={{ fontSize: 15, fontWeight: "600" }}>{item.ID}</Text>
+        
         {item.isRead ?
         <>
+        <Text style={{ fontSize: 15}}>{item.ID}</Text>
           <Text style={{ fontSize: 13 }}>{item.recentMessage}</Text>
           <Text style={{ fontSize: 10 }}>{this.convertTime(item.recentTime)}</Text>
         </>
           :
           <>
-          <Text style={{ fontSize: 13, fontWeight: "600" }}>{item.recentMessage}</Text>
-          <Text style={{ fontSize: 10, fontWeight: "600" }}>{this.convertTime(item.recentTime)}</Text>
+          <Text style={{ fontSize: 15, fontWeight: "700" }}>{item.ID}</Text>
+          <Text style={{ fontSize: 13, fontWeight: "700" }}>{item.recentMessage}</Text>
+          <Text style={{ fontSize: 10, fontWeight: "700" }}>{this.convertTime(item.recentTime)}</Text>
           </>
         }
 

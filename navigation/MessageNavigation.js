@@ -11,7 +11,7 @@ export default createStackNavigator({
   Messages: {
     screen: Messages,
     navigationOptions: ({navigation})=>({
-      
+      headerBackTitle:null,
       headerTitle : (
         <View style = {{ alignItems : "center", flex : 1}}>
           <Text style = {{ fontSize : 30 , color : TINT_COLOR, fontWeight: "200"}}>

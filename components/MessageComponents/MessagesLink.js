@@ -36,11 +36,10 @@ class MessagesLink extends React.Component {
             people.push(item.val())
           }
         })
-        this.setState((prevState) => {
-          return {
+        this.setState({
             newMs: people.length
-          }
       })
+      people= []
   })
 }
 }

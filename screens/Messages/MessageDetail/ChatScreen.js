@@ -25,8 +25,7 @@ export default class ChatScreen extends React.Component {
                 {navigation.getParam('username')}  
           </Text>
             </View>
-        )
-        
+        ),
         // return {
         //     title: navigation.getParam('username', null)
         // }

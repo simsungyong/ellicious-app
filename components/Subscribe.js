@@ -32,7 +32,6 @@ const Subscribe = () => {
     await AsyncStorage.setItem('username', data.me.username);
     User.userId = await AsyncStorage.getItem('userId')
     User.username = await AsyncStorage.getItem('username')
-    console.log(User.username)
   }
   useEffect(()=>{
     if(data){

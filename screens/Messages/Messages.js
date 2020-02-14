@@ -87,12 +87,18 @@ export default class Messages extends React.Component {
         onPress={() => this.props.navigation.navigate('MessageDetail', { userId: item.userId, username: item.ID })}>
         <Text style={{ fontSize: 15, fontWeight: "600" }}>{item.ID}</Text>
         {item.isRead ?
+        <>
           <Text style={{ fontSize: 13 }}>{item.recentMessage}</Text>
+          <Text style={{ fontSize: 10 }}>{this.convertTime(item.recentTime)}</Text>
+        </>
           :
+          <>
           <Text style={{ fontSize: 13, fontWeight: "600" }}>{item.recentMessage}</Text>
+          <Text style={{ fontSize: 10, fontWeight: "600" }}>{this.convertTime(item.recentTime)}</Text>
+          </>
         }
 
-        <Text style={{ fontSize: 10 }}>{this.convertTime(item.recentTime)}</Text>
+        
 
 
 

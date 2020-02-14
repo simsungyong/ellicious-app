@@ -39,7 +39,7 @@ export default function App() {
     
 
   const preLoad = async () => {
-    await AsyncStorage.clear();
+    //await AsyncStorage.clear();
     try {
       await Font.loadAsync({
         ...Ionicons.font
@@ -47,11 +47,11 @@ export default function App() {
       await Font.loadAsync({'elli':require('./assets/fonts/TmonMonsori.ttf'), 'korElli' :require('./assets/fonts/TmonMonsori.ttf')}); 
       const cache = new InMemoryCache();
       const httpLink = new HttpLink({
-        uri: 'http://192.168.0.135:4000/'
+        uri: 'http://15.165.108.181:4000/'
         //uri: 'http://3.134.176.171:4000/'
       });
       const wsLink = new WebSocketLink({
-        uri: 'http://192.168.0.135:4000/',
+        uri: 'http://15.165.108.181:4000/',
         //uri: `ws://3.134.176.171:4000/`,
         options: {
             reconnect: true

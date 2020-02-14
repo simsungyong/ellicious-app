@@ -230,59 +230,69 @@ export default ({navigation}) => {
   });
 
   const handleSubmit=async()=>{
+    if(captionInput.value===undefined || captionInput.value ===''){
+      Alert.alert("한글자는 쓰지?")
+    }
+    else if(starValue===undefined){
+      Alert.alert("솔직히 0점은 더 되자나?")
+    }else if(selectCate===undefined){
+      Alert.alert('카테고리를 지정 해주세요')
+    }else{
+      for(let i =0; i<12; i++){
+        if(keys[i]){
+          details.push(keyword[i])
+        }
+      }
+  
+      const formData = new FormData();
+      photo.forEach((element, i) => {
+        formData.append("file", {
+          name: element.filename || `filename${i}.jpg`,
+          type: "image/jpeg",
+          uri: element.uri
+        });
+      });    
+  
+      try {
+        setIsLoading(true);
+        const {
+          data:{temp}
+        } = await axios.post("http://192.168.0.135:4000/api/upload", formData, {
+          headers:{
+            "content-type" : "multipart/form-data"
+          }
+        });
+        
+  
+        const {
+          data: { upload } 
+        } = await uploadMutation({
+          variables: {
+            caption: captionInput.value,
+            files: temp,
+            storeName,
+            placeId,
+            storeLat,
+            storeLong,
+            rating: starValue,
+            category: selectCate,
+            storeLocation: storeAdr,
+            details
+          }
+        });
+        if(upload.id){
+          navigation.navigate("TabNavigation");
+        }
+  
+      } catch (e) {
+        console.log(e)
+        Alert.alert("can't upload ", "Try later");
+      } finally{
+        setIsLoading(false);
+      }
+    }
     
-    for(let i =0; i<12; i++){
-      if(keys[i]){
-        details.push(keyword[i])
-      }
-    }
-
-    const formData = new FormData();
-    photo.forEach((element, i) => {
-      formData.append("file", {
-        name: element.filename || `filename${i}.jpg`,
-        type: "image/jpeg",
-        uri: element.uri
-      });
-    });    
-
-    try {
-      setIsLoading(true);
-      const {
-        data:{temp}
-      } = await axios.post("http://192.168.0.135:4000/api/upload", formData, {
-        headers:{
-          "content-type" : "multipart/form-data"
-        }
-      });
-      
-
-      const {
-        data: { upload } 
-      } = await uploadMutation({
-        variables: {
-          caption: captionInput.value,
-          files: temp,
-          storeName,
-          placeId,
-          storeLat,
-          storeLong,
-          rating: starValue,
-          category: selectCate,
-          storeLocation: storeAdr,
-          details
-        }
-      });
-      if(upload.id){
-        navigation.navigate("TabNavigation");
-      }
-
-    } catch (e) {
-      console.log(e)
-      Alert.alert("can't upload ", "Try later");
-    } finally{
-      setIsLoading(false);
-    }
+    
 };
 
 
@@ -308,7 +318,8 @@ export default ({navigation}) => {
   const handleCreate = async ()=>{
     if(categoryInput.value === undefined){
         Alert.alert("한 글자는 쓰지?");
-    } else{
+    }
+    else{
         await setIsLoading(true);
         try {
             
@@ -381,7 +392,6 @@ export default ({navigation}) => {
             update={(val)=>setStarValue(val)}
             spacing={6}
             count={5}
-            //starSize={50}
             fullStar = {<FontAwesome name={'star'} size={25} color={StarColor}/>}
             //fullStar = {<Image source={require('../../assets/star.png')} style={{height:50,width:50}}/>}
             emptyStar={<FontAwesome name={'star-o'} size={25} color={Grey}/>}

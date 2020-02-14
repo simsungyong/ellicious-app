@@ -274,6 +274,7 @@ const styles = StyleSheet.create({
 })
 
 AppRegistry.registerComponent("mapfocus", () => screens);
+
 export default withNavigation(ProfileMapPresenter);
 
 /*{this.state.marker.picks.map((marker, index)=>(

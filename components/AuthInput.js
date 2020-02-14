@@ -125,7 +125,7 @@ AuthInput.propTypes = {
     "phone-pad"
   ]),
   autoCapitalize: PropTypes.oneOf(["none", "sentences", "words", "characters"]),
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
   returnKeyType: PropTypes.oneOf(["done", "go", "next", "search", "send"]),
   onSubmitEditing: PropTypes.func,
   autoCorrect: PropTypes.bool,

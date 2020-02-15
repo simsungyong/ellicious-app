@@ -1,7 +1,13 @@
-import React from "react";
-import { Image} from 'react-native'
+import React,{useState}from "react";
+import { Image,ScrollView, RefreshControl} from 'react-native'
 import styled from "styled-components";
 import { Grey, TINT_COLOR, LightGrey, LightPink } from "../../components/Color";
+import gql from 'graphql-tag';
+import { withNavigation } from "react-navigation";
+import { useQuery } from "react-apollo-hooks";
+import Loader from "../../components/Loader";
+import {ALARM_FRAGEMENT} from '../../fragments';
+import AlarmPart from './AlarmPart';
 
 const Container=styled.View`
 
@@ -37,8 +43,42 @@ fontWeight : 600;
 color : ${TINT_COLOR};
 `;
 
-export default () => (
-  <Container>
+export const ALARM = gql`
+  {
+    getAlarm {
+      ...AlarmParts
+    }
+  }
+  ${ALARM_FRAGEMENT}
+`;
+
+const Alarms =({
+  navigation
+}) => {
+  const {loading, data, refetch, fetchMore} = useQuery(ALARM)
+  const [refreshing, setRefreshing] = useState(false);
+
+  const refresh = async() =>{
+    try{
+      setRefreshing(true);
+      await refetch();
+      
+    }catch (e){
+      console.log(e);
+    }finally{
+      setRefreshing(false);
+    }
+  };
+  console.log(data)
+  return(
+    <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={refresh}/>
+        }>
+        {loading ? (<Loader/>): data && data.getAlarm.map(item=> <AlarmPart key={item.id}{...item} />)}
+      </ScrollView>
+    /*
+<Container>
     <Box style={{backgroundColor : LightPink}}>
       <Image 
       style={{height: 50, width: 50, borderRadius:19}}
@@ -110,5 +150,8 @@ export default () => (
         </TimeCon>
       </TextCon>
     </Box>
-  </Container>
-  );
+  </Container>*/
+  )
+}
+
+export default withNavigation(Alarms);

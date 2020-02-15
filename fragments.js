@@ -164,6 +164,26 @@ fragment CategoryInfo on Category {
     }
 }`
 
+export const ALARM_FRAGEMENT = gql`
+  fragment AlarmParts on Alarm {
+    id
+    from{
+      id
+      username
+      avatar
+    }
+    check
+    category
+    post{
+      id
+      files{
+        id
+        url
+      }
+    }
+  }
+  `
+
 export const POST_COMMENT = gql`
   fragment CommentParts on Comment {
     id

@@ -38,13 +38,13 @@ export const TOGGLE_LIKE = gql`
   }
 `;
 export const TOGGLE_PICK = gql`
-  mutation togglePick($postId: String!) {
-    togglePick(postId: $postId)
+  mutation togglePick($postId: String!, $toId: String) {
+    togglePick(postId: $postId ,toId:$toId)
   }
 `;
 export const DELETE_POST = gql`
   mutation editPost($postId: String!) {
-    editPost(id: $postId action: DELETE){
+    editPost(id: $postId, action: DELETE){
       id
     }
   }
@@ -239,7 +239,8 @@ const Post = ({
       try{
         await togglePickMutation({
           variables:{
-            postId: id
+            postId: id,
+            toId:user.id
           },
         });
       }catch (e){

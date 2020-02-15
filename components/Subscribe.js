@@ -5,6 +5,7 @@ import { useQuery, useSubscription, useMutation } from "react-apollo-hooks";
 import gql from "graphql-tag";
 import MainNavigation from "../navigation/MainNavigation";
 import User from "../User";
+import { ALARM } from "../screens/Alarm/Alarms"
 
 const ME = gql`
     {
@@ -16,28 +17,53 @@ const ME = gql`
     }
 `;
 
+const NEW_ALARM = gql`
+    subscription newAlarm($id: String) {
+      newAlarm (id: $id) {
+        check
+        category
+        from {
+          username
+        }
+      }
+    }
+`;
+
 
 const Subscribe = () => {
-  const [userId, setUserId] = useState("")
-  const [roomId, setRoomId] = useState("")
-  const [messageOK, setMessageOK] = useState(false)
+  const [isSkip, setIsSkip] = useState(false);
+  const [userId, setUserId] = useState("");
 
   const { data } = useQuery(ME);
-  // if (data && userId == "") {
-  //   // AsyncStorage.setItem('userId', data.me.id);
-  //   // AsyncStorage.setItem('username', data.me.username);
-  // }
+  const { data: data2, refetch} = useQuery(ALARM)
+  
   const getUser = async()=>{
+    await setUserId(data.me.id);
+    await setIsSkip(true);
     await AsyncStorage.setItem('userId', data.me.id);
     await AsyncStorage.setItem('username', data.me.username);
     User.userId = await AsyncStorage.getItem('userId')
     User.username = await AsyncStorage.getItem('username')
   }
+
+  const {data: newAlarm} = useSubscription(NEW_ALARM, {
+    variables: {
+      id: userId
+    }, skip: !isSkip
+  })
+
   useEffect(()=>{
     if(data){
       getUser();
+      
     }
   },[data])
+
+  useEffect(() => {
+    if(newAlarm) {
+      refetch()
+    }
+  }, [newAlarm])
   
   return <MainNavigation />
 }

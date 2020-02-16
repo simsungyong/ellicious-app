@@ -8,7 +8,7 @@ import { gql } from "apollo-boost";
 import { useMutation, useQuery } from "react-apollo-hooks";
 import { IconColor, StarColor, TINT_COLOR, Grey, PointPink, BG_COLOR, LightGrey, Line, LightPink, mainPink } from '../../components/Color';
 import { withNavigation } from "react-navigation";
-
+import { ALARM_FRAGEMENT } from '../../fragments';
 
 const Container = styled.View`
   flex : 1;
@@ -27,8 +27,27 @@ const Bold = styled.Text`
 const Profile = styled.View`
   margin-right : 5px;
 `;
+const CheckingView = styled.View`
+    
+`;
+const CHECK_ALARM = gql`
+    mutation checkAlarm ($alarmId: String!, $check: Boolean!){
+        checkAlarm (alarmId: $alarmId, check: $check) {
+            id
+        }
+    }
+`;
+const ALARM = gql`
+  {
+    getAlarm {
+      ...AlarmParts
+    }
+  }
+  ${ALARM_FRAGEMENT}
+`;
 
 const AlarmPart = ({
+    id,
     category,
     check,
     from,
@@ -36,36 +55,62 @@ const AlarmPart = ({
     navigation
 }) => {
 
+    const [checkAlarmMutation] = useMutation(CHECK_ALARM)
+
+    const checkAlarms = async () => {
+        await checkAlarmMutation({
+            variables: {
+                alarmId: id,
+                check: true
+            }, refetchQueries: () => [{ query: ALARM }]
+        })
+        navigation.navigate("Detail", { id: post.id })
+    }
+
+    const checkFollow = async () => {
+        await checkAlarmMutation({
+            variables: {
+                alarmId: id,
+                check: true
+            }, refetchQueries: () => [{ query: ALARM }]
+        })
+        navigation.navigate("UserDetail", { id: from.id, username: from.username })
+    }
+
     const KindType = ({ category, from }) => {
         switch (category) {
             case ('like'):
                 return (
-                    <TouchableOpacity onPress={() => navigation.navigate("Detail", { id: post.id })}>
-                        <Header>
-                            <Text>{from.username}님이 맛집 게시물을 좋아해요! </Text>
-                            <Image
-                                source={{ uri: post.files[0].url }}
-                                style={{ width: 70, height: 70 }}
-                            />
-                        </Header>
-                    </TouchableOpacity>
+                    <CheckingView backgroundColor={check ? null : "red"}>
+                        <TouchableOpacity onPress={checkAlarms}>
+                            <Header>
+                                <Text>{from.username}님이 맛집 게시물을 좋아해요! </Text>
+                                <Image
+                                    source={{ uri: post.files[0].url }}
+                                    style={{ width: 70, height: 70 }}
+                                />
+                            </Header>
+                        </TouchableOpacity>
+                    </CheckingView>
                 )
             case ('comment'):
                 return (
-                    <TouchableOpacity onPress={() => navigation.navigate("Detail", { id: post.id })}>
-                        <Header>
-                            <Text>{from.username}님이 맛집 게시물에 댓글을 달았어요! </Text>
-                            <Image
-                                source={{ uri: post.files[0].url }}
-                                style={{ width: 70, height: 70 }}
-                            />
-                        </Header>
-                    </TouchableOpacity>
+                    <CheckingView backgroundColor={check ? null : "red"}>
+                        <TouchableOpacity onPress={checkAlarms}>
+                            <Header>
+                                <Text>{from.username}님이 맛집 게시물에 댓글을 달았어요! </Text>
+                                <Image
+                                    source={{ uri: post.files[0].url }}
+                                    style={{ width: 70, height: 70 }}
+                                />
+                            </Header>
+                        </TouchableOpacity>
+                    </CheckingView>
                 )
             case ('pick'):
                 return (
-                    <TouchableOpacity onPress={() => navigation.navigate("Detail", { id: post.id })}>
-                        <TouchableOpacity>
+                    <CheckingView backgroundColor={check ? null : "red"}>
+                        <TouchableOpacity onPress={checkAlarms}>
                             <Header>
                                 <Text>{from.username}님이 맛집 게시물을 콕! 집었어요 </Text>
                                 <Image
@@ -74,19 +119,21 @@ const AlarmPart = ({
                                 />
                             </Header>
                         </TouchableOpacity>
-                    </TouchableOpacity>
+                    </CheckingView>
                 )
             case ('follow'):
                 return (
-                    <TouchableOpacity onPress={() => navigation.navigate("UserDetail", { id: from.id, username: from.username })}>
-                        <Header>
-                            <Text>{from.username}님이 팔로우를 했어요! </Text>
-                            <Image
-                                source={{ uri: from.avatar }}
-                                style={{ width: 70, height: 70 }}
-                            />
-                        </Header>
-                    </TouchableOpacity>
+                    <CheckingView backgroundColor={check ? null : "red"}>
+                        <TouchableOpacity onPress={checkFollow}>
+                            <Header>
+                                <Text>{from.username}님이 팔로우를 했어요! </Text>
+                                <Image
+                                    source={{ uri: from.avatar }}
+                                    style={{ width: 70, height: 70 }}
+                                />
+                            </Header>
+                        </TouchableOpacity>
+                    </CheckingView>
                 )
         }
     }

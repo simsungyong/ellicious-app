@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, ScrollView,Alert, TextInput, Text } from "react-native";
+import { Image, ScrollView, Alert, TextInput, Text } from "react-native";
 import { useQuery } from "react-apollo-hooks";
 import styled from "styled-components";
 import { Ionicons, FontAwesome, EvilIcons } from "@expo/vector-icons";
@@ -10,12 +10,12 @@ import constants from "../../constants";
 import { useMutation } from "react-apollo-hooks";
 import styles from "../../styles";
 import moment from "moment";
-import {LightPink, Grey, mainPink, LightGrey, CommentsBox} from '../Color';
+import { LightPink, Grey, mainPink, LightGrey, CommentsBox } from '../Color';
 import Loader from '../Loader'
 import { POST_COMMENT } from "../../fragments";
 import { withNavigation } from "react-navigation";
 import KeyboardSpacer from 'react-native-keyboard-spacer';
-import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
+import Modal, { ModalTitle, ModalContent, ModalFooter, ModalButton } from 'react-native-modals';
 import CommentInput from './CommentInput';
 import { FEED_QUERY } from "../Post";
 
@@ -75,7 +75,7 @@ const Timebox = styled.Text`
   font-size: 13px;
 `;
 
-const TextInputCon=styled.View`
+const TextInputCon = styled.View`
  margin-left : 5px;
  padding : 10px;
  flex-direction : row;
@@ -83,7 +83,7 @@ const TextInputCon=styled.View`
  margin-right : 5px;
 `;
 
-const CommentBox =styled.View`
+const CommentBox = styled.View`
   flex-direction:row;
   margin-bottom: 10px;
   alignItems: center;
@@ -126,182 +126,191 @@ const ADD_COMMENTS = gql`
 `
 const DELETE_COMMENT = gql`
   mutation editComment($id: String!) {
-    editPost(id: $id action: DELETE){
+    editComment(id: $id, action: DELETE){
       id
     }
   }
 `;
 
 const PostOfComment = ({
-    id,
-    post,
-    text,
-    user,
-    likeCount: likeCountProp,
-    isLiked: isLikedProp,
-    navigation,
-    createdAt,
-    }) => {
-        console.log(user)
-        const time=moment(createdAt).startOf('hour').fromNow();
+  id,
+  post,
+  text,
+  user,
+  likeCount: likeCountProp,
+  isLiked: isLikedProp,
+  navigation,
+  createdAt,
+}) => {
+  console.log(user)
+  const time = moment(createdAt).startOf('hour').fromNow();
 
-        const {loading, data, refetch} = useQuery(GET_COMMENTS, {
-         variables: { postId: post.id, headComment: id}
-        });
-        const [isLoading, setIsLoading] = useState(false);
-        const [addComments] = useMutation(ADD_COMMENTS, {
-          refetchQueries:()=>[
-            {query:GET_COMMENTS, variables:{ 
-              postId: post.id, headComment: null}},
-              {query:GET_COMMENTS, variables:{
-                postId: post.id, headComment: id
-              }},
-              {query: FEED_QUERY}
-            ]
-        });
-        const [deleteComment] = useMutation(DELETE_COMMENT, {
-          refetchQueries:()=>[
-            {query:GET_COMMENTS, variables:{ 
-              postId: post.id, headComment: null}},
-              {query: FEED_QUERY}
-            ]
-        })
-        const commentInput = useInput();
-        const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
-        const navi = ()=>{
-          setbottomModalAndTitle(false);
-          navigation.navigate("UserDetail", { id: user.id, username:user.username });
+  const { loading, data, refetch } = useQuery(GET_COMMENTS, {
+    variables: { postId: post.id, headComment: id }
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [addComments] = useMutation(ADD_COMMENTS, {
+    refetchQueries: () => [
+      {
+        query: GET_COMMENTS, variables: {
+          postId: post.id, headComment: null
         }
+      },
+      {
+        query: GET_COMMENTS, variables: {
+          postId: post.id, headComment: id
+        }
+      },
+      { query: FEED_QUERY }
+    ]
+  });
+  const [deleteComment] = useMutation(DELETE_COMMENT, {
+    refetchQueries: () => [
+      {
+        query: GET_COMMENTS, variables: {
+          postId: post.id, headComment: null
+        }
+      },
+      { query: FEED_QUERY }
+    ]
+  })
+  const commentInput = useInput();
+  const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
+  const navi = () => {
+    setbottomModalAndTitle(false);
+    navigation.navigate("UserDetail", { id: user.id, username: user.username });
+  }
 
-        const handleDelete = async()=>{
-          setIsLoading(true);
-            try {
-              const {data:{delComment}} = await deleteComment({
-                variables: {
-                  id: id
-                }
-              });
-              if(delComment.id){
-                navigation.navigate("CommentDetail")
-              }
-          }catch (e) {
-            console.log(e);
-            Alert.alert("삭제 에러!");
-            
-          } finally {
-            setIsLoading(false);
+  const handleDelete = async () => {
+    setIsLoading(true);
+    try {
+      const { data: { editComment } } = await deleteComment({
+        variables: {
+          id: id
+        }
+      });
+      if (editComment.id) {
+        navigation.navigate("CommentDetail")
+      }
+    } catch (e) {
+      console.log(e);
+      Alert.alert("삭제 에러!");
+
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+
+  const handleComment = async () => {
+    if (commentInput.value === undefined) {
+      Alert.alert("한 글자는 쓰지?");
+    } else {
+      setIsLoading(true);
+      try {
+        const { data: { addComment } } = await addComments({
+          variables: {
+            postId: post.id,
+            headComment: id,
+            text: commentInput.value
           }
+        });
+        if (addComment.id) {
+          commentInput.setValue("")
+          navigation.navigate("CommentDetail")
+
         }
+      } catch (e) {
+        console.log(e);
+        Alert.alert("댓글 에러!");
 
+      } finally {
+        setIsLoading(false);
+      }
+    }
 
-        const handleComment = async()=>{
-          if (commentInput.value === undefined) {
-            Alert.alert("한 글자는 쓰지?");
-          }else{
-            setIsLoading(true);
-            try {
-              const {data:{addComment}} = await addComments({
-                variables: {
-                  postId: post.id,
-                  headComment: id,
-                  text: commentInput.value
-                }
-              });
-              if(addComment.id){
-                commentInput.setValue("")
-                navigation.navigate("CommentDetail")
-                
-              }
-          }catch (e) {
-            console.log(e);
-            Alert.alert("댓글 에러!");
-            
-          } finally {
-            setIsLoading(false);
-          }
+  };
+
+  return (
+    <Container>
+      {loading ? null : (
+        <CaptionsCon>
+          <Profile>
+            <Image
+              style={{ height: 30, width: 30, borderRadius: 15 }}
+              source={{ uri: user.avatar }}
+            />
+          </Profile>
+
+          <CommentCon>
+            <CommentBig>
+              <Touchable onPress={navi}>
+                <Bold>{user.username}</Bold>
+              </Touchable>
+              {user.isSelf ?
+                <Touchable onPress={handleDelete}>
+                  <EvilIcons name={"trash"} size={20} />
+                </Touchable> : null}
+
+            </CommentBig>
+            <Comment>
+              <Caption>{text}</Caption>
+            </Comment>
+            <ReplyCon>
+              <Timebox>{time}</Timebox>
+              {data.seeComment.length > 0 ? (
+                <Timebox>{"+" + data.seeComment.length + "개"}</Timebox>
+              ) : null}
+              <Touchable onPress={() => setbottomModalAndTitle(true)}>
+                <Reply>Reply </Reply>
+              </Touchable>
+            </ReplyCon>
+          </CommentCon>
+        </CaptionsCon>
+      )}
+      <Modal.BottomModal
+        visible={bottomModalAndTitle}
+        onTouchOutside={() => setbottomModalAndTitle(false)}
+        height={0.7}
+        width={1}
+        onSwipeOut={() => setbottomModalAndTitle(false)}
+        modalTitle={
+          <ModalTitle
+            title="댓글"
+            hasTitleBar
+          />
         }
-          
-    };
-        return (
-          <Container>
-            {loading ? null : (
-            <CaptionsCon>
-              <Profile>
-                <Image 
-                  style={{height: 30, width: 30, borderRadius:15}}
-                  source={{uri: user.avatar}}
-                />
-              </Profile>
-
-              <CommentCon>
-                <CommentBig>
-                  <Touchable onPress={navi}>
-                    <Bold>{user.username}</Bold>
-                  </Touchable>
-                  {user.isSelf ? 
-                  <Touchable onPress={handleDelete}>
-                    <EvilIcons name={"trash"} size={20}/>
-                  </Touchable>: null}
-                  
-                </CommentBig>
-                <Comment>
-                  <Caption>{text}</Caption>
-                </Comment>
-                <ReplyCon>
-                  <Timebox>{time}</Timebox>
-                  {data.seeComment.length > 0 ? (
-                    <Timebox>{"+"+data.seeComment.length+"개"}</Timebox>
-                  ) : null }
-                  <Touchable onPress={()=>setbottomModalAndTitle(true)}>
-                    <Reply>Reply </Reply>
-                  </Touchable>
-                </ReplyCon>
-              </CommentCon>
-            </CaptionsCon>
-            )}
-          <Modal.BottomModal
-            visible={bottomModalAndTitle}
-            onTouchOutside={() => setbottomModalAndTitle(false)}
-            height={0.7}
-            width={1}
-            onSwipeOut={() => setbottomModalAndTitle(false)}
-            modalTitle={
-              <ModalTitle
-                title="댓글" 
-                hasTitleBar
+      >
+        <ModalContent>
+          <CaptionsCon>
+            <Profile>
+              <Image
+                style={{ height: 40, width: 40, borderRadius: 20 }}
+                source={{ uri: user.avatar }}
               />
-            }
-          >
-            <ModalContent>
-              <CaptionsCon>
-                <Profile>
-                  <Image 
-                    style={{height: 40, width: 40, borderRadius:20}}
-                    source={{uri: user.avatar}}
-                  />
-                </Profile>
+            </Profile>
 
-                <CommentCon>
-                  <Touchable onPress={navi}>
-                    <Bold>{user.username}</Bold>
-                  </Touchable>
+            <CommentCon>
+              <Touchable onPress={navi}>
+                <Bold>{user.username}</Bold>
+              </Touchable>
 
-                  <Comment>
-                    <Caption>{text}</Caption>
-                  </Comment>
+              <Comment>
+                <Caption>{text}</Caption>
+              </Comment>
 
-                  <ReplyCon>
-                    <Timebox>{time}</Timebox>
-                    
-                  </ReplyCon>
-                </CommentCon>
-              </CaptionsCon>
+              <ReplyCon>
+                <Timebox>{time}</Timebox>
+              </ReplyCon>
+              
+            </CommentCon>
+          </CaptionsCon>
 
-                {
-                  data && data.seeComment && data.seeComment.map(comment=>
-                  <CommentInput
-                    key={comment.id}{...comment}/>)
-                }
+          {
+            data && data.seeComment && data.seeComment.map(comment =>
+              <CommentInput
+                key={comment.id}{...comment} />)
+          }
 
           <CommentBox>
             <TextBox>
@@ -314,55 +323,55 @@ const PostOfComment = ({
               />
             </TextBox>
             <Touchable onPress={handleComment}>
-              {isLoading ? <Loader/> : 
-              <Bold>Reply</Bold>  }
+              {isLoading ? <Loader /> :
+                <Bold>Reply</Bold>}
             </Touchable>
           </CommentBox>
 
-                <KeyboardSpacer/>
-            </ModalContent>
-          </Modal.BottomModal>
-        </Container>
-        )    
-      }
+          <KeyboardSpacer />
+        </ModalContent>
+      </Modal.BottomModal>
+    </Container>
+  )
+}
 
 
 
 PostOfComment.propTypes = {
-    id: PropTypes.string.isRequired,
-    childComment: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        text: PropTypes.string.isRequired,
-        user: PropTypes.shape({
-          id: PropTypes.string.isRequired,
-          username: PropTypes.string.isRequired,
-          avatar: PropTypes.string.isRequired
-        }).isRequired
-      })
-    ),
-    headComment: PropTypes.shape({
+  id: PropTypes.string.isRequired,
+  childComment: PropTypes.arrayOf(
+    PropTypes.shape({
       id: PropTypes.string.isRequired,
       text: PropTypes.string.isRequired,
       user: PropTypes.shape({
-          id: PropTypes.string.isRequired,
-          username: PropTypes.string.isRequired,
-          avatar: PropTypes.string.isRequired
-        }).isRequired
-    }),
-    post: PropTypes.shape({
-      id:PropTypes.string.isRequired
-    }).isRequired,
+        id: PropTypes.string.isRequired,
+        username: PropTypes.string.isRequired,
+        avatar: PropTypes.string.isRequired
+      }).isRequired
+    })
+  ),
+  headComment: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
     user: PropTypes.shape({
       id: PropTypes.string.isRequired,
-      isSelf: PropTypes.bool,
-      avatar: PropTypes.string,
-      username: PropTypes.string.isRequired
-    }).isRequired,
-    likeCount: PropTypes.number,
-    isLiked: PropTypes.bool,
-    text: PropTypes.string.isRequired,
-    createdAt: PropTypes.string.isRequired
-  };
+      username: PropTypes.string.isRequired,
+      avatar: PropTypes.string.isRequired
+    }).isRequired
+  }),
+  post: PropTypes.shape({
+    id: PropTypes.string.isRequired
+  }).isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    isSelf: PropTypes.bool,
+    avatar: PropTypes.string,
+    username: PropTypes.string.isRequired
+  }).isRequired,
+  likeCount: PropTypes.number,
+  isLiked: PropTypes.bool,
+  text: PropTypes.string.isRequired,
+  createdAt: PropTypes.string.isRequired
+};
 
-  export default withNavigation(PostOfComment);
+export default withNavigation(PostOfComment);

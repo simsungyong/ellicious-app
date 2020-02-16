@@ -157,6 +157,8 @@ fragment CategoryInfo on Category {
       storeLat
       storeLong
       rating
+      details
+      placeId
       files{
         id
         url

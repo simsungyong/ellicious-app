@@ -1801,6 +1801,14 @@ anymatch@^2.0.0:
     micromatch "^3.1.4"
     normalize-path "^2.1.1"
 
+apollo-angular@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/apollo-angular/-/apollo-angular-1.8.0.tgz#04bda7d5931cf98528aef63cbf979ce6a03486f8"
+  integrity sha512-DgVZiF3zoRzMB3ah5nhmlL06MOhs45bWX+C8ydw7ZkVOB9Dy8QYUxDgkthyO101C5cQN0Q8lZyTQHyd7QEDAzg==
+  dependencies:
+    semver "^6.0.0"
+    tslib "^1.9.0"
+
 apollo-boost@^0.4.4:
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/apollo-boost/-/apollo-boost-0.4.4.tgz#7c278dac6cb6fa3f2f710c56baddc6e3ae730651"
@@ -8358,7 +8366,7 @@ scriptjs@^2.5.8:
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
   integrity sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==
 
-semver@^6.3.0:
+semver@^6.0.0, semver@^6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
   integrity sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==
@@ -9139,7 +9147,7 @@ ts-invariant@^0.4.0, ts-invariant@^0.4.4:
   dependencies:
     tslib "^1.9.3"
 
-tslib@1.10.0, tslib@^1.10.0, tslib@^1.9.3:
+tslib@1.10.0, tslib@^1.10.0, tslib@^1.9.0, tslib@^1.9.3:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
   integrity sha512-qOebF53frne81cf0S9B41ByenJ3/IuH8yJKngAX35CmiZySA0khhkovshKK+jGCaMnVomla7gVlIcc3EvKPbTQ==

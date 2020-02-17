@@ -67,16 +67,17 @@ padding-right : 2px;
 const Text = styled.Text``;
 
 export default () => {
+  const [isloading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [notificationStatus, setStatus] = useState(false);
-  const [check, setCheck] = useState(false)
+  const [check, setCheck] = useState(false);
   const [feedData, setFeedData] = useState();
   const [tokenMutation] = useMutation(EDIT_USER);
 
   const { loading, data, refetch, fetchMore } = useQuery(FEED_QUERY, {
     variables: {
       pageNumber: 0,
-      items: 10
+      items:5
     },
   });  //useQuery함수안에는 refetch 함수 담겨있다 .
 
@@ -124,13 +125,11 @@ export default () => {
 
 
   // }
-
-
   const refresh = async () => {
     try {
       setRefreshing(true);
       await refetch();
-
+      
     } catch (e) {
       console.log(e);
     } finally {
@@ -138,24 +137,22 @@ export default () => {
     }
   };
 
+  
 
 
   const onLoadMore = async() =>{
-      console.log('end')
-    
+    console.log("end")
     fetchMore({
       variables:{
         pageNumber: data.seeFeed.length,
         items: 5
       },
       updateQuery: (prev, {fetchMoreResult})=>{
+        
         const newPost = fetchMoreResult.seeFeed;
-        console.log(prev.seeFeed.map((item)=>item.id))
-        console.log(fetchMoreResult.seeFeed.length)
+        console.log(newPost.seeFeed)
         return newPost.length ? {
-          
             seeFeed:[...prev.seeFeed, ...newPost]
-           
         }: prev;
         // if(!fetchMoreResult) return prev;
         // return Object.assign({}, prev, {
@@ -168,6 +165,14 @@ export default () => {
   useEffect(() => {
     ask();
   }, []);
+
+
+  // useEffect(() => {
+  //   ask();
+  // }, []);
+
+  
+  
 
   // useEffect(() => {
   //   if (!check) return;
@@ -205,9 +210,9 @@ export default () => {
         <FlatList
           data={data.seeFeed}
           onRefresh={refresh}
-          //EndReachedThreshold={0}
+          EndReachedThreshold={0}
           refreshing={refreshing}
-          //onEndReached={onLoadMore}
+         onEndReached={onLoadMore}
           keyExtractor={item =>item.id}
           renderItem={({ item }) => {
             return (

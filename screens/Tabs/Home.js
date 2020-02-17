@@ -10,9 +10,9 @@ import * as Permissions from 'expo-permissions';
 import Post from "../../components/Post";
 import { BG_COLOR, BG_POST_COLOR } from "../../components/Color";
 import { POST_FRAGMENT } from "../../fragments";
-import SearchAccountBox from '../../components/SearchComponents/SearchAccountBox'
-import InfiniteScroll from 'react-infinite-scroll-component';
 import { SafeAreaView } from "react-navigation";
+import { Query } from "react-apollo";
+
 
 
 // export const FEED_QUERY = gql`
@@ -76,7 +76,7 @@ export default () => {
   const { loading, data, refetch, fetchMore } = useQuery(FEED_QUERY, {
     variables: {
       pageNumber: 0,
-      items: 3
+      items: 10
     },
   });  //useQuery함수안에는 refetch 함수 담겨있다 .
 
@@ -127,7 +127,6 @@ export default () => {
 
 
   const refresh = async () => {
-    console.log(1)
     try {
       setRefreshing(true);
       await refetch();
@@ -142,17 +141,26 @@ export default () => {
 
 
   const onLoadMore = async() =>{
+      console.log('end')
     
     fetchMore({
       variables:{
         pageNumber: data.seeFeed.length,
-        items: 3
+        items: 5
       },
       updateQuery: (prev, {fetchMoreResult})=>{
-        if(!fetchMoreResult) return prev;
-        return Object.assign({}, prev, {
-          seeFeed: [...prev.seeFeed, ...fetchMoreResult.seeFeed]
-        });
+        const newPost = fetchMoreResult.seeFeed;
+        console.log(prev.seeFeed.map((item)=>item.id))
+        console.log(fetchMoreResult.seeFeed.length)
+        return newPost.length ? {
+          
+            seeFeed:[...prev.seeFeed, ...newPost]
+           
+        }: prev;
+        // if(!fetchMoreResult) return prev;
+        // return Object.assign({}, prev, {
+        //   seeFeed: [...prev.seeFeed, ...fetchMoreResult.seeFeed]
+        // });
       }
     })
   }
@@ -197,7 +205,7 @@ export default () => {
         <FlatList
           data={data.seeFeed}
           onRefresh={refresh}
-          //EndReachedThreshold={1}
+          //EndReachedThreshold={0}
           refreshing={refreshing}
           //onEndReached={onLoadMore}
           keyExtractor={item =>item.id}

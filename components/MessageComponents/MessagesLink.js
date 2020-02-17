@@ -8,7 +8,9 @@ import firebase from 'firebase';
 import { AsyncStorage, StyleSheet } from "react-native";
 
 const Container = styled.TouchableOpacity``;
-const Text = styled.Text``;
+const Text = styled.Text`
+color : white;
+`;
 const View =styled.View``;
 const BG = styled.View`
 justify-content: center;

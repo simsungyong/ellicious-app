@@ -9,6 +9,7 @@ import { useMutation, useQuery } from "react-apollo-hooks";
 import { IconColor, StarColor, TINT_COLOR, Grey, PointPink, BG_COLOR, LightGrey, Line, LightPink, mainPink } from '../../components/Color';
 import { withNavigation } from "react-navigation";
 import { ALARM_FRAGEMENT } from '../../fragments';
+import FollowButton from '../../components/FollowButton';
 
 const Container = styled.View`
   flex : 1;
@@ -19,17 +20,23 @@ const Header = styled.View`
   flex-direction: row;
   align-items: center;
 `;
-const Bold = styled.Text`
-  font-weight: 600;
-  margin-bottom : 5px;
-  font-size : 15px;
-`;
-const Profile = styled.View`
-  margin-right : 5px;
+
+const View = styled.View`
+flex : 1;
 `;
 const CheckingView = styled.View`
-    
+flex : 1;
+
 `;
+
+const TextCon=styled.View`
+flex-direction : row;
+margin-left : 5px;
+`;
+const TextName=styled.Text`
+font-weight : 700;
+`;
+
 const CHECK_ALARM = gql`
     mutation checkAlarm ($alarmId: String!, $check: Boolean!){
         checkAlarm (alarmId: $alarmId, check: $check) {
@@ -81,13 +88,22 @@ const AlarmPart = ({
         switch (category) {
             case ('like'):
                 return (
-                    <CheckingView backgroundColor={check ? null : "red"}>
+                    <CheckingView backgroundColor={check ? null : "#ffeeed"}>
                         <TouchableOpacity onPress={checkAlarms}>
                             <Header>
-                                <Text>{from.username}님이 맛집 게시물을 좋아해요! </Text>
+                             <Image
+                                source={{ uri: from.avatar }}
+                                style={{ width: 50, height:50, borderRadius:25 }}
+                                />
+                                <TextCon>
+                                    <TextName>{from.username} </TextName>
+                                    <Text>님이 맛집 게시물을 좋아해요!</Text>
+                                </TextCon> 
+                                
+                                <View/>
                                 <Image
                                     source={{ uri: post.files[0].url }}
-                                    style={{ width: 70, height: 70 }}
+                                    style={{ width: 60, height: 60, borderRadius : 10 }}
                                 />
                             </Header>
                         </TouchableOpacity>
@@ -95,13 +111,22 @@ const AlarmPart = ({
                 )
             case ('comment'):
                 return (
-                    <CheckingView backgroundColor={check ? null : "red"}>
+                    <CheckingView backgroundColor={check ? null : "#ffeeed"}>
                         <TouchableOpacity onPress={checkAlarms}>
                             <Header>
-                                <Text>{from.username}님이 맛집 게시물에 댓글을 달았어요! </Text>
+                            <Image
+                                source={{ uri: from.avatar }}
+                                style={{ width: 50, height:50, borderRadius:25 }}
+                                />
+                                <TextCon>
+                                    <TextName>{from.username} </TextName>
+                                    <Text>님이 맛집 게시물에 댓글을 달았어요!</Text>
+                                </TextCon> 
+                                
+                                <View/>
                                 <Image
                                     source={{ uri: post.files[0].url }}
-                                    style={{ width: 70, height: 70 }}
+                                    style={{ width: 60, height: 60, borderRadius : 10 }}
                                 />
                             </Header>
                         </TouchableOpacity>
@@ -109,13 +134,21 @@ const AlarmPart = ({
                 )
             case ('pick'):
                 return (
-                    <CheckingView backgroundColor={check ? null : "red"}>
+                    <CheckingView backgroundColor={check ? null : "#ffeeed"}>
                         <TouchableOpacity onPress={checkAlarms}>
                             <Header>
-                                <Text>{from.username}님이 맛집 게시물을 콕! 집었어요 </Text>
+                                <Image
+                                source={{ uri: from.avatar }}
+                                style={{ width: 50, height:50, borderRadius:25 }}
+                                />
+                                <TextCon>
+                                    <TextName>{from.username} </TextName>
+                                    <Text>님이 맛집 게시물을 콕! 집었어요</Text>
+                                </TextCon> 
+                               <View/>
                                 <Image
                                     source={{ uri: post.files[0].url }}
-                                    style={{ width: 70, height: 70 }}
+                                    style={{ width: 60, height: 60, borderRadius : 10 }}
                                 />
                             </Header>
                         </TouchableOpacity>
@@ -123,14 +156,19 @@ const AlarmPart = ({
                 )
             case ('follow'):
                 return (
-                    <CheckingView backgroundColor={check ? null : "red"}>
+                    <CheckingView backgroundColor={check ? null : "#ffeeed"}>
                         <TouchableOpacity onPress={checkFollow}>
                             <Header>
-                                <Text>{from.username}님이 팔로우를 했어요! </Text>
                                 <Image
-                                    source={{ uri: from.avatar }}
-                                    style={{ width: 70, height: 70 }}
+                                source={{ uri: from.avatar }}
+                                style={{ width: 50, height:50, borderRadius:25 }}
                                 />
+                                <TextCon>
+                                    <TextName>{from.username} </TextName>
+                                    <Text>님이 팔로우를 했어요!</Text>
+                                </TextCon> 
+                                <View/>
+                                <FollowButton/>
                             </Header>
                         </TouchableOpacity>
                     </CheckingView>

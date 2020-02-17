@@ -7,7 +7,7 @@ const Button = styled.View`
     alignItems: center;
     justifyContent: center;
     borderRadius: 5;
-    background-color : ${mainPink}
+    background-color : #3897f0
     width : 70;
     height : 30;
 `;

@@ -112,7 +112,7 @@ const Text = styled.Text`
 const TopButton = styled.Text`
   font-weight: 300;
   font-size : 20;
-  color : ${PointPink}
+  color : ${mainPink}
 `;
 const FollowPick = styled.View`
   flex-direction: row;

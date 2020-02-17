@@ -8,7 +8,9 @@ import { PointPink, mainPink, TINT_COLOR, LightGrey } from "./Color";
 import {ALARM} from "../screens/Alarm/Alarms";
 
 const Container = styled.TouchableOpacity``;
-const Text = styled.Text``;
+const Text = styled.Text`
+color : white;
+`;
 const View =styled.View`
   margin-left : 10px;
   margin-right : 8px;

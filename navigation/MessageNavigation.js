@@ -20,7 +20,7 @@ export default createStackNavigator({
         </View>
       )
     })
-  },
+  }, 
   MessageDetail,
   MessageRoom
 });

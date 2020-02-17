@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, View, Button, Text, RefreshControl, Alert, TouchableOpacity } from "react-native";
+import styled from "styled-components";
+import { ScrollView, Button, Text, RefreshControl, Alert, TouchableOpacity, Image } from "react-native";
 import { gql } from "apollo-boost";
 // import { USER_FRAGMENT } from "../../fragments";
 import Loader from "../../components/Loader";
@@ -10,16 +11,47 @@ import User from '../../User'
 import { SafeAreaView } from "react-navigation";
 import { FlatList } from "react-native-gesture-handler";
 import { SortBy } from "expo-media-library";
+const Container = styled.View`
+flex : 1;
+`;
+const MsgRoom = styled.View`
+flex-direction : row;
+`;
+const ImgCon=styled.View`
+margin-right : 5px;
+`;
+const View=styled.View`
+flex : 1;
+`;
 
+const ViewHi = styled.View`
+justify-content: space-between;
 
+`;
+const ViewTime = styled.View``;
+const Name=styled.Text`
+font-weight : 600;
+`;
+const Read=styled.View`
+width: 10;
+height: 1;
+borderRadius : 5;
+background-color : ${mainPink}
+`;
 
+const ReadCon = styled.View`
+align-items: center;
+justify-content: center;
 
+flex : 1;
+
+`;
 export default class Messages extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: "Message"
     }
-  }
+  } 
   _isMounted = false;
 
   constructor(props) {
@@ -96,15 +128,51 @@ export default class Messages extends React.Component {
         
         {item.isRead ?
         <>
-        <Text style={{ fontSize: 15}}>{item.ID}</Text>
-          <Text style={{ fontSize: 13 }}>{item.recentMessage}</Text>
-          <Text style={{ fontSize: 10 }}>{this.convertTime(item.recentTime)}</Text>
+          <MsgRoom>
+            <ImgCon>
+              <Image
+                source={{ uri: "https://img.insight.co.kr/static/2019/02/12/700/5k2hz1lne71377ta76gs.jpg" }}
+                style={{ width: 40, height:40, borderRadius:20 }}
+              />
+           </ImgCon>
+
+            <ViewHi>
+              <Name style={{ fontSize: 15}}>{item.ID}</Name>
+              <Text style={{ fontSize: 13 }}>{item.recentMessage}</Text>
+            </ViewHi>
+
+            <View/>
+
+            <ViewTime>
+              <Text style={{ fontSize: 10 }}>{this.convertTime(item.recentTime)}</Text>
+            </ViewTime>
+
+          </MsgRoom>
         </>
           :
           <>
-          <Text style={{ fontSize: 15, fontWeight: "700" }}>{item.ID}</Text>
-          <Text style={{ fontSize: 13, fontWeight: "700" }}>{item.recentMessage}</Text>
-          <Text style={{ fontSize: 10, fontWeight: "700" }}>{this.convertTime(item.recentTime)}</Text>
+            <MsgRoom>
+            <ImgCon>
+              <Image
+                source={{ uri: "https://img.insight.co.kr/static/2019/02/12/700/5k2hz1lne71377ta76gs.jpg" }}
+                style={{ width: 40, height:40, borderRadius:20 }}
+              />
+           </ImgCon>
+
+            <ViewHi>
+              <Name style={{ fontSize: 15}}>{item.ID}</Name>
+              <Text style={{ fontSize: 13 }}>{item.recentMessage}</Text>
+            </ViewHi>
+
+            <View/>
+
+            <ViewTime>
+              <Text style={{ fontSize: 10 }}>{this.convertTime(item.recentTime)}</Text>
+              <ReadCon>
+                <Read/>
+              </ReadCon>
+            </ViewTime>
+            </MsgRoom>
           </>
         }
 
@@ -119,6 +187,7 @@ export default class Messages extends React.Component {
 
   render() {
     return (
+      <Container>
       <SafeAreaView>
         <FlatList
           inverted
@@ -128,11 +197,9 @@ export default class Messages extends React.Component {
         />
         <View>
           <Button title="대화상대 추가" onPress={() => this.props.navigation.navigate("MessageRoom")}></Button>
-
-
-
         </View>
       </SafeAreaView >
+      </Container>
     )
   }
   // const dbRef = firebase.database().ref('users/'+User.userId+'friends')

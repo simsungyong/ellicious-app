@@ -13,3 +13,4 @@ export const LightPink = "#fff2f2";
 export const Line = "#b8b8b8";
 export const NewMsg = "#33b300";
 export const NoMsg = "##828282";
+export const Yellow = "#fdbb41";

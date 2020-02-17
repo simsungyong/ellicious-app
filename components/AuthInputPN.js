@@ -44,7 +44,7 @@ const FloatingLabelInput = ({label, onChangeText,value, keyboardType,secureTextE
         
         <TextInput
           onChangeText={onChangeText}
-          style={{ height: 30,width: constants.width/1.25, fontSize: 20, color: TINT_COLOR, borderBottomWidth: 1, borderBottomColor: mainPink }}
+          style={{ height: 30,width: constants.width/1.7, fontSize: 20, color: TINT_COLOR, borderBottomWidth: 1, borderBottomColor: mainPink }}
           onFocus={handleFocus}
           onBlur={handleBlur}
           blurOnSubmit

@@ -63,21 +63,21 @@ justify-content: space-between;
 `;
 
 export default ({ navigation }) => {
-  const fNameInput = useInput("");
-  const lNameInput = useInput("");
+  const cellphoneInput = useInput("");
+  const confirmSecretInput = useInput("");
   const logIn = useLogIn();
   
 
   const [loading, setLoading] = useState(false);
   const [confirmSecretMutation] = useMutation(CONFIRM_SECRET, {
     variables: {
-      password: fNameInput.value,
+      password: confirmSecretInput.value,
       // email: emailInput.value
-      cellPhone: lNameInput.value
+      cellPhone: cellphoneInput.value
     }
   });
   
-  const handleLogin = async () => {
+  const handleConfirm = async () => {
     // const { value: email } = emailInput;
     // const { value: password } = passwordInput;
     // const { value: id } = idInput;
@@ -117,13 +117,13 @@ export default ({ navigation }) => {
 
  
   const handleSubmit=()=>{
-    if (fNameInput.value === "" || fNameInput.value===undefined) {
-      return Alert.alert("이름을 입력하세요");
+    if (cellphoneInput.value === "" || cellphoneInput.value===undefined) {
+      return Alert.alert("핸드폰번호를 입력하세요");
     }
-    else if (lNameInput.value === "" ||lNameInput.value === undefined) {
-      return Alert.alert("성을 입력하세요");
+    else if (confirmSecretInput.value === "" ||confirmSecretInput.value === undefined) {
+      return Alert.alert("인증번호를 입력하세요");
     }else{
-      navigation.navigate("SignUpPhone",{fName: fNameInput.value, lName: lNameInput.value})
+      // navigation.navigate("SignUpPhone",{fName: fNameInput.value, lName: lNameInput.value})
     }
   }
  
@@ -140,28 +140,23 @@ export default ({ navigation }) => {
         </TitleCon>
         
         <InfoCon>
-          <AuthInput
-            {...fNameInput}
-            /*placeholder="First name"*/
-            autoCapitalize="words"
-            label = "이름"
-          />
 
           <ConfirmPN>
             <AuthInputPN
-              {...fNameInput}
+              {...cellphoneInput}
               /*placeholder="First name"*/
               autoCapitalize="words"
               label = "전화번호"
               
             />
-            <PNButton loading = {loading} onPress={handleLogin} text="인증번호 받기" />           
+            <PNButton loading = {loading} onPress={handleConfirm} text="인증번호 받기" />           
           </ConfirmPN>
 
           <AuthInput
-            {...fNameInput}
+            {...confirmSecretInput}
             /*placeholder="First name"*/
             autoCapitalize="words"
+            secureTextEntry={true}
             label = "인증번호 입력"
           />
           
@@ -174,7 +169,7 @@ export default ({ navigation }) => {
         </PW>
 
           <View>
-            <AuthButton loading = {loading}  text="확 인"  onPress={() => alert('이것이 당신의 아이디!')} />
+            <AuthButton loading = {loading}  text="확 인"  onPress={handleSubmit} />
           </View>
       </Container>
     </TouchableWithoutFeedback>

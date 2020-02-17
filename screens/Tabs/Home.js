@@ -12,6 +12,9 @@ import { BG_COLOR, BG_POST_COLOR } from "../../components/Color";
 import { POST_FRAGMENT } from "../../fragments";
 import { SafeAreaView } from "react-navigation";
 import { Query } from "react-apollo";
+import {Card} from 'native-base'
+import Swiper from "react-native-swiper";
+import constants from "../../constants";
 
 
 
@@ -67,16 +70,17 @@ padding-right : 2px;
 const Text = styled.Text``;
 
 export default () => {
+  const [isloading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [notificationStatus, setStatus] = useState(false);
-  const [check, setCheck] = useState(false)
+  const [check, setCheck] = useState(false);
   const [feedData, setFeedData] = useState();
   const [tokenMutation] = useMutation(EDIT_USER);
 
   const { loading, data, refetch, fetchMore } = useQuery(FEED_QUERY, {
     variables: {
       pageNumber: 0,
-      items: 6
+      items:6
     },
   });  //useQuery함수안에는 refetch 함수 담겨있다 .
 
@@ -124,13 +128,11 @@ export default () => {
 
 
   // }
-
-
   const refresh = async () => {
     try {
       setRefreshing(true);
       await refetch();
-
+      
     } catch (e) {
       console.log(e);
     } finally {
@@ -138,25 +140,25 @@ export default () => {
     }
   };
 
+  
 
 
   const onLoadMore = async() =>{
-      console.log('end')
-    
+    console.log("end")
     fetchMore({
       variables:{
         pageNumber: data.seeFeed.length,
-        items: 5
+        items: 3
       },
       updateQuery: (prev, {fetchMoreResult})=>{
-        const newPost = fetchMoreResult.seeFeed;
-        console.log(prev.seeFeed.map((item)=>item.id))
-        console.log(fetchMoreResult.seeFeed.length)
-        return newPost.length ? {
-          
-            seeFeed:[...prev.seeFeed, ...newPost]
-           
-        }: prev;
+        
+        if(!fetchMoreResult || fetchMoreResult.seeFeed.length === 0){
+          return prev;
+        }
+        
+        return {
+            seeFeed:prev.seeFeed.concat(fetchMoreResult.seeFeed)
+        }
         // if(!fetchMoreResult) return prev;
         // return Object.assign({}, prev, {
         //   seeFeed: [...prev.seeFeed, ...fetchMoreResult.seeFeed]
@@ -168,6 +170,14 @@ export default () => {
   useEffect(() => {
     ask();
   }, []);
+
+
+  // useEffect(() => {
+  //   ask();
+  // }, []);
+
+  
+  
 
   // useEffect(() => {
   //   if (!check) return;
@@ -191,6 +201,31 @@ export default () => {
 
   // })
 
+  const renderRow=(item)=>{
+    return(
+      <Card>
+        <Container>
+          <Swiper 
+            showsPagination={false}
+            style={{height: constants.width/1}}>
+              {item.files.map(file=>(
+                <Image
+                  style={{width: constants.width, height:constants.width/1}}
+                  key={file.id}
+                   source={{uri: file.url}}/>
+              ))}
+          </Swiper>
+          <Text>
+            {item.storeName}
+          </Text>
+          <Text>
+            {item.caption}
+          </Text>
+        </Container>
+      </Card>
+    )
+  }
+
 
 
   return (
@@ -201,19 +236,17 @@ export default () => {
     //     {loading ? (<Loader/>): (data && data.seeFeed && data.seeFeed.map(post=> <Post key={post.id}{...post} />))}
     //   </ScrollView>
     <SafeAreaView style={Container}>
-      {loading ? <Loader /> : (
+      {loading ? <Loader/> : (
         <FlatList
           data={data.seeFeed}
           onRefresh={refresh}
-          //EndReachedThreshold={0}
+          EndReachedThreshold={1}
           refreshing={refreshing}
-          //onEndReached={onLoadMore}
+         onEndReached={onLoadMore}
           keyExtractor={item =>item.id}
-          renderItem={({ item }) => {
-            return (
-              <Post {...item} />
-            )
-          }}
+          renderItem={({ item }) => 
+            renderRow(item)
+          }
         //   ListEmptyComponent={()=>{
         //     recommendCheck();
         //     return(
@@ -237,7 +270,7 @@ export default () => {
         //   }
         // }
         />
-      )}
+        )}
 </SafeAreaView>
 
   );

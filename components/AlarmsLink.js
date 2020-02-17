@@ -41,9 +41,11 @@ const AlarmsLink = ({ navigation }) => {
         name={"bell-ring-outline"}
       />
       </BG>
+      {newAl ===0 ? null : (
       <BG style={styles.Text}>
         <Text >{newAl}</Text>
       </BG>
+      )}
     </View>
   </Container>
   )

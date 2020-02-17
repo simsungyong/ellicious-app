@@ -59,9 +59,13 @@ class MessagesLink extends React.Component {
           name={"message1"}
         />
       </BG>
-      <BG style={styles.Text}>
-    <Text>{this.state.newMs}</Text>
-    </BG>
+      {this.state.newMs !==0 ? (
+        <>
+        <BG style={styles.Text}>
+        <Text>{this.state.newMs}</Text>
+        </BG>
+        </>
+      ) : null}
     </View>
   </Container>
     )

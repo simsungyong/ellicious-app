@@ -63,17 +63,18 @@ justify-content: space-between;
 `;
 
 export default ({ navigation }) => {
-  const fNameInput = useInput("");
-  const lNameInput = useInput("");
+  const idInput = useInput("");
+  const phoneNumInput = useInput("");
+  const confirmSecretInput = useInput("");
   const logIn = useLogIn();
   
 
   const [loading, setLoading] = useState(false);
   const [confirmSecretMutation] = useMutation(CONFIRM_SECRET, {
     variables: {
-      password: fNameInput.value,
+      password: confirmSecretInput.value,
       // email: emailInput.value
-      cellPhone: lNameInput.value
+      cellPhone: phoneNumInput.value
     }
   });
   
@@ -117,13 +118,14 @@ export default ({ navigation }) => {
 
  
   const handleSubmit=()=>{
-    if (fNameInput.value === "" || fNameInput.value===undefined) {
-      return Alert.alert("이름을 입력하세요");
-    }
-    else if (lNameInput.value === "" ||lNameInput.value === undefined) {
-      return Alert.alert("성을 입력하세요");
+    if (idInput.value === "" || idInput.value===undefined) {
+      return Alert.alert("아이디를 입력하세요");
+    }else if (phoneNumInput.value === "" ||phoneNumInput.value === undefined) {
+      return Alert.alert("전화번호를 입력하세요");
+    }else if (confirmSecretInput.value === "" ||confirmSecretInput.value === undefined) {
+      return Alert.alert("인증번호를 입력하세요");
     }else{
-      navigation.navigate("SignUpPhone",{fName: fNameInput.value, lName: lNameInput.value})
+      // navigation.navigate("SignUpPhone",{fName: fNameInput.value, lName: lNameInput.value})
     }
   }
  
@@ -141,13 +143,7 @@ export default ({ navigation }) => {
         
         <InfoCon>
           <AuthInput
-            {...fNameInput}
-            /*placeholder="First name"*/
-            autoCapitalize="words"
-            label = "이름"
-          />
-          <AuthInput
-            {...fNameInput}
+            {...idInput}
             /*placeholder="First name"*/
             autoCapitalize="words"
             label = "아이디"
@@ -155,7 +151,7 @@ export default ({ navigation }) => {
 
           <ConfirmPN>
             <AuthInputPN
-              {...fNameInput}
+              {...phoneNumInput}
               /*placeholder="First name"*/
               autoCapitalize="words"
               label = "전화번호"
@@ -165,7 +161,7 @@ export default ({ navigation }) => {
           </ConfirmPN>
 
           <AuthInput
-            {...fNameInput}
+            {...confirmSecretInput}
             /*placeholder="First name"*/
             autoCapitalize="words"
             label = "인증번호 입력"

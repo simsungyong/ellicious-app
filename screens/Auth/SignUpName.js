@@ -67,43 +67,7 @@ export default ({ navigation }) => {
     }
   });
   
-  const handleLogin = async () => {
-    // const { value: email } = emailInput;
-    // const { value: password } = passwordInput;
-    // const { value: id } = idInput;
-
-    // const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    // if (email === "") {
-    //   return Alert.alert("Email can't be empty");
-    // } else if (!email.includes("@") || !email.includes(".")) {
-    //   return Alert.alert("Please write an email");
-    // } else if (!emailRegex.test(email)) {
-    //   return Alert.alert("That email is invalid");
-    // }
-    
-    try {
-      setLoading(true);
-      // const {
-      //   data: { requestSecret }
-      // } = await requestSecretMutation();
-
-      const {
-        data: { confirmSecret }
-      } = await confirmSecretMutation();
-
-
-      if (confirmSecret !== "" || confirmSecret !== false) {
-        logIn(confirmSecret);
-      } else {
-        Alert.alert("계정 또는 비밀번호를 확인해주세요");
-      }
-    } catch (e) {
-      console.log(e);
-      Alert.alert("Can't log in now");
-    } finally {
-      setLoading(false);
-    }
-  };
+ 
 
  
   const handleSubmit=()=>{
@@ -149,7 +113,7 @@ export default ({ navigation }) => {
           />
         </InfoCon>
         <View>
-          <AuthButton loading = {loading} onPress={handleLogin} text="확 인" />
+          <AuthButton loading = {loading} onPress={handleSubmit} text="확 인" />
         </View>
 
       </Container>

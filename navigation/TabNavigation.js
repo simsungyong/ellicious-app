@@ -102,29 +102,9 @@ flex-direction : row;
 const Title = styled.Text`
 fontFamily : 'korElli';
 fontSize : 40 ;
-color : #f7f7f7;
+color : ${mainPink};
 `;
-const Shadow = StyleSheet.create(
-  {
-      MainContainer:
-      {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-  
-      },
-  
-      TextShadowStyle:
-      {
-         textAlign: 'center',
-         fontSize: 40,
-         textShadowColor: PointPink,
-         textShadowOffset: { width: 1, height: 4 },
-         textShadowRadius: 4
-      
-      }
-  
-  });
+
 /* 탭 내비게이션 메뉴 설정 */
 export default createBottomTabNavigator({
   
@@ -139,7 +119,7 @@ export default createBottomTabNavigator({
         ),
         headerLeft : (
           <View style = {{ alignItems : "flex-start", flex : 1, padding : 5,  marginLeft : 5, marginTop : 10}}>
-            <Title style={Shadow.TextShadowStyle}>
+            <Title>
               Ellicious
             </Title>
           </View>
@@ -203,7 +183,7 @@ export default createBottomTabNavigator({
       title: "프로필",
       headerTitle : (
         <View style = {{ alignItems : "center", flex : 1}}>
-          <Text style = {{ fontSize : 30 , color : PointPink, fontWeight: "200"}}>
+          <Text style = {{ fontSize : 30 , color : mainPink, fontWeight: "200"}}>
             Profile
           </Text>
         </View>
@@ -227,7 +207,7 @@ export default createBottomTabNavigator({
       title: "프로필",
       headerTitle : (
         <View style = {{ alignItems : "center", flex : 1}}>
-          <Text style = {{ fontSize : 30 , color : PointPink, fontWeight: "200"}}>
+          <Text style = {{ fontSize : 30 , color : mainPink, fontWeight: "200"}}>
             Profile
           </Text>
         </View>
@@ -251,7 +231,7 @@ export default createBottomTabNavigator({
       title: "MyPick",
       headerTitle : (
         <View style = {{ alignItems : "center", flex : 1}}>
-          <Text style = {{ fontSize : 30 , color : PointPink, fontWeight: "200"}}>
+          <Text style = {{ fontSize : 30 , color : mainPink, fontWeight: "200"}}>
            MyPick
           </Text>
         </View>

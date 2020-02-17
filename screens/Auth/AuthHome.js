@@ -213,7 +213,7 @@ export default ({ navigation }) => {
         
        <SignUpCon>
         <Text>이미 회원이신가요?</Text>
-          <Touchable onPress={handleLogin}>
+          <Touchable onPress={() => navigation.navigate("Login")}>
               <LoginLink>
                 <LoginLinkText>Login</LoginLinkText>
               </LoginLink>

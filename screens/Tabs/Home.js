@@ -203,7 +203,26 @@ export default () => {
 
   const renderRow=(item)=>{
     return(
-      <Post {...item}/>
+      <Card>
+        <Container>
+          <Swiper 
+            showsPagination={false}
+            style={{height: constants.width/1}}>
+              {item.files.map(file=>(
+                <Image
+                  style={{width: constants.width, height:constants.width/1}}
+                  key={file.id}
+                   source={{uri: file.url}}/>
+              ))}
+          </Swiper>
+          <Text>
+            {item.storeName}
+          </Text>
+          <Text>
+            {item.caption}
+          </Text>
+        </Container>
+      </Card>
     )
   }
 

@@ -12,6 +12,9 @@ import { BG_COLOR, BG_POST_COLOR } from "../../components/Color";
 import { POST_FRAGMENT } from "../../fragments";
 import { SafeAreaView } from "react-navigation";
 import { Query } from "react-apollo";
+import {Card} from 'native-base'
+import Swiper from "react-native-swiper";
+import constants from "../../constants";
 
 
 
@@ -77,7 +80,7 @@ export default () => {
   const { loading, data, refetch, fetchMore } = useQuery(FEED_QUERY, {
     variables: {
       pageNumber: 0,
-      items:5
+      items:6
     },
   });  //useQuery함수안에는 refetch 함수 담겨있다 .
 
@@ -145,15 +148,17 @@ export default () => {
     fetchMore({
       variables:{
         pageNumber: data.seeFeed.length,
-        items: 5
+        items: 3
       },
       updateQuery: (prev, {fetchMoreResult})=>{
         
-        const newPost = fetchMoreResult.seeFeed;
-        console.log(newPost.seeFeed)
-        return newPost.length ? {
-            seeFeed:[...prev.seeFeed, ...newPost]
-        }: prev;
+        if(!fetchMoreResult || fetchMoreResult.seeFeed.length === 0){
+          return prev;
+        }
+        
+        return {
+            seeFeed:prev.seeFeed.concat(fetchMoreResult.seeFeed)
+        }
         // if(!fetchMoreResult) return prev;
         // return Object.assign({}, prev, {
         //   seeFeed: [...prev.seeFeed, ...fetchMoreResult.seeFeed]
@@ -196,6 +201,12 @@ export default () => {
 
   // })
 
+  const renderRow=(item)=>{
+    return(
+      <Post {...item}/>
+    )
+  }
+
 
 
   return (
@@ -206,19 +217,17 @@ export default () => {
     //     {loading ? (<Loader/>): (data && data.seeFeed && data.seeFeed.map(post=> <Post key={post.id}{...post} />))}
     //   </ScrollView>
     <SafeAreaView style={Container}>
-      {loading ? <Loader /> : (
+      {loading ? <Loader/> : (
         <FlatList
           data={data.seeFeed}
           onRefresh={refresh}
-          EndReachedThreshold={0}
+          EndReachedThreshold={1}
           refreshing={refreshing}
          onEndReached={onLoadMore}
           keyExtractor={item =>item.id}
-          renderItem={({ item }) => {
-            return (
-              <Post {...item} />
-            )
-          }}
+          renderItem={({ item }) => 
+            renderRow(item)
+          }
         //   ListEmptyComponent={()=>{
         //     recommendCheck();
         //     return(
@@ -242,7 +251,7 @@ export default () => {
         //   }
         // }
         />
-      )}
+        )}
 </SafeAreaView>
 
   );

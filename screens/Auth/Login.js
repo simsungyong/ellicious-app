@@ -7,11 +7,11 @@ import AuthInput from "../../components/AuthInput";
 import useInput from "../../hooks/useInput";
 import { Alert, TextInput } from "react-native";
 import { useMutation, useQuery } from "react-apollo-hooks";
-import { CREATE_ACCOUNT, ID_CHECK, CHECK_USERNAME } from "./AuthQueries";
 import { TINT_COLOR, PointPink, BG_COLOR, Grey, LightGrey } from '../../components/Color'
 import firebase from 'firebase';
 import Hr from "hr-native";
-import { FacebookLoginButton,GoogleLoginButton } from "react-social-login-buttons";
+import { useLogIn } from "../../AuthContext";
+import {CONFIRM_SECRET} from "./AuthQueries";
 
 const Container = styled.View`
   flex: 1;
@@ -80,151 +80,53 @@ alignItems: flex-start;
 `;
 
 export default ({ navigation }) => {
-  const fNameInput = useInput("");
-  const lNameInput = useInput("");
-  const usernameInput = useInput("");
-  const cellPhoneInput = useInput("");
-  const passwordInput = useInput("");
-  const passwordConfirmInput = useInput("");
+  const phoneNum = useInput("");
+  const password = useInput("");
+  const logIn = useLogIn();
+  
+
   const [loading, setLoading] = useState(false);
-  // const [check, setCheck] = useState(false);
-  const [checkPhone, setCheckPhone] = useState(false);
-  const [confirmAccount, setConfirmAccount] = useState(false);
-  const [checkUsername, setCheckUsername] = useState(false);
-  const [usernameOK, setUsernameOK] = useState(false);
-  const [createAccountMutation] = useMutation(CREATE_ACCOUNT, {
+
+  const [confirmSecretMutation] = useMutation(CONFIRM_SECRET, {
     variables: {
-      password: passwordInput.value,
-      username: usernameInput.value,
-      firstName: fNameInput.value,
-      lastName: lNameInput.value,
-      cellPhone: cellPhoneInput.value,
+      cellPhone: phoneNum.value,
+      // email: emailInput.value
+      password: password.value
     }
   });
 
-  const { data: userAccount } = useQuery(ID_CHECK, {
-    variables: {
-      cellPhone: cellPhoneInput.value
-    },
-    skip: checkPhone
-  });
 
-  const { data: isUsername } = useQuery(CHECK_USERNAME, {
-    variables: {
-      term: usernameInput.value
-    },
-    skip: checkUsername
-  });
 
-  // const confirmID = async () => {
-  //   if(idInput.value=="") {
-  //     return Alert.alert("아이디를 입력하세요");
-  //   } else {
-  //     try {
-  //       setCheck(true);
-  //       if(userAccount) {
-  //         if(!userAccount.checkAccount) {
-  //           setConfirmAccount(true)
-  //         } else {
-  //           return Alert.alert("이미 존재하는 아이디입니다.");
-  //         }
-  //       }
-  //     } catch (e) {
-  //       console.log(e);
-  //     } finally {
-  //       setCheck(false)
-  //     }
-  //   }
-  // }
-  const confirmUsername = async() => {
-    setCheckUsername(true);
-    try {
-      if(!isUsername.checkUsername) {
-        const {
-          data: { createAccount }
-        } = await createAccountMutation();
-        if (createAccount) {
-          firebase.database().ref("users/"+createAccount.id).set({ID: createAccount.username});
-          Alert.alert("Account created", "Log in now!");
-          navigation.navigate("AuthHome");
-        }
-      } else {
-        Alert.alert("이미 존재하는 username입니다.", "다른 username을 입력해주세요")
-      }
-    } catch (e) {
-      console.log(e);
-    } finally {
-      
-      setCheckUsername(false);
+  const handleLogin = async () => {
+    if (phoneNum.value === "" || phoneNum.value ===undefined) {
+      Alert.alert("휴대폰 번호를 입력하세요");
+      return;
     }
-  }
-
-  const confirmPhone = async () => {
-    if(cellPhoneInput.value=="") {
-      return Alert.alert("핸드폰 번호를 입력하세요");
-    } else if(cellPhoneInput.value.length !== 11) {
-      return Alert.alert("잘못된 형식입니다.");
-    } else {
-      try {
-        setCheckPhone(true);
-        if(userAccount) {
-          if(!userAccount.checkAccount) {
-            setConfirmAccount(true)
-          } else {
-            return Alert.alert("이미 존재하는 핸드폰 번호입니다.");
-          }
-        }
-      } catch (e) {
-        console.log(e);
-      } finally {
-        setCheckPhone(false)
-      }
+    if(password.value ==="" || password.value === undefined){
+      Alert.alert("패스워드를 입력하세요")
+      return;
     }
-  }
-
-  const handleSingup = async () => {
-    const { value: fName } = fNameInput;
-    const { value: lName } = lNameInput;
-    const { value: password } = passwordInput;
-    const { value: passwordConfirm } = passwordConfirmInput;
-    const { value: username } = usernameInput;
-    const { value: cellPhone } = cellPhoneInput;
-    // if(!confirmAccount) {
-    //   return Alert.alert("아이디를 확인하세요");
-    // }
-    if (cellPhone === "") {
-      return Alert.alert("Invalid cellphone number");
-    }
-    if (password === "") {
-      return Alert.alert("비밀번호를 입력하세요");
-    } else if(password.length < 8) {
-      return Alert.alert("비밀번호를 8자이상 입력하세요");
-    }
-    if( passwordConfirm !== password ) {
-      return Alert.alert("비밀번호가 다릅니다.");
-    }
-    if( username === "" ) {
-      return Alert.alert("활동명을 입력해주세요.");
-    }
-    if (fName === "") {
-      return Alert.alert("이름을 입력하세요");
-    }
-    if (lName === "") {
-      return Alert.alert("성을 입력하세요");
-    }
-
     try {
       setLoading(true);
-      await confirmUsername();
+      
+      const {
+        data: { confirmSecret }
+      } = await confirmSecretMutation();
+
+
+      if (confirmSecret !== "" || confirmSecret !== false) {
+        logIn(confirmSecret);
+      } else {
+        Alert.alert("계정 또는 비밀번호를 확인해주세요");
+      }
     } catch (e) {
       console.log(e);
-      Alert.alert("This Phone number is already used", "Log in instead");
-      navigation.navigate("AuthHome");
+      Alert.alert("Can't log in now");
     } finally {
       setLoading(false);
     }
   };
-
+  
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}> 
@@ -238,14 +140,21 @@ export default ({ navigation }) => {
             <ID>
             <Text>아이디</Text>
             <TextInput
+            keyboardType={"number-pad"}
             style={{height: 40, width : constants.width/1.25, backgroundColor: "#e6e6e6", borderRadius: 10, marginTop:2}}
-            />
+            secureTextEntry={false}
+            onChangeText={phoneNum.onChange}
+
+            />          
             </ID>
 
             <PW>
             <Text>비밀번호</Text>
             <TextInput
             style={{height: 40, width : constants.width/1.25, backgroundColor: "#e6e6e6", borderRadius: 10, marginTop:2}}
+            secureTextEntry={true}
+            onChangeText={password.onChange}
+
             />
             </PW>
         </InfoCon>
@@ -263,7 +172,7 @@ export default ({ navigation }) => {
         </FindingIDPW>
 
         <View>
-          <AuthButton loading={loading} onPress={()=>alert("로그인")} text="로 그 인" />
+          <AuthButton loading={loading} onPress={handleLogin} text="로 그 인" />
         </View>
 
       </Container>

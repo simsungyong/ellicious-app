@@ -43,7 +43,7 @@ font-weight : 800;
 `;
 const Text = styled.Text`
 margin-left : 10px;
-font-Size : 17px;
+font-Size : 20px;
 color: ${Grey};
 
 `;
@@ -64,15 +64,19 @@ const InfoCon = styled.View`
 const FindingIDPW =styled.View`
 justifyContent: center;
 alignItems: center;
+padding-bottom : 10px;
+flex-direction : row;
 `;
 const SocialLogin = styled.View``;
 
 const ID = styled.View`
 alignItems: flex-start;
 margin-bottom : 10px;
+
 `;
 const PW = styled.View`
 alignItems: flex-start;
+
 `;
 
 export default ({ navigation }) => {
@@ -228,22 +232,20 @@ export default ({ navigation }) => {
         <TitleCon>
           <Title>로 그 인</Title>
         </TitleCon>
-        <SubTitleCon>
-         
-        </SubTitleCon>
+        
         
         <InfoCon>
             <ID>
             <Text>아이디</Text>
             <TextInput
-            style={{height: 37, width : constants.width/1.25, backgroundColor: "#e6e6e6", borderRadius: 10}}
+            style={{height: 40, width : constants.width/1.25, backgroundColor: "#e6e6e6", borderRadius: 10, marginTop:2}}
             />
             </ID>
 
             <PW>
             <Text>비밀번호</Text>
             <TextInput
-            style={{height: 37, width : constants.width/1.25, backgroundColor: "#e6e6e6", borderRadius: 10}}
+            style={{height: 40, width : constants.width/1.25, backgroundColor: "#e6e6e6", borderRadius: 10, marginTop:2}}
             />
             </PW>
         </InfoCon>
@@ -252,7 +254,11 @@ export default ({ navigation }) => {
 
         <FindingIDPW>
             <TouchableOpacity onPress={() => {navigation.navigate("FindID") } }>
-                <Text>아이디, 비밀번호 찾기</Text>
+                <Text>아이디 찾기</Text>
+            </TouchableOpacity>
+            <Text> | </Text>
+            <TouchableOpacity onPress={() => {navigation.navigate("FindPW") } }>
+                <Text>비밀번호 찾기</Text>
             </TouchableOpacity>
         </FindingIDPW>
 

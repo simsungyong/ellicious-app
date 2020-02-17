@@ -11,6 +11,7 @@ import AuthHome from "../screens/Auth/AuthHome";
 import Login from "../screens/Auth/Login";
 import FindID from "../screens/Auth/FindID";
 import EmailCheck from "../screens/Auth/EmailCheck";
+import FindPW from "../screens/Auth/FindPW"
 
 const AuthNavigation = createStackNavigator(
   {
@@ -24,7 +25,8 @@ const AuthNavigation = createStackNavigator(
     SignUpPW,
     SignUpFin,
     Login,
-    FindID
+    FindID,
+    FindPW
   },
   {
     headerMode: "none"

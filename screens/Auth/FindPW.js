@@ -136,7 +136,7 @@ export default ({ navigation }) => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}> 
       <Container>
         <TitleCon>
-          <Title>아이디 찾기</Title>
+          <Title>비밀번호 찾기</Title>
         </TitleCon>
         
         <InfoCon>
@@ -145,6 +145,12 @@ export default ({ navigation }) => {
             /*placeholder="First name"*/
             autoCapitalize="words"
             label = "이름"
+          />
+          <AuthInput
+            {...fNameInput}
+            /*placeholder="First name"*/
+            autoCapitalize="words"
+            label = "아이디"
           />
 
           <ConfirmPN>
@@ -168,13 +174,13 @@ export default ({ navigation }) => {
         </InfoCon>
 
         <PW>
-        <TouchableOpacity onPress={() => {navigation.navigate("FindPW") } }>
-                <Text>비밀번호 찾기</Text>
+        <TouchableOpacity onPress={() => {navigation.navigate("FindID") } }>
+                <Text>아이디 찾기</Text>
             </TouchableOpacity>
         </PW>
 
           <View>
-            <AuthButton loading = {loading}  text="확 인"  onPress={() => alert('이것이 당신의 아이디!')} />
+            <AuthButton loading = {loading}  text="확 인"  onPress={() => alert('이것이 당신의 비밀번호!')} />
           </View>
       </Container>
     </TouchableWithoutFeedback>

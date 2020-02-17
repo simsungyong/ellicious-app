@@ -69,7 +69,6 @@ const Alarms =({
       setRefreshing(false);
     }
   };
-  console.log(data)
   return(
     <ScrollView
         refreshControl={

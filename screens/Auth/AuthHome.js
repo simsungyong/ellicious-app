@@ -7,6 +7,7 @@ import { Alert, TouchableWithoutFeedback, Keyboard } from "react-native";
 import {mainPink, TINT_COLOR, BG_COLOR, Grey } from "../../components/Color";
 import useInput from "../../hooks/useInput";
 import { useLogIn } from "../../AuthContext";
+import axios from 'axios';
 
 const Container = styled.View`
   justify-content: center;
@@ -100,6 +101,29 @@ export default ({ navigation }) => {
   //     email: emailInput.value
   //   }
   // });
+
+
+  const handleSMS = async() => {
+
+
+    const formData = new FormData();
+    formData.append({
+      sender: "01025371907",
+      receiver: "01041753329",
+      msg: `인증코드는 ${"123456"} 입니다`
+    });
+    const {
+      data
+    } = await axios.post("http://192.168.0.135:4000/api/SMS", {
+      sender: "01025371907",
+      receiver: "01041753329",
+      msg: `인증코드는 ${"123456"} 입니다`
+    }, {
+      headers:{
+        "content-type" : "multipart/form-data"
+      }
+    });
+  }
 
 
   const handleLogin = async () => {
@@ -214,6 +238,7 @@ export default ({ navigation }) => {
        <SignUpCon>
         <Text>이미 회원이신가요?</Text>
           <Touchable onPress={() => navigation.navigate("Login")}>
+          {/* <Touchable onPress={() => handleSMS()}> */}
               <LoginLink>
                 <LoginLinkText>Login</LoginLinkText>
               </LoginLink>

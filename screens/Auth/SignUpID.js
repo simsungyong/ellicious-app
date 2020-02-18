@@ -62,56 +62,34 @@ export default ({ navigation }) => {
   const usernameInput = useInput("");
   const fName = navigation.getParam("fName");
   const lName = navigation.getParam("lName");
-  const phoneNum = navigation.getParam('phoneNum')
+  const phoneNum = navigation.getParam('phoneNum');
+  const [checkUsername, setCheckUsername] = useState(false);
 
-  
-  
-  // const [loading, setLoading] = useState(false);
-  // const [checkPhone, setCheckPhone] = useState(false);
-  // const [confirmAccount, setConfirmAccount] = useState(false);
-  // const [checkUsername, setCheckUsername] = useState(false);
-  // const [usernameOK, setUsernameOK] = useState(false);
-  
+  const { data: isUsername } = useQuery(CHECK_USERNAME, {
+    variables: {
+      term: usernameInput.value
+    },
+    skip: checkUsername
+  });
 
-  // const { data: isUsername } = useQuery(CHECK_USERNAME, {
-  //   variables: {
-  //     term: usernameInput.value
-  //   },
-  //   skip: checkUsername
-  // });
-
-  const handleSubmit=()=>{
-    if(usernameInput.value ==='' || usernameInput.value===undefined ){
-      Alert.alert('올바르게 써주세요')
-    }else{
-      navigation.navigate("SignUpCheckInfo", {fName,lName,phoneNum,username:usernameInput.value})
+  const handleSubmit = async() => {
+    setCheckUsername(true);
+    try {
+      if(usernameInput.value ==='' || usernameInput.value===undefined ){
+        Alert.alert('닉네임을 입력해주세요')
+      }else{
+        if(!isUsername.checkUsername) {
+          navigation.navigate("SignUpCheckInfo", {fName,lName,phoneNum,username:usernameInput.value})
+        } else {
+          Alert.alert("이미 존재하는 username입니다.", "다른 username을 입력해주세요")
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setCheckUsername(false);
     }
   }
-  // const confirmUsername = async() => {
-  //   setCheckUsername(true);
-  //   try {
-  //     if(!isUsername.checkUsername) {
-  //       const {
-  //         data: { createAccount }
-  //       } = await createAccountMutation();
-  //       if (createAccount) {
-  //         firebase.database().ref("users/"+createAccount.id).set({ID: createAccount.username});
-  //         Alert.alert("Account created", "Log in now!");
-  //         navigation.navigate("AuthHome");
-  //       }
-  //     } else {
-  //       Alert.alert("이미 존재하는 username입니다.", "다른 username을 입력해주세요")
-  //     }
-  //   } catch (e) {
-  //     console.log(e);
-  //   } finally {
-      
-  //     setCheckUsername(false);
-  //   }
-  // }
-
-
-
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}> 
@@ -120,7 +98,7 @@ export default ({ navigation }) => {
           <Title>회원가입</Title>
         </TitleCon>
         <SubTitleCon>
-          <SubTitle>사용할 아이디를 입력해 주세요.</SubTitle>
+          <SubTitle>사용할 닉네임을 입력해 주세요.</SubTitle>
           <Text>프로필에서 언제든지 변경이 가능합니다.</Text>
         </SubTitleCon>
         
@@ -129,7 +107,6 @@ export default ({ navigation }) => {
           
           <AuthInput
             {...usernameInput}
-            /*placeholder="First name"*/
             autoCapitalize="words"
             label = "UserName (ex GD_HONG)"
           />
@@ -143,8 +120,3 @@ export default ({ navigation }) => {
     </TouchableWithoutFeedback>
   );
 };
-
-/* 
-          
-
-*/

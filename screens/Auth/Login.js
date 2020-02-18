@@ -116,12 +116,9 @@ export default ({ navigation }) => {
 
       if (confirmSecret !== "" || confirmSecret !== false) {
         logIn(confirmSecret);
-      } else {
-        Alert.alert("계정 또는 비밀번호를 확인해주세요");
       }
     } catch (e) {
-      console.log(e);
-      Alert.alert("Can't log in now");
+      Alert.alert("계정 또는 비밀번호를 확인해주세요");
     } finally {
       setLoading(false);
     }
@@ -138,7 +135,7 @@ export default ({ navigation }) => {
         
         <InfoCon>
             <ID>
-            <Text>아이디</Text>
+            <Text>아이디(Cellphone)</Text>
             <TextInput
             keyboardType={"number-pad"}
             style={{height: 40, width : constants.width/1.25, backgroundColor: "#e6e6e6", borderRadius: 10, marginTop:2}}
@@ -162,10 +159,6 @@ export default ({ navigation }) => {
        
 
         <FindingIDPW>
-            <TouchableOpacity onPress={() => {navigation.navigate("FindID") } }>
-                <Text>아이디 찾기</Text>
-            </TouchableOpacity>
-            <Text> | </Text>
             <TouchableOpacity onPress={() => {navigation.navigate("FindPW") } }>
                 <Text>비밀번호 찾기</Text>
             </TouchableOpacity>

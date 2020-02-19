@@ -302,24 +302,24 @@ const Home =({navigation}) => {
 
 
   return (
-    // <ScrollView
-    //     refreshControl={
-    //       <RefreshControl refreshing={refreshing} onRefresh={refresh}/>
-    //     }>
-    //     {loading ? (<Loader/>): (data && data.seeFeed && data.seeFeed.map(post=> <Post key={post.id}{...post} />))}
-    //   </ScrollView>
-    <SafeAreaView style={Container}>
-      {loading ? <Loader/> : (
-        <FlatList
-          data={data.seeFeed}
-          onRefresh={refresh}
-          //EndReachedThreshold={0.001}
-          refreshing={refreshing}
-          //onEndReached={onLoadMore}
-          keyExtractor={item =>item.id}
-          renderItem={({ item }) => 
-            renderRow(item)
-          }
+    <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={refresh}/>
+        }>
+        {loading ? (<Loader/>): (data && data.seeFeed && data.seeFeed.map(post=> <Post key={post.id}{...post} />))}
+      </ScrollView>
+    // <SafeAreaView style={Container}>
+    //   {loading ? <Loader/> : (
+    //     <FlatList
+    //       data={data.seeFeed}
+    //       onRefresh={refresh}
+    //       //EndReachedThreshold={0.001}
+    //       refreshing={refreshing}
+    //       //onEndReached={onLoadMore}
+    //       keyExtractor={item =>item.id}
+    //       renderItem={({ item }) => 
+    //         renderRow(item)
+    //       }
         //   ListEmptyComponent={()=>{
         //     recommendCheck();
         //     return(
@@ -342,9 +342,9 @@ const Home =({navigation}) => {
         //     )
         //   }
         // }
-        />
-        )}
-</SafeAreaView>
+//         />
+//         )}
+// </SafeAreaView>
 
   );
 }

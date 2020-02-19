@@ -7,7 +7,7 @@ import AuthInput from "../../components/AuthInput";
 import AuthInputPN from "../../components/AuthInputPN";
 import useInput from "../../hooks/useInput";
 import { useMutation, useQuery } from "react-apollo-hooks";
-import { CREATE_ACCOUNT, ID_CHECK, CHECK_USERNAME, CONFIRM_SECRET } from "./AuthQueries";
+import { CREATE_ACCOUNT, ID_CHECK, CHECK_USERNAME, CONFIRM_SECRET, REQUEST_SECRET } from "./AuthQueries";
 import { TINT_COLOR, PointPink, BG_COLOR, Grey } from '../../components/Color'
 import firebase from 'firebase';
 import { useLogIn } from "../../AuthContext";
@@ -59,17 +59,15 @@ const ConfirmPN = styled.View`
 flex-direction : row;
 align-items: center;
 justify-content: space-between;
-
 `;
 
 export default ({ navigation }) => {
-  const idInput = useInput("");
   const phoneNumInput = useInput("");
   const confirmSecretInput = useInput("");
-  const logIn = useLogIn();
   const [checkPhone, setCheckPhone] = useState(false);
-
+  const [secretCode, setSecretCode] = useState("");
   const [loading, setLoading] = useState(false);
+  const [auth, setAuth] = useState(false);
 
   const { data: userAccount } = useQuery(ID_CHECK, {
     variables: {
@@ -78,14 +76,7 @@ export default ({ navigation }) => {
     skip: checkPhone
   });
 
-
-  const [confirmSecretMutation] = useMutation(CONFIRM_SECRET, {
-    variables: {
-      password: confirmSecretInput.value,
-      // email: emailInput.value
-      cellPhone: phoneNumInput.value
-    }
-  });
+  const [requestSecret] = useMutation(REQUEST_SECRET)
 
   const handleSecret = async () => {
     setLoading(true);
@@ -108,20 +99,14 @@ export default ({ navigation }) => {
           if (!userAccount.checkAccount) {
             Alert.alert("해당번호로 계정을 찾을 수가 없습니다.")
           } else {
-            Alert.alert("보내드린 인증번호를 입력해주세요.")
+            const { data } = await requestSecret({variables: {phoneNum}})
+            if(data) {
+              setAuth(true)
+              Alert.alert("인증번호 전송 완료")
+              setSecretCode(data.requestSecret)
+            }
           }
         }
-
-        // const {
-        //   data: { confirmSecret }
-        // } = await confirmSecretMutation();
-
-
-        // if (confirmSecret !== "" || confirmSecret !== false) {
-        //   logIn(confirmSecret);
-        // } else {
-        //   Alert.alert("계정 또는 비밀번호를 확인해주세요");
-        // }
       } catch (e) {
         console.log(e);
       } finally {
@@ -132,15 +117,20 @@ export default ({ navigation }) => {
   };
 
 
-  const handleSubmit = () => {
-    if (idInput.value === "" || idInput.value === undefined) {
-      return Alert.alert("아이디를 입력하세요");
-    } else if (phoneNumInput.value === "" || phoneNumInput.value === undefined) {
+  const handleSubmit = async() => {
+    if (!auth) {
+      return Alert.alert("회원 인증 절차를 해주시기 바랍니다.")
+    }else if (phoneNumInput.value === "" || phoneNumInput.value === undefined) {
       return Alert.alert("전화번호를 입력하세요");
     } else if (confirmSecretInput.value === "" || confirmSecretInput.value === undefined) {
       return Alert.alert("인증번호를 입력하세요");
     } else {
-      // navigation.navigate("SignUpPhone",{fName: fNameInput.value, lName: lNameInput.value})
+      if(confirmSecretInput.value === secretCode) {
+        // 비밀번호 재설정하는 곳으로 가기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        return Alert.alert("인증이 완료되었습니다")
+      } else {
+        return Alert.alert("인증번호가 다릅니다")
+      }
     }
   }
 
@@ -179,7 +169,7 @@ export default ({ navigation }) => {
         </InfoCon>
 
         <View>
-          <AuthButton loading={loading} text="확 인" onPress={() => alert('이것이 당신의 비밀번호!')} />
+          <AuthButton loading={loading} text="확 인" onPress={handleSubmit} />
         </View>
       </Container>
     </TouchableWithoutFeedback>

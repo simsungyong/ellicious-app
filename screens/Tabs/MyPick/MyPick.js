@@ -6,9 +6,10 @@ import {
   StyleSheet,
   View
 } from "react-native";
-import MapViewPick from '../../components/MapView/MapViewPick';
-import Loader from "../../components/Loader";
-import { PICK_FRAGMENT } from '../../fragments';
+// import MapViewPick from '../../../components/MapView/MapViewPick';
+import Loader from "../../../components/Loader";
+import { PICK_FRAGMENT } from '../../../fragments';
+import MyPickPresenter from './MyPickPresenter';
 
 const styles = StyleSheet.create({
   container: {
@@ -40,22 +41,12 @@ export const GET_PICK = gql`
 const MyPick = ({ navigation }) => {
   const { loading, data, refetch } = useQuery(GET_PICK);
   useEffect(() => {
-    let isCancelled = false;
-    if(!isCancelled) {
-      if(data && data.seePick) {
-        refetch()
-      }
-    }
-
-    return () => {
-      isCancelled = true;
-    }
     
   },[])
 
   return (
     <View style={styles.container}>
-      {loading ? <Loader /> : <MapViewPick navigation={navigation} marker={data.seePick} region={region} />}
+      {loading ? <Loader /> : <MyPickPresenter navigation={navigation} marker={data.seePick} region={region} />}
     </View>
   )
 }

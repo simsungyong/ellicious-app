@@ -125,6 +125,7 @@ export const PICK_FRAGMENT = gql`
       storeLong
       rating
       placeId
+      details
       storeLocation
       storeName
       files{

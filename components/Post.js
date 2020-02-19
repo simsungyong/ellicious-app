@@ -20,7 +20,7 @@ import { POST_FRAGMENT } from "../fragments";
 import {ME} from '../screens/Tabs/Profile/Profile';
 import { UNFOLLOW } from "./UserProfile";
 import { ScrollView } from "react-native-gesture-handler";
-import {GET_PICK} from '../screens/Tabs/MyPick'
+import {GET_PICK} from '../screens/Tabs/MyPick/MyPick'
 import Star from '../components/Star'
 export const FEED_QUERY = gql`
   {

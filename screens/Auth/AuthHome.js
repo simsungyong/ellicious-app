@@ -7,6 +7,7 @@ import { Alert, TouchableWithoutFeedback, Keyboard } from "react-native";
 import {mainPink, TINT_COLOR, BG_COLOR, Grey } from "../../components/Color";
 import useInput from "../../hooks/useInput";
 import { useLogIn } from "../../AuthContext";
+import axios from 'axios';
 
 const Container = styled.View`
   justify-content: center;

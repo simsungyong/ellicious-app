@@ -7,7 +7,6 @@ import useInput from "../../hooks/useInput";
 import { useMutation, useQuery } from "react-apollo-hooks";
 import { CREATE_ACCOUNT, ID_CHECK, CHECK_USERNAME,CONFIRM_SECRET} from "./AuthQueries";
 import { TINT_COLOR, PointPink, BG_COLOR } from '../../components/Color'
-import firebase from 'firebase';
 import { useLogIn } from "../../AuthContext";
 
 
@@ -51,7 +50,6 @@ const InfoCon = styled.View`
 
 `;
 
-
 export default ({ navigation }) => {
   const fNameInput = useInput("");
   const lNameInput = useInput("");
@@ -66,10 +64,7 @@ export default ({ navigation }) => {
       cellPhone: lNameInput.value
     }
   });
-  
- 
 
- 
   const handleSubmit=()=>{
     if (fNameInput.value === "" || fNameInput.value===undefined) {
       return Alert.alert("이름을 입력하세요");
@@ -80,11 +75,6 @@ export default ({ navigation }) => {
       navigation.navigate("SignUpPhone",{fName: fNameInput.value, lName: lNameInput.value})
     }
   }
- 
-    
-
-  
-
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}> 

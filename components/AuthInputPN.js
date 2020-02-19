@@ -50,7 +50,7 @@ const FloatingLabelInput = ({label, onChangeText,value, keyboardType,secureTextE
           blurOnSubmit
           editable={editable}
           autoCapitalize='none'
-          keyboardType={keyboardType}
+          keyboardType={"number-pad"}
           secureTextEntry={secureTextEntry}
           label={label}
           value={value}

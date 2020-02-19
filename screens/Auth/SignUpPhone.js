@@ -5,8 +5,10 @@ import AuthButton from "../../components/AuthConfirmButton";
 import AuthInput from "../../components/AuthInput";
 import useInput from "../../hooks/useInput";
 import { Alert } from "react-native";
+import PNButton from "../../components/PNConfirmButton";
+import AuthInputPN from "../../components/AuthInputPN";
 import { useMutation, useQuery } from "react-apollo-hooks";
-import { CREATE_ACCOUNT, ID_CHECK, CHECK_USERNAME } from "./AuthQueries";
+import { CREATE_ACCOUNT, ID_CHECK, CHECK_USERNAME, REQUEST_SECRET } from "./AuthQueries";
 import { TINT_COLOR, PointPink, BG_COLOR, Grey } from '../../components/Color'
 import Modal, { ModalTitle, ModalContent, ModalFooter, ModalButton } from 'react-native-modals';
 
@@ -48,6 +50,11 @@ const View = styled.View`
   flex : 2;
  
 `;
+const ConfirmPN = styled.View`
+flex-direction : row;
+align-items: center;
+justify-content: space-between;
+`;
 
 const InfoCon = styled.View`
   justify-content: center;
@@ -58,39 +65,73 @@ const InfoCon = styled.View`
 
 export default ({ navigation }) => {
 
-  const cellPhoneInput = useInput("");
+  const phoneNumInput = useInput("");
+  const confirmSecretInput = useInput("");
+  const [loading, setLoading] = useState(false);
   const [checkPhone, setCheckPhone] = useState(false);
   const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
+  const [secretCode, setSecretCode] = useState("");
+  const [auth, setAuth] = useState(false);
   const fName = navigation.getParam("fName");
   const lName = navigation.getParam("lName");
 
   const { data: userAccount } = useQuery(ID_CHECK, {
     variables: {
-      cellPhone: cellPhoneInput.value
+      cellPhone: phoneNumInput.value
     },
     skip: checkPhone
   });
 
+  const [requestSecret] = useMutation(REQUEST_SECRET)
 
-  const handleSubmit = async () => {
-    if (cellPhoneInput.value == "" || cellPhoneInput.value === undefined) {
-      return Alert.alert("핸드폰 번호를 입력하세요");
-    } else if (cellPhoneInput.value.length !== 11) {
+  const handleSecret = async () => {
+    setLoading(true);
+    const { value: phoneNum } = phoneNumInput;
+
+    if (phoneNum === "" || phoneNum === undefined) {
+      setLoading(false);
+      return Alert.alert("전화번호를 입력해주세요");
+    } else if (phoneNum.length !== 11) {
+      setLoading(false);
       return Alert.alert("잘못된 형식입니다.");
     } else {
       try {
         setCheckPhone(true);
+
         if (userAccount) {
-          if (!userAccount.checkAccount) {
-            navigation.navigate("SignUpID", { fName, lName, phoneNum: cellPhoneInput.value });
-          } else {
+          if (userAccount.checkAccount) {
             setbottomModalAndTitle(true)
+          } else {
+            const { data } = await requestSecret({variables: {phoneNum}})
+            if(data) {
+              setAuth(true)
+              Alert.alert("인증번호 전송 완료")
+              Alert.alert(data.requestSecret)
+              setSecretCode(data.requestSecret)
+            }
           }
         }
       } catch (e) {
         console.log(e);
       } finally {
-        setCheckPhone(false)
+        setCheckPhone(false);
+        setLoading(false);
+      }
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!auth) {
+      return Alert.alert("회원 인증 절차를 해주시기 바랍니다.")
+    }else if (phoneNumInput.value === "" || phoneNumInput.value === undefined) {
+      return Alert.alert("전화번호를 입력하세요");
+    } else if (confirmSecretInput.value === "" || confirmSecretInput.value === undefined) {
+      return Alert.alert("인증번호를 입력하세요");
+    } else {
+      if(confirmSecretInput.value === secretCode) {
+        navigation.navigate("SignUpID", { fName, lName, phoneNum: phoneNumInput.value })
+      } else {
+        return Alert.alert("인증번호가 다릅니다")
       }
     }
   }
@@ -107,15 +148,23 @@ export default ({ navigation }) => {
         </SubTitleCon>
 
         <InfoCon>
-          <AuthInput
-            {...cellPhoneInput}
-            placeholder="cellphone number"
-            returnKeyType="send"
-            autoCorrect={false}
-            keyboardType="number-pad"
-            label="CellPhone"
-          />
+        <ConfirmPN>
+            <AuthInputPN
+              {...phoneNumInput}
+              /*placeholder="First name"*/
+              autoCapitalize="words"
+              label="전화번호"
 
+            />
+            <PNButton loading={loading} onPress={handleSecret} text="인증번호 받기" />
+          </ConfirmPN>
+
+          <AuthInput
+            {...confirmSecretInput}
+            /*placeholder="First name"*/
+            autoCapitalize="words"
+            label="인증번호 입력"
+          />
         </InfoCon>
         <View>
           <AuthButton onPress={handleSubmit} text="확 인" />

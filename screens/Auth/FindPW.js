@@ -9,9 +9,7 @@ import useInput from "../../hooks/useInput";
 import { useMutation, useQuery } from "react-apollo-hooks";
 import { CREATE_ACCOUNT, ID_CHECK, CHECK_USERNAME, CONFIRM_SECRET, REQUEST_SECRET } from "./AuthQueries";
 import { TINT_COLOR, PointPink, BG_COLOR, Grey } from '../../components/Color'
-import firebase from 'firebase';
-import { useLogIn } from "../../AuthContext";
-import constants from "../../constants";
+import Modal, { ModalTitle, ModalContent, ModalFooter, ModalButton } from 'react-native-modals';
 
 const Container = styled.View`
   flex: 1;
@@ -68,6 +66,7 @@ export default ({ navigation }) => {
   const [secretCode, setSecretCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [auth, setAuth] = useState(false);
+  const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
 
   const { data: userAccount } = useQuery(ID_CHECK, {
     variables: {
@@ -126,8 +125,7 @@ export default ({ navigation }) => {
       return Alert.alert("인증번호를 입력하세요");
     } else {
       if(confirmSecretInput.value === secretCode) {
-        // 비밀번호 재설정하는 곳으로 가기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        return Alert.alert("인증이 완료되었습니다")
+        setbottomModalAndTitle(true)
       } else {
         return Alert.alert("인증번호가 다릅니다")
       }
@@ -171,6 +169,28 @@ export default ({ navigation }) => {
         <View>
           <AuthButton loading={loading} text="확 인" onPress={handleSubmit} />
         </View>
+
+        <Modal.BottomModal
+          visible={bottomModalAndTitle}
+          onTouchOutside={() => setbottomModalAndTitle(false)}
+          height={0.25}
+          width={0.8}
+          onSwipeOut={() => setbottomModalAndTitle(false)}
+        >
+          <ModalContent>
+            <Text>비밀번호를 재설정 하시겠습니까?</Text>
+          </ModalContent>
+          <ModalFooter>
+            <ModalButton
+              text="OK"
+              onPress={() => {navigation.navigate("ResetPassword", {phoneNum: phoneNumInput.value}); setbottomModalAndTitle(false) }}
+            />
+            <ModalButton
+              text="CANCEL"
+              onPress={() => setbottomModalAndTitle(false)}
+            />
+          </ModalFooter>
+        </Modal.BottomModal>
       </Container>
     </TouchableWithoutFeedback>
   );

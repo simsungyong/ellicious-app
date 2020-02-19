@@ -44,3 +44,9 @@ export const CONFIRM_SECRET = gql`
     confirmSecret(password: $password, phoneNum: $cellPhone)
   }
 `;
+
+export const UPDATE_PASSWORD = gql`
+  mutation updatePassword($phoneNum: String!, $password: String!) {
+    updatePassword(phoneNum: $phoneNum, password: $password)
+  }
+`;

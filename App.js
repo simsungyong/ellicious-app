@@ -22,8 +22,6 @@ import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 import firebase from 'firebase';
 import firebaseConfig from "./firebase.config";
-
-
 //AsyncStorage.clear();
 
 
@@ -152,6 +150,7 @@ export default function App() {
     preLoad();
     
   }, []);
+  console.disableYellowBox = true
 
   return loaded && client && isLoggedIn !== null ? (
     <ApolloProvider client={client}>

@@ -106,7 +106,6 @@ export default ({ navigation }) => {
             if(data) {
               setAuth(true)
               Alert.alert("인증번호 전송 완료")
-              Alert.alert(data.requestSecret)
               setSecretCode(data.requestSecret)
             }
           }

@@ -75,17 +75,7 @@ export default ({ navigation }) => {
   const cellPhoneInput = useInput("");
   const logIn = useLogIn();
   
-
   const [loading, setLoading] = useState(false);
-
-  // const [createAccountMutation] = useMutation(CREATE_ACCOUNT, {
-  //   variables: {
-  //     username: usernameInput.value,
-  //     email: emailInput.value,
-  //     firstName: fNameInput.value,
-  //     lastName: lNameInput.value
-  //   }
-  // });
 
   const [confirmSecretMutation] = useMutation(CONFIRM_SECRET, {
     variables: {
@@ -95,99 +85,6 @@ export default ({ navigation }) => {
     }
   });
 
-  // const [requestSecretMutation] = useMutation(LOG_IN, {
-  //   variables: {
-  //     email: emailInput.value
-  //   }
-  // });
-
-
-  const handleLogin = async () => {
-    // const { value: email } = emailInput;
-    // const { value: password } = passwordInput;
-    // const { value: id } = idInput;
-
-    // const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    // if (email === "") {
-    //   return Alert.alert("Email can't be empty");
-    // } else if (!email.includes("@") || !email.includes(".")) {
-    //   return Alert.alert("Please write an email");
-    // } else if (!emailRegex.test(email)) {
-    //   return Alert.alert("That email is invalid");
-    // }
-    
-    try {
-      setLoading(true);
-      // const {
-      //   data: { requestSecret }
-      // } = await requestSecretMutation();
-
-      const {
-        data: { confirmSecret }
-      } = await confirmSecretMutation();
-
-
-      if (confirmSecret !== "" || confirmSecret !== false) {
-        logIn(confirmSecret);
-      } else {
-        Alert.alert("계정 또는 비밀번호를 확인해주세요");
-      }
-    } catch (e) {
-      console.log(e);
-      Alert.alert("Can't log in now");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // const fbLogin = async () => {
-  //   try {
-  //     setLoading(true);
-  //     const { type, token } = await Facebook.logInWithReadPermissionsAsync(
-  //       "1849127108565501",
-  //       {
-  //         permissions: ["public_profile", "email"]
-  //       }
-  //     );
-  //     if (type === "success") {
-  //       const response = await fetch(
-  //         `https://graph.facebook.com/me?access_token=${token}&fields=id,last_name,first_name,email`
-  //       );
-  //       Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
-  //       const { email, first_name, last_name } = await response.json();
-  //       console.log(email)
-  //       setLoading(false);
-  //     } else {
-  //       // type === 'cancel'
-  //     }
-  //   } catch ({ message }) {
-  //     alert(`Facebook Login Error: ${message}`);
-  //   }
-  // };
-
-  // const googleLogin = async () => {
-  //   try {
-  //     setLoading(true);
-  //     const result = await Google.logInAsync({
-  //       iosClientId: "884516426746-mt2la4o92f6u7fgvr5opglt0conrebjl.apps.googleusercontent.com",
-  //       androidClientId: "884516426746-360kefsq27dgm0au8i1d52ff9bobgrkd.apps.googleusercontent.com",
-  //       scopes: ["profile", "email"]
-  //     });
-  //     if (result.type === "success") {
-  //       const user = await fetch("https://www.googleapis.com/userinfo/v2/me", {
-  //         headers: { Authorization: `Bearer ${result.accessToken}` }
-  //       });
-  //       const { email, family_name, given_name } = await user.json();
-  //       console.log(email)
-  //     } else {
-  //       return { cancelled: true };
-  //     }
-  //   } catch (e) {
-  //     console.log(e);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   return (
 
@@ -203,17 +100,10 @@ export default ({ navigation }) => {
 
       <ButtonContainer>
         <AuthButton loading={loading} onPress={() => navigation.navigate("SignUpName")} text="회원가입하기" />
-
-          {/* <LoginButtonCon>
-              <OtherLoginCon>
-                <SocialIcon type="facebook" onPress={fbLogin} />
-                <SocialIcon type="google" onPress={googleLogin} />
-              </OtherLoginCon>
-          </LoginButtonCon> */}
         
        <SignUpCon>
         <Text>이미 회원이신가요?</Text>
-          <Touchable onPress={() => navigation.navigate("Login")}>
+          <Touchable onPress={()=>navigation.navigate("Login")}>
               <LoginLink>
                 <LoginLinkText>Login</LoginLinkText>
               </LoginLink>

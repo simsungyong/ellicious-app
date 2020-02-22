@@ -20,6 +20,7 @@ const PhotoTabs = createMaterialTopTabNavigator(
       screen: TakePhoto,
       navigationOptions:{
         tabBarLabel:"Take",
+        
       }
     },
     Select:{
@@ -33,11 +34,11 @@ const PhotoTabs = createMaterialTopTabNavigator(
     tabBarPosition: "bottom",
     tabBarOptions: {
       indicatorStyle:{
-        backgroundColor: PointPink,
+        backgroundColor: mainPink,
         marginBottom:65
       },
       labelStyle:{
-        color: PointPink,
+        color: mainPink,
         fontWeight:"600"
       },
       style:{

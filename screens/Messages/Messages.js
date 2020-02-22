@@ -5,7 +5,7 @@ import { gql } from "apollo-boost";
 // import { USER_FRAGMENT } from "../../fragments";
 import Loader from "../../components/Loader";
 import { useQuery } from "react-apollo-hooks";
-import { mainPink } from "../../components/Color";
+import { mainPink, Yellow } from "../../components/Color";
 import firebase from 'firebase';
 import User from '../../User'
 import { SafeAreaView } from "react-navigation";
@@ -34,9 +34,9 @@ font-weight : 600;
 `;
 const Read=styled.View`
 width: 10;
-height: 1;
+height: 10;
 borderRadius : 5;
-background-color : ${mainPink}
+background-color : ${Yellow}
 `;
 
 const ReadCon = styled.View`

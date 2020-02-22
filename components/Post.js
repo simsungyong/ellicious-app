@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Image, Platform,TextInput, Alert } from "react-native";
+import React, { useState, memo } from "react";
+import { Image, Platform,TextInput, Alert,TouchableOpacity } from "react-native";
 import styled from "styled-components";
 import { Ionicons, EvilIcons, FontAwesome, AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
@@ -14,14 +14,13 @@ import {Card} from 'native-base'
 import { withNavigation } from "react-navigation";
 import Hr from "hr-native";
 import Stars from 'react-native-stars';
-//import { PICK_ITEM } from "../screens/Tabs/MyPick";
-import KeyboardSpacer from 'react-native-keyboard-spacer';
+
 import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
 import { POST_FRAGMENT } from "../fragments";
 import {ME} from '../screens/Tabs/Profile/Profile';
 import { UNFOLLOW } from "./UserProfile";
 import { ScrollView } from "react-native-gesture-handler";
-import {GET_PICK} from '../screens/Tabs/MyPick'
+import {GET_PICK} from '../screens/Tabs/MyPick/MyPick'
 import Star from '../components/Star'
 export const FEED_QUERY = gql`
   {
@@ -51,7 +50,6 @@ export const DELETE_POST = gql`
 `;
 
 
-const Touchable = styled.TouchableOpacity``;
 
 const Container =styled.View`
   flex : 1;
@@ -288,7 +286,7 @@ const Post = ({
       <Card>
         <Container>
           <Header>
-            <Touchable
+            <TouchableOpacity
               onPress={() =>
                 navigation.navigate("UserDetail", { id: user.id, username })
               }
@@ -304,20 +302,20 @@ const Post = ({
                 source={{uri: avatar}}
               />
             }
-            </Touchable>
+            </TouchableOpacity>
         
             <UserInfo>
-              <Touchable
+              <TouchableOpacity
                 onPress={() =>
                   navigation.navigate("UserDetail", { id: user.id, username })
                 }
               >
                 <Bold>{user.username}</Bold>
-              </Touchable>
+              </TouchableOpacity>
               <CommentCount>{time}</CommentCount>
             </UserInfo>
             <View/>
-            <Touchable onPress={()=>setbottomModalAndTitle(true)}>
+            <TouchableOpacity onPress={()=>setbottomModalAndTitle(true)}>
               <IconCon>
                 <MaterialCommunityIcons
                   color={IconColor}
@@ -325,7 +323,7 @@ const Post = ({
                   name={"dots-horizontal"}
                 />
               </IconCon>
-            </Touchable>
+            </TouchableOpacity>
           </Header>
 
           <CaptionCon>
@@ -359,20 +357,20 @@ const Post = ({
           
           <StoreInfo>
             <Store>
-            <Touchable onPress={() => navigation.navigate("StoreDetail", { storeName, placeId })}>
+            <TouchableOpacity onPress={() => navigation.navigate("StoreDetail", { storeName, placeId })}>
               <StoreName>{storeName}</StoreName>
-            </Touchable>
+            </TouchableOpacity>
             <Star rating={rating} size={25} color={StarColor}/>
             </Store>
           </StoreInfo>
 
           <LikeComments>
             <Text>{likeCount === 1 ? "좋아요 1개" : `좋아요 ${likeCount}개`}</Text>
-            <Touchable onPress={()=>navigation.navigate("CommentDetail",{caption, avatar, username, postId: id, focusing: false})}>
+            <TouchableOpacity onPress={()=>navigation.navigate("CommentDetail",{caption, avatar, username, postId: id, focusing: false})}>
               {comments.length >=1 ? (
                 <Text> {`댓글 ${comments.length}개`}</Text>
                ) : null}
-            </Touchable>
+            </TouchableOpacity>
             <Text>{pickCount === 1 ? "콕집기 1개" : `콕집기 ${pickCount}개`}</Text>
           </LikeComments>
 
@@ -381,7 +379,7 @@ const Post = ({
           />
 
           <LikeCommentIcon>
-          <Touchable onPress={handleLike}>
+          <TouchableOpacity onPress={handleLike}>
           <IconCon>
             <Ionicons
               size={25}
@@ -398,8 +396,8 @@ const Post = ({
             />
             <Text>좋아요</Text>
           </IconCon>
-        </Touchable>
-        <Touchable onPress={()=>navigation.navigate("CommentDetail",{caption, avatar, username, postId: id, focusing: true})}>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={()=>navigation.navigate("CommentDetail",{caption, avatar, username, postId: id, focusing: true})}>
           <IconCon>
             <EvilIcons
               color={IconColor}
@@ -408,9 +406,9 @@ const Post = ({
             />
             <Text>댓글</Text>
           </IconCon>
-        </Touchable>
+        </TouchableOpacity>
       
-        <Touchable onPress={handlePick}>
+        <TouchableOpacity onPress={handlePick}>
           <IconCon>
             <AntDesign
               color={isPicked ? PointPink : TINT_COLOR }
@@ -419,7 +417,7 @@ const Post = ({
             />
             <Text>콕집기</Text>
           </IconCon>
-        </Touchable>
+        </TouchableOpacity>
           </LikeCommentIcon>
         </Container>
         
@@ -525,4 +523,4 @@ Post.propTypes = {
     })
   };
 
-  export default withNavigation(Post);
+  export default withNavigation(React.memo(Post));

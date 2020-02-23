@@ -41,8 +41,8 @@ export const GET_PICK = gql`
 const MyPick = ({ navigation }) => {
   const { loading, data, refetch } = useQuery(GET_PICK);
   useEffect(() => {
-    
-  },[])
+    refetch();
+  },[data])
 
   return (
     <View style={styles.container}>

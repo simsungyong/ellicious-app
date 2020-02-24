@@ -9,7 +9,7 @@ import { Notifications } from "expo";
 import * as Permissions from 'expo-permissions';
 import { POST_FRAGMENT } from "../../fragments";
 import { SafeAreaView } from "react-navigation";
-import { Query } from "react-apollo";
+// import { Query } from "react-apollo";
 import {Card} from 'native-base'
 import Post from '../../components/Post';
 import Swiper from "react-native-swiper";
@@ -115,10 +115,9 @@ const Home =({navigation}) => {
   const { loading, data, refetch, fetchMore } = useQuery(FEED_QUERY, {
     variables: {
       pageNumber: 0,
-      items:10
+      items:5
     },
-  });  //useQuery함수안에는 refetch 함수 담겨있다 .
-  
+  }); 
 ;
   // const {loading:loading2, data:data2, refetch:refetch2} = useQuery(RECOMMEND,{
   //   skip: check,
@@ -181,24 +180,17 @@ const Home =({navigation}) => {
 
 
   const onLoadMore = async() =>{
-    if(data.seeFeed.length < 5){
-      console.log("피드길이는 10이하")
-      return
-    }
     fetchMore({
       variables:{
         pageNumber: data.seeFeed.length,
-        items: 3
+        items: 5
       },
       updateQuery: (prev, {fetchMoreResult})=>{
         console.log(fetchMoreResult.seeFeed.length)
         if(!fetchMoreResult || fetchMoreResult.seeFeed.length === 0){
           return;
         }
-        return {
-            seeFeed:prev.seeFeed.concat(fetchMoreResult.seeFeed)
-        }
-        
+        setFeedData(prev.seeFeed.concat(fetchMoreResult.seeFeed))
       }
     })
   }
@@ -206,14 +198,6 @@ const Home =({navigation}) => {
   useEffect(() => {
     ask();
   }, []);
-
-
-  // useEffect(() => {
-  //   ask();
-  // }, []);
-
-  
-  
 
   // useEffect(() => {
   //   if (!check) return;
@@ -237,89 +221,54 @@ const Home =({navigation}) => {
 
   // })
 
+  // useEffect(() => {
+  //   if(data) {
+  //     getData()
+  //   }
+  // }, [data])
+
+  const getData = async() => {
+    await setLoading(true);
+    try {
+      await setFeedData(data.seeFeed)
+    } catch (e) {
+      console.log(e)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+
+  if(data && feedData == undefined) {
+    getData()
+  }
+
+  
+
   const renderRow=(item)=>{
     return(
       <Post {...item}/>
   )}
-    
-      
-      // <Card>
-      //   <Container>
-      //     <Header>
-      //       <TouchableOpacity
-      //         onPress={() =>
-      //           navigation.navigate("UserDetail", { id: item.user.id, username:item.user.username })
-      //         }
-      //       >
-      //         {item.user.avatar==null ? 
-      //         <Image
-      //           style={{height: 40, width: 40, borderRadius:15}}
-      //           source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}
-      //         />
-      //       :
-      //         <Image
-      //           style={{height: 40, width: 40, borderRadius:15}}
-      //           source={{uri: item.user.avatar}}
-      //         />
-      //       }
-      //       </TouchableOpacity>
-        
-      //       <UserInfo>
-      //         <TouchableOpacity
-      //           onPress={() =>
-      //             navigation.navigate("UserDetail", { id: item.user.id, username:item.user.username })
-      //           }
-      //         >
-      //           <Bold>{item.user.username}</Bold>
-      //         </TouchableOpacity>
-      //         <Timebox>{moment(item.createdAt).startOf('hour').fromNow()}</Timebox>
-      //       </UserInfo>
-            
-      //     </Header>
-      //     <Swiper 
-      //       showsPagination={false}
-      //       style={{height: constants.width/1}}>
-      //         {item.files.map(file=>(
-      //           <Image
-      //             style={{width: constants.width, height:constants.width/1}}
-      //             key={file.id}
-      //              source={{uri: file.url}}/>
-      //         ))}
-      //     </Swiper>
-          
-      //     <StoreInfo>
-      //       <Store>
-      //       <TouchableOpacity onPress={() => navigation.navigate("StoreDetail", { storeName:item.storeName, placeId:item.placeId })}>
-      //         <StoreName>{item.storeName}</StoreName>
-      //       </TouchableOpacity>
-      //       <Star rating={item.rating} size={25} color={StarColor}/>
-      //       </Store>
-      //     </StoreInfo>
-      //   </Container>
-      //   </Card>
-  
-
-
 
   return (
-    <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={refresh}/>
-        }>
-        {loading ? (<Loader/>): (data && data.seeFeed && data.seeFeed.map(post=> <Post key={post.id}{...post} />))}
-      </ScrollView>
-    // <SafeAreaView style={Container}>
-    //   {loading ? <Loader/> : (
-    //     <FlatList
-    //       data={data.seeFeed}
-    //       onRefresh={refresh}
-    //       //EndReachedThreshold={0.001}
-    //       refreshing={refreshing}
-    //       //onEndReached={onLoadMore}
-    //       keyExtractor={item =>item.id}
-    //       renderItem={({ item }) => 
-    //         renderRow(item)
-    //       }
+    // <ScrollView
+    //     refreshControl={
+    //       <RefreshControl refreshing={refreshing} onRefresh={refresh}/>
+    //     }>
+    //     {loading ? (<Loader/>): (data && data.seeFeed && data.seeFeed.map(post=> <Post key={post.id}{...post} />))}
+    //   </ScrollView>
+    <SafeAreaView style={Container}>
+      {isloading ? <Loader/> : (
+        <FlatList
+          data={feedData}
+          onRefresh={refresh}
+          EndReachedThreshold={1}
+          refreshing={refreshing}
+          onEndReached={onLoadMore}
+          keyExtractor={item =>item.id}
+          renderItem={({ item }) => 
+            renderRow(item)
+          }
         //   ListEmptyComponent={()=>{
         //     recommendCheck();
         //     return(
@@ -342,19 +291,11 @@ const Home =({navigation}) => {
         //     )
         //   }
         // }
-//         />
-//         )}
-// </SafeAreaView>
+        />
+        )}
+</SafeAreaView>
 
   );
 }
 
 export default withNavigation(Home);
-
-/*
-<ScrollView
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={refresh}/>
-        }>
-        {loading ? (<Loader/>): (data && data.seeFeed && data.seeFeed.map(post=> <Post key={post.id}{...post} />))}
-      </ScrollView>*/

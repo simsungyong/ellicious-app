@@ -23,11 +23,6 @@ import { withNavigation, ScrollView } from "react-navigation";
 import Star from '../../../components/Star';
 
 
-const Container = styled.View`
-padding : 10px;
-background-color : 'rgba(0,0,0,0.6)'
-border-radius : 24;
-`;
 const ModalContainer = styled.View`
   padding: 10px;
   flex-direction: row;
@@ -219,14 +214,7 @@ const styles = StyleSheet.create({
     container: {
         ...StyleSheet.absoluteFillObject
     },
-    map: {
-        flex: 1,
-        ...StyleSheet.absoluteFillObject
-    },
-    map1: {
-        flex: 10,
-        ...StyleSheet.absoluteFillObject
-    },
+    
     carousel: {
         position: 'absolute',
         bottom: 0,

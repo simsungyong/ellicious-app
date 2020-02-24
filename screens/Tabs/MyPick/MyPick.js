@@ -4,17 +4,24 @@ import { gql } from "apollo-boost";
 import { useQuery } from "react-apollo-hooks";
 import {
   StyleSheet,
-  View
+  View,
+  Text
 } from "react-native";
 // import MapViewPick from '../../../components/MapView/MapViewPick';
 import Loader from "../../../components/Loader";
 import { PICK_FRAGMENT } from '../../../fragments';
 import MyPickPresenter from './MyPickPresenter';
+import { FontAwesome, EvilIcons, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 
 const styles = StyleSheet.create({
   container: {
     flex: 10,
   },
+  refreshbt: {
+    position: 'absolute',
+    bottom: 0,
+    marginBottom: 48
+},
   button: {
     width: 20,
     height: 20,
@@ -46,9 +53,15 @@ const MyPick = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {loading ? <Loader /> : <MyPickPresenter navigation={navigation} marker={data.seePick} region={region} />}
+      
+
+      {loading ? <Loader /> : <MyPickPresenter navigation={navigation} marker={data.seePick} region={region}>
+        
+        </MyPickPresenter>}
     </View>
   )
 }
+
+
 
 export default MyPick;

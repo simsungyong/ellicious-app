@@ -258,7 +258,7 @@ const Home =({navigation}) => {
     //     {loading ? (<Loader/>): (data && data.seeFeed && data.seeFeed.map(post=> <Post key={post.id}{...post} />))}
     //   </ScrollView>
     <SafeAreaView style={Container}>
-      {isloading ? <Loader/> : (
+      {!loading ? !isloading ? (
         <FlatList
           data={feedData}
           onRefresh={refresh}
@@ -292,7 +292,7 @@ const Home =({navigation}) => {
         //   }
         // }
         />
-        )}
+        ) : <Loader /> : <Loader />}
 </SafeAreaView>
 
   );

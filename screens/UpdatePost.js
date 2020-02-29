@@ -18,7 +18,7 @@ import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-n
 
 const UPDATE = gql`
   mutation editPost($id: String!, $caption: String, $rating: Float!, $category: String!, $details:[String!]){
-          editPost(id: $id, caption: $caption, rating: $rating, category: $category, details:$details, action: "EDIT"){
+          editPost(id: $id, caption: $caption, rating: $rating, category: $category, details:$details, action: EDIT){
               id
             }
 }
@@ -238,7 +238,7 @@ export default ({navigation}) => {
         setIsLoading(true);
   
         const {
-          data: { upload } 
+          data: { editPost } 
         } = await updateMutation({
           variables: {
             id,
@@ -248,7 +248,7 @@ export default ({navigation}) => {
             details
           }
         });
-        if(upload.id){
+        if(editPost.id){
           navigation.navigate("TabNavigation");
         }
   

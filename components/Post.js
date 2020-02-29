@@ -487,6 +487,7 @@ const Post = ({
 
 Post.propTypes = {
     id: PropTypes.string.isRequired,
+    storeName: PropTypes.string.isRequired,
     user: PropTypes.shape({
       id: PropTypes.string.isRequired,
       avatar: PropTypes.string,

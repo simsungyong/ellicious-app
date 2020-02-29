@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Image, ScrollView, FlatList, TouchableOpacity, RefreshControl, Platform, Touchable, Alert, ActivityIndicator, Keyboard, TouchableWithoutFeedback, } from 'react-native';
+import { Image, ScrollView, FlatList, TouchableOpacity, RefreshControl, Platform, Touchable, Alert,Button, Keyboard, TouchableWithoutFeedback, } from 'react-native';
 //scrollview는 요소가 많은 경우 최적화 잘안된다~-> flatList가 좋다
 import styled from "styled-components";
 import { gql } from "apollo-boost";
@@ -18,7 +18,6 @@ import { withNavigation } from "react-navigation";
 import Star from '../../components/Star';
 import moment from "moment";
 import { IconColor, StarColor, TINT_COLOR,BG_POST_COLOR, Grey, PointPink, BG_COLOR, LightGrey, Line } from '../../components/Color';
-
 
 
 // export const FEED_QUERY = gql`
@@ -77,24 +76,12 @@ padding-right : 2px;
 
 const Text = styled.Text``;
 
-const Header =styled.View`
-  padding: 5px;
-  flex-direction: row;
-  align-items: center;  
-  padding : 5px;
-`;
-const Store = styled.View`
-  margin-top : 10px;
-  margin-bottom : 10px;
-  align-items: center;
-`;
+
 const StoreInfo = styled.View`
   align-items: center;
   padding : 5px;
-`;
-const UserInfo = styled.View`
-  margin-left: 10px;
-`;
+  `;
+
 const Timebox = styled.Text`
   opacity: 0.5;
   font-size: 13px;
@@ -107,10 +94,11 @@ const StoreName = styled.Text`
 `;
 
 const Home =({navigation}) => {
-  const [isloading, setLoading] = useState(false);
+  //const [isloading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [lastLength, setLastLength] = useState();
   const [feedData, setFeedData] = useState();
+  
   const [tokenMutation] = useMutation(EDIT_USER);
   const { loading, data, refetch, fetchMore } = useQuery(FEED_QUERY, {
     variables: {
@@ -167,7 +155,6 @@ const Home =({navigation}) => {
     try {
       setRefreshing(true);
       await refetch();
-      
     } catch (e) {
       console.log(e);
     } finally {
@@ -180,25 +167,34 @@ const Home =({navigation}) => {
 
 
   const onLoadMore = async() =>{
+    console.log("refetch~")
     fetchMore({
       variables:{
         pageNumber: data.seeFeed.length,
         items: 5
       },
-      updateQuery: (prev, {fetchMoreResult})=>{
-        console.log(fetchMoreResult.seeFeed.length)
+      updateQuery: (prev, {fetchMoreResult})=>{   
         if(!fetchMoreResult || fetchMoreResult.seeFeed.length === 0){
-          return;
+
+          return prev;
         }
-        setFeedData(prev.seeFeed.concat(fetchMoreResult.seeFeed))
+        
+        return{
+          
+          seeFeed: prev.seeFeed.concat(fetchMoreResult.seeFeed)
+        }
       }
     })
   }
 
   useEffect(() => {
     ask();
+    
+    
   }, []);
+  
 
+  
   // useEffect(() => {
   //   if (!check) return;
 
@@ -227,75 +223,80 @@ const Home =({navigation}) => {
   //   }
   // }, [data])
 
-  const getData = async() => {
-    await setLoading(true);
-    try {
-      await setFeedData(data.seeFeed)
-    } catch (e) {
-      console.log(e)
-    } finally {
-      setLoading(false)
-    }
-  }
+  // const getData = async() => {
+  //   await setLoading(true);
+  //   try {
+  //     await setFeedData(data.seeFeed)
+  //   } catch (e) {
+  //     console.log(e)
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
 
 
-  if(data && feedData == undefined) {
-    getData()
-  }
+  // if(data && feedData == undefined) {
+  //   getData()
+  // }
 
   
 
-  const renderRow=(item)=>{
-    return(
-      <Post {...item}/>
-  )}
+  // const renderRow=(item)=>{
+  //   console.log(item)
+  //   return(
+  //     <Post {...item}/>
+  // )}
 
   return (
-    // <ScrollView
-    //     refreshControl={
-    //       <RefreshControl refreshing={refreshing} onRefresh={refresh}/>
-    //     }>
-    //     {loading ? (<Loader/>): (data && data.seeFeed && data.seeFeed.map(post=> <Post key={post.id}{...post} />))}
-    //   </ScrollView>
-    <SafeAreaView style={Container}>
-      {!loading ? !isloading ? (
-        <FlatList
-          data={feedData}
-          onRefresh={refresh}
-          EndReachedThreshold={1}
-          refreshing={refreshing}
-          onEndReached={onLoadMore}
-          keyExtractor={item =>item.id}
-          renderItem={({ item }) => 
-            renderRow(item)
-          }
-        //   ListEmptyComponent={()=>{
-        //     recommendCheck();
-        //     return(
-        //       <Container>
+    <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={refresh}/>
+        }>
+        {loading ? (<Loader/>): (data && data.seeFeed && data.seeFeed.map(post=> <Post key={post.id}{...post} />))}
+      </ScrollView>
+  )
+//     <SafeAreaView style={Container}>
+//       {loading ? <Loader/> : (
+        
+//         <FlatList
+//           data={data.seeFeed}
+//           onRefresh={refresh}
+//           EndReachedThreshold={0}
+//           refreshing={refreshing}
+//           onEndReached={()=>setmodalAndTitle(true)}
+//           keyExtractor={item =>item.id}
+//           renderItem={({ item }) => 
+//             renderRow(item)
+//           }
+//         //   ListEmptyComponent={()=>{
+//         //     recommendCheck();
+//         //     return(
+//         //       <Container>
 
-        //         {loading2 ? (
-        //           <Loader />
-        //         ) : (
-        //           data2 &&
-        //           data2.recommendUser &&
-        //           data2.recommendUser.map(user => 
-        //         <SearchAccountBox key={user.id} {...user} />
-        //         )
-        //         )
-        //           }
-        //       <TouchableOpacity onPress={refresh}>
-        //         <Text>완료</Text>
-        //       </TouchableOpacity>
-        //     </Container>
-        //     )
-        //   }
-        // }
-        />
-        ) : <Loader /> : <Loader />}
-</SafeAreaView>
+//         //         {loading2 ? (
+//         //           <Loader />
+//         //         ) : (
+//         //           data2 &&
+//         //           data2.recommendUser &&
+//         //           data2.recommendUser.map(user => 
+//         //         <SearchAccountBox key={user.id} {...user} />
+//         //         )
+//         //         )
+//         //           }
+//         //       <TouchableOpacity onPress={refresh}>
+//         //         <Text>완료</Text>
+//         //       </TouchableOpacity>
+//         //     </Container>
+//         //     )
+//         //   }
+//         // }
+//         />
+    
+//       )}
+// </SafeAreaView>
+  
 
-  );
+  
 }
 
 export default withNavigation(Home);

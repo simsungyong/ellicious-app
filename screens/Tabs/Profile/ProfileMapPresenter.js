@@ -75,13 +75,14 @@ class ProfileMapPresenter extends React.Component {
 
 
 
+
+  
     componentDidMount() {
-
         this.locationCurrentPosition();
-
     }
 
     locationCurrentPosition = () => {
+
         navigator.geolocation.getCurrentPosition(position => {
             //this.setState({coordinate:position.coords})
             this.setState({

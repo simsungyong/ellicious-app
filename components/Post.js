@@ -160,6 +160,8 @@ const Post = ({
     user, 
     storeLocation,
     storeName,
+    storeLat,
+    storeLong,
     placeId,
     files=[],
     id,
@@ -182,6 +184,7 @@ const Post = ({
       const [isloading, setIsLoading] = useState(false);
       const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
       const [modalAndTitle, setmodalAndTitle] = useState(false);
+      const [modalUpdateAndTitle, setmodalUpdateAndTitle] = useState(false);
 
       const [toggleLikeMutaton] = useMutation(TOGGLE_LIKE, {
         variables: {
@@ -208,6 +211,28 @@ const Post = ({
           setbottomModalAndTitle(false)
           setmodalAndTitle(true)
         }catch(e) {
+          console.log(e)
+        }
+      }
+      const handleUpdate =()=> {
+        try{
+          setbottomModalAndTitle(false)
+          setmodalUpdateAndTitle(true)
+        }catch(e) {
+          console.log(e)
+        }
+      }
+      const handlePost = (id, files, storeName, storeLocation, placeId)=> {
+        try {
+          setmodalUpdateAndTitle(false)
+          navigation.navigate("UpdatePost", { 
+            postId: id,
+            photo: files,
+            name: storeName,
+            formatted_address: storeLocation,
+            place_id: placeId
+          })
+        } catch (e) {
           console.log(e)
         }
       }
@@ -283,7 +308,8 @@ const Post = ({
     }
 
     return (
-      <Card>
+      // <Card>
+      <>
         <Container>
           <Header>
             <TouchableOpacity
@@ -431,7 +457,7 @@ const Post = ({
             <ModalContent>
               {user.isSelf ? 
               <> 
-              <ModalButtonTest onPress ={() => {}}>
+              <ModalButtonTest onPress ={() => handleUpdate()}>
                 <Text style={{fontSize:19}}>
                   수정
                 </Text>
@@ -480,13 +506,36 @@ const Post = ({
               />
             </ModalFooter>
           </Modal>
+          <Modal
+            visible={modalUpdateAndTitle}
+            onTouchOutside={() => setmodalUpdateAndTitle(false)}
+            height={0.3}
+            width={0.8}
+            onSwipeOut={() => setmodalUpdateAndTitle(false)}
+          >
+            <ModalContent>
+              <Text>수정하시겠습니까?</Text>
+            </ModalContent>
+            <ModalFooter>
+              <ModalButton
+                text="CANCEL"
+                onPress={() => setmodalUpdateAndTitle(false)}
+              />
+              <ModalButton
+                text="OK"
+                onPress={() => handlePost(id, files, storeName, storeLocation, placeId)}
+              />
+            </ModalFooter>
+          </Modal>
         
-      </Card>
+      {/* </Card> */}
+      </>
   );
 };
 
 Post.propTypes = {
     id: PropTypes.string.isRequired,
+    storeName: PropTypes.string.isRequired,
     user: PropTypes.shape({
       id: PropTypes.string.isRequired,
       avatar: PropTypes.string,

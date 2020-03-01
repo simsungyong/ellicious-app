@@ -23,11 +23,6 @@ import { withNavigation, ScrollView } from "react-navigation";
 import Star from '../../../components/Star';
 
 
-const Container = styled.View`
-padding : 10px;
-background-color : 'rgba(0,0,0,0.6)'
-border-radius : 24;
-`;
 const ModalContainer = styled.View`
   padding: 10px;
   flex-direction: row;
@@ -65,31 +60,34 @@ const Bold = styled.Text`
 `;
 
 class MyPickPresenter extends React.Component {
-
+    _isMounted = false;
     constructor(props) {
         super(props);
         const { navigation } = props;
         const { marker, region } = props;
         this.state = { marker, region, navigation, isClick: false, indexNum: -1 };
     }
-    componentDidMount() {
-        console.log(this.state.marker)
-        this.locationCurrentPosition();
 
+    componentWillUnmount(){
+        this.state._isMounted = false;
+    }
+    componentDidMount() {
+        this.locationCurrentPosition();
     }
 
     locationCurrentPosition = () => {
+        this.state._isMounted = true;
         navigator.geolocation.getCurrentPosition(position => {
             //this.setState({coordinate:position.coords})
-            this.setState({
-                region: {
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude,
-                    ...this.state.region
-                }
-            })
-            //console.log(this.state.region);
-
+            if(this.state._isMounted === true){
+                this.setState({
+                    region: {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        ...this.state.region
+                    }
+                })
+            }
 
         },
             error => alert(error.message),
@@ -216,14 +214,7 @@ const styles = StyleSheet.create({
     container: {
         ...StyleSheet.absoluteFillObject
     },
-    map: {
-        flex: 1,
-        ...StyleSheet.absoluteFillObject
-    },
-    map1: {
-        flex: 10,
-        ...StyleSheet.absoluteFillObject
-    },
+    
     carousel: {
         position: 'absolute',
         bottom: 0,

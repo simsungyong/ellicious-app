@@ -161,6 +161,7 @@ const EditProfile=({
       navigation.goBack();
     } catch (e) {
       console.log(e)
+      Alert.alert("같은 UserName이 존재합니다.")
     } finally{
       setIsLoading(false);
     }
@@ -286,18 +287,18 @@ const EditProfile=({
             onSwipeOut={() => setbottomModalAndTitle(false)}
           >
             <ModalContent>
-              <ModalButton
+              {/* <ModalButton
                 text="현재 사진 삭제"
                 onPress={() => {}}
               />
-              {/* <ModalButton
+              <ModalButton
                 text="카메라에서 업로드"
                 onPress={() => {}}
-              />
+              /> */}
               <ModalButton
                 text="앨범에서 업로드"
                 onPress={()=>changePicture()}
-              /> */}
+              />
             </ModalContent>
             <ModalFooter>
               <ModalButton

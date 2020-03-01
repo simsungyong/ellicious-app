@@ -16,6 +16,7 @@ import CommentDetail from "../screens/CommentDetail";
 import EditProfile from '../screens/EditProfile';
 import Users from '../screens/ViewUserLIst/Users';
 import ProfilePicture from '../screens/ProfilePicture';
+import UpdatePost from '../screens/UpdatePost';
 import styles from "../styles";
 import UserDetail from "../screens/UserDetail";
 import StoreDetail from "../screens/StoreDetail";
@@ -68,6 +69,12 @@ const stackFactory = (initialRoute, customConfig) =>
       screen: ProfilePicture,
       navigationOptions: ({ navigation }) => ({
         title: "프로필 사진 변경"
+      })
+    },
+    UpdatePost: {
+      screen: UpdatePost,
+      navigationOptions: ({ navigation }) => ({
+        title: "포스트 수정"
       })
     },
     

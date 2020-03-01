@@ -2,31 +2,24 @@ import React,{useState, useEffect, Component} from "react";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
 import {Text,Image,ScrollView,TouchableOpacity, TextInput, Platform, TouchableHighlight, Alert, ActivityIndicator, Keyboard, TouchableWithoutFeedback, } from 'react-native';
-import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line, LightPink } from '../../components/Color';
+import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line, LightPink } from '../components/Color';
 import {FontAwesome, EvilIcons, AntDesign} from "@expo/vector-icons";
 import Stars from 'react-native-stars';
 import Hr from "hr-native";
 import { useQuery, useMutation } from "react-apollo-hooks";
-import { CATEGORY_FRAGMENT } from "../../fragments";
-import Loader from "../../components/Loader";
+import { CATEGORY_FRAGMENT } from "../fragments";
+import Loader from "../components/Loader";
 import axios from 'axios';
-import constants from "../../constants";
-import useInput from '../../hooks/useInput';
-import { FEED_QUERY } from "../Tabs/Home";
-import {ME} from '../Tabs/Profile/Profile';
+import constants from "../constants";
+import useInput from '../hooks/useInput';
+import { FEED_QUERY } from "./Tabs/Home";
+import {ME} from './Tabs/Profile/Profile';
 import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
 
-const UPLOAD = gql`
-  mutation upload($caption: String, $storeName: String!, $files: [String!], $storeLocation: String!, $rating: Float!, $storeLat: Float, $storeLong: Float, $placeId: String, $category: String!, $details:[String!]){
-          upload(caption: $caption, storeName: $storeName, storeLocation: $storeLocation, files: $files, rating: $rating, storeLat: $storeLat, storeLong: $storeLong, placeId: $placeId, category: $category, details:$details){
+const UPDATE = gql`
+  mutation editPost($id: String!, $caption: String, $rating: Float!, $category: String!, $details:[String!]){
+          editPost(id: $id, caption: $caption, rating: $rating, category: $category, details:$details, action: EDIT){
               id
-              storeName
-              rating
-              caption
-              details
-              category{
-                categoryName
-              }
             }
 }
 `;
@@ -176,14 +169,14 @@ const Button = styled.TouchableOpacity`
   background-color: ${props=>props.backgroundColor};
   width : ${constants.width /3.7};
 `;
-export const CREATE_CATEGORY= gql`
+const CREATE_CATEGORY= gql`
   mutation createCategory($categoryName:String!){
     createCategory(categoryName: $categoryName){
       id
     }
   }
 `
-export const seeCategory = gql`
+const seeCategory = gql`
   
   query seeCategory($userId: String){
     seeCategory(userId: $userId){
@@ -208,10 +201,8 @@ export default ({navigation}) => {
   const photo = navigation.getParam("photo");
   const storeName = navigation.getParam("name");
   const storeAdr = navigation.getParam("formatted_address");
-  const placeId = navigation.getParam("place_id");
-  const storeLat = navigation.getParam("storeLat")
+  const id = navigation.getParam("postId")
   const star = navigation.getParam("star")
-  const storeLong = navigation.getParam("storeLong")
   const { loading, data } = useQuery(seeCategory);
   const [isloading, setIsLoading] = useState(false);
   const [starValue, setStarValue] = useState(star);
@@ -225,16 +216,16 @@ export default ({navigation}) => {
   const [createCategory] = useMutation(CREATE_CATEGORY, {
     refetchQueries: ()=>[{query: seeCategory}]
   });
-  const [uploadMutation] = useMutation(UPLOAD, {
+  const [updateMutation] = useMutation(UPDATE, {
     refetchQueries: ()=>[{query: FEED_QUERY},{query: ME }]
   });
 
   const handleSubmit=async()=>{
     if(captionInput.value===undefined || captionInput.value ===''){
-      Alert.alert("한글자는 쓰지?")
+      Alert.alert("한글자 이상의 설명을 해주세요")
     }
     else if(starValue===undefined){
-      Alert.alert("솔직히 0점은 더 되자나?")
+      Alert.alert("별점을 입력해주세요")
     }else if(selectCate===undefined){
       Alert.alert('카테고리를 지정 해주세요')
     }else{
@@ -243,50 +234,27 @@ export default ({navigation}) => {
           details.push(keyword[i])
         }
       }
-  
-      const formData = new FormData();
-      photo.forEach((element, i) => {
-        formData.append("file", {
-          name: element.filename || `filename${i}.jpg`,
-          type: "image/jpeg",
-          uri: element.uri
-        });
-      });    
-  
       try {
         setIsLoading(true);
-        const {
-          data:{temp}
-        } = await axios.post("http://13.125.147.101:4000/api/upload", formData, {
-          headers:{
-            "content-type" : "multipart/form-data"
-          }
-        });
-        
   
         const {
-          data: { upload } 
-        } = await uploadMutation({
+          data: { editPost } 
+        } = await updateMutation({
           variables: {
+            id,
             caption: captionInput.value,
-            files: temp,
-            storeName,
-            placeId,
-            storeLat,
-            storeLong,
             rating: starValue,
             category: selectCate,
-            storeLocation: storeAdr,
             details
           }
         });
-        if(upload.id){
+        if(editPost.id){
           navigation.navigate("TabNavigation");
         }
   
       } catch (e) {
         console.log(e)
-        Alert.alert("can't upload ", "Try later");
+        Alert.alert("can't update ", "Try later");
       } finally{
         setIsLoading(false);
       }
@@ -514,8 +482,3 @@ export default ({navigation}) => {
     </DismissKeyboard>
   );
 }
-
-
-
-
-

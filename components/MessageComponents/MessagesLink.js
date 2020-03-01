@@ -16,6 +16,7 @@ const BG = styled.View`
 justify-content: center;
 align-items: center;
 
+
 `;
 
 

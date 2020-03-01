@@ -14,7 +14,6 @@ import { NewMsg } from "../Color";
 const Container = styled.View`
   flex : 1;
   flex-direction: row;
-
 `;
 const UserInfo = styled.View`
 margin-Left : 10px;

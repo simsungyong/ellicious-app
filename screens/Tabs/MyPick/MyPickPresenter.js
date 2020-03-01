@@ -10,17 +10,19 @@ import {
     Dimensions,
     TouchableOpacity,
     Button,
-    Platform
+    Platform,
 } from "react-native";
 import styled from "styled-components";
 import Stars from 'react-native-stars';
+import { ScrollView } from "react-native-gesture-handler";
 import { FontAwesome, EvilIcons, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import { TINT_COLOR, IconColor, PointPink, StarColor, BG_COLOR, LightGrey, mainPink, Grey, Line, LightPink } from '../../../components/Color';
 import { PROVIDER_GOOGLE, Marker, Callout, Circle } from "react-native-maps";
 import MapView from 'react-native-map-clustering';
 import Modal, { ModalTitle, ModalFooter, ModalButton } from 'react-native-modals';
-import { withNavigation, ScrollView } from "react-navigation";
+import { withNavigation } from "react-navigation";
 import Star from '../../../components/Star';
+import constants from '../../../constants';
 
 
 const ModalContainer = styled.View`
@@ -57,6 +59,15 @@ const Bold = styled.Text`
   margin-bottom : 5px;
   font-size : 23px;
   margin-right : 5px;
+`;
+
+const DetailView = styled.View`
+alignItems: center;
+  justifyContent: center;
+  borderRadius: 7;
+  padding : 5px;
+  margin : 4px;
+  background-color: ${LightGrey};
 `;
 
 class MyPickPresenter extends React.Component {
@@ -194,11 +205,17 @@ class MyPickPresenter extends React.Component {
                                                 ? `${this.state.marker[this.state.indexNum].post.storeLocation.substring(0, 23)}...`
                                                 : this.state.marker[this.state.indexNum].post.storeLocation}
                                         </Text>
-                                        <View flexDirection="row">
-                                            {this.state.marker[this.state.indexNum].post.details.map((detail) => (
-                                                <Text key={detail}>{detail}</Text>
-                                            ))}
-                                        </View>
+                                       <ScrollView>
+                                            <View flexDirection="row">
+                                           
+                                                {this.state.marker[this.state.indexNum].post.details.map((detail) => (
+                                                    <DetailView>
+                                                        <Text key={detail}>{detail}</Text>
+                                                    </DetailView>
+                                                ))}
+                                           
+                                            </View>
+                                        </ScrollView>
                                     </Info>
                                 </SubContainer>
                             </ModalContainer>

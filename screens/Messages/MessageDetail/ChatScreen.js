@@ -1,22 +1,50 @@
 import React from 'react';
-import { View, KeyboardAvoidingView,Platform,Animated, Text,StyleSheet, Dimensions, TextInput, Keyboard, AsyncStorage } from 'react-native';
+import { View, KeyboardAvoidingView,Platform,Animated, Text,StyleSheet, Dimensions, Keyboard, AsyncStorage } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 import firebase from 'firebase';
-import {FontAwesome} from '@expo/vector-icons';
+import {AntDesign} from '@expo/vector-icons';
 import User from '../../../User'
 import styled from "styled-components";
-import { TINT_COLOR } from '../../../components/Color';
+import { TINT_COLOR, mainPink, LightGrey, Yellow, Grey } from '../../../components/Color';
 import { GiftedChat } from 'react-native-gifted-chat';
+import constants from '../../../constants'
+
 const Image = styled.Image`
 height: 25
 width: 25
 borderRadius:7.5
 margin-right : 2px;
 `;
+const TextInput = styled.TextInput`
+padding: 10px;
+borderColor:pink;
+marginBottom : 10px;
+borderRadius:5px;
+width : ${constants.width-80};
+flex : 5;
+background-color : ${LightGrey}
+`;
 
 const Img = styled.View`
 margin-right : 3px;
+`;
+
+const TexInputView = styled.View`
+flex-direction : row;
+flex : 1;
+justify-content: center;
+align-items: center;
+`;
+
+const MsgBox = styled.View`
+flex-direction : row;
+
+`;
+
+const TimeView = styled.Text`
+align-items: center;
+
 `;
 
 const isIOS = Platform.OS === 'ios';
@@ -24,7 +52,7 @@ const isIOS = Platform.OS === 'ios';
 export default class ChatScreen extends React.Component {
     static navigationOptions = ({ navigation }) => ({
         headerTitle: (
-            <View style={{ alignItems: "center", flex: 1 }}>
+            <View style={{ alignItems: "center", justifyContent: 'center', flex: 1 }}>
                 <Text style={{ fontSize: 30, color: TINT_COLOR, fontWeight: "200" }}>
                     {navigation.getParam('username')}
                 </Text>
@@ -141,14 +169,9 @@ export default class ChatScreen extends React.Component {
 
     renderRow = ({ item }) => {
         return (
-            <View style={{
-                flexDirection: 'row',
-                width: '60%',
-                alignSelf: item.from === User.username ? 'flex-end' : 'flex-start',
-                backgroundColor: item.from === User.username ? '#00897b' : '#7cb342',
-                borderRadius: 5,
-                marginBottom: 10
-            }}>
+            <MsgBox
+            style={{alignSelf: item.from === User.username ? 'flex-end' : 'flex-start',
+        }}>
                 {item.from === User.username ? null :
                     (
                         <Img>
@@ -165,11 +188,24 @@ export default class ChatScreen extends React.Component {
                     )
                 }
 
+            <View style={{
+                flexDirection: 'row',
+                alignSelf: item.from === User.username ? 'flex-end' : 'flex-start',
+                backgroundColor: item.from === User.username ? mainPink : Grey,
+                borderRadius: 5,
+                marginBottom: 10
+            }}>
+                
                 <Text style={{ color: '#fff', padding: 7, fontSize: 16 }}>
                     {item.message}
                 </Text>
-                <Text style={{ color: '#eee', padding: 3, fontSize: 12 }}>{this.convertTime(item.time)}</Text>
             </View>
+            <TimeView 
+                style={{ color: TINT_COLOR, padding: 3, fontSize: 12, }}
+            >
+                {this.convertTime(item.time)}
+            </TimeView>
+            </MsgBox>
         )
     }
 
@@ -178,14 +214,15 @@ export default class ChatScreen extends React.Component {
         return (
             <KeyboardAvoidingView behavior="height" style={{ flex: 1 }}>
                 <Animated.View style={[styles.bottomBar, { bottom: this.keyboardHeight }]} >
+                    <TexInputView>
                     <TextInput
-                        style={styles.inputMessage}
                         value={this.state.textMessage}
                         onChangeText={this.handleChange('textMessage')}
                         placeholder="Type message..." />
                     <TouchableOpacity onPress={this.sendMessage} style={styles.sendButton}>
-                        <FontAwesome name={"send-o"} size={20}/>
+                        <AntDesign name={"arrowup"} size={20} color ={'white'} />
                     </TouchableOpacity>
+                    </TexInputView>
                 </Animated.View>
                 <FlatList
                     ref={ref=> this.flatList =ref}
@@ -215,21 +252,18 @@ const styles = StyleSheet.create({
         zIndex: 2,
         height: 60
     },
-    inputMessage:{
-        padding: 10,
-        borderWidth:1,
-        borderColor:'#ccc',
-        width: '80%',
-        marginBottom : 10,
-        borderRadius:5
-    },
+   
     sendButton:{
         alignItems:'center',
         marginBottom: 10,
-        marginLeft:10,
-        height:40, width:40,
-        paddingTop:10, paddingLeft:5,
-        backgroundColor : '#2196F3',
-        borderRadius:20
+        marginLeft:5,
+        height:30, 
+        width:30,
+        backgroundColor : mainPink,
+        borderRadius:10,
+        flex : 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+      
     }
 })

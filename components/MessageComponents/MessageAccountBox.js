@@ -20,6 +20,7 @@ const Header = styled.View`
   padding: 5px;
   flex-direction: row;
   align-items: center;
+  
 `;
 const Bold = styled.Text`
   font-weight: 600;

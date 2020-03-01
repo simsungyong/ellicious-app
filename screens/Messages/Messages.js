@@ -5,7 +5,7 @@ import { gql } from "apollo-boost";
 // import { USER_FRAGMENT } from "../../fragments";
 import Loader from "../../components/Loader";
 import { useQuery } from "react-apollo-hooks";
-import { mainPink, Yellow } from "../../components/Color";
+import { mainPink, Yellow, LightGrey } from "../../components/Color";
 import firebase from 'firebase';
 import User from '../../User'
 import { SafeAreaView } from "react-navigation";

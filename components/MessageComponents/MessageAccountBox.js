@@ -11,7 +11,6 @@ import { useQuery } from "react-apollo-hooks";
 const Container = styled.View`
   flex : 1;
   flex-direction: row;
-  background-color : red;
 `;
 const UserInfo = styled.View`
 `;

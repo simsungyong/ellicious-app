@@ -41,59 +41,74 @@ const State = styled.View`
 alignItems: flex-end;
 
 `;
-const View=styled.View`
+const View = styled.View`
 flex : 1;
 `;
 
 const MessageRooms = ({ id, participants, navigation }) => {
   return (
     <Container>
-      { participants[0].isSelf ? (
-          <TouchableOpacity onPress={() => {
-            navigation.navigate("MessageDetail", {
-              username: participants[1].username,
-              userId: participants[1].id,
-              roomId: id
-              })} } >
-            <Header>
-              <Profile>
-                <Image 
-                  style={{height: 40, width: 40, borderRadius:20}}
-                  source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}
-                  />
-              </Profile>
-              <UserInfo>
-                <Bold>{ participants[1].username }</Bold>
-              </UserInfo>
-              <View/>
-              <State>
-                <Entypo
-                  name={'dot-single'}
-                  color={NewMsg}
-                  size={30}
+      {participants[0].isSelf ? (
+        <TouchableOpacity onPress={() => {
+          navigation.navigate("MessageDetail", {
+            username: participants[1].username,
+            userId: participants[1].id,
+            roomId: id
+          })
+        }} >
+          <Header>
+            <Profile>
+              {participants[1].avatar == null ?
+                <Image
+                  style={{ height: 40, width: 40, borderRadius: 20 }}
+                  source={{ uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704" }}
                 />
-              </State>
-            </Header>
-          </TouchableOpacity>
-        ) : (
+                :
+                <Image
+                  style={{ height: 40, width: 40, borderRadius: 20 }}
+                  source={{ uri: participants[1].avatar }}
+                />
+              }
+            </Profile>
+            <UserInfo>
+              <Bold>{participants[1].username}</Bold>
+            </UserInfo>
+            <View />
+            <State>
+              <Entypo
+                name={'dot-single'}
+                color={NewMsg}
+                size={30}
+              />
+            </State>
+          </Header>
+        </TouchableOpacity>
+      ) : (
           <TouchableOpacity onPress={() => {
             navigation.navigate("MessageDetail", {
               username: participants[0].username,
               userId: participants[0].id,
               roomId: id
-              })} } >
+            })
+          }} >
             <Header>
               <Profile>
-                <Image 
-                  style={{height: 40, width: 40, borderRadius:20}}
-                  source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}
+                {participants[0].avatar == null ?
+                  <Image
+                    style={{ height: 40, width: 40, borderRadius: 20 }}
+                    source={{ uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704" }}
                   />
-             
-              <UserInfo>
-                <Bold>{ participants[0].username }</Bold>
-              </UserInfo>
+                  :
+                  <Image
+                    style={{ height: 40, width: 40, borderRadius: 20 }}
+                    source={{ uri: participants[0].avatar }}
+                  />
+                }
+                <UserInfo>
+                  <Bold>{participants[0].username}</Bold>
+                </UserInfo>
               </Profile>
-              <View/>
+              <View />
               <State>
                 <Entypo
                   name={'dot-single'}

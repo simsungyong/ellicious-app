@@ -29,11 +29,11 @@ flex : 1;
 
 `;
 
-const TextCon=styled.View`
+const TextCon = styled.View`
 flex-direction : row;
 margin-left : 5px;
 `;
-const TextName=styled.Text`
+const TextName = styled.Text`
 font-weight : 700;
 `;
 
@@ -91,19 +91,26 @@ const AlarmPart = ({
                     <CheckingView backgroundColor={check ? null : "#ffeeed"}>
                         <TouchableOpacity onPress={checkAlarms}>
                             <Header>
-                             <Image
-                                source={{ uri: from.avatar }}
-                                style={{ width: 50, height:50, borderRadius:25 }}
-                                />
+                                {from.avatar == null ?
+                                    <Image
+                                        style={{ width: 50, height: 50, borderRadius: 25 }}
+                                        source={{ uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704" }}
+                                    />
+                                    :
+                                    <Image
+                                        source={{ uri: from.avatar }}
+                                        style={{ width: 50, height: 50, borderRadius: 25 }}
+                                    />
+                                }
                                 <TextCon>
                                     <TextName>{from.username} </TextName>
                                     <Text>님이 맛집 게시물을 좋아해요!</Text>
-                                </TextCon> 
-                                
-                                <View/>
+                                </TextCon>
+
+                                <View />
                                 <Image
                                     source={{ uri: post.files[0].url }}
-                                    style={{ width: 60, height: 60, borderRadius : 10 }}
+                                    style={{ width: 60, height: 60, borderRadius: 10 }}
                                 />
                             </Header>
                         </TouchableOpacity>
@@ -114,19 +121,26 @@ const AlarmPart = ({
                     <CheckingView backgroundColor={check ? null : "#ffeeed"}>
                         <TouchableOpacity onPress={checkAlarms}>
                             <Header>
-                            <Image
-                                source={{ uri: from.avatar }}
-                                style={{ width: 50, height:50, borderRadius:25 }}
-                                />
+                                {from.avatar == null ?
+                                    <Image
+                                        style={{ width: 50, height: 50, borderRadius: 25 }}
+                                        source={{ uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704" }}
+                                    />
+                                    :
+                                    <Image
+                                        source={{ uri: from.avatar }}
+                                        style={{ width: 50, height: 50, borderRadius: 25 }}
+                                    />
+                                }
                                 <TextCon>
                                     <TextName>{from.username} </TextName>
                                     <Text>님이 맛집 게시물에 댓글을 달았어요!</Text>
-                                </TextCon> 
-                                
-                                <View/>
+                                </TextCon>
+
+                                <View />
                                 <Image
                                     source={{ uri: post.files[0].url }}
-                                    style={{ width: 60, height: 60, borderRadius : 10 }}
+                                    style={{ width: 60, height: 60, borderRadius: 10 }}
                                 />
                             </Header>
                         </TouchableOpacity>
@@ -137,18 +151,25 @@ const AlarmPart = ({
                     <CheckingView backgroundColor={check ? null : "#ffeeed"}>
                         <TouchableOpacity onPress={checkAlarms}>
                             <Header>
-                                <Image
-                                source={{ uri: from.avatar }}
-                                style={{ width: 50, height:50, borderRadius:25 }}
-                                />
+                                {from.avatar == null ?
+                                    <Image
+                                        style={{ width: 50, height: 50, borderRadius: 25 }}
+                                        source={{ uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704" }}
+                                    />
+                                    :
+                                    <Image
+                                        source={{ uri: from.avatar }}
+                                        style={{ width: 50, height: 50, borderRadius: 25 }}
+                                    />
+                                }
                                 <TextCon>
                                     <TextName>{from.username} </TextName>
                                     <Text>님이 맛집 게시물을 콕! 집었어요</Text>
-                                </TextCon> 
-                               <View/>
+                                </TextCon>
+                                <View />
                                 <Image
                                     source={{ uri: post.files[0].url }}
-                                    style={{ width: 60, height: 60, borderRadius : 10 }}
+                                    style={{ width: 60, height: 60, borderRadius: 10 }}
                                 />
                             </Header>
                         </TouchableOpacity>
@@ -159,16 +180,23 @@ const AlarmPart = ({
                     <CheckingView backgroundColor={check ? null : "#ffeeed"}>
                         <TouchableOpacity onPress={checkFollow}>
                             <Header>
-                                <Image
-                                source={{ uri: from.avatar }}
-                                style={{ width: 50, height:50, borderRadius:25 }}
-                                />
+                                {from.avatar == null ?
+                                    <Image
+                                        style={{ width: 50, height: 50, borderRadius: 25 }}
+                                        source={{ uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704" }}
+                                    />
+                                    :
+                                    <Image
+                                        source={{ uri: from.avatar }}
+                                        style={{ width: 50, height: 50, borderRadius: 25 }}
+                                    />
+                                }
                                 <TextCon>
                                     <TextName>{from.username} </TextName>
                                     <Text>님이 팔로우를 했어요!</Text>
-                                </TextCon> 
-                                <View/>
-                                <FollowButton/>
+                                </TextCon>
+                                <View />
+                                <FollowButton />
                             </Header>
                         </TouchableOpacity>
                     </CheckingView>

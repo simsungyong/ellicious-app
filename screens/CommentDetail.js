@@ -75,7 +75,7 @@ export default ({navigation})=>{
     const avatar = navigation.getParam("avatar");
     const username = navigation.getParam("username");
     const {loading, data, refetch} = useQuery(GET_COMMENTS, {
-        variables: { postId, headComment:null}
+        variables: { postId}
     });
     const [addComments] = useMutation(ADD_COMMENTS, {
       refetchQueries:()=>[{query:GET_COMMENTS, 

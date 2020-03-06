@@ -49,16 +49,16 @@ const TextBox = styled.View`
 `;
 
 const GET_COMMENTS = gql`
-    query seeComment($postId: String!, $headComment: String){
-        seeComment(postId: $postId, headComment: $headComment){
+    query seeComment($postId: String!){
+        seeComment(postId: $postId){
             ...CommentParts
         }
     } 
     ${POST_COMMENT}
 `;
 const ADD_COMMENTS = gql`
-    mutation addComment($text: String!, $headComment: String, $postId: String! ){
-      addComment(text: $text, headComment: $headComment, postId:$postId){
+    mutation addComment($text: String!, $postId: String! ){
+      addComment(text: $text, postId:$postId){
         id
         text
       }
@@ -79,7 +79,7 @@ export default ({navigation})=>{
     });
     const [addComments] = useMutation(ADD_COMMENTS, {
       refetchQueries:()=>[{query:GET_COMMENTS, 
-      variables:{ postId, headComment:null} },
+      variables:{ postId} },
       {query:FEED_QUERY}
     ]
     });
@@ -106,13 +106,12 @@ export default ({navigation})=>{
           const {data:{addComment}} = await addComments({
             variables: {
               postId: postId,
-              headComment: null,
               text: commentInput.value
             }
           });
           if(addComment.id){
             commentInput.setValue("")
-            navigation.navigate("CommentDetail");
+            //navigation.navigate("CommentDetail");
           }
       }catch (e) {
         console.log(e);
@@ -164,7 +163,7 @@ export default ({navigation})=>{
             {loading ? (
               <Loader/>
             ) : (
-              data && data.seeComment && data.seeComment.filter(comment=>comment.headComment == null).map(comment=>
+              data && data.seeComment && data.seeComment.map(comment=>
               <PostOfComment 
               key={comment.id}{...comment}
               />)

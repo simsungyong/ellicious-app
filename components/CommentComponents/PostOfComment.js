@@ -137,7 +137,8 @@ const PostOfComment = ({
   post,
   text,
   user,
-  likeCount: likeCountProp,
+  childCount,
+  //likeCount: likeCountProp,
   isLiked: isLikedProp,
   navigation,
   createdAt,
@@ -145,35 +146,35 @@ const PostOfComment = ({
   console.log(user)
   const time = moment(createdAt).startOf('hour').fromNow();
 
-  const { loading, data, refetch } = useQuery(GET_COMMENTS, {
-    variables: { postId: post.id, headComment: id }
-  });
+  // const { loading, data, refetch } = useQuery(GET_COMMENTS, {
+  //   variables: { postId: post.id, headComment: id }
+  // });
   const [isLoading, setIsLoading] = useState(false);
-  const [addComments] = useMutation(ADD_COMMENTS, {
-    refetchQueries: () => [
-      {
-        query: GET_COMMENTS, variables: {
-          postId: post.id, headComment: null
-        }
-      },
-      {
-        query: GET_COMMENTS, variables: {
-          postId: post.id, headComment: id
-        }
-      },
-      { query: FEED_QUERY }
-    ]
-  });
-  const [deleteComment] = useMutation(DELETE_COMMENT, {
-    refetchQueries: () => [
-      {
-        query: GET_COMMENTS, variables: {
-          postId: post.id, headComment: null
-        }
-      },
-      { query: FEED_QUERY }
-    ]
-  })
+  // const [addComments] = useMutation(ADD_COMMENTS, {
+  //   refetchQueries: () => [
+  //     {
+  //       query: GET_COMMENTS, variables: {
+  //         postId: post.id, headComment: null
+  //       }
+  //     },
+  //     {
+  //       query: GET_COMMENTS, variables: {
+  //         postId: post.id, headComment: id
+  //       }
+  //     },
+  //     { query: FEED_QUERY }
+  //   ]
+  // });
+  // const [deleteComment] = useMutation(DELETE_COMMENT, {
+  //   refetchQueries: () => [
+  //     {
+  //       query: GET_COMMENTS, variables: {
+  //         postId: post.id, headComment: null
+  //       }
+  //     },
+  //     { query: FEED_QUERY }
+  //   ]
+  // })
   const commentInput = useInput();
   const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
   const navi = () => {
@@ -233,7 +234,6 @@ const PostOfComment = ({
 
   return (
     <Container>
-      {loading ? null : (
         <CaptionsCon>
           <Profile>
             <Image
@@ -258,17 +258,15 @@ const PostOfComment = ({
             </Comment>
             <ReplyCon>
               <Timebox>{time}</Timebox>
-              {data.seeComment.length > 0 ? (
-                <Timebox>{"+" + data.seeComment.length + "개"}</Timebox>
-              ) : null}
+              
+                <Timebox>{"+" + childCount + "개"}</Timebox>
               <Touchable onPress={() => setbottomModalAndTitle(true)}>
                 <Reply>Reply </Reply>
               </Touchable>
             </ReplyCon>
           </CommentCon>
         </CaptionsCon>
-      )}
-      <Modal.BottomModal
+      {/* <Modal.BottomModal
         visible={bottomModalAndTitle}
         onTouchOutside={() => setbottomModalAndTitle(false)}
         height={0.7}
@@ -305,13 +303,13 @@ const PostOfComment = ({
               
             </CommentCon>
           </CaptionsCon>
-
+          <ScrollView>
           {
             data && data.seeComment && data.seeComment.map(comment =>
               <CommentInput
                 key={comment.id}{...comment} />)
           }
-
+          </ScrollView>
           <CommentBox>
             <TextBox>
               <TextInput
@@ -330,7 +328,7 @@ const PostOfComment = ({
 
           <KeyboardSpacer />
         </ModalContent>
-      </Modal.BottomModal>
+      </Modal.BottomModal> */}
     </Container>
   )
 }
@@ -339,26 +337,7 @@ const PostOfComment = ({
 
 PostOfComment.propTypes = {
   id: PropTypes.string.isRequired,
-  childComment: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      text: PropTypes.string.isRequired,
-      user: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        username: PropTypes.string.isRequired,
-        avatar: PropTypes.string.isRequired
-      }).isRequired
-    })
-  ),
-  headComment: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
-    user: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      username: PropTypes.string.isRequired,
-      avatar: PropTypes.string.isRequired
-    }).isRequired
-  }),
+  childCount: PropTypes.number.isRequired,
   post: PropTypes.shape({
     id: PropTypes.string.isRequired
   }).isRequired,
@@ -368,7 +347,7 @@ PostOfComment.propTypes = {
     avatar: PropTypes.string,
     username: PropTypes.string.isRequired
   }).isRequired,
-  likeCount: PropTypes.number,
+  //likeCount: PropTypes.number,
   isLiked: PropTypes.bool,
   text: PropTypes.string.isRequired,
   createdAt: PropTypes.string.isRequired

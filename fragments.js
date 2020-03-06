@@ -30,6 +30,7 @@ export const POST_FRAGMENT = gql`
     isPicked
     pickCount
     commentCount
+    childCommentCount
     comments {
       id
       text
@@ -196,9 +197,7 @@ export const POST_COMMENT = gql`
       username
       avatar
     }
-    headComment{
-      id
-    }
+    childCount
     post{
       id
     }

@@ -171,6 +171,8 @@ const Post = ({
     comments=[],
     isLiked: isLikedProp,
     navigation,
+    commentCount,
+    childCommentCount,
     isPicked: isPickedProp,
     pickCount: pickCountProp,
     createdAt,
@@ -394,7 +396,7 @@ const Post = ({
             <Text>{likeCount === 1 ? "좋아요 1개" : `좋아요 ${likeCount}개`}</Text>
             <TouchableOpacity onPress={()=>navigation.navigate("CommentDetail",{caption, avatar, username, postId: id, focusing: false})}>
               {comments.length >=1 ? (
-                <Text> {`댓글 ${comments.length}개`}</Text>
+                <Text> {`댓글 ${commentCount+childCommentCount}개`}</Text>
                ) : null}
             </TouchableOpacity>
             <Text>{pickCount === 1 ? "콕집기 1개" : `콕집기 ${pickCount}개`}</Text>
@@ -552,18 +554,10 @@ Post.propTypes = {
     likeCount: PropTypes.number.isRequired,
     isLiked: PropTypes.bool.isRequired,
     pickCount: PropTypes.number.isRequired,
+    commentCount: PropTypes.number.isRequired,
+    childCommentCount:PropTypes.number.isRequired,
     isPicked: PropTypes.bool.isRequired,
     rating: PropTypes.number.isRequired,
-    comments: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        text: PropTypes.string.isRequired,
-        user: PropTypes.shape({
-          id: PropTypes.string.isRequired,
-          username: PropTypes.string.isRequired
-        }).isRequired
-      })
-    ).isRequired,
     caption: PropTypes.string.isRequired,
     createdAt: PropTypes.string.isRequired,
     category: PropTypes.shape({

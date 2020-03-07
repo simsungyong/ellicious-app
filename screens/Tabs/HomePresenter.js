@@ -13,7 +13,7 @@ padding-left: 2px;
 padding-right : 2px;
 `;
 
-export default class HomePresenter extends React.PureComponent {
+export default class HomePresenter extends React.Component {
     constructor(props) {
         super(props)
 

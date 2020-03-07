@@ -310,8 +310,7 @@ const Post = ({
     }
 
     return (
-      // <Card>
-      <>
+      <Card>
         <Container>
           <Header>
             <TouchableOpacity
@@ -530,8 +529,7 @@ const Post = ({
             </ModalFooter>
           </Modal>
         
-      {/* </Card> */}
-      </>
+      </Card>
   );
 };
 
@@ -566,4 +564,4 @@ Post.propTypes = {
     })
   };
 
-  export default withNavigation(React.memo(Post));
+  export default React.memo(withNavigation(Post));

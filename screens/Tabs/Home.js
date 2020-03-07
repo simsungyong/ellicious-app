@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Image, ScrollView, FlatList, TouchableOpacity, RefreshControl, Platform, Touchable, Alert,Button, Keyboard, TouchableWithoutFeedback, } from 'react-native';
+import { Image, ScrollView, FlatList, TouchableOpacity, RefreshControl, Platform, Touchable, Alert, Button, Keyboard, TouchableWithoutFeedback, } from 'react-native';
 //scrollview는 요소가 많은 경우 최적화 잘안된다~-> flatList가 좋다
 import styled from "styled-components";
 import { gql } from "apollo-boost";
@@ -8,26 +8,10 @@ import { useQuery, useMutation } from "react-apollo-hooks";
 import { Notifications } from "expo";
 import * as Permissions from 'expo-permissions';
 import { POST_FRAGMENT } from "../../fragments";
-import { SafeAreaView } from "react-navigation";
-// import { Query } from "react-apollo";
-import {Card} from 'native-base'
-import Post from '../../components/Post';
-import Swiper from "react-native-swiper";
-import constants from "../../constants";
+import HomePresenter from './HomePresenter';
 import { withNavigation } from "react-navigation";
-import Star from '../../components/Star';
-import moment from "moment";
-import { IconColor, StarColor, TINT_COLOR,BG_POST_COLOR, Grey, PointPink, BG_COLOR, LightGrey, Line } from '../../components/Color';
+import { TINT_COLOR, BG_POST_COLOR } from '../../components/Color';
 
-
-// export const FEED_QUERY = gql`
-//   {
-//     seeFeed {
-//       ...PostParts
-//     }
-//   }
-//   ${POST_FRAGMENT}
-// `;  
 
 export const EDIT_USER = gql`
   mutation editUser($notifyToken: String) {
@@ -93,20 +77,24 @@ const StoreName = styled.Text`
   color : ${TINT_COLOR};
 `;
 
-const Home =({navigation}) => {
-  //const [isloading, setLoading] = useState(false);
+const Home = ({ navigation }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [onEndReachedCalledDuringMomentum, setOnEndReachedCalledDuringMomentum] = useState(false);
+  const [onReachedEnd, setOnReachedEnd] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [isEnd, setIsEnd] = useState(false);
   const [lastLength, setLastLength] = useState();
   const [feedData, setFeedData] = useState();
-  
+
+
   const [tokenMutation] = useMutation(EDIT_USER);
   const { loading, data, refetch, fetchMore } = useQuery(FEED_QUERY, {
     variables: {
       pageNumber: 0,
-      items:5
+      items: 3
     },
-  }); 
-;
+  });
+  ;
   // const {loading:loading2, data:data2, refetch:refetch2} = useQuery(RECOMMEND,{
   //   skip: check,
   //   variables: {
@@ -151,152 +139,80 @@ const Home =({navigation}) => {
 
 
   // }
-  const refresh = async () => {
+
+
+
+
+  const onLoadMore = async () => {
+    setIsLoading(true)
     try {
-      setRefreshing(true);
-      await refetch();
+      await fetchMore({
+        variables: {
+          pageNumber: data.seeFeed.length,
+          items: 3
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult || fetchMoreResult.seeFeed.length == 0) {
+            setIsEnd(true)
+          } 
+          // else if (fetchMoreResult.seeFeed.length < 3) {
+          //   setIsEnd(true)
+          //   setFeedData(prev.seeFeed.concat(fetchMoreResult.seeFeed))
+          //   return {
+          //     seeFeed: prev.seeFeed.concat(fetchMoreResult.seeFeed)
+          //   } 
+          // } 
+          else {
+            setFeedData(prev.seeFeed.concat(fetchMoreResult.seeFeed))
+            return {
+              seeFeed: prev.seeFeed.concat(fetchMoreResult.seeFeed)
+            }
+          }
+
+        }
+      });
     } catch (e) {
-      console.log(e);
+      console.log(e)
     } finally {
-      setRefreshing(false);
-
+      setIsLoading(false)
     }
-  };
-
-  
-
-
-  const onLoadMore = async() =>{
-    console.log("refetch~")
-    fetchMore({
-      variables:{
-        pageNumber: data.seeFeed.length,
-        items: 5
-      },
-      updateQuery: (prev, {fetchMoreResult})=>{   
-        if(!fetchMoreResult || fetchMoreResult.seeFeed.length === 0){
-
-          return prev;
-        }
-        
-        return{
-          
-          seeFeed: prev.seeFeed.concat(fetchMoreResult.seeFeed)
-        }
-      }
-    })
   }
+
 
   useEffect(() => {
     ask();
-    
-    
   }, []);
-  
 
-  
-  // useEffect(() => {
-  //   if (!check) return;
+  const getData = async () => {
+    setIsLoading(true);
+    try {
+      await setFeedData(data.seeFeed)
+    } catch (e) {
+      console.log(e)
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
-  //   const onLoadMore = async () => {
-  //     fetchMore({
-  //       variables: {
-  //         pageNumber: data.seeFeed.length,
-  //         items: 3
-  //       },
-  //       updateQuery: (prev, { fetchMoreResult }) => {
-  //         if (!fetchMoreResult) return prev;
-  //         return Object.assign({}, prev, {
-  //           seeFeed: [...prev.seeFeed, ...fetchMoreResult.seeFeed]
-  //         });
-  //       }
-  //     })
-  //   }
-
-  //   setFeedData(onLoadMore);
-
-  // })
-
-  // useEffect(() => {
-  //   if(data) {
-  //     getData()
-  //   }
-  // }, [data])
-
-  // const getData = async() => {
-  //   await setLoading(true);
-  //   try {
-  //     await setFeedData(data.seeFeed)
-  //   } catch (e) {
-  //     console.log(e)
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  // }
-
-
-  // if(data && feedData == undefined) {
-  //   getData()
-  // }
-
-  
-
-  // const renderRow=(item)=>{
-  //   console.log(item)
-  //   return(
-  //     <Post {...item}/>
-  // )}
+  if (data && feedData == undefined) {
+    getData()
+  }
 
   return (
-    <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={refresh}/>
-        }>
-        {loading ? (<Loader/>): (data && data.seeFeed && data.seeFeed.map(post=> <Post key={post.id}{...post} />))}
-      </ScrollView>
+    <>
+      {!loading ?
+          <HomePresenter
+            feedData={data.seeFeed}
+            // feedData={feedData}
+            refetch={refetch}
+            onLoadMore={onLoadMore}
+            isLoading={isLoading}
+            isEnd={isEnd}
+          />: 
+        <Loader />
+      }
+    </>
   )
-//     <SafeAreaView style={Container}>
-//       {loading ? <Loader/> : (
-        
-//         <FlatList
-//           data={data.seeFeed}
-//           onRefresh={refresh}
-//           EndReachedThreshold={0}
-//           refreshing={refreshing}
-//           onEndReached={()=>setmodalAndTitle(true)}
-//           keyExtractor={item =>item.id}
-//           renderItem={({ item }) => 
-//             renderRow(item)
-//           }
-//         //   ListEmptyComponent={()=>{
-//         //     recommendCheck();
-//         //     return(
-//         //       <Container>
-
-//         //         {loading2 ? (
-//         //           <Loader />
-//         //         ) : (
-//         //           data2 &&
-//         //           data2.recommendUser &&
-//         //           data2.recommendUser.map(user => 
-//         //         <SearchAccountBox key={user.id} {...user} />
-//         //         )
-//         //         )
-//         //           }
-//         //       <TouchableOpacity onPress={refresh}>
-//         //         <Text>완료</Text>
-//         //       </TouchableOpacity>
-//         //     </Container>
-//         //     )
-//         //   }
-//         // }
-//         />
-    
-//       )}
-// </SafeAreaView>
-  
-
-  
 }
 
-export default withNavigation(Home);
+export default React.memo(withNavigation(Home));

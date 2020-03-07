@@ -28,12 +28,9 @@ export default class HomePresenter extends React.Component {
 
     shouldComponentUpdate(nextProps) {
         if (this.state.isEnd !== nextProps.isEnd) {
-            this.setState({isEnd: true});
+            this.setState({ isEnd: true });
             return false
         } else {
-            // if(this.props.isLoading !== nextProps.isLoading) {
-            //     return true
-            // } else 
             if (this.state.feedData !== nextProps.feedData) {
                 this.setState({ feedData: this.props.feedData })
                 return true
@@ -44,13 +41,10 @@ export default class HomePresenter extends React.Component {
     }
 
     LoadingMoreItem = async () => {
-        if (this.state.onEndReachedCalledDuringMomentum) {
-            await this.props.onLoadMore().then(() => {
-                this.setState({ onEndReached: false })
-                this.setState({ onEndReachedCalledDuringMomentum: false });
-            });
-
-        }
+        await this.props.onLoadMore().then(() => {
+            this.setState({ onEndReached: false })
+            this.setState({ onEndReachedCalledDuringMomentum: false });
+        });
     }
 
     refresh = async () => {
@@ -67,9 +61,9 @@ export default class HomePresenter extends React.Component {
     renderRow = (item) => {
         return (
             <>
-            <View style={styles.items}>
-                <PostUpdate item={item} />
-            </View>
+                <View style={styles.items}>
+                    <PostUpdate item={item} />
+                </View>
 
             </>
         )
@@ -80,9 +74,9 @@ export default class HomePresenter extends React.Component {
 
             this.props.isLoading ?
                 !this.state.isEnd ?
-                <View style={{ marginBottom: 30, marginTop: -50, alignItems: 'center' }}>
-                    <Loader />
-                </View> : null : null
+                    <View style={{ marginBottom: 30, marginTop: -50, alignItems: 'center' }}>
+                        <Loader />
+                    </View> : null : null
         )
     }
 
@@ -107,20 +101,10 @@ export default class HomePresenter extends React.Component {
                             this.renderRow(item)
                         }
                         onEndReached={() => {
-                            if (this.state.isEnd == false) {
-                                this.LoadingMoreItem()
-                            }
+                            this.LoadingMoreItem()
+                        }}
 
-                            // if(this.state.isEnd == false) {
-                            //     if (this.state.onEndReachedCalledDuringMomentum) {
-                            //         this.setState({ onEndReached: true })
-                            //     }
-                            // }
-                        }}
-                        onMomentumScrollBegin={() => {
-                            this.setState({ onEndReachedCalledDuringMomentum: true })
-                        }}
-                        // ListFooterComponent={this.renderSearchResultsFooter}
+                        ListFooterComponent={this.renderSearchResultsFooter}
 
 
                     //   ListEmptyComponent={()=>{

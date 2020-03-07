@@ -8,6 +8,8 @@ import { EvilIcons } from "@expo/vector-icons";
 import { gql } from "apollo-boost";
 import { useMutation } from "react-apollo-hooks";
 import { FEED_QUERY } from "../Post";
+import { CHILD_COMMENT } from "../../fragments";
+import PopUpModal from '../../components/PopUpModal';
 
 const Touchable = styled.TouchableOpacity``;
 
@@ -46,17 +48,27 @@ const Timebox = styled.Text`
   justifyContent : flex-end;
 `;
 
-const DELETE_COMMENT = gql`
-  mutation editComment($id: String!) {
-    editComment(id: $id, action: DELETE){
+const DELETE_CHILD_COMMENT = gql`
+  mutation editChildComment($id: String!) {
+    editChildComment(id: $id, action: DELETE){
       id
     }
   }
 `;
 
+const GET_CHILD_COMMENTS = gql`
+    query seeChildComment($headComment: String!){
+      seeChildComment(headComment: $headComment){
+            ...ChildCommentParts
+        }
+    }
+    ${CHILD_COMMENT}
+`;
+
 const CommentInput = ({
   id,
   user,
+  setModal,
   headComment,
   post,
   text,
@@ -66,34 +78,12 @@ const CommentInput = ({
   navigation
 }) => {
   const time = moment(createdAt).startOf('hour').fromNow();
-  // const [deleteComment] = useMutation(DELETE_COMMENT, {
-  //   refetchQueries: () => [
-  //     {
-  //       query: GET_COMMENTS, variables: {
-  //         postId: post.id, headComment: null
-  //       }
-  //     },
-  //     { query: FEED_QUERY }
-  //   ]
-  // });
+  const [popup, setPopup] = useState(false);
 
-  const handleDelete = async () => {
-  //   try {
-  //     const { data: { editComment } } = await deleteComment({
-  //       variables: {
-  //         id: id
-  //       }
-  //     });
-  //     if (editComment.id) {
-  //       navigation.navigate("CommentDetail")
-  //     }
-  //   } catch (e) {
-  //     console.log(e);
-  //     Alert.alert("삭제 에러!");
 
-  //   }
+  const handleModal = async ()=>{
+    await setPopup(!popup);
   }
-
 
   return (
     <Container>
@@ -112,11 +102,12 @@ const CommentInput = ({
         <Timebox>{time}</Timebox>
 
         {user.isSelf ?
-          <Touchable onPress={handleDelete}>
+          <Touchable onPress={handleModal}>
             <EvilIcons name={"trash"} size={20} />
           </Touchable> : null}
 
       </CaptionCon>
+      <PopUpModal display={popup} setModal={handleModal}/>
     </Container>
   )
 }

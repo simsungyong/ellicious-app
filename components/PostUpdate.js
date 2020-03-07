@@ -9,7 +9,6 @@ export default class PostUpdate extends React.Component {
     }
 
     render() {
-        // Alert.alert(this.props.item.storeName)
         return <Post key={this.props.item}{...this.props.item} />
     }
 }

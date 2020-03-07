@@ -79,9 +79,6 @@ const StoreName = styled.Text`
 
 const Home = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [onEndReachedCalledDuringMomentum, setOnEndReachedCalledDuringMomentum] = useState(false);
-  const [onReachedEnd, setOnReachedEnd] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
   const [isEnd, setIsEnd] = useState(false);
   const [lastLength, setLastLength] = useState();
   const [feedData, setFeedData] = useState();
@@ -144,6 +141,7 @@ const Home = ({ navigation }) => {
 
 
   const onLoadMore = async () => {
+    console.log("reload");
     setIsLoading(true)
     try {
       await fetchMore({
@@ -154,18 +152,11 @@ const Home = ({ navigation }) => {
         updateQuery: (prev, { fetchMoreResult }) => {
           if (!fetchMoreResult || fetchMoreResult.seeFeed.length == 0) {
             setIsEnd(true)
-          } 
-          // else if (fetchMoreResult.seeFeed.length < 3) {
-          //   setIsEnd(true)
-          //   setFeedData(prev.seeFeed.concat(fetchMoreResult.seeFeed))
-          //   return {
-          //     seeFeed: prev.seeFeed.concat(fetchMoreResult.seeFeed)
-          //   } 
-          // } 
+          }
           else {
-            setFeedData(prev.seeFeed.concat(fetchMoreResult.seeFeed))
             return {
               seeFeed: prev.seeFeed.concat(fetchMoreResult.seeFeed)
+
             }
           }
 
@@ -201,14 +192,14 @@ const Home = ({ navigation }) => {
   return (
     <>
       {!loading ?
-          <HomePresenter
-            feedData={data.seeFeed}
-            // feedData={feedData}
-            refetch={refetch}
-            onLoadMore={onLoadMore}
-            isLoading={isLoading}
-            isEnd={isEnd}
-          />: 
+        <HomePresenter
+          feedData={data.seeFeed}
+          // feedData={feedData}
+          refetch={refetch}
+          onLoadMore={onLoadMore}
+          isLoading={isLoading}
+          isEnd={isEnd}
+        /> :
         <Loader />
       }
     </>

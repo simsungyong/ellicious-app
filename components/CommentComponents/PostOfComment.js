@@ -19,7 +19,7 @@ import Modal, { ModalTitle, ModalContent, ModalFooter, ModalButton } from 'react
 import CommentInput from './CommentInput';
 import { FEED_QUERY } from "../Post";
 import { CHILD_COMMENT } from "../../fragments";
-
+import PopUpModal from '../../components/PopUpModal';
 
 const Touchable = styled.TouchableOpacity`
   margin-bottom:3px;
@@ -160,6 +160,7 @@ const PostOfComment = ({
     variables: { headComment: id }
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [popup, setPopup] = useState(false);
   const [addComments] = useMutation(ADD_CHILD_COMMENTS, {
     refetchQueries: () => [
       {
@@ -190,6 +191,9 @@ const PostOfComment = ({
   const navi = () => {
     setbottomModalAndTitle(false);
     navigation.navigate("UserDetail", { id: user.id, username: user.username });
+  }
+  const handleModal = async ()=>{
+    setPopup(!popup);
   }
 
   const handleDelete = async () => {
@@ -256,10 +260,10 @@ const PostOfComment = ({
                 <Bold>{user.username}</Bold>
               </Touchable>
               {user.isSelf ?
-                <Touchable onPress={handleDelete}>
-                  <EvilIcons name={"trash"} size={20} />
+                <Touchable onPress={handleModal}>
+                  <EvilIcons name={"trash"} size={20}/>
                 </Touchable> : null}
-
+                <PopUpModal display={popup} setModal={handleModal} handleDelete={handleDelete}/>
             </CommentBig>
             <Comment>
               <Caption>{text}</Caption>
@@ -317,7 +321,9 @@ const PostOfComment = ({
           {
             loading ? <Loader/> : data && data.seeChildComment && data.seeChildComment.map(comment =>
               <CommentInput
-                key={comment.id}{...comment} />)
+                key={comment.id}{...comment}
+                setModal={handleModal}
+                />)
           }
           
           </ScrollView>

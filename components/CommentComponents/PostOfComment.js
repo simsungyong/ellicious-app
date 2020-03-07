@@ -18,6 +18,8 @@ import KeyboardSpacer from 'react-native-keyboard-spacer';
 import Modal, { ModalTitle, ModalContent, ModalFooter, ModalButton } from 'react-native-modals';
 import CommentInput from './CommentInput';
 import { FEED_QUERY } from "../Post";
+import { CHILD_COMMENT } from "../../fragments";
+
 
 const Touchable = styled.TouchableOpacity`
   margin-bottom:3px;
@@ -107,18 +109,26 @@ const TextBox = styled.View`
   height : 30;
 `;
 
-const GET_COMMENTS = gql`
-    query seeComment($postId: String!, $headComment: String){
-        seeComment(postId: $postId, headComment: $headComment){
-            ...CommentParts
+const GET_CHILD_COMMENTS = gql`
+    query seeChildComment($headComment: String!){
+      seeChildComment(headComment: $headComment){
+            ...ChildCommentParts
         }
     }
+    ${CHILD_COMMENT}
+`;
+const GET_COMMENTS = gql`
+    query seeComment($postId: String!){
+        seeComment(postId: $postId){
+            ...CommentParts
+        }
+    } 
     ${POST_COMMENT}
 `;
 
-const ADD_COMMENTS = gql`
-    mutation addComment($text: String!, $headComment: String, $postId: String! ){
-      addComment(text: $text, headComment: $headComment, postId:$postId){
+const ADD_CHILD_COMMENTS = gql`
+    mutation addChildComment($text: String!, $headComment: String! ){
+      addChildComment(text: $text, headComment: $headComment){
         id
         text
       }
@@ -146,35 +156,35 @@ const PostOfComment = ({
   console.log(user)
   const time = moment(createdAt).startOf('hour').fromNow();
 
-  // const { loading, data, refetch } = useQuery(GET_COMMENTS, {
-  //   variables: { postId: post.id, headComment: id }
-  // });
+  const { loading, data, refetch } = useQuery(GET_CHILD_COMMENTS, {
+    variables: { headComment: id }
+  });
   const [isLoading, setIsLoading] = useState(false);
-  // const [addComments] = useMutation(ADD_COMMENTS, {
-  //   refetchQueries: () => [
-  //     {
-  //       query: GET_COMMENTS, variables: {
-  //         postId: post.id, headComment: null
-  //       }
-  //     },
-  //     {
-  //       query: GET_COMMENTS, variables: {
-  //         postId: post.id, headComment: id
-  //       }
-  //     },
-  //     { query: FEED_QUERY }
-  //   ]
-  // });
-  // const [deleteComment] = useMutation(DELETE_COMMENT, {
-  //   refetchQueries: () => [
-  //     {
-  //       query: GET_COMMENTS, variables: {
-  //         postId: post.id, headComment: null
-  //       }
-  //     },
-  //     { query: FEED_QUERY }
-  //   ]
-  // })
+  const [addComments] = useMutation(ADD_CHILD_COMMENTS, {
+    refetchQueries: () => [
+      {
+        query: GET_CHILD_COMMENTS, variables: {
+          headComment: id
+        }
+      },
+      {
+        query: GET_COMMENTS, variables: {
+          postId: post.id
+        }
+      },
+      { query: FEED_QUERY }
+    ]
+  });
+  const [deleteComment] = useMutation(DELETE_COMMENT, {
+    refetchQueries: () => [
+      {
+        query: GET_COMMENTS, variables: {
+          postId: post.id
+        }
+      },
+      { query: FEED_QUERY }
+    ]
+  })
   const commentInput = useInput();
   const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
   const navi = () => {
@@ -190,9 +200,9 @@ const PostOfComment = ({
           id: id
         }
       });
-      if (editComment.id) {
-        navigation.navigate("CommentDetail")
-      }
+      // if (editComment.id) {
+      //   navigation.navigate("CommentDetail")
+      // }
     } catch (e) {
       console.log(e);
       Alert.alert("삭제 에러!");
@@ -209,16 +219,14 @@ const PostOfComment = ({
     } else {
       setIsLoading(true);
       try {
-        const { data: { addComment } } = await addComments({
+        const { data: { addChildComment } } = await addComments({
           variables: {
-            postId: post.id,
             headComment: id,
             text: commentInput.value
           }
         });
-        if (addComment.id) {
+        if (addChildComment.id) {
           commentInput.setValue("")
-          navigation.navigate("CommentDetail")
 
         }
       } catch (e) {
@@ -258,15 +266,17 @@ const PostOfComment = ({
             </Comment>
             <ReplyCon>
               <Timebox>{time}</Timebox>
-              
-                <Timebox>{"+" + childCount + "개"}</Timebox>
+                {childCount > 0 ? (
+                  <Timebox>{"+" + childCount + "개"}</Timebox>
+                ) : null}
+                
               <Touchable onPress={() => setbottomModalAndTitle(true)}>
                 <Reply>Reply </Reply>
               </Touchable>
             </ReplyCon>
           </CommentCon>
         </CaptionsCon>
-      {/* <Modal.BottomModal
+      <Modal.BottomModal
         visible={bottomModalAndTitle}
         onTouchOutside={() => setbottomModalAndTitle(false)}
         height={0.7}
@@ -305,10 +315,11 @@ const PostOfComment = ({
           </CaptionsCon>
           <ScrollView>
           {
-            data && data.seeComment && data.seeComment.map(comment =>
+            loading ? <Loader/> : data && data.seeChildComment && data.seeChildComment.map(comment =>
               <CommentInput
                 key={comment.id}{...comment} />)
           }
+          
           </ScrollView>
           <CommentBox>
             <TextBox>
@@ -328,7 +339,7 @@ const PostOfComment = ({
 
           <KeyboardSpacer />
         </ModalContent>
-      </Modal.BottomModal> */}
+      </Modal.BottomModal> 
     </Container>
   )
 }

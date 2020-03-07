@@ -206,6 +206,19 @@ export const POST_COMMENT = gql`
     createdAt
   }
 `
+export const CHILD_COMMENT = gql`
+  fragment ChildCommentParts on ChildComment {
+    id
+    user{
+      id
+      isSelf
+      username
+      avatar
+    }
+    text
+    createdAt
+  }
+`
 
 
 

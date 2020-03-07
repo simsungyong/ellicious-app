@@ -47,16 +47,16 @@ export default function App() {
       const cache = new InMemoryCache();
       const httpLink = new HttpLink({
         //uri: 'http://192.168.0.135:4000/'
-        //uri: 'http://13.125.147.101:4000/'
+      uri: 'http://13.125.147.101:4000/'
         // uri: 'http://15.165.108.181:4000/'
-        uri: 'http://172.20.10.2:4000/'
+        //uri: 'http://172.20.10.2:4000/'
 
       });
       const wsLink = new WebSocketLink({
         // uri: 'http://192.168.0.135:4000/',
-        //uri: `ws://13.125.147.101:4000/`,
+        uri: `ws://13.125.147.101:4000/`,
         // uri: `ws://15.165.108.181:4000/`,
-        uri: 'http://172.20.10.2:4000/',
+        //uri: 'http://172.20.10.2:4000/',
         options: {
             reconnect: true
         }

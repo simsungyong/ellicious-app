@@ -97,7 +97,7 @@ export default class HomePresenter extends React.PureComponent {
                         onRefresh={() => {
                             this.refresh()
                         }}
-                        EndReachedThreshold={0}
+                        EndReachedThreshold={1}
                         refreshing={this.state.refreshing}
                         keyExtractor={(item, index) => index.toString()}
                         maxToRenderPerBatch={50}
@@ -155,7 +155,6 @@ export default class HomePresenter extends React.PureComponent {
 
 const styles = StyleSheet.create({
     items: {
-        marginTop: 5,
         flex: 1
     }
 })

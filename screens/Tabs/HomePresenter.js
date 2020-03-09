@@ -91,7 +91,7 @@ export default class HomePresenter extends React.Component {
                         onRefresh={() => {
                             this.refresh()
                         }}
-                        EndReachedThreshold={1}
+                        EndReachedThreshold={0}
                         refreshing={this.state.refreshing}
                         keyExtractor={(item, index) => index.toString()}
                         maxToRenderPerBatch={50}

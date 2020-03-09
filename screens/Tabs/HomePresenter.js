@@ -27,9 +27,13 @@ export default class HomePresenter extends React.Component {
     }
 
     shouldComponentUpdate(nextProps) {
+        if (this.state.refreshing == true && nextProps.refreshing == false) {
+            this.setState({refreshing: false})
+            return true
+        } else
         if (this.state.isEnd !== nextProps.isEnd) {
             this.setState({ isEnd: true });
-            return false
+            return true
         } else {
             if (this.state.feedData !== nextProps.feedData) {
                 this.setState({ feedData: this.props.feedData })
@@ -48,13 +52,14 @@ export default class HomePresenter extends React.Component {
     }
 
     refresh = async () => {
+        await this.setState({ refreshing: true });
         try {
-            this.setState({ refreshing: true });
             await this.props.refetch();
         } catch (e) {
             console.log(e);
-        } finally {
-            this.setState({ refreshing: false });
+        }
+         finally {
+            this.setState({ refreshing: false })
         }
     };
 

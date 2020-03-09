@@ -88,7 +88,7 @@ const Home = ({ navigation }) => {
   const { loading, data, refetch, fetchMore } = useQuery(FEED_QUERY, {
     variables: {
       pageNumber: 0,
-      items: 3
+      items: 5
     },
   });
   ;

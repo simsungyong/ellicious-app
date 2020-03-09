@@ -10,7 +10,7 @@ import { ScrollView,Alert, Text,Image,TextInput,RefreshControl, KeyboardAvoiding
 import { POST_COMMENT } from "../fragments";
 import PostOfComment from '../components/CommentComponents/PostOfComment';
 import { LightGrey, CommentsBox, mainPink } from "../components/Color";
-import constants from "../constants";
+import User from '../User';
 import { FEED_QUERY } from "../components/Post";
 
 const InfoCon=styled.View`
@@ -166,6 +166,7 @@ export default ({navigation})=>{
               data && data.seeComment && data.seeComment.map(comment=>
               <PostOfComment 
               key={comment.id}{...comment}
+              postUser={User.username}
               />)
             )}
           <KeyboardSpacer/>

@@ -68,7 +68,8 @@ const GET_CHILD_COMMENTS = gql`
 const CommentInput = ({
   id,
   user,
-  setModal,
+  handleDelete,
+  display,
   headComment,
   post,
   text,
@@ -80,9 +81,12 @@ const CommentInput = ({
   const time = moment(createdAt).startOf('hour').fromNow();
   const [popup, setPopup] = useState(false);
 
+  const handleModal = async()=>{
+    await setPopup(!popup)
+  }
 
-  const handleModal = async ()=>{
-    await setPopup(!popup);
+  const handleDeleteChild = async(childId)=>{
+    await handleDelete(childId)
   }
 
   return (
@@ -107,7 +111,7 @@ const CommentInput = ({
           </Touchable> : null}
 
       </CaptionCon>
-      <PopUpModal display={popup} setModal={handleModal}/>
+      <PopUpModal display={popup} setModal={handleModal} handleDelete={handleDeleteChild} child={id}/>
     </Container>
   )
 }

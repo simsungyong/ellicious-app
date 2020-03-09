@@ -195,10 +195,11 @@ export default class Messages extends React.Component {
           renderItem={this.renderRow}
           keyExtractor={(item) => item.userId}
         />
-        <View>
-          <Button title="대화상대 추가" onPress={() => this.props.navigation.navigate("MessageRoom")}></Button>
-        </View>
+        
       </SafeAreaView >
+       
+        <Button title="대화상대 추가" onPress={() => this.props.navigation.navigate("MessageRoom")}></Button>
+        
       </Container>
     )
   }

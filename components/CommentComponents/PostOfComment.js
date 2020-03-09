@@ -20,6 +20,7 @@ import CommentInput from './CommentInput';
 import { FEED_QUERY } from "../Post";
 import { CHILD_COMMENT } from "../../fragments";
 import PopUpModal from '../../components/PopUpModal';
+import User from '../../User';
 
 const Touchable = styled.TouchableOpacity`
   margin-bottom:3px;
@@ -142,18 +143,26 @@ const DELETE_COMMENT = gql`
   }
 `;
 
+const DELETE_CHILD_COMMENT = gql`
+  mutation editChildComment($id: String!) {
+    editChildComment(id: $id, action: DELETE){
+      id
+    }
+  }
+`;
+
 const PostOfComment = ({
   id,
   post,
   text,
   user,
+  postUser,
   childCount,
   //likeCount: likeCountProp,
   isLiked: isLikedProp,
   navigation,
   createdAt,
 }) => {
-  console.log(user)
   const time = moment(createdAt).startOf('hour').fromNow();
 
   const { loading, data, refetch } = useQuery(GET_CHILD_COMMENTS, {
@@ -161,7 +170,7 @@ const PostOfComment = ({
   });
   const [isLoading, setIsLoading] = useState(false);
   const [popup, setPopup] = useState(false);
-  const [addComments] = useMutation(ADD_CHILD_COMMENTS, {
+  const [addChildComments] = useMutation(ADD_CHILD_COMMENTS, {
     refetchQueries: () => [
       {
         query: GET_CHILD_COMMENTS, variables: {
@@ -186,6 +195,21 @@ const PostOfComment = ({
       { query: FEED_QUERY }
     ]
   })
+  const [deleteChildComment] = useMutation(DELETE_CHILD_COMMENT, {
+    refetchQueries: () => [
+      {
+        query: GET_CHILD_COMMENTS, variables: {
+          headComment: id
+        }
+      },
+      {
+        query: GET_COMMENTS, variables: {
+          postId: post.id
+        }
+      },
+      { query: FEED_QUERY }
+    ]
+  })
   const commentInput = useInput();
   const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
   const navi = () => {
@@ -196,12 +220,32 @@ const PostOfComment = ({
     setPopup(!popup);
   }
 
-  const handleDelete = async () => {
+  const handleDelete = async (param) => {
     setIsLoading(true);
     try {
       const { data: { editComment } } = await deleteComment({
         variables: {
           id: id
+        }
+      });
+      // if (editComment.id) {
+      //   navigation.navigate("CommentDetail")
+      // }
+    } catch (e) {
+      console.log(e);
+      Alert.alert("삭제 에러!");
+
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  const handleDeleteChild = async (childId) => {
+    setIsLoading(true);
+    try {
+      const { data: { editChildComment } } = await deleteChildComment({
+        variables: {
+          id: childId
         }
       });
       // if (editComment.id) {
@@ -223,7 +267,7 @@ const PostOfComment = ({
     } else {
       setIsLoading(true);
       try {
-        const { data: { addChildComment } } = await addComments({
+        const { data: { addChildComment } } = await addChildComments({
           variables: {
             headComment: id,
             text: commentInput.value
@@ -259,7 +303,7 @@ const PostOfComment = ({
               <Touchable onPress={navi}>
                 <Bold>{user.username}</Bold>
               </Touchable>
-              {user.isSelf ?
+              {(user.isSelf || postUser==User.username) ?
                 <Touchable onPress={handleModal}>
                   <EvilIcons name={"trash"} size={20}/>
                 </Touchable> : null}
@@ -322,7 +366,8 @@ const PostOfComment = ({
             loading ? <Loader/> : data && data.seeChildComment && data.seeChildComment.map(comment =>
               <CommentInput
                 key={comment.id}{...comment}
-                setModal={handleModal}
+                //setModal={handleModal}
+                handleDelete={handleDeleteChild}
                 />)
           }
           
@@ -353,6 +398,7 @@ const PostOfComment = ({
 
 
 PostOfComment.propTypes = {
+  postUser: PropTypes.string,
   id: PropTypes.string.isRequired,
   childCount: PropTypes.number.isRequired,
   post: PropTypes.shape({

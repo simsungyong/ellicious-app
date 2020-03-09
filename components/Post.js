@@ -410,7 +410,7 @@ const Post = ({
           <IconCon>
             <Ionicons
               size={25}
-              color={isLiked ? PointPink : IconColor }
+              color={isLiked ? mainPink : IconColor }
               name={
                 Platform.OS === "ios"
                   ? isLiked
@@ -438,7 +438,7 @@ const Post = ({
         <TouchableOpacity onPress={handlePick}>
           <IconCon>
             <AntDesign
-              color={isPicked ? PointPink : TINT_COLOR }
+              color={isPicked ? mainPink : TINT_COLOR }
               size={20}
               name={isPicked ? "pushpin" : "pushpino" }
             />

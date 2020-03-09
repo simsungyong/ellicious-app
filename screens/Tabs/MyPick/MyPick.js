@@ -1,17 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { gql } from "apollo-boost";
 //import {NavigationEvents} from 'react-navigation';
 import { useQuery } from "react-apollo-hooks";
 import {
   StyleSheet,
   View,
-  Text
+  Text,
+  TouchableOpacity
 } from "react-native";
 // import MapViewPick from '../../../components/MapView/MapViewPick';
 import Loader from "../../../components/Loader";
 import { PICK_FRAGMENT } from '../../../fragments';
 import MyPickPresenter from './MyPickPresenter';
 import { FontAwesome, EvilIcons, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
+import { TINT_COLOR, IconColor, PointPink, StarColor, BG_COLOR, mainPink} from '../../../components/Color';
 
 const styles = StyleSheet.create({
   container: {
@@ -47,17 +49,42 @@ export const GET_PICK = gql`
 
 const MyPick = ({ navigation }) => {
   const { loading, data, refetch } = useQuery(GET_PICK);
-  useEffect(() => {
-    refetch();
-  },[data])
+  const [refreshing, setRefreshing] = useState(loading);
+
+  const refresh = async() =>{
+    try{
+      setRefreshing(true);
+      await refetch();
+      
+    }catch (e){
+      console.log(e);
+    }finally{
+      setRefreshing(false);
+    }
+  };
+
 
   return (
     <View style={styles.container}>
       
 
-      {loading ? <Loader /> : <MyPickPresenter navigation={navigation} marker={data.seePick} region={region}>
+      {refreshing ? <Loader /> : <MyPickPresenter navigation={navigation} marker={data.seePick} region={region}>
         
         </MyPickPresenter>}
+        <View
+                    style={{
+                        position: 'absolute',//use absolute position to show button on top of the map
+                        top: '95%', //for center align
+                        alignSelf: 'center' //for align to right
+                    }}
+                >
+                    <TouchableOpacity onPress={refresh}>
+                      {refreshing ? null: (
+                        <FontAwesome name={"refresh"} color={mainPink} size={30}/>
+                      )}
+                    </TouchableOpacity>
+                </View>
+                
     </View>
   )
 }

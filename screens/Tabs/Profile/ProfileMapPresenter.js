@@ -15,7 +15,7 @@ import {
 import styled from "styled-components";
 import Stars from 'react-native-stars';
 import { FontAwesome, EvilIcons, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
-import {  StarColor, Yellow } from '../../../components/Color';
+import {  StarColor, Yellow, mainPink } from '../../../components/Color';
 import { PROVIDER_GOOGLE, Marker, Callout, Circle } from "react-native-maps";
 import MapView from 'react-native-map-clustering';
 import Modal, { ModalTitle, ModalFooter, ModalButton } from 'react-native-modals';
@@ -130,7 +130,7 @@ class ProfileMapPresenter extends React.Component {
             <View style={styles.container}>
                 <MapView
                     mapRef={(ref) => mapView = ref}
-                    clusterColor={Yellow}
+                    clusterColor={mainPink}
                     initialRegion={{
                         latitude: 36.519959, longitude: 127.889604,
                         latitudeDelta: 3, longitudeDelta: 3
@@ -149,7 +149,7 @@ class ProfileMapPresenter extends React.Component {
                                         <Entypo
                                             name={"location-pin"}
                                             size={37}
-                                            color={Yellow}
+                                            color={mainPink}
                                         />
 
                                     </View>

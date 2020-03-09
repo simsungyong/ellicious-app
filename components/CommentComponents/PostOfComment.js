@@ -20,6 +20,7 @@ import CommentInput from './CommentInput';
 import { FEED_QUERY } from "../Post";
 import { CHILD_COMMENT } from "../../fragments";
 import PopUpModal from '../../components/PopUpModal';
+import User from '../../User';
 
 const Touchable = styled.TouchableOpacity`
   margin-bottom:3px;
@@ -155,6 +156,7 @@ const PostOfComment = ({
   post,
   text,
   user,
+  postUser,
   childCount,
   //likeCount: likeCountProp,
   isLiked: isLikedProp,
@@ -301,7 +303,7 @@ const PostOfComment = ({
               <Touchable onPress={navi}>
                 <Bold>{user.username}</Bold>
               </Touchable>
-              {user.isSelf ?
+              {(user.isSelf || postUser==User.username) ?
                 <Touchable onPress={handleModal}>
                   <EvilIcons name={"trash"} size={20}/>
                 </Touchable> : null}
@@ -396,6 +398,7 @@ const PostOfComment = ({
 
 
 PostOfComment.propTypes = {
+  postUser: PropTypes.string,
   id: PropTypes.string.isRequired,
   childCount: PropTypes.number.isRequired,
   post: PropTypes.shape({

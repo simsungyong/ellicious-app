@@ -82,13 +82,14 @@ const Home = ({ navigation }) => {
   const [isEnd, setIsEnd] = useState(false);
   const [lastLength, setLastLength] = useState();
   const [feedData, setFeedData] = useState();
+  const [refreshing, setRefreshing] = useState(false);
 
 
   const [tokenMutation] = useMutation(EDIT_USER);
   const { loading, data, refetch, fetchMore } = useQuery(FEED_QUERY, {
     variables: {
       pageNumber: 0,
-      items: 3
+      items: 6
     },
   });
   ;
@@ -137,7 +138,16 @@ const Home = ({ navigation }) => {
 
   // }
 
-
+  const refresh = async () => {
+    await setRefreshing(true);
+    try {
+      await this.props.refetch();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
 
   const onLoadMore = async () => {
@@ -147,7 +157,7 @@ const Home = ({ navigation }) => {
       await fetchMore({
         variables: {
           pageNumber: data.seeFeed.length,
-          items: 3
+          items: 5
         },
         updateQuery: (prev, { fetchMoreResult }) => {
           if (!fetchMoreResult || fetchMoreResult.seeFeed.length == 0) {
@@ -199,6 +209,8 @@ const Home = ({ navigation }) => {
           onLoadMore={onLoadMore}
           isLoading={isLoading}
           isEnd={isEnd}
+          refreshing={refreshing}
+          refresh={refresh}
         /> :
         <Loader />
       }

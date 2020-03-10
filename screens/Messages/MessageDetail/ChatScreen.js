@@ -10,6 +10,7 @@ import { TINT_COLOR, mainPink, LightGrey, Yellow,Line, Grey } from '../../../com
 import constants from '../../../constants'
 import Hr from "hr-native";
 
+
 const Image = styled.Image`
 height: 25
 width: 25
@@ -131,10 +132,17 @@ export default class ChatScreen extends React.Component {
         return result;
     }
 
-    convert = (time)=>{
+    convertGapDay = (lasttime,time)=>{
         let d= new Date(time);
-        console.log(d.getDate())
-       
+        let lastd= new Date(lasttime)
+        let gap = d.getDate()-lastd.getDate();
+        return gap;
+    }
+    convertFullTime = (time)=>{
+        let d = new Date(time);
+        let result;
+        result = (d.getFullYear())+"년 "+(d.getMonth()+1)+"월 "+(d.getDate())+"일"
+        return result
     }
 
     handleChange = key => val => {
@@ -174,13 +182,31 @@ export default class ChatScreen extends React.Component {
 
 
     renderRow = ({ item,index }) => {
-        console.log(index)
+        let gapDay;
+        let getFullTime;
+        if(index >0){
+            gapDay = this.convertGapDay(this.state.messageList[index-1].time, item.time)
+        }else{
+            gapDay = 0;
+        }
         
+        if(gapDay > 0 || gapDay < 0 || index==0){
+            getFullTime = this.convertFullTime(item.time);
+        }
         return (
             <>
-            <Hr 
-            lineStyle={{ backgroundColor : Line, marginBottom:5 }}
-            />
+            {
+                gapDay > 0 || gapDay<0 || index ==0? (
+                    <View marginBottom={5}>
+                        <Text>{getFullTime}</Text>
+                        <Hr 
+                        lineStyle={{ backgroundColor : Line, marginBottom:5 }}
+                        />
+                    </View>
+                ) : null
+            }
+           
+            
             <MsgBox
             style={{alignSelf: item.from === User.username ? 'flex-end' : 'flex-start',
         }}>

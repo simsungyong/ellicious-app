@@ -97,7 +97,7 @@ export default class Messages extends React.Component {
     }else if(now.getDay()-d.getDay()===1){
       result = "어제 "
     }else{
-      result = (d.getMonth()+1)+"월 "+(d.getDate()-1)+"일 "
+      result = (d.getMonth()+1)+"월 "+(d.getDate())+"일 "
     }
     result += (d.getHours() < 10 ? '0' : '') + d.getHours() + ':';
     result += (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();

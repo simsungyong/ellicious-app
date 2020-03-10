@@ -163,7 +163,7 @@ const PostOfComment = ({
   navigation,
   createdAt,
 }) => {
-  const time = moment(createdAt).startOf('hour').fromNow();
+  const time = moment(createdAt).startOf('minute').fromNow();
 
   const { loading, data, refetch } = useQuery(GET_CHILD_COMMENTS, {
     variables: { headComment: id }

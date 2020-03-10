@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { gql } from "apollo-boost";
 //import {NavigationEvents} from 'react-navigation';
 import { useQuery } from "react-apollo-hooks";
@@ -49,7 +49,7 @@ export const GET_PICK = gql`
 
 const MyPick = ({ navigation }) => {
   const { loading, data, refetch } = useQuery(GET_PICK);
-  const [refreshing, setRefreshing] = useState(loading);
+  const [refreshing, setRefreshing] = useState(false);
 
   const refresh = async() =>{
     try{
@@ -62,13 +62,15 @@ const MyPick = ({ navigation }) => {
       setRefreshing(false);
     }
   };
+  
+  
 
 
   return (
     <View style={styles.container}>
       
 
-      {refreshing ? <Loader /> : <MyPickPresenter navigation={navigation} marker={data.seePick} region={region}>
+      {refreshing || loading ? <Loader /> : <MyPickPresenter navigation={navigation} marker={data.seePick} region={region}>
         
         </MyPickPresenter>}
         <View

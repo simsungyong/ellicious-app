@@ -6,9 +6,9 @@ import firebase from 'firebase';
 import {AntDesign} from '@expo/vector-icons';
 import User from '../../../User'
 import styled from "styled-components";
-import { TINT_COLOR, mainPink, LightGrey, Yellow, Grey } from '../../../components/Color';
-import { GiftedChat } from 'react-native-gifted-chat';
+import { TINT_COLOR, mainPink, LightGrey, Yellow,Line, Grey } from '../../../components/Color';
 import constants from '../../../constants'
+import Hr from "hr-native";
 
 const Image = styled.Image`
 height: 25
@@ -131,6 +131,12 @@ export default class ChatScreen extends React.Component {
         return result;
     }
 
+    convert = (time)=>{
+        let d= new Date(time);
+        console.log(d.getDate())
+       
+    }
+
     handleChange = key => val => {
         this.setState({ [key]: val })
     }
@@ -167,8 +173,14 @@ export default class ChatScreen extends React.Component {
     }
 
 
-    renderRow = ({ item }) => {
+    renderRow = ({ item,index }) => {
+        console.log(index)
+        
         return (
+            <>
+            <Hr 
+            lineStyle={{ backgroundColor : Line, marginBottom:5 }}
+            />
             <MsgBox
             style={{alignSelf: item.from === User.username ? 'flex-end' : 'flex-start',
         }}>
@@ -206,6 +218,7 @@ export default class ChatScreen extends React.Component {
                 {this.convertTime(item.time)}
             </TimeView>
             </MsgBox>
+            </>
         )
     }
 

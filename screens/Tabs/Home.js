@@ -81,7 +81,6 @@ const Home = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isEnd, setIsEnd] = useState(false);
   const [lastLength, setLastLength] = useState();
-  const [feedData, setFeedData] = useState();
   const [refreshing, setRefreshing] = useState(false);
 
 
@@ -183,21 +182,6 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     ask();
   }, []);
-
-  const getData = async () => {
-    setIsLoading(true);
-    try {
-      await setFeedData(data.seeFeed)
-    } catch (e) {
-      console.log(e)
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  if (data && feedData == undefined) {
-    getData()
-  }
 
   return (
     <>

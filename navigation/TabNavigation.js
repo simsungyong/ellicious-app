@@ -106,6 +106,11 @@ flex-direction : row;
   justifyContent: center;
   marginTop : 10;
 `;
+const ConfigHeader = styled.View`
+flex-direction : row;
+  alignItems: center;
+  justifyContent: center;
+`;
 const Title = styled.Text`
 fontFamily : 'korElli';
 fontSize : 40 ;
@@ -132,14 +137,6 @@ export default createBottomTabNavigator({
         </View>
       ),
       headerStyle: HomestackStyles
-      /* headerTitle : (
-         <View style = {{ alignItems : "flex-start", flex : 1, padding : 5,  marginLeft : 5, backgroundColor:'red'
-         }}>
-           <Text style = {{ fontFamily : 'korElli', fontSize : 35 , color : PointPink}}>
-             Ellicious
-           </Text>
-         </View>
-       ) */
     }),
     navigationOptions: {
       tabBarIcon: ({ focused }) => (
@@ -190,6 +187,11 @@ export default createBottomTabNavigator({
     screen: stackFactory(Profile, {
       headerStyle: stackStyles,
       title: "프로필",
+      headerRight: (
+        <ConfigHeader>
+          <Text>설정</Text>
+        </ConfigHeader>
+      ),
       headerTitle: (
         <View style={{ alignItems: "center", flex: 1 }}>
           <Text style={{ fontSize: 30, color: mainPink, fontWeight: "200" }}>

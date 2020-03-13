@@ -205,8 +205,8 @@ export default class ChatScreen extends React.Component {
             <>
             {
                 gapDay > 0 || gapDay<0 || index ==0? (
-                    <View marginBottom={5}>
-                        <Text>{getFullTime}</Text>
+                    <View marginBottom={5} alignItems={"center"}>
+                        <Text >{getFullTime}</Text>
                         <Hr 
                         lineStyle={{ backgroundColor : Line, marginBottom:5 }}
                         />

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Modal, View, Image, Text, StyleSheet, TouchableHighlight } from 'react-native';
 import Loader from './Loader';
+import { mainPink } from './Color';
 
 
 const PopUpModal = (props) => {
@@ -53,29 +54,18 @@ const PopUpModal = (props) => {
                     
                 }}>
 
+                   
                     <Text
-                        style={{
-                            flex: 1.5,
-                            width: 300,
-                            backgroundColor: '#3AC5E6',
-                            color: 'white',
-                            fontSize: 20,
-                            paddingLeft: 15,
-                            
-                        }}
-                    >알림</Text>
-
-                    <Text
-                        style={{ fontSize: 16, alignSelf: 'center', marginTop: 10, flex: 5, }}
+                        style={{ fontSize: 16, alignSelf: 'center', marginTop: 40, flex: 7, alignItems:'center', justifyContent: 'center'}}
                     >
                         댓글을 삭제하시겠습니까?
                             </Text>
                     <View
                         style={{
                             alignSelf: 'baseline',
-                            backgroundColor: '#32C5E6',
+                            backgroundColor: mainPink,
                             width: 300,
-                            flex: 2,
+                            flex: 4,
                             borderBottomLeftRadius: 20,
                             borderBottomRightRadius: 20,
                             flexDirection: 'row'

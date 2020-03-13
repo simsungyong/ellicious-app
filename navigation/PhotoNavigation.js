@@ -1,7 +1,7 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import { createStackNavigator } from "react-navigation-stack";
-import { createMaterialTopTabNavigator} from "react-navigation-tabs"
+import { createMaterialTopTabNavigator } from "react-navigation-tabs"
 import SelectPhoto from "../screens/Photo/SelectPhoto";
 import TakePhoto from "../screens/Photo/TakePhoto";
 import MapContainer from '../screens/Map/MapContainer';
@@ -16,33 +16,33 @@ margin-right : 8px;
 
 const PhotoTabs = createMaterialTopTabNavigator(
   {
-    Take:{
+    Take: {
       screen: TakePhoto,
-      navigationOptions:{
-        tabBarLabel:"Take",
-        
+      navigationOptions: {
+        tabBarLabel: "Take",
+
       }
     },
-    Select:{
+    Select: {
       screen: SelectPhoto,
-      navigationOptions:{
-        tabBarLabel:"Select"
+      navigationOptions: {
+        tabBarLabel: "Select"
       }
     }
   },
   {
     tabBarPosition: "bottom",
     tabBarOptions: {
-      indicatorStyle:{
+      indicatorStyle: {
         backgroundColor: mainPink,
-        marginBottom:65
+        marginBottom: 65
       },
-      labelStyle:{
+      labelStyle: {
         color: mainPink,
-        fontWeight:"600"
+        fontWeight: "600"
       },
-      style:{
-        paddingBottom:20,
+      style: {
+        paddingBottom: 20,
         ...PhotostackStyles
       }
     }
@@ -50,55 +50,60 @@ const PhotoTabs = createMaterialTopTabNavigator(
 );
 
 export default createStackNavigator({
-  Tabs : {
+  Tabs: {
     screen: PhotoTabs,
-    navigationOptions:{
-      title:"사 진",
-      headerBackTitle: null ,
-      headerTitle : (
-        <View style = {{ justifyContent : 'center',alignItems : "center", flex : 1, padding : 5,  marginLeft : 5}}>
-          <Text style = {{ fontSize : 25 , color : TINT_COLOR, fontWeight : "200"}}>
+    navigationOptions: ({navigation}) => ({
+      title: "",
+      headerBackTitle: null,
+      headerTitle: (
+        <View style={{ justifyContent: 'center', alignItems: "center", flex: 1, padding: 5, marginLeft: 5 }}>
+          <Text style={{ fontSize: 25, color: TINT_COLOR, fontWeight: "200" }}>
             사 진
           </Text>
         </View>
-      )
-    }
+      ),
+      headerLeft: (
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Text>취소</Text>
+        </TouchableOpacity>
+      ),
+    })
   },
   Upload: {
     screen: UploadPhoto,
-    navigationOptions:{
-      title: "게시글",
-      headerBackTitle:null,
-      headerTitle : (
-        <View style = {{ justifyContent : 'center',alignItems : "center", flex : 1, padding : 5,  marginLeft : 5}}>
-          <Text style = {{ fontSize : 22 , color : TINT_COLOR, fontWeight : "200"}}>
+    navigationOptions: ({ navigation }) => ({
+      title: "",
+      headerBackTitle: null,
+      headerTitle: (
+        <View style={{ justifyContent: 'center', alignItems: "center", flex: 1, padding: 5, marginLeft: 5 }}>
+          <Text style={{ fontSize: 22, color: TINT_COLOR, fontWeight: "200" }}>
             게시글
           </Text>
         </View>
       )
-    }
+    })
   },
-  
-  Map: {
-    screen: MapContainer,
-    navigationOptions:{
-      title: "방문한 맛집은?",
-      headerBackTitle:null,
-      headerTitle : (
-        <View style = {{ justifyContent : 'center',alignItems : "center", flex : 1, padding : 5,  marginLeft : 5}}>
-          <Text style = {{ fontSize : 22 , color : TINT_COLOR, fontWeight : "200"}}>
-            방문한 맛집은?
+
+Map: {
+  screen: MapContainer,
+    navigationOptions: {
+    title: "",
+      headerBackTitle: null,
+        headerTitle: (
+          <View style={{ justifyContent: 'center', alignItems: "center", flex: 1, padding: 5, marginLeft: 5 }}>
+            <Text style={{ fontSize: 22, color: TINT_COLOR, fontWeight: "200" }}>
+              방문한 맛집은?
           </Text>
-        </View>
-      )
-    }
+          </View>
+        )
   }
+}
 },
 {
-  defaultNavigationOptions:{
-    headerStyle:{
-      ...PhotostackStyles
+  defaultNavigationOptions: {
+    headerStyle: {
+        ...PhotostackStyles
     },
-    headerTintColor:TINT_COLOR,
-  }
+    headerTintColor: TINT_COLOR,
+    }
 });

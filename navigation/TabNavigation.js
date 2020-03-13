@@ -11,7 +11,7 @@ import Detail from "../screens/Detail";
 import MessagesLink from "../components/MessageComponents/MessagesLink";
 import NavIcon from "../components/NavIcons";
 import AlarmsLink from "../components/AlarmsLink";
-import { stackStyles, HomestackStyles, SearchstackStyles  } from "./config";
+import { stackStyles, HomestackStyles, SearchstackStyles } from "./config";
 import CommentDetail from "../screens/CommentDetail";
 import EditProfile from '../screens/EditProfile';
 import Users from '../screens/ViewUserLIst/Users';
@@ -34,17 +34,17 @@ const stackFactory = (initialRoute, customConfig) =>
     Detail: {
       screen: Detail,
       navigationOptions: {
-      title: "Photo",
-      headerTitle : (
-        <View style = {{ alignItems : "center", flex : 1}}>
-          <Text style = {{ fontSize : 30 , color : TINT_COLOR, fontWeight: "200"}}>
-            Post
+        title: "Photo",
+        headerTitle: (
+          <View style={{ alignItems: "center", flex: 1 }}>
+            <Text style={{ fontSize: 30, color: TINT_COLOR, fontWeight: "200" }}>
+              Post
           </Text>
-        </View>
-      )
+          </View>
+        )
       }
     },
-    
+
     CommentDetail: {
       screen: CommentDetail,
       navigationOptions: ({ navigation }) => ({
@@ -59,7 +59,7 @@ const stackFactory = (initialRoute, customConfig) =>
       })
     },
 
-    Users:{
+    Users: {
       screen: Users,
       navigationOptions: ({ navigation }) => ({
         title: navigation.getParam("username")
@@ -77,7 +77,7 @@ const stackFactory = (initialRoute, customConfig) =>
         title: "포스트 수정"
       })
     },
-    
+
     UserDetail: {
       screen: UserDetail,
       navigationOptions: ({ navigation }) => ({
@@ -92,13 +92,13 @@ const stackFactory = (initialRoute, customConfig) =>
       })
     }
   },
-  {
-    defaultNavigationOptions: {
+    {
+      defaultNavigationOptions: {
         headerBackTitle: null,
         headerTintColor: styles.blackColor,
         //headerStyle: { ...stackStyles }
-    }
-  });
+      }
+    });
 
 const HeaderRight = styled.View`
 flex-direction : row;
@@ -114,165 +114,143 @@ color : ${mainPink};
 
 /* 탭 내비게이션 메뉴 설정 */
 export default createBottomTabNavigator({
-  
+
   Home: {
     screen: stackFactory(Home, {
-     // title: "Ellicious",
+      // title: "Ellicious",
       headerRight: (
         <HeaderRight>
           <MessagesLink />
-          <AlarmsLink/>
+          <AlarmsLink />
         </HeaderRight>
-        ),
-        headerLeft : (
-          <View style = {{ alignItems : "flex-start", flex : 1, padding : 5,  marginLeft : 5, marginTop : 10}}>
-            <Title>
-              Ellicious
-            </Title>
-          </View>
-        ),
-        headerStyle: HomestackStyles 
-     /* headerTitle : (
-        <View style = {{ alignItems : "flex-start", flex : 1, padding : 5,  marginLeft : 5, backgroundColor:'red'
-        }}>
-          <Text style = {{ fontFamily : 'korElli', fontSize : 35 , color : PointPink}}>
+      ),
+      headerLeft: (
+        <View style={{ alignItems: "flex-start", flex: 1, padding: 5, marginLeft: 5, marginTop: 10 }}>
+          <Title>
             Ellicious
-          </Text>
+            </Title>
         </View>
-      ) */
+      ),
+      headerStyle: HomestackStyles
+      /* headerTitle : (
+         <View style = {{ alignItems : "flex-start", flex : 1, padding : 5,  marginLeft : 5, backgroundColor:'red'
+         }}>
+           <Text style = {{ fontFamily : 'korElli', fontSize : 35 , color : PointPink}}>
+             Ellicious
+           </Text>
+         </View>
+       ) */
     }),
     navigationOptions: {
       tabBarIcon: ({ focused }) => (
-          <AntDesign
-            focused={focused}
-            color={focused ? mainPink : Grey}
-            name={Platform.OS === "ios" ? "home" : "home"}
-            size={27}
-          />
+        <AntDesign
+          focused={focused}
+          color={focused ? mainPink : Grey}
+          name={Platform.OS === "ios" ? "home" : "home"}
+          size={27}
+        />
       )
     }
   },
-  
+
   Search: {
     screen: stackFactory(Search, {
       headerBackTitle: null,
-      headerStyle: SearchstackStyles 
+      headerStyle: SearchstackStyles
     }),
     navigationOptions: {
       tabBarIcon: ({ focused }) => (
-          <AntDesign
-            size={27}
-            color={focused ? mainPink : Grey}
-            focused={focused}
-            name={Platform.OS === "ios" ? "search1" : "search1"}
-          />
+        <AntDesign
+          size={27}
+          color={focused ? mainPink : Grey}
+          focused={focused}
+          name={Platform.OS === "ios" ? "search1" : "search1"}
+        />
       )
     }
   },
+
   Add: {
     screen: View,
     headerStyle: stackStyles,
     navigationOptions: {
-        tabBarOnPress: ({ navigation }) => navigation.navigate("PhotoNavigation"),
-        tabBarIcon: ({ focused }) => (
-          <AntDesign
-            color={focused ? mainPink : Grey}
-            focused={focused}
-            size={28}
-            name={Platform.OS === "ios" ? "pluscircleo" : "pluscircleo"}
-          />
+      tabBarOnPress: ({ navigation }) => navigation.navigate("PhotoNavigation"),
+      tabBarIcon: ({ focused }) => (
+        <AntDesign
+          color={focused ? mainPink : Grey}
+          focused={focused}
+          size={28}
+          name={Platform.OS === "ios" ? "pluscircleo" : "pluscircleo"}
+        />
       )
     }
   },
+
   Profile: {
     screen: stackFactory(Profile, {
       headerStyle: stackStyles,
       title: "프로필",
-      headerTitle : (
-        <View style = {{ alignItems : "center", flex : 1}}>
-          <Text style = {{ fontSize : 30 , color : mainPink, fontWeight: "200"}}>
+      headerTitle: (
+        <View style={{ alignItems: "center", flex: 1 }}>
+          <Text style={{ fontSize: 30, color: mainPink, fontWeight: "200" }}>
             Profile
           </Text>
         </View>
       )
     }),
     navigationOptions: {
-        tabBarIcon: ({ focused }) => (
-            <AntDesign
-              size={28}
-              color={focused ? mainPink : Grey}
-              focused={focused}
-              name={Platform.OS === "ios" ? "user" : "user"}
-            />
-        )
+      tabBarIcon: ({ focused }) => (
+        <AntDesign
+          size={28}
+          color={focused ? mainPink : Grey}
+          focused={focused}
+          name={Platform.OS === "ios" ? "user" : "user"}
+        />
+      )
     }
   },
-  
-  Profile: {
-    screen: stackFactory(Profile, {
-      headerStyle: stackStyles,
-      title: "프로필",
-      headerTitle : (
-        <View style = {{ alignItems : "center", flex : 1}}>
-          <Text style = {{ fontSize : 30 , color : mainPink, fontWeight: "200"}}>
-            Profile
-          </Text>
-        </View>
-      )
-    }),
-    navigationOptions: {
-        tabBarIcon: ({ focused }) => (
-            <AntDesign
-              size={28}
-              color={focused ? mainPink : Grey}
-              focused={focused}
-              name={Platform.OS === "ios" ? "user" : "user"}
-            />
-        )
-    }
-  },  
 
   MyPick: {
     screen: stackFactory(MyPick, {
-      headerStyle: stackStyles ,
+      headerStyle: stackStyles,
       title: "MyPick",
-      headerTitle : (
-        <View style = {{ alignItems : "center", flex : 1}}>
-          <Text style = {{ fontSize : 30 , color : mainPink, fontWeight: "200"}}>
-           MyPick
+      headerTitle: (
+        <View style={{ alignItems: "center", flex: 1 }}>
+          <Text style={{ fontSize: 30, color: mainPink, fontWeight: "200" }}>
+            MyPick
           </Text>
         </View>
       )
     }),
     navigationOptions: {
-        tabBarIcon: ({ focused }) => (
-            <AntDesign
-              focused={focused}
-              color={focused ? mainPink : Grey}
-              name={
-                Platform.OS === "ios"
-                  ? focused
-                    ? "pushpin"
-                    : "pushpino"
-                  : focused
-                  ? "pushpin"
-                  : "pushpino"
-              }
-              size={27}
-            />
-        )
+      tabBarIcon: ({ focused }) => (
+        <AntDesign
+          focused={focused}
+          color={focused ? mainPink : Grey}
+          name={
+            Platform.OS === "ios"
+              ? focused
+                ? "pushpin"
+                : "pushpino"
+              : focused
+                ? "pushpin"
+                : "pushpino"
+          }
+          size={27}
+        />
+      )
     }
   },
 },
-{
-  tabBarOptions: {
-    showLabel: false,
-    style : {
-      height:50,
-      //backgroundColor : mainPink
-      //height : 50
-      height : 50
+  {
+    tabBarOptions: {
+      showLabel: false,
+      style: {
+        height: 50,
+        //backgroundColor : mainPink
+        //height : 50
+        height: 50
+      }
     }
-}  
-}
+  }
 );

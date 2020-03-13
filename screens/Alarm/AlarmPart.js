@@ -6,10 +6,23 @@ import PropTypes from "prop-types";
 import Swiper from "react-native-swiper";
 import { gql } from "apollo-boost";
 import { useMutation, useQuery } from "react-apollo-hooks";
-import { IconColor, StarColor, TINT_COLOR, Grey, PointPink, BG_COLOR, LightGrey, Line, LightPink, mainPink } from '../../components/Color';
+import { IconColor, TINT_COLOR, Grey, PointPink, BG_COLOR, LightGrey, Line, LightPink, mainPink } from '../../components/Color';
 import { withNavigation } from "react-navigation";
 import { ALARM_FRAGEMENT } from '../../fragments';
-import FollowButton from '../../components/FollowButton';
+// import FollowButton from '../../components/FollowButton';
+
+
+export const FOLLOW = gql`
+  mutation follow($id: String!) {
+    follow(id: $id)
+  }
+`;
+
+export const UNFOLLOW = gql`
+  mutation unfollow($id: String!) {
+    unfollow(id: $id)
+  }
+`;
 
 const Container = styled.View`
   flex : 1;
@@ -37,6 +50,15 @@ const TextName = styled.Text`
 font-weight : 700;
 `;
 
+const FollowButton =styled.TouchableOpacity`
+  width: 70px;
+  height: 27px;
+  background-color: ${props=>props.backgroundColor};
+  border-radius: 7px;
+  alignItems: center;
+  justifyContent: center;
+  `;
+
 const CHECK_ALARM = gql`
     mutation checkAlarm ($alarmId: String!, $check: Boolean!){
         checkAlarm (alarmId: $alarmId, check: $check) {
@@ -63,6 +85,33 @@ const AlarmPart = ({
 }) => {
 
     const [checkAlarmMutation] = useMutation(CHECK_ALARM)
+    const [followingConfirm, setFollowing] = useState(from.isFollowing);
+
+    const [FollowMutation] = useMutation(FOLLOW, {
+        variables: {
+        id: from.id
+        }});
+    
+      const [UnFollowMutation] = useMutation(UNFOLLOW, {
+        variables:{
+          id: from.id
+        }
+      });
+
+    const handleFollow = async () =>{
+        try{
+          if(followingConfirm === true) {
+            setFollowing(f => !f);
+            await UnFollowMutation();
+            console.log("언팔완료")
+
+          } else {
+            setFollowing(f => !f);
+            await FollowMutation();
+            console.log("완료")
+          }
+        } catch (e) {}
+      };
 
     const checkAlarms = async () => {
         await checkAlarmMutation({
@@ -196,7 +245,10 @@ const AlarmPart = ({
                                     <Text>님이 팔로우를 했어요!</Text>
                                 </TextCon>
                                 <View />
-                                <FollowButton />
+                                <FollowButton onPress = {handleFollow} backgroundColor={followingConfirm ? LightGrey :mainPink}>
+                                    <Text style={followingConfirm ? {color:"black"} : {color:"white"}}>Following</Text>   
+                                </FollowButton>                                
+                                
                             </Header>
                         </TouchableOpacity>
                     </CheckingView>
@@ -218,7 +270,8 @@ AlarmPart.propTypes = {
     from: PropTypes.shape({
         id: PropTypes.string.isRequired,
         avatar: PropTypes.string,
-        username: PropTypes.string.isRequired
+        username: PropTypes.string.isRequired,
+        isFollowing: PropTypes.bool,
     }).isRequired,
     post: PropTypes.shape({
         id: PropTypes.string.isRequired,

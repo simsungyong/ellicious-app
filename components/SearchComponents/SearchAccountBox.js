@@ -126,7 +126,7 @@ const SearchAccountBox = ({ navigation, username, firstName, avatar, id, isSelf,
       <View/>
       <Button>
         <FollowButton onPress={handleFollow} backgroundColor={followingConfirm ? LightGrey :mainPink }>
-          <Text style={{color:"black"}}>Following</Text>
+          <Text style={followingConfirm ? {color:"black"} : {color:"white"}}>Following</Text>
         </FollowButton>
       </Button>
     </Container>

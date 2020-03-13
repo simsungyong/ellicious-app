@@ -64,7 +64,7 @@ export default class ChatScreen extends React.Component {
         // }
     });
     _isMounted = false;
-
+    _isRead = false;
     constructor(props) {
         super(props);
         this.state = {
@@ -90,9 +90,11 @@ export default class ChatScreen extends React.Component {
         }
         this.state._isMounted = false;
     }
+    
 
     componentDidMount() {
         this.state._isMounted = true;
+        
         this.keyboardShowListener = Keyboard.addListener(isIOS ? 'keyboardWillShow' : 'keyboardDidShow',
             (e) => this.keyboardEvent(e, true));
         this.keyboardShowListener = Keyboard.addListener(isIOS ? 'keyboardWillHide' : 'keyboardDidHide',
@@ -108,6 +110,12 @@ export default class ChatScreen extends React.Component {
                     })
                 }
             })
+       
+        // firebase.database().ref('users/' + this.state.person.userId + '/friends/' + User.userId)
+        // .on("child_changed", (value)=>{
+        //     this.setState({_isRead : value})
+        // })
+
 
     }
 

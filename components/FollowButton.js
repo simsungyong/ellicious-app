@@ -7,7 +7,7 @@ const Button = styled.View`
     alignItems: center;
     justifyContent: center;
     borderRadius: 5;
-    background-color : #3897f0
+    background-color : ${props=>props.backgroundColor};
     width : 70;
     height : 30;
 `;
@@ -20,7 +20,7 @@ const Button = styled.View`
     render(){
       return (
         <TouchableOpacity>
-            <Button>
+            <Button onPress={this.props.onPress} backgroundColor={this.props.background}>
                 <Text>Following</Text>
             </Button>
         </TouchableOpacity>

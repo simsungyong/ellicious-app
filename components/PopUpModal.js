@@ -41,6 +41,7 @@ const PopUpModal = (props) => {
                     flexDirection: 'column',
                     justifyContent: 'center',
                     alignItems: 'center',
+                    borderRadius: 20,
                     backgroundColor: 'rgba(0,0,0,0.50)'
                 }}
             >
@@ -48,19 +49,19 @@ const PopUpModal = (props) => {
                     width: 300,
                     height: 150,
                     backgroundColor: 'white',
-                    borderRadius: 20
+                    borderRadius: 20,
+                    
                 }}>
 
                     <Text
                         style={{
                             flex: 1.5,
                             width: 300,
-                            backgroundColor: '#32C5E6',
+                            backgroundColor: '#3AC5E6',
                             color: 'white',
                             fontSize: 20,
                             paddingLeft: 15,
-                            borderTopLeftRadius: 20,
-                            borderTopRightRadius: 20
+                            
                         }}
                     >알림</Text>
 

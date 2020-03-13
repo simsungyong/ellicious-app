@@ -290,8 +290,9 @@ const handleFollow = async () =>{
                   color={Grey}
                   size={17}
                   name={"pencil"}
-                  /></TouchableOpacity> : <FollowButton onPress={handleFollow} backgroundColor={followingConfirm ? LightGrey :mainPink }>
-                  <Text style={{color:"black"}}>Following</Text>
+                  />
+                  </TouchableOpacity> : <FollowButton onPress={handleFollow} backgroundColor={followingConfirm ? LightGrey :mainPink }>
+                  <Text style={followingConfirm ? {color:"black"} : {color:"white"}}>Following</Text>
                 </FollowButton>
             }
           </EditCon>

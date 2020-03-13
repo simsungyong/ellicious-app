@@ -175,6 +175,7 @@ export const ALARM_FRAGEMENT = gql`
       id
       username
       avatar
+      isFollowing
     }
     check
     category

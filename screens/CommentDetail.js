@@ -166,7 +166,7 @@ export default ({navigation})=>{
               data && data.seeComment && data.seeComment.map(comment=>
               <PostOfComment 
               key={comment.id}{...comment}
-              postUser={User.username}
+              postUser={username}
               />)
             )}
           <KeyboardSpacer/>

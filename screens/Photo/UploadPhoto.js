@@ -226,7 +226,10 @@ export default ({navigation}) => {
     refetchQueries: ()=>[{query: seeCategory}]
   });
   const [uploadMutation] = useMutation(UPLOAD, {
-    refetchQueries: ()=>[{query: FEED_QUERY},{query: ME }]
+    refetchQueries: ()=>[{query: FEED_QUERY, variables : {
+      pageNumber: 0,
+      items: 6
+    }},{query: ME }]
   });
 
   const handleSubmit=async()=>{

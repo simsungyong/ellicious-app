@@ -1,6 +1,5 @@
 import React from 'react'
 import Post from '../../components/Post';
-import PostUpdate from '../../components/PostUpdate';
 import { View, Text, StyleSheet, FlatList, Alert } from 'react-native';
 import styled from "styled-components";
 import { BG_POST_COLOR } from '../../components/Color';
@@ -67,7 +66,7 @@ export default class HomePresenter extends React.Component {
         return (
             <>
                 <View style={styles.items}>
-                    <PostUpdate item={item} />
+                    <Post key={item.id}{...item} />
                 </View>
 
             </>
@@ -144,6 +143,7 @@ export default class HomePresenter extends React.Component {
 
 const styles = StyleSheet.create({
     items: {
-        flex: 1
+        flex: 1,
+        marginBottom:2
     }
 })

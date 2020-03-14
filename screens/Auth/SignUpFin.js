@@ -69,7 +69,7 @@ export default ({ navigation }) => {
           
         </InfoCon>
         <View>
-          <AuthButton loading={loading} onPress={() => navigation.navigate("AuthHome")} text="로 그 인" />
+          <AuthButton onPress={() => navigation.navigate("AuthHome")} text="로 그 인" />
         </View>
 
       </Container>

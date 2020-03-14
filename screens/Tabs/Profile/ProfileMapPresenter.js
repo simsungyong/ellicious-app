@@ -73,7 +73,7 @@ class ProfileMapPresenter extends React.Component {
         this.state = { marker, region, navigation, isClick: false, indexNum: -1 };
     }
 
-
+    
 
 
   
@@ -132,8 +132,9 @@ class ProfileMapPresenter extends React.Component {
                     mapRef={(ref) => mapView = ref}
                     clusterColor={mainPink}
                     initialRegion={{
-                        latitude: 36.519959, longitude: 127.889604,
-                        latitudeDelta: 3, longitudeDelta: 3
+                        latitude: 35.393181, longitude: 127.924964,
+                        latitudeDelta: 4.8, longitudeDelta: 4.8
+                        
                     }}
                     style={{ flex: 1 }}
                     showsUserLocation={true}>

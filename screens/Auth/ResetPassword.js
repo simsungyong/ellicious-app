@@ -86,9 +86,9 @@ export default ({ navigation }) => {
             }})
 
             if(data && data.updatePassword) {
-                Alert.alert("재설정 성공");
+                Alert.alert("재설정하였습니다.");
             } else {
-                Alert.alert("재설정 실패");
+                Alert.alert("재설정 실패하였습니다.");
             }
 
           } catch (e) {

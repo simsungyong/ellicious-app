@@ -11,7 +11,7 @@ import { POST_COMMENT } from "../fragments";
 import PostOfComment from '../components/CommentComponents/PostOfComment';
 import { LightGrey, CommentsBox, mainPink } from "../components/Color";
 import User from '../User';
-import { FEED_QUERY } from "../components/Post";
+import { POST_QUERY } from "../components/Post";
 
 const InfoCon=styled.View`
   flex:1;
@@ -80,7 +80,7 @@ export default ({navigation})=>{
     const [addComments] = useMutation(ADD_COMMENTS, {
       refetchQueries:()=>[{query:GET_COMMENTS, 
       variables:{ postId} },
-      {query:FEED_QUERY}
+      {query:POST_QUERY}
     ]
     });
     

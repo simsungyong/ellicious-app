@@ -17,7 +17,7 @@ import { withNavigation } from "react-navigation";
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import Modal, { ModalTitle, ModalContent, ModalFooter, ModalButton } from 'react-native-modals';
 import CommentInput from './CommentInput';
-import { FEED_QUERY } from "../Post";
+import { POST_QUERY } from "../Post";
 import { CHILD_COMMENT } from "../../fragments";
 import PopUpModal from '../../components/PopUpModal';
 import User from '../../User';
@@ -182,7 +182,7 @@ const PostOfComment = ({
           postId: post.id
         }
       },
-      { query: FEED_QUERY }
+      { query: POST_QUERY }
     ]
   });
   const [deleteComment] = useMutation(DELETE_COMMENT, {
@@ -192,7 +192,7 @@ const PostOfComment = ({
           postId: post.id
         }
       },
-      { query: FEED_QUERY }
+      { query: POST_QUERY }
     ]
   })
   const [deleteChildComment] = useMutation(DELETE_CHILD_COMMENT, {
@@ -207,7 +207,7 @@ const PostOfComment = ({
           postId: post.id
         }
       },
-      { query: FEED_QUERY }
+      { query: POST_QUERY }
     ]
   })
   const commentInput = useInput();

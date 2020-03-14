@@ -78,18 +78,7 @@ export default ({ navigation }) => {
     }
   });
   
-  const checkpw=()=>{
-    if (passwordInput.value === "" || passwordInput.value===undefined) {
-        Alert.alert("비밀번호를 입력하세요");
-    } else if(passwordInput.value.length < 8) {
-      Alert.alert("비밀번호를 8자이상 입력하세요");
-    }else if(passwordConfirmInput.value !== passwordInput.value){
-      Alert.alert("비밀번호가 다릅니다.");
-    }
-    else{
-      navigation.navigate("SignUpFin",{fName,lName,phoneNum,username, pw:passwordInput.value})
-    }
-  }
+  
   
   const handleSubmit=async()=>{
     if (passwordInput.value === "" || passwordInput.value===undefined) {
@@ -114,6 +103,7 @@ export default ({ navigation }) => {
             Alert.alert("회원가입실패");
           } finally {
             setLoading(false);
+            console.log("완료")
             navigation.navigate("SignUpFin")
           }
       }

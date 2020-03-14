@@ -137,8 +137,9 @@ class MyPickPresenter extends React.Component {
                     mapRef={(ref) => mapView = ref}
                     clusterColor={mainPink}
                     initialRegion={{
-                        latitude: 36.519959, longitude: 127.889604,
-                        latitudeDelta: 3, longitudeDelta: 3
+                        latitude: 35.911368, longitude: 127.961908,
+                        latitudeDelta: 4, longitudeDelta: 4
+                         
                     }}
                     style={{ flex: 1 }}
                     showsUserLocation={true}>

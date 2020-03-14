@@ -22,7 +22,8 @@ import { UNFOLLOW } from "./UserProfile";
 import { ScrollView } from "react-native-gesture-handler";
 import {GET_PICK} from '../screens/Tabs/MyPick/MyPick'
 import Star from '../components/Star'
-export const FEED_QUERY = gql`
+import {FEED_QUERY} from '../screens/Auth/AuthQueries'
+export const POST_QUERY = gql`
   {
     seeFeed {
       ...PostParts
@@ -192,20 +193,27 @@ const Post = ({
         variables: {
         postId: id,
         toId: user.id
-
-        }});
+        }},{
+          refetchQueries:()=>[{query:ME}]
+        });
 
       const [togglePickMutation] = useMutation(TOGGLE_PICK, {
-        refetchQueries:()=>[{query: GET_PICK}]
+        refetchQueries:()=>[{query: GET_PICK},{query: ME}]
 
       });
       
       const [deleteMutation] = useMutation(DELETE_POST, {
-        refetchQueries: ()=>[{query: FEED_QUERY},{query: ME}]
+        refetchQueries: ()=>[{query: FEED_QUERY, variables:{
+          pageNumber: 0,
+          items: 6
+        }},{query: ME}]
       });
 
       const [unFollowMutation] = useMutation(UNFOLLOW, {
-        refetchQueries: ()=>[{query: FEED_QUERY},{query: ME}]
+        refetchQueries: ()=>[{query: FEED_QUERY, variables:{
+          pageNumber: 0,
+          items: 6
+        }},{query: ME}]
       });
 
       const handleDelete =()=> {

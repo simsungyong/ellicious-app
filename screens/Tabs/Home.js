@@ -140,7 +140,7 @@ const Home = ({ navigation }) => {
   const refresh = async () => {
     await setRefreshing(true);
     try {
-      await this.props.refetch();
+      await refetch();
     } catch (e) {
       console.log(e);
     } finally {

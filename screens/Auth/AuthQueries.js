@@ -1,4 +1,5 @@
 import { gql } from "apollo-boost";
+import { POST_FRAGMENT } from "../../fragments";
 
 export const REQUEST_SECRET = gql`
   mutation requestSecret($phoneNum: String!) {
@@ -50,3 +51,23 @@ export const UPDATE_PASSWORD = gql`
     updatePassword(phoneNum: $phoneNum, password: $password)
   }
 `;
+
+
+export const POST_QUERY = gql`
+  {
+    seeFeed {
+      ...PostParts
+    }
+  }
+  ${POST_FRAGMENT}
+`;
+
+
+export const FEED_QUERY = gql`
+  query seeFeed($pageNumber: Int!, $items: Int!){
+    seeFeed(pageNumber: $pageNumber, items: $items){
+      ...PostParts
+    }
+  }
+  ${POST_FRAGMENT}
+`

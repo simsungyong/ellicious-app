@@ -53,6 +53,13 @@ margin-right : 5px;
 const View = styled.View`
   justify-content: center;
   align-items: center;
+  margin-top : 20px;
+  flex: 1;
+`;
+const HView = styled.View`
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
   flex: 1;
 `;
 const Container = styled.View`
@@ -63,6 +70,10 @@ padding-right : 1px;
 
 const Text = styled.Text``;
 
+const TextLink = styled.Text`
+color : red;
+font-size: 18px;
+`;
 
 const StoreInfo = styled.View`
   align-items: center;
@@ -186,6 +197,7 @@ const Home = ({ navigation }) => {
     ask();
   }, []);
 
+
   return (
     <Container>
       {!loading2 ?
@@ -202,7 +214,7 @@ const Home = ({ navigation }) => {
         <Loader />
       }
 
-      {!loading ?
+      {data ? data.seeFeed.length > 0 ?
         <HomePresenter
           feedData={data.seeFeed}
           // feedData={feedData}
@@ -212,7 +224,23 @@ const Home = ({ navigation }) => {
           isEnd={isEnd}
           refreshing={refreshing}
           refresh={refresh}
-        /> :
+        /> : 
+        <ScrollView refreshControl = {
+          <RefreshControl
+          refreshing={refreshing} onRefresh={() => {refresh()}}
+          />
+        }>
+          <View>
+            <Text>아직도 게시물이 없으세요?</Text>
+            <HView>
+              <TouchableOpacity onPress={() => navigation.navigate("PhotoNavigation")}>
+                <TextLink>여기</TextLink>
+              </TouchableOpacity>
+              <Text>를 눌러 게시물을 추가해보세요</Text>
+            </HView>
+          </View>
+        </ScrollView>
+        :
         <Loader />
       }
     </Container>

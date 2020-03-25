@@ -9,6 +9,7 @@ import MyPick from "../screens/Tabs/MyPick/MyPick";
 import Profile from "../screens/Tabs/Profile/Profile";
 import Detail from "../screens/Detail";
 import MessagesLink from "../components/MessageComponents/MessagesLink";
+import SettingLink from "../components/SettingLink";
 import NavIcon from "../components/NavIcons";
 import AlarmsLink from "../components/AlarmsLink";
 import { stackStyles, HomestackStyles, SearchstackStyles } from "./config";
@@ -189,7 +190,7 @@ export default createBottomTabNavigator({
       title: "프로필",
       headerRight: (
         <ConfigHeader>
-          <Text>설정</Text>
+          <SettingLink />
         </ConfigHeader>
       ),
       headerTitle: (

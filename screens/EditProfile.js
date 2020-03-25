@@ -108,6 +108,7 @@ const EditProfile=({
   const usernameInput = useInput();
   const firstnameInput = useInput();
   const lastnameInput = useInput();
+  const emailInput = useInput();
   const [editProfilePictureMutation] = useMutation(EDIT_USER, {
     refetchQueries: ()=>[{query: FEED_QUERY},{query: ME }]
   });
@@ -215,7 +216,7 @@ const EditProfile=({
                 borderBottomWidth: 1, 
                 borderBottomColor: mainPink,
               }}
-            onChangeText={lastName.onChange}
+            onChangeText={lastnameInput.onChange}
             placeholderTextColor={Grey}
             >
               {lastName}
@@ -232,7 +233,7 @@ const EditProfile=({
                 borderBottomWidth: 1, 
                 borderBottomColor: mainPink,
               }}
-            onChangeText={firstName.onChange}
+            onChangeText={firstnameInput.onChange}
             placeholderTextColor={Grey}
             >
               {firstName}
@@ -249,7 +250,7 @@ const EditProfile=({
                 borderBottomWidth: 1, 
                 borderBottomColor: mainPink,
               }}
-            onChangeText={email.onChange}
+            onChangeText={emailInput.onChange}
             placeholderTextColor={Grey}
             >
               {email}

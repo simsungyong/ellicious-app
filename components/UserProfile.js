@@ -13,8 +13,16 @@ import { gql } from "apollo-boost";
 import { useMutation } from "react-apollo-hooks";
 import { withNavigation } from "react-navigation";
 import SameFollowModal from "./SameFollowModal";
-import { FEED_QUERY } from "../screens/Tabs/Home";
+import { POST_FRAGMENT } from "../fragments";
 
+const FEED_QUERY = gql`
+  query seeFeed($pageNumber: Int!, $items: Int!){
+    seeFeed(pageNumber: $pageNumber, items: $items){
+      ...PostParts
+    }
+  }
+  ${POST_FRAGMENT}
+`
 export const FOLLOW = gql`
   mutation follow($id: String!) {
     follow(id: $id)
@@ -26,6 +34,8 @@ export const UNFOLLOW = gql`
     unfollow(id: $id)
   }
 `;
+
+
 
 const Container = styled.View`
   flex : 1;

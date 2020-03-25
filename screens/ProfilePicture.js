@@ -95,7 +95,7 @@ export default ({navigation}) => {
         setLoading(true);
         const {
           data: {temp}
-        } = await axios.post("http://192.168.0.135:4000/api/upload", formData, {
+        } = await axios.post("http://13.125.147.101:4000/api/upload", formData, {
           headers:{
             "content-type" : "multipart/form-data"
           }

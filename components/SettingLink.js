@@ -9,7 +9,7 @@ import { useLogOut } from "../AuthContext";
 
 const Container = styled.TouchableOpacity``;
 const Text = styled.Text`
-color : white;
+    
 `;
 const View = styled.View`
   margin-left : 10px;

@@ -10,8 +10,9 @@ import * as Permissions from 'expo-permissions';
 import { POST_FRAGMENT } from "../../fragments";
 import HomePresenter from './HomePresenter';
 import { withNavigation } from "react-navigation";
-import { TINT_COLOR, BG_POST_COLOR } from '../../components/Color';
-
+import { TINT_COLOR, BG_POST_COLOR, Grey,LightGrey } from '../../components/Color';
+import Section from '../../components/Section';
+import RecommendItem from '../../components/RecommendItem';
 
 export const EDIT_USER = gql`
   mutation editUser($notifyToken: String) {
@@ -35,9 +36,11 @@ export const RECOMMEND = gql`
     recommendUser(pageNumber: $pageNumber, items: $items){
       username
       id
+      isFollowing
       avatar
+      followersCount
       firstName
-      bio
+      isSelf
     }
   }
   `
@@ -53,9 +56,9 @@ const View = styled.View`
   flex: 1;
 `;
 const Container = styled.View`
-background-color : ${BG_POST_COLOR};
-padding-left: 2px;
-padding-right : 2px;
+background-color : ${LightGrey};
+padding-left: 1px;
+padding-right : 1px;
 `;
 
 const Text = styled.Text``;
@@ -82,6 +85,7 @@ const Home = ({ navigation }) => {
   const [isEnd, setIsEnd] = useState(false);
   const [lastLength, setLastLength] = useState();
   const [refreshing, setRefreshing] = useState(false);
+  // const [top10, setTop10] = useState(true);
 
 
   const [tokenMutation] = useMutation(EDIT_USER);
@@ -92,13 +96,12 @@ const Home = ({ navigation }) => {
     },
   });
   ;
-  // const {loading:loading2, data:data2, refetch:refetch2} = useQuery(RECOMMEND,{
-  //   skip: check,
-  //   variables: {
-  //     pageNumber: 0,
-  //     items: 15
-  //   }
-  // });
+  const {loading:loading2, data:data2, refetch:refetch2} = useQuery(RECOMMEND,{
+    variables: {
+      pageNumber: 0,
+      items: 10
+    }
+  });
 
   const ask = async () => {
     const { status: existingStatus } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
@@ -184,7 +187,21 @@ const Home = ({ navigation }) => {
   }, []);
 
   return (
-    <>
+    <Container>
+      {!loading2 ?
+        <Section title="Top10 엘리셔">{data2.recommendUser
+            .filter(user=>user.isSelf==false)
+            .map(user=>(
+                <RecommendItem
+                    key={user.id}
+                    id={user.id}
+                    avatar={user.avatar}
+                    followersCount={user.followersCount}
+                    username={user.username}/>
+            ))}</Section>:
+        <Loader />
+      }
+
       {!loading ?
         <HomePresenter
           feedData={data.seeFeed}
@@ -198,7 +215,7 @@ const Home = ({ navigation }) => {
         /> :
         <Loader />
       }
-    </>
+    </Container>
   )
 }
 

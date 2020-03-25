@@ -136,9 +136,10 @@ flex-direction : column
 flex : 1;
 `;
 
-const SameCon = styled.TouchableOpacity`
+const SameCon = styled.View`
 flex-direction : row;
 padding:4px;
+
 `;
 const BioCon = styled.View`
 flex-direction : row;
@@ -152,7 +153,7 @@ flex : 1;
 `;
 
 const ModalHeader=styled.View`
-background-color : ${LightPink}
+background-color : ${mainPink}
 height : 40px;
 justifyContent: center;
 alignItems: center;
@@ -213,8 +214,8 @@ const UserProfile = ({
   fullName,
   category,
   firstName,
-  email,
   lastName,
+  email,
   navigation,
   isSelf,
   isFollowing,
@@ -302,13 +303,16 @@ const handleFollow = async () =>{
             <Text>{bio}</Text>
           </BioCon>
           {!isSelf ? (
-          <SameCon onPress={()=>setModalstate(true)}>
-            <Blank/>
-            {sametimeFollow[0] ? 
-            <Text>{sametimeFollow[0].username+`님 등 ${sametimeFollow.length-1} 명이 팔로우 해요!`}</Text>
+            sametimeFollow[0] ?
+              <SameCon> 
+                <Blank/>
+                <TouchableOpacity onPress={()=>setModalstate(true)}>
+                    <Text>{sametimeFollow[0].username+`님 등 ${sametimeFollow.length-1} 명이 팔로우 해요!`}</Text>
+                    </TouchableOpacity>
+                </SameCon>
             : null
-          }
-          </SameCon>) : null
+          
+         ) : null
           }
           </NameCon>
           <FollowCon>
@@ -357,7 +361,7 @@ const handleFollow = async () =>{
           swipeToClose={false}
         >
           <ModalHeader>
-            <Text style={{fontSize : 19}}>함께 아는 친구</Text>
+            <Text style={{fontSize : 19, color:'white'}}>함께 아는 친구</Text>
           </ModalHeader>
           <ScrollView>
            {sametimeFollow.map(user=><SameFollowModal key={user.id} {...user}/>)}

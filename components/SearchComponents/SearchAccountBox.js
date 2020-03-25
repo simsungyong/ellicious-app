@@ -8,6 +8,8 @@ import styled from "styled-components";
 import { gql } from "apollo-boost";
 import { useQuery, useMutation } from "react-apollo-hooks";
 import { LightPink, Grey, TINT_COLOR, PointPink, mainPink, LightGrey, Line } from "../Color";
+import { FEED_QUERY } from '../../screens/Tabs/Home';
+import { GET_USER } from '../../screens/UserDetail';
 
 const SEE_USER = gql`
   query seeUser($id: String!) {
@@ -75,12 +77,23 @@ const SearchAccountBox = ({ navigation, username, firstName, avatar, id, isSelf,
   const [FollowMutation] = useMutation(FOLLOW, {
     variables: {
     id: id
-    }});
+    }, refetchQueries: ()=>[{query: FEED_QUERY, variables: {
+      pageNumber: 0,
+      items: 6
+    }}, {query: GET_USER, variables: {
+      id: id
+    }}]
+  });
 
-  const [UnFollowMutation] = useMutation(UNFOLLOW, {
+  const [UnFollowMutation] = useMutation(UNFOLLOW,  {
     variables:{
       id: id
-    }
+    }, refetchQueries: ()=>[{query: FEED_QUERY, variables: {
+      pageNumber: 0,
+      items: 6
+    }}, {query: GET_USER, variables: {
+      id
+    }}]
   });
 
 

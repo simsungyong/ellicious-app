@@ -13,6 +13,7 @@ import { gql } from "apollo-boost";
 import { useMutation } from "react-apollo-hooks";
 import { withNavigation } from "react-navigation";
 import SameFollowModal from "./SameFollowModal";
+import { FEED_QUERY } from "../screens/Tabs/Home";
 
 export const FOLLOW = gql`
   mutation follow($id: String!) {
@@ -238,12 +239,19 @@ const UserProfile = ({
   const [FollowMutation] = useMutation(FOLLOW, {
     variables: {
     id: id
-    }});
+    }, refetchQueries: ()=>[{query: FEED_QUERY, variables: {
+      pageNumber: 0,
+      items: 6
+    }}]
+  });
 
   const [UnFollowMutation] = useMutation(UNFOLLOW, {
     variables:{
       id: id
-    }
+    }, refetchQueries: ()=>[{query: FEED_QUERY, variables: {
+      pageNumber: 0,
+      items: 6
+    }}]
   });
 const handleFollow = async () =>{
   try{

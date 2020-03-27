@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform, Text, View, StyleSheet } from "react-native";
+import { Platform, Text, View, StyleSheet ,TouchableWithoutFeedback} from "react-native";
 import styled from 'styled-components';
 import { createBottomTabNavigator } from "react-navigation-tabs"
 import { createStackNavigator } from 'react-navigation-stack';
@@ -131,7 +131,7 @@ export default createBottomTabNavigator({
         </HeaderRight>
       ),
       headerLeft: (
-        <View style={{ alignItems: "flex-start", flex: 1, padding: 5, marginLeft: 5, marginTop: 10 }}>
+        <View style={{ alignItems: "flex-start", flex: 1, padding: 5, marginLeft: 5, marginTop: 5 }}>
           <Title>
             Ellicious
             </Title>
@@ -140,6 +140,9 @@ export default createBottomTabNavigator({
       headerStyle: HomestackStyles
     }),
     navigationOptions: {
+      
+      //tabBarOnPress: ({ navigation }) => navigation.navigate("Home"),
+
       tabBarIcon: ({ focused }) => (
         <AntDesign
           focused={focused}

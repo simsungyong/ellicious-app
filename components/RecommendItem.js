@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import {Text} from 'react-native';
 import styled from 'styled-components';
 import {withNavigation} from 'react-navigation';
+import { mainPink } from './Color';
 
 const ImageCon = styled.View`
     margin-bottom: 5px;
+    
 `;
 
 const Image = styled.Image`
@@ -13,6 +15,8 @@ const Image = styled.Image`
   height: 90;
   borderRadius:30;
   position : relative;
+  borderColor:${mainPink};
+    borderWidth:2;
 `;
 const Container = styled.TouchableOpacity`
     align-items: center;

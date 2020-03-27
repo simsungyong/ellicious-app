@@ -7,19 +7,17 @@ import Swiper from "react-native-swiper";
 import { gql } from "apollo-boost";
 import constants from "../constants";
 import { useMutation, useQuery } from "react-apollo-hooks";
-import styles from "../styles";
 import moment from "moment";
 import { IconColor, StarColor, TINT_COLOR, Grey, PointPink, BG_COLOR, LightGrey, Line, LightPink, mainPink } from '../components/Color';
 import {Card} from 'native-base'
 import { withNavigation } from "react-navigation";
 import Hr from "hr-native";
 import Stars from 'react-native-stars';
-
 import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
 import { POST_FRAGMENT } from "../fragments";
 import {ME} from '../screens/Tabs/Profile/Profile';
 import { UNFOLLOW } from "./UserProfile";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
 import {GET_PICK} from '../screens/Tabs/MyPick/MyPick'
 import Star from '../components/Star'
 import {FEED_QUERY} from '../screens/Auth/AuthQueries'
@@ -263,6 +261,18 @@ const Post = ({
       }catch (e){}
     };
 
+    var lastTap = null;
+    const handleDoubleTap = () => {
+      const now = Date.now();
+      const DOUBLE_PRESS_DELAY = 200;
+      if (lastTap && (now - lastTap) < DOUBLE_PRESS_DELAY) {
+        handleLike();
+      } else {
+        lastTap = now;
+        
+      }
+    }
+
     const handlePick = async () =>{
       if(isPicked === true){
         setPickCount(l=>l-1);
@@ -365,17 +375,24 @@ const Post = ({
           <CaptionCon>
             <Caption>{caption}</Caption>
           </CaptionCon>
-
+          
           <Swiper 
             showsPagination={false}
             style={{height: constants.width/1}}>
+            
               {files.map(file=>(
+              <TouchableWithoutFeedback key={file.id} onPress={handleDoubleTap}>
                 <Image
                   style={{width: constants.width, height:constants.width/1}}
-                  key={file.id}
-                   source={{uri: file.url}}/>
+                  
+                  source={{uri: file.url}}/>
+              </TouchableWithoutFeedback>
+                
               ))}
+             
           </Swiper>
+          
+         
           
             <Tag>
               <ScrollView

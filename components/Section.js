@@ -14,7 +14,7 @@ const Title = styled.Text`
     color: black;
     font-weight: 600;
     padding-left: 20px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     `;
 
 const BoxHide = styled.View`

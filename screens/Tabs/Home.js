@@ -68,6 +68,8 @@ padding-left: 1px;
 padding-right : 1px;
 `;
 
+
+
 const Text = styled.Text``;
 
 const TextLink = styled.Text`

@@ -144,6 +144,5 @@ export default class HomePresenter extends React.Component {
 const styles = StyleSheet.create({
     items: {
         flex: 1,
-        marginBottom:2
     }
 })

@@ -48,6 +48,13 @@ export const DELETE_POST = gql`
   }
 `;
 
+const ModalContainer = styled.View`
+  padding: 5px;
+  flex-direction: row;
+  align-items: center;  
+  padding : 5px;
+`;
+
 
 
 const Container =styled.View`
@@ -512,6 +519,7 @@ const Post = ({
               />
             </ModalFooter>
           </Modal.BottomModal>
+          
           <Modal
             visible={modalAndTitle}
             onTouchOutside={() => setmodalAndTitle(false)}
@@ -533,10 +541,11 @@ const Post = ({
               />
             </ModalFooter>
           </Modal>
+          
+
           <Modal
             visible={modalUpdateAndTitle}
             onTouchOutside={() => setmodalUpdateAndTitle(false)}
-            height={0.3}
             width={0.8}
             onSwipeOut={() => setmodalUpdateAndTitle(false)}
           >

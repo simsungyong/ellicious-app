@@ -6,16 +6,14 @@ import {
     View,
     Image,
     Alert,
-    TextInput,
     Dimensions,
     TouchableOpacity,
     Button,
     Platform,
 } from "react-native";
 import styled from "styled-components";
-import Stars from 'react-native-stars';
-import { ScrollView, TouchableHighlight } from "react-native-gesture-handler";
-import { FontAwesome, EvilIcons, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
+import { ScrollView } from "react-native-gesture-handler";
+import { Entypo } from "@expo/vector-icons";
 import { TINT_COLOR, IconColor, PointPink, StarColor, BG_COLOR, LightGrey, mainPink, Grey, Line, LightPink } from '../../../components/Color';
 import { PROVIDER_GOOGLE, Marker, Callout, Circle } from "react-native-maps";
 import MapView from 'react-native-map-clustering';
@@ -57,7 +55,7 @@ alignItems: flex-start;
 const Bold = styled.Text`
   font-weight: 600;
   margin-bottom : 5px;
-  font-size : 23px;
+  font-size : 20px;
   margin-right : 5px;
 `;
 
@@ -202,17 +200,17 @@ class MyPickPresenter extends React.Component {
                                         <Star rating={this.state.marker[this.state.indexNum].post.rating} size={25} color={StarColor} />
                                     </Title>
                                     <Info>
-                                        <Text>
-                                            {this.state.marker[this.state.indexNum].post.storeLocation.length > 25
-                                                ? `${this.state.marker[this.state.indexNum].post.storeLocation.substring(0, 23)}...`
+                                        <Text style={{fontSize:13}}>
+                                            {this.state.marker[this.state.indexNum].post.storeLocation.length > 33
+                                                ? `${this.state.marker[this.state.indexNum].post.storeLocation.substring(0, 31)}...`
                                                 : this.state.marker[this.state.indexNum].post.storeLocation}
                                         </Text>
                                        <ScrollView>
                                             <View flexDirection="row">
                                            
                                                 {this.state.marker[this.state.indexNum].post.details.map((detail) => (
-                                                    <DetailView>
-                                                        <Text key={detail}>{detail}</Text>
+                                                    <DetailView key={detail}>
+                                                        <Text >{detail}</Text>
                                                     </DetailView>
                                                 ))}
                                            

@@ -14,8 +14,8 @@ import {
 } from "react-native";
 import styled from "styled-components";
 import Stars from 'react-native-stars';
-import { FontAwesome, EvilIcons, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
-import {  StarColor, Yellow, mainPink } from '../../../components/Color';
+import { Entypo } from "@expo/vector-icons";
+import {  StarColor, Yellow, mainPink, LightGrey } from '../../../components/Color';
 import { PROVIDER_GOOGLE, Marker, Callout, Circle } from "react-native-maps";
 import MapView from 'react-native-map-clustering';
 import Modal, { ModalTitle, ModalFooter, ModalButton } from 'react-native-modals';
@@ -60,8 +60,17 @@ alignItems: flex-start;
 const Bold = styled.Text`
   font-weight: 600;
   margin-bottom : 5px;
-  font-size : 23px;
+  font-size : 20px;
   margin-right : 5px;
+`;
+
+const DetailView = styled.View`
+alignItems: center;
+  justifyContent: center;
+  borderRadius: 7;
+  padding : 5px;
+  margin : 4px;
+  background-color: ${LightGrey};
 `;
 
 class ProfileMapPresenter extends React.Component {
@@ -196,14 +205,16 @@ class ProfileMapPresenter extends React.Component {
                                         <Star rating={this.state.marker.posts[this.state.indexNum].rating} size={25} color={StarColor} />
                                     </Title>
                                     <Info>
-                                        <Text>
-                                            {this.state.marker.posts[this.state.indexNum].storeLocation.length > 25
-                                                ? `${this.state.marker.posts[this.state.indexNum].storeLocation.substring(0, 23)}...`
+                                        <Text style={{fontSize:13}}>
+                                            {this.state.marker.posts[this.state.indexNum].storeLocation.length > 33
+                                                ? `${this.state.marker.posts[this.state.indexNum].storeLocation.substring(0, 31)}...`
                                                 : this.state.marker.posts[this.state.indexNum].storeLocation}
                                         </Text>
                                         <View flexDirection="row">
                                             {this.state.marker.posts[this.state.indexNum].details.map((detail) => (
-                                                <Text key={detail}>{detail}</Text>
+                                                <DetailView key={detail}>
+                                                    <Text>{detail}</Text>
+                                                </DetailView>
                                             ))}
                                         </View>
                                     </Info>

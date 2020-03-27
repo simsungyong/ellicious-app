@@ -15,6 +15,8 @@ import useInput from '../../hooks/useInput';
 import { FEED_QUERY } from "../Tabs/Home";
 import {ME} from '../Tabs/Profile/Profile';
 import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
+import {GET_CATEGORYINFO} from '../Tabs/Profile/ProfileMapContainer';
+import User from '../../User';
 
 const UPLOAD = gql`
   mutation upload($caption: String, $storeName: String!, $files: [String!], $storeLocation: String!, $rating: Float!, $storeLat: Float, $storeLong: Float, $placeId: String, $category: String!, $details:[String!]){
@@ -184,7 +186,6 @@ export const CREATE_CATEGORY= gql`
   }
 `
 export const seeCategory = gql`
-  
   query seeCategory($userId: String){
     seeCategory(userId: $userId){
       ...CategoryParts
@@ -221,7 +222,6 @@ export default ({navigation}) => {
   const [newCategory, setNewCategory] = useState(false);
   //const [fileUrl, setFileUrl] = useState([]);
   const categoryInput = useInput();
-
   const [createCategory] = useMutation(CREATE_CATEGORY, {
     refetchQueries: ()=>[{query: seeCategory}]
   });

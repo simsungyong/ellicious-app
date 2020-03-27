@@ -16,7 +16,7 @@ const Image = styled.Image`
   borderRadius:30;
   position : relative;
   borderColor:${mainPink};
-    borderWidth:2;
+    borderWidth:2.5;
 `;
 const Container = styled.TouchableOpacity`
     align-items: center;

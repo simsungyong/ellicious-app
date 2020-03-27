@@ -164,6 +164,8 @@ const Home = ({ navigation }) => {
     }
   };
 
+  
+
 
   const onLoadMore = async () => {
     console.log("reload");
@@ -203,8 +205,7 @@ const Home = ({ navigation }) => {
   return (
     <Container>
       {!loading2 ?
-        <Section title="Top10 엘리셔">{data2.recommendUser
-            .filter(user=>user.isSelf==false)
+        <Section title="Top10 엘리셔" >{data2.recommendUser
             .map(user=>(
                 <RecommendItem
                     key={user.id}

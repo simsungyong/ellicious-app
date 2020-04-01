@@ -12,6 +12,7 @@ import styled from "styled-components";
 import Modal, { ModalTitle, ModalContent, ModalFooter, ModalButton } from 'react-native-modals';
 import { PointPink, CommentsBox, mainPink, TINT_COLOR, Grey, LightPink } from "../../../components/Color";
 import User from "../../../User";
+import {seeCategory} from "../../Photo/UploadPhoto";
 
 const Touchable = styled.TouchableOpacity`
     margin-bottom : 20px;
@@ -59,7 +60,7 @@ const region = {
     longitudeDelta: 0.0640142817690068,
 };
 
-const GET_CATEGORYINFO = gql`
+export const GET_CATEGORYINFO = gql`
   query seeCategory($userId: String){
     seeCategory(userId: $userId) {
       ...CategoryInfo
@@ -99,11 +100,11 @@ const ProfileMapContainer = ({ navigation, userId }) => {
         variables: { userId: userId }
     });
     const [createCategory] = useMutation(CREATE_CATEGORY, {
-        refetchQueries: () => [{ query: GET_CATEGORYINFO, variables: { userId: userId } }]
+        refetchQueries: () => [{ query: GET_CATEGORYINFO, variables: { userId: userId } }, {query: seeCategory}]
     });
 
     const [deleteCategory] = useMutation(DELETE_CATEGORY, {
-        refetchQueries: () => [{ query: GET_CATEGORYINFO, variables: { userId: userId } }]
+        refetchQueries: () => [{ query: GET_CATEGORYINFO, variables: { userId: userId } }, {query: seeCategory}]
     });
 
 

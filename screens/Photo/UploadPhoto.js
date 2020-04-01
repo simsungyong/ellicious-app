@@ -223,7 +223,7 @@ export default ({navigation}) => {
   //const [fileUrl, setFileUrl] = useState([]);
   const categoryInput = useInput();
   const [createCategory] = useMutation(CREATE_CATEGORY, {
-    refetchQueries: ()=>[{query: seeCategory}]
+    refetchQueries: ()=>[{query: seeCategory}, {query: GET_CATEGORYINFO, variables: {userId: User.userId}}]
   });
   const [uploadMutation] = useMutation(UPLOAD, {
     refetchQueries: ()=>[{query: FEED_QUERY, variables : {

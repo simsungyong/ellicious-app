@@ -103,7 +103,6 @@ export default ({navigation})=>{
             ))}
           </View>
       );
-  console.log(data)
   const ROUTES = {Scene};
         
   const ROUTESTACK = [
@@ -120,10 +119,7 @@ export default ({navigation})=>{
             return <Component index={i} />;
           }
         }
-              // headerStyle={[styles.headerStyle, { paddingTop: 30 }]} // probably want to add paddingTop if using TopBarNav for the  entire height of screen to account for notches/status bars
-              // labelStyle={styles.labelStyle}
-              // underlineStyle={styles.underlineStyle}
-              // imageStyle={styles.imageStyle}
+              
             headerStyle={{ paddingTop: 20 }}
             //sidePadding={40}
             inactiveOpacity={1}

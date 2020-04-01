@@ -123,7 +123,6 @@ export default createBottomTabNavigator({
 
   Home: {
     screen: stackFactory(Home, {
-      // title: "Ellicious",
       headerRight: (
         <HeaderRight>
           <MessagesLink />

@@ -2,10 +2,7 @@ import React, { useState  } from "react";
 import { ScrollView, RefreshControl, Platform, View, Text, StyleSheet} from "react-native";
 import SearchBar from "../../../components/SearchComponents/SearchBar";
 import MessagePresenter from "./MessagePresenter";
-import styled from "styled-components";
-import styles from "../../../styles";
-import constants from "../../../constants";
-import { PointPink, mainPink } from "../../../components/Color";
+
 
 export default class extends React.Component {
   static navigationOptions = ({ navigation }) => ({

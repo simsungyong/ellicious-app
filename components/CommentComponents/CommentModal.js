@@ -74,33 +74,9 @@ const CommentModal = ({
   const {loading, data, refetch} = useQuery(GET_CHILD_COMMENTS, {
     variables: { headComment: id}
 });
-  // const [deleteComment] = useMutation(DELETE_COMMENT, {
-  //   refetchQueries: () => [
-  //     {
-  //       query: GET_COMMENTS, variables: {
-  //         postId: post.id, headComment: null
-  //       }
-  //     },
-  //     { query: FEED_QUERY }
-  //   ]
-  // });
+ 
 
-  const handleDelete = async () => {
-  //   try {
-  //     const { data: { editComment } } = await deleteComment({
-  //       variables: {
-  //         id: id
-  //       }
-  //     });
-  //     if (editComment.id) {
-  //       navigation.navigate("CommentDetail")
-  //     }
-  //   } catch (e) {
-  //     console.log(e);
-  //     Alert.alert("삭제 에러!");
-
-  //   }
-  }
+  
 
   return (
     <Container>

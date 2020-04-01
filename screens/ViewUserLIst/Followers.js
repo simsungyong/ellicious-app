@@ -6,9 +6,6 @@ import styled from "styled-components";
 import useInput from "../../hooks/useInput";
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { ScrollView, Text,TextInput,RefreshControl, KeyboardAvoidingView,Alert, TouchableOpacity, StyleSheet  } from "react-native";
-import { POST_COMMENT } from "../../fragments";
-import PostOfComment from '../../components/CommentComponents/PostOfComment';
-import { PointPink, CommentsBox, mainPink, TINT_COLOR, Grey, LightPink } from "../../components/Color";
 import {FOLLOWER_FRAGMENT} from '../../fragments';
 import SearchAccountBox from "../../components/SearchComponents/SearchAccountBox";
 

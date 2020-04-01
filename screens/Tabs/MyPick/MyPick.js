@@ -8,7 +8,6 @@ import {
   Text,
   TouchableOpacity
 } from "react-native";
-// import MapViewPick from '../../../components/MapView/MapViewPick';
 import Loader from "../../../components/Loader";
 import { PICK_FRAGMENT } from '../../../fragments';
 import MyPickPresenter from './MyPickPresenter';

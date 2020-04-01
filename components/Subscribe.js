@@ -41,7 +41,6 @@ const Subscribe = () => {
   const getUser = async()=>{
     await setUserId(data.me.id);
     await setIsSkip(true);
-    console.log(data.me.avatar)
     await AsyncStorage.setItem('userId', data.me.id);
     await AsyncStorage.setItem('username', data.me.username);
     if(data.me.avatar !== null){

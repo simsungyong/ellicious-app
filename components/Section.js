@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from 'prop-types';
 import {TouchableOpacity} from 'react-native';
 import styled from 'styled-components'; //View, scrollview import안하고 styled만 임포트하면 쓸수잇다
@@ -42,11 +42,7 @@ const Refreshbox = styled.View`
                 {top10 ? <AntDesign name={"up"} size={18}/> : <AntDesign name={"down"} size={20}/>}
                 </TouchableOpacity>
                 </Iconbox>
-                <Refreshbox>
-                <TouchableOpacity>
-                    <FontAwesome name={"refresh"} color={mainPink} size={20}/>
-                </TouchableOpacity>
-                </Refreshbox>
+                
             </BoxHide>
             {top10 ? <ScrollView horizontal={horizontal}>{children}</ScrollView> : null}
             
@@ -65,3 +61,9 @@ const Refreshbox = styled.View`
     
     export default Section;
     
+
+    // <Refreshbox>
+    //             <TouchableOpacity>
+    //                 <FontAwesome name={"refresh"} color={mainPink} size={20}/>
+    //             </TouchableOpacity>
+    //             </Refreshbox>

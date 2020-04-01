@@ -1,5 +1,5 @@
 import React, { useState, memo } from "react";
-import { Image, Platform,TextInput, Alert,TouchableOpacity } from "react-native";
+import { Image, Platform, TouchableOpacity } from "react-native";
 import styled from "styled-components";
 import { Ionicons, EvilIcons, FontAwesome, AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
@@ -12,7 +12,6 @@ import { IconColor, StarColor, TINT_COLOR, Grey, PointPink, BG_COLOR, LightGrey,
 import {Card} from 'native-base'
 import { withNavigation } from "react-navigation";
 import Hr from "hr-native";
-import Stars from 'react-native-stars';
 import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
 import { POST_FRAGMENT } from "../fragments";
 import {ME} from '../screens/Tabs/Profile/Profile';
@@ -48,12 +47,6 @@ export const DELETE_POST = gql`
   }
 `;
 
-const ModalContainer = styled.View`
-  padding: 5px;
-  flex-direction: row;
-  align-items: center;  
-  padding : 5px;
-`;
 
 
 
@@ -90,8 +83,6 @@ const Store = styled.View`
   margin-top : 10px;
   margin-bottom : 10px;
   align-items: center;
-`;
-const Rating = styled.View`
 `;
 
 const CaptionCon = styled.View`

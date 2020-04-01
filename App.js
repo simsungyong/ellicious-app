@@ -64,7 +64,6 @@ export default function App() {
 
       const request = async operation => {
         const token = await AsyncStorage.getItem('jwt');
-        //console.log(token);
         operation.setContext({
           headers: {
             Authorization: `Bearer ${token}` 

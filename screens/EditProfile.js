@@ -4,19 +4,14 @@ import { gql } from "apollo-boost";
 import Loader from "../components/Loader";
 import styled from "styled-components";
 import useInput from "../hooks/useInput";
-import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { ScrollView, Text, TextInput, RefreshControl, KeyboardAvoidingView, Alert, TouchableOpacity, StyleSheet ,AsyncStorage} from "react-native";
-import { POST_COMMENT } from "../fragments";
-import PostOfComment from '../components/CommentComponents/PostOfComment';
 import { PointPink, CommentsBox, mainPink, TINT_COLOR, Grey, LightPink } from "../components/Color";
 import { withNavigation } from "react-navigation";
 import constants from "../constants";
-import { FormLabel, FormInput } from 'react-native-elements';
-import { AntDesign, FontAwesome } from '@expo/vector-icons';
+import {FontAwesome } from '@expo/vector-icons';
 import Modal, { ModalTitle, ModalContent, ModalFooter, ModalButton } from 'react-native-modals';
 import { FEED_QUERY } from "../screens/Tabs/Home";
 import { ME } from '../screens/Tabs/Profile/Profile';
-import { seeCategory } from '../screens/Photo/UploadPhoto'
 import firebase from 'firebase';
 import User from '../User';
 

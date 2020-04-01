@@ -28,13 +28,6 @@ const Caption = styled.Text`
 `;
 
 
-
-
-const CommentCount = styled.Text`
-  opacity: 0.5;
-  font-size: 13px;
-`;
-
 const Bold = styled.Text`
   font-weight: 600;
   margin-bottom : 5px;

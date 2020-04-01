@@ -90,6 +90,7 @@ const ProfileMapContainer = ({ navigation, userId }) => {
     const [modalAndTitle, setmodalAndTitle] = useState(false);
     const [newCategory, setNewCategory] = useState(false);
     const [delCategory, setDelCategory] = useState(false);
+    const [delIdx, setDelIdx] = useState(0);
 
     const [isloading, setIsLoading] = useState(false);
     const categoryInput = useInput();
@@ -187,7 +188,10 @@ const ProfileMapContainer = ({ navigation, userId }) => {
                                                         <ModalButton
                                                             text={"삭제"}
                                                             textStyle={{ color: PointPink }}
-                                                            onPress={() => setDelCategory(true)}
+                                                            onPress={() => {
+                                                                setDelIdx(index)
+                                                                setDelCategory(true)
+                                                            }}
                                                         />
                                                     </ModalDelContainer>
                                                     <Modal
@@ -206,7 +210,9 @@ const ProfileMapContainer = ({ navigation, userId }) => {
                                                             {!isloading ? (
                                                                 <ModalButton
                                                                     text="확인"
-                                                                    onPress={() => handleDelete(category.id)}
+                                                                    onPress={() => 
+                                                                        handleDelete(data.seeCategory[delIdx].id)
+                                                                    }
                                                                 />) : <Loader />}
                                                             <ModalButton
                                                                 text="취소"

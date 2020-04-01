@@ -121,19 +121,20 @@ export default class Messages extends React.Component {
 
 
   renderRow = ({ item }) => {
-
     return (
       <TouchableOpacity style={{ padding: 10, borderBottomColor: '#ccc', borderBottomWidth: 1 }}
-        onPress={() => this.props.navigation.navigate('MessageDetail', { userId: item.userId, username: item.ID })}>
+        onPress={() => this.props.navigation.navigate('MessageDetail', { userId: item.userId, username: item.ID, avatar: item.avatar == undefined ? null : item.avatar })}>
         
         {item.isRead ?
         <>
           <MsgRoom>
             <ImgCon>
+            {item.avatar == undefined ? 
               <Image
                 source={{ uri: "https://img.insight.co.kr/static/2019/02/12/700/5k2hz1lne71377ta76gs.jpg" }}
                 style={{ width: 40, height:40, borderRadius:20 }}
-              />
+              /> : <Image source={{uri: item.avatar}} style={{ width: 40, height:40, borderRadius:20 }} />
+            }
            </ImgCon>
 
             <ViewHi>
@@ -153,10 +154,12 @@ export default class Messages extends React.Component {
           <>
             <MsgRoom>
             <ImgCon>
+            {item.avatar ==null ? 
               <Image
                 source={{ uri: "https://img.insight.co.kr/static/2019/02/12/700/5k2hz1lne71377ta76gs.jpg" }}
                 style={{ width: 40, height:40, borderRadius:20 }}
-              />
+              /> : <Image source={{uri: item.avatar}} style={{ width: 40, height:40, borderRadius:20 }} />
+            }
            </ImgCon>
 
             <ViewHi>

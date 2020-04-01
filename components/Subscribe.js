@@ -37,13 +37,22 @@ const Subscribe = () => {
   const { data } = useQuery(ME);
   const { data: data2, refetch} = useQuery(ALARM)
   
+  
   const getUser = async()=>{
     await setUserId(data.me.id);
     await setIsSkip(true);
+    console.log(data.me.avatar)
     await AsyncStorage.setItem('userId', data.me.id);
     await AsyncStorage.setItem('username', data.me.username);
+    if(data.me.avatar !== null){
+      await AsyncStorage.setItem('avatar', data.me.avatar)
+    }
+    
     User.userId = await AsyncStorage.getItem('userId')
     User.username = await AsyncStorage.getItem('username')
+    User.avatar = await AsyncStorage.getItem('avatar')
+
+    //console.log(User.avatar)
   }
 
   const {data: newAlarm} = useSubscription(NEW_ALARM, {

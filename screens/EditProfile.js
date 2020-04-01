@@ -5,7 +5,7 @@ import Loader from "../components/Loader";
 import styled from "styled-components";
 import useInput from "../hooks/useInput";
 import KeyboardSpacer from 'react-native-keyboard-spacer';
-import { ScrollView, Text, TextInput, RefreshControl, KeyboardAvoidingView, Alert, TouchableOpacity, StyleSheet } from "react-native";
+import { ScrollView, Text, TextInput, RefreshControl, KeyboardAvoidingView, Alert, TouchableOpacity, StyleSheet ,AsyncStorage} from "react-native";
 import { POST_COMMENT } from "../fragments";
 import PostOfComment from '../components/CommentComponents/PostOfComment';
 import { PointPink, CommentsBox, mainPink, TINT_COLOR, Grey, LightPink } from "../components/Color";
@@ -18,6 +18,7 @@ import { FEED_QUERY } from "../screens/Tabs/Home";
 import { ME } from '../screens/Tabs/Profile/Profile';
 import { seeCategory } from '../screens/Photo/UploadPhoto'
 import firebase from 'firebase';
+import User from '../User';
 
 export const EDIT_USER = gql`
   mutation editUser($newAvatar: String, $bio: String, $username: String, $lastName: String, $firstName: String) {
@@ -162,6 +163,12 @@ const EditProfile = ({
         }
       });
       firebase.database().ref('users').child(id).update({ ID: newusername })
+      await AsyncStorage.setItem('username', newusername);
+      if(avatar !== null){
+        await AsyncStorage.setItem('avatar', avatar);
+      }
+      User.username = await AsyncStorage.getItem('username');
+      User.avatar = await AsyncStorage.getItem('avatar') ;
       navigation.goBack();
     } catch (e) {
       console.log(e)

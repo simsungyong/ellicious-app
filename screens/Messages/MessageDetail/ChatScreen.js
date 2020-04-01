@@ -94,7 +94,6 @@ export default class ChatScreen extends React.Component {
 
     componentDidMount() {
         this.state._isMounted = true;
-        
         this.keyboardShowListener = Keyboard.addListener(isIOS ? 'keyboardWillShow' : 'keyboardDidShow',
             (e) => this.keyboardEvent(e, true));
         this.keyboardShowListener = Keyboard.addListener(isIOS ? 'keyboardWillHide' : 'keyboardDidHide',
@@ -173,11 +172,14 @@ export default class ChatScreen extends React.Component {
                 message: this.state.textMessage,
                 time: firebase.database.ServerValue.TIMESTAMP,
                 from: User.username,
+                fromId: User.userId
             }
             let recentMessage = message.message;
             let recentTime = message.time
-            firebase.database().ref('users/' + User.userId + '/friends/' + this.state.person.userId).set({ ID: this.state.person.username, userId: this.state.person.userId, recentTime: recentTime, recentMessage: recentMessage, isRead: false });
-            firebase.database().ref('users/' + this.state.person.userId + '/friends/' + User.userId).set({ ID: User.username, userId: User.userId, recentTime: recentTime, recentMessage: recentMessage, isRead: false });
+            console.log(this.state.person.avatar)
+            console.log(User.avatar)
+            firebase.database().ref('users/' + User.userId + '/friends/' + this.state.person.userId).set({ ID: this.state.person.username, userId: this.state.person.userId, avatar: this.state.person.avatar, recentTime: recentTime, recentMessage: recentMessage, isRead: false });
+            firebase.database().ref('users/' + this.state.person.userId + '/friends/' + User.userId).set({ ID: User.username, userId: User.userId, avatar: User.avatar, recentTime: recentTime, recentMessage: recentMessage, isRead: false });
 
 
             updates[User.userId + '/' + this.state.person.userId + '/' + msgId] = message;
@@ -216,9 +218,9 @@ export default class ChatScreen extends React.Component {
            
             
             <MsgBox
-            style={{alignSelf: item.from === User.username ? 'flex-end' : 'flex-start',
+            style={{alignSelf: item.fromId === User.userId ? 'flex-end' : 'flex-start',
         }}>
-                {item.from === User.username ? null :
+                {item.fromId === User.userId ? null :
                     (
                         <Img>
                             {this.state.person.avatar == null ?
@@ -236,8 +238,8 @@ export default class ChatScreen extends React.Component {
 
             <View style={{
                 flexDirection: 'row',
-                alignSelf: item.from === User.username ? 'flex-end' : 'flex-start',
-                backgroundColor: item.from === User.username ? mainPink : Grey,
+                alignSelf: item.fromId === User.userId ? 'flex-end' : 'flex-start',
+                backgroundColor: item.fromId === User.userId ? mainPink : Grey,
                 borderRadius: 5,
                 marginBottom: 10
             }}>

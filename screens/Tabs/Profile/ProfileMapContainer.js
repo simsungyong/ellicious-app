@@ -60,7 +60,7 @@ const region = {
 };
 
 const GET_CATEGORYINFO = gql`
-  query seeCategory($userId: String!){
+  query seeCategory($userId: String){
     seeCategory(userId: $userId) {
       ...CategoryInfo
       }
@@ -85,6 +85,7 @@ export const CREATE_CATEGORY = gql`
 `
 
 const ProfileMapContainer = ({ navigation, userId }) => {
+
     const [mapIdx, setIndex] = useState(0);
     const [confirm, setConform] = useState(false);
     const [modalAndTitle, setmodalAndTitle] = useState(false);
@@ -184,6 +185,7 @@ const ProfileMapContainer = ({ navigation, userId }) => {
                                                             onPress={() => handleIndex(index)}
                                                         />
                                                     </ModalNameContainer>
+                                                    {User.userId === userId ? 
                                                     <ModalDelContainer>
                                                         <ModalButton
                                                             text={"삭제"}
@@ -194,6 +196,7 @@ const ProfileMapContainer = ({ navigation, userId }) => {
                                                             }}
                                                         />
                                                     </ModalDelContainer>
+                                                    : null }
                                                     <Modal
                                                         visible={delCategory}
                                                         onTouchOutside={() => setDelCategory(false)}

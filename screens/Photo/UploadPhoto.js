@@ -7,7 +7,7 @@ import {FontAwesome, EvilIcons, AntDesign} from "@expo/vector-icons";
 import Stars from 'react-native-stars';
 import Hr from "hr-native";
 import { useQuery, useMutation } from "react-apollo-hooks";
-import { CATEGORY_FRAGMENT } from "../../fragments";
+import { CATEGORY_FRAGMENT, CATEGORYINFO_FRAGMENT } from "../../fragments";
 import Loader from "../../components/Loader";
 import axios from 'axios';
 import constants from "../../constants";
@@ -15,8 +15,16 @@ import useInput from '../../hooks/useInput';
 import { FEED_QUERY } from "../Tabs/Home";
 import {ME} from '../Tabs/Profile/Profile';
 import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
-import {GET_CATEGORYINFO} from '../Tabs/Profile/ProfileMapContainer';
 import User from '../../User';
+
+const GET_CATEGORYINFO = gql`
+  query seeCategory($userId: String){
+    seeCategory(userId: $userId) {
+      ...CategoryInfo
+      }
+    }
+    ${CATEGORYINFO_FRAGMENT}
+`;
 
 const UPLOAD = gql`
   mutation upload($caption: String, $storeName: String!, $files: [String!], $storeLocation: String!, $rating: Float!, $storeLat: Float, $storeLong: Float, $placeId: String, $category: String!, $details:[String!]){
@@ -185,7 +193,7 @@ export const CREATE_CATEGORY= gql`
     }
   }
 `
-export const seeCategory = gql`
+const seeCategory = gql`
   query seeCategory($userId: String){
     seeCategory(userId: $userId){
       ...CategoryParts
@@ -231,6 +239,7 @@ export default ({navigation}) => {
       items: 6
     }},{query: ME }]
   });
+
 
   const handleSubmit=async()=>{
     if(captionInput.value===undefined || captionInput.value ===''){

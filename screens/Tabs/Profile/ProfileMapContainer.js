@@ -6,13 +6,21 @@ import { useQuery, useMutation } from "react-apollo-hooks";
 import { gql } from "apollo-boost";
 import Loader from '../../../components/Loader';
 import useInput from '../../../hooks/useInput';
-import { CATEGORYINFO_FRAGMENT } from '../../../fragments';
+import { CATEGORYINFO_FRAGMENT, CATEGORY_FRAGMENT } from '../../../fragments';
 import ProfileMapPresenter from '../../Tabs/Profile/ProfileMapPresenter';
 import styled from "styled-components";
 import Modal, { ModalTitle, ModalContent, ModalFooter, ModalButton } from 'react-native-modals';
 import { PointPink, CommentsBox, mainPink, TINT_COLOR, Grey, LightPink } from "../../../components/Color";
 import User from "../../../User";
-import {seeCategory} from "../../Photo/UploadPhoto";
+
+const seeCategory = gql`
+  query seeCategory($userId: String){
+    seeCategory(userId: $userId){
+      ...CategoryParts
+    }
+  }
+  ${CATEGORY_FRAGMENT}`
+  ;
 
 const Touchable = styled.TouchableOpacity`
     margin-bottom : 20px;
@@ -60,7 +68,7 @@ const region = {
     longitudeDelta: 0.0640142817690068,
 };
 
-export const GET_CATEGORYINFO = gql`
+const GET_CATEGORYINFO = gql`
   query seeCategory($userId: String){
     seeCategory(userId: $userId) {
       ...CategoryInfo

@@ -123,11 +123,11 @@ export default class ChatScreen extends React.Component {
         let bottomOS = isIOS ? 120: 140;
         Animated.parallel([
             Animated.timing(this.keyboardHeight, {
-                duration: event.duration,
+                //duration: event.duration,
                 toValue: isShow ? heightOS : 0
             }),
             Animated.timing(this.bottomPadding, {
-                duration: event.duration,
+                //duration: event.duration,
                 toValue: isShow ? bottomOS : 60
             })
         ]).start();
@@ -176,8 +176,8 @@ export default class ChatScreen extends React.Component {
             }
             let recentMessage = message.message;
             let recentTime = message.time
-            console.log(this.state.person.avatar)
-            console.log(User.avatar)
+            // console.log(this.state.person.avatar)
+            // console.log(User.avatar)
             firebase.database().ref('users/' + User.userId + '/friends/' + this.state.person.userId).set({ ID: this.state.person.username, userId: this.state.person.userId, avatar: this.state.person.avatar, recentTime: recentTime, recentMessage: recentMessage, isRead: false });
             firebase.database().ref('users/' + this.state.person.userId + '/friends/' + User.userId).set({ ID: User.username, userId: User.userId, avatar: User.avatar, recentTime: recentTime, recentMessage: recentMessage, isRead: false });
 

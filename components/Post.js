@@ -184,31 +184,29 @@ const Post = ({
       const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
       const [modalAndTitle, setmodalAndTitle] = useState(false);
       const [modalUpdateAndTitle, setmodalUpdateAndTitle] = useState(false);
-
+      const [isDel, setDel] = useState(false);
       const [toggleLikeMutaton] = useMutation(TOGGLE_LIKE, {
         variables: {
         postId: id,
         toId: user.id
-        }},{
-          refetchQueries:()=>[{query:ME}]
-        });
+        }});
 
       const [togglePickMutation] = useMutation(TOGGLE_PICK, {
-        refetchQueries:()=>[{query: GET_PICK},{query: ME}]
+        refetchQueries:()=>[{query: GET_PICK}]
 
       });
       
       const [deleteMutation] = useMutation(DELETE_POST, {
         refetchQueries: ()=>[{query: FEED_QUERY, variables:{
           pageNumber: 0,
-          items: 6
+          items: 8
         }},{query: ME}]
       });
 
       const [unFollowMutation] = useMutation(UNFOLLOW, {
         refetchQueries: ()=>[{query: FEED_QUERY, variables:{
           pageNumber: 0,
-          items: 6
+          items: 8
         }},{query: ME}]
       });
 
@@ -327,6 +325,7 @@ const Post = ({
     }
 
     return (
+      
       <Card>
         <Container>
           <Header>

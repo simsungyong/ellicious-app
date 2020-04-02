@@ -39,7 +39,7 @@ export const UNFOLLOW = gql`
 
 const Container = styled.View`
   flex : 1;
-  height : ${constants.height-100};
+  
 `;
 const Profile = styled.View`
   padding : 5px;
@@ -174,7 +174,7 @@ const Scene = ({ index, posts, userId }) => (
   
     <>
       {(index == 1) ? (
-        <View style={{flex : 1}} >
+        <View style={{flex : 1, height: constants.height-200}} >
         <ProfileMapContainer userId={userId}/>
         </View>
       ) : (   
@@ -185,6 +185,7 @@ const Scene = ({ index, posts, userId }) => (
               <Text style={{ color:mainPink}}>게시물을 등록해주세요</Text>
             </BlankPost>
           ) : (
+          
           <ViewCon>  
             <View flexDirection= "row" flexWrap= "wrap">
               {posts && posts.map(p =>
@@ -249,10 +250,7 @@ const UserProfile = ({
   const [FollowMutation] = useMutation(FOLLOW, {
     variables: {
     id: id
-    }, refetchQueries: ()=>[{query: FEED_QUERY, variables: {
-      pageNumber: 0,
-      items: 6
-    }}]
+    }
   });
 
   const [UnFollowMutation] = useMutation(UNFOLLOW, {
@@ -260,7 +258,7 @@ const UserProfile = ({
       id: id
     }, refetchQueries: ()=>[{query: FEED_QUERY, variables: {
       pageNumber: 0,
-      items: 6
+      items: 8
     }}]
   });
 const handleFollow = async () =>{

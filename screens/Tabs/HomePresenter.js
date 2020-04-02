@@ -7,9 +7,7 @@ import { SafeAreaView } from "react-navigation";
 import Loader from "../../components/Loader";
 
 const Container = styled.View`
-background-color : ${BG_POST_COLOR};
-padding-left: 2px;
-padding-right : 2px;
+    flex:1
 `;
 
 export default class HomePresenter extends React.Component {
@@ -64,12 +62,12 @@ export default class HomePresenter extends React.Component {
 
     renderRow = (item) => {
         return (
-            <>
+            
                 <View style={styles.items}>
                     <Post key={item.id}{...item} />
                 </View>
 
-            </>
+            
         )
     }
 
@@ -86,7 +84,7 @@ export default class HomePresenter extends React.Component {
 
     render() {
         return (
-            <SafeAreaView style={Container}>
+            <Container>
                 {this.props.feedData == undefined ? null : (
 
                     <FlatList
@@ -136,7 +134,7 @@ export default class HomePresenter extends React.Component {
                     />
 
                 )}
-            </SafeAreaView>
+            </Container>
         )
     }
 }

@@ -14,13 +14,12 @@ import {
 import styled from "styled-components";
 import { ScrollView } from "react-native-gesture-handler";
 import { Entypo } from "@expo/vector-icons";
-import { TINT_COLOR, IconColor, PointPink, StarColor, BG_COLOR, LightGrey, mainPink, Grey, Line, LightPink } from '../../../components/Color';
+import { PointPink, StarColor, BG_COLOR, LightGrey, mainPink, Grey,} from '../../../components/Color';
 import { PROVIDER_GOOGLE, Marker, Callout, Circle } from "react-native-maps";
 import MapView from 'react-native-map-clustering';
 import Modal, { ModalTitle, ModalFooter, ModalButton } from 'react-native-modals';
 import { withNavigation } from "react-navigation";
 import Star from '../../../components/Star';
-import constants from '../../../constants';
 
 
 const ModalContainer = styled.View`

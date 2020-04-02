@@ -77,10 +77,7 @@ const SearchAccountBox = ({ navigation, username, firstName, avatar, id, isSelf,
   const [FollowMutation] = useMutation(FOLLOW, {
     variables: {
     id: id
-    }, refetchQueries: ()=>[{query: FEED_QUERY, variables: {
-      pageNumber: 0,
-      items: 6
-    }}, {query: GET_USER, variables: {
+    }, refetchQueries: ()=>[ {query: GET_USER, variables: {
       id: id
     }}]
   });
@@ -90,7 +87,7 @@ const SearchAccountBox = ({ navigation, username, firstName, avatar, id, isSelf,
       id: id
     }, refetchQueries: ()=>[{query: FEED_QUERY, variables: {
       pageNumber: 0,
-      items: 6
+      items: 8
     }}, {query: GET_USER, variables: {
       id
     }}]

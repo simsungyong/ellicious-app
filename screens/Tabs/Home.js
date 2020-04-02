@@ -65,6 +65,7 @@ const HView = styled.View`
 const Container = styled.View`
 background-color : ${LightGrey};
 padding-left: 1px;
+flex:1;
 padding-right : 1px;
 `;
 
@@ -77,21 +78,6 @@ color : red;
 font-size: 18px;
 `;
 
-const StoreInfo = styled.View`
-  align-items: center;
-  padding : 5px;
-  `;
-
-const Timebox = styled.Text`
-  opacity: 0.5;
-  font-size: 13px;
-`;
-const StoreName = styled.Text`
-  font-size: 24px;
-  font-weight: 800;
-  margin-bottom : 5px;
-  color : ${TINT_COLOR};
-`;
 
 const Home = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -105,7 +91,7 @@ const Home = ({ navigation }) => {
   const { loading, data, refetch, fetchMore } = useQuery(FEED_QUERY, {
     variables: {
       pageNumber: 0,
-      items: 6
+      items: 8
     },
   });
   ;
@@ -230,7 +216,7 @@ const Home = ({ navigation }) => {
         /> : 
         <ScrollView refreshControl = {
           <RefreshControl
-          refreshing={refreshing} onRefresh={() => {refresh()}}
+          refreshing={refreshing} onRefresh={refresh}
           />
         }>
           <View>

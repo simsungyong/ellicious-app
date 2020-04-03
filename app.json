@@ -16,6 +16,11 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "notification": {
+      "icon": "./assets/icon_test.png",
+      "iosDisplayInForeground": true,
+      "androidMode": "default"
+    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -24,6 +29,26 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.prom.ellicious",
+      "versionCode": 1,
+      "icon": "./assets/icon_test.png",
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "CAMERA",
+        "READ_CONTACTS",
+        "READ_EXTERNAL_STORAGE",
+        "READ_PHONE_STATE",
+        "USE_FINGERPRINT",
+        "WRITE_EXTERNAL_STORAGE"
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDI0c6fpWeaxC1d82jjF5Q0gsjA3I6q4ac"
+        }
+      }
     }
   }
 }

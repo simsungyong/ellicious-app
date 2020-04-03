@@ -35,7 +35,7 @@ export default function App() {
     
 
   const preLoad = async () => {
-    //await AsyncStorage.clear();
+    // await AsyncStorage.clear();
     try {
       await Font.loadAsync({
         ...Ionicons.font

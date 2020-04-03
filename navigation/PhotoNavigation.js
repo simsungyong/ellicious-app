@@ -10,9 +10,7 @@ import { PhotostackStyles } from "./config";
 import { PointPink, TINT_COLOR, mainPink } from "../components/Color";
 import styled from 'styled-components';
 
-const HeaderRight = styled.TouchableOpacity`
-margin-right : 8px;
-`;
+
 
 const PhotoTabs = createMaterialTopTabNavigator(
   {

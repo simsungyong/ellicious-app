@@ -142,6 +142,7 @@ const ProfileMapContainer = ({ navigation, userId }) => {
 
     const handleCreate = async () => {
         if (categoryInput.value === undefined) {
+            
             Alert.alert("한 글자는 쓰지?");
         } else {
             await setIsLoading(true);

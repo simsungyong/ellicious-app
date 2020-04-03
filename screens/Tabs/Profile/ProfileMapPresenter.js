@@ -5,9 +5,7 @@ import {
     Text,
     View,
     Image,
-    Alert,
-    TextInput,
-    Dimensions,
+    
     TouchableOpacity,
     Button,
     Platform
@@ -79,12 +77,13 @@ class ProfileMapPresenter extends React.Component {
         super(props);
         const { navigation } = props;
         const { marker, region } = props;
-        this.state = { marker, region, navigation, isClick: false, indexNum: -1 };
+        this.state = { marker, region, navigation, isClick: false, indexNum: -1, cateIndex: marker.posts[0]==undefined ? -1 : 0 };
         
     }
-
     
 
+    
+    
 
   
     componentDidMount() {
@@ -94,7 +93,6 @@ class ProfileMapPresenter extends React.Component {
     locationCurrentPosition = () => {
 
         navigator.geolocation.getCurrentPosition(position => {
-            //this.setState({coordinate:position.coords})
             this.setState({
                 region: {
                     latitude: position.coords.latitude,
@@ -102,7 +100,6 @@ class ProfileMapPresenter extends React.Component {
                     ...this.state.region
                 }
             })
-            //console.log(this.state.region);
 
 
         },
@@ -112,7 +109,6 @@ class ProfileMapPresenter extends React.Component {
     }
 
     animate(coordinate) {
-        //console.log("로그"+this.mapView.state)
         let newRegion = {
             latitude: coordinate.storeLat,
             longitude: coordinate.storeLong,
@@ -142,8 +138,10 @@ class ProfileMapPresenter extends React.Component {
                     mapRef={(ref) => mapView = ref}
                     clusterColor={mainPink}
                     initialRegion={{
-                        latitude: (this.state.marker.posts[0] &&  this.state.marker.posts[0].storeLat < 35.709381) ? this.state.marker.posts[0].storeLat : 35.709381,
-                        longitude: (this.state.marker.posts[0] &&  this.state.marker.posts[0].storeLat < 35.709381) ? this.state.marker.posts[0].storeLong : 127.885622,
+                        latitude: this.state.cateIndex !== -1 ? this.state.marker.posts[0].storeLat < 35.709381 ? this.state.marker.posts[0].storeLat : 35.709381 : 35.709381, 
+                        // this.state.marker.posts  &&  this.state.marker.posts[0].storeLat < 35.709381) ? this.state.marker.posts[0].storeLat : 35.709381,
+                        longitude: this.state.indexNum !== -1 ? this.state.marker.posts[0].storeLat < 35.709381 ? this.state.marker.posts[0].storeLong : 127.885622 :127.885622,
+                        // (this.state.marker.posts && this.state.marker.posts[0] &&  this.state.marker.posts[0].storeLat < 35.709381) ? this.state.marker.posts[0].storeLong : 127.885622,
                         latitudeDelta: 7, longitudeDelta: 7
                         
                     }}
@@ -186,6 +184,7 @@ class ProfileMapPresenter extends React.Component {
                         <ModalContent>
                             <ModalContainer>
                                 <TouchableOpacity onPress={() => {
+                                    
                                     this.setState({ isClick: false })
                                     this.state.navigation.navigate("StoreDetail", { 
                                     storeName: this.state.marker.posts[this.state.indexNum].storeName, 

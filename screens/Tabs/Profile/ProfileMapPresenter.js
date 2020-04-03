@@ -77,7 +77,7 @@ class ProfileMapPresenter extends React.Component {
         super(props);
         const { navigation } = props;
         const { marker, region } = props;
-        this.state = { marker, region, navigation, isClick: false, indexNum: -1, cateIndex: marker.posts[0]==undefined ? -1 : 0 };
+        this.state = { marker, region, navigation, isClick: false, indexNum: -1, cateIndex: marker.posts.length==0 ? -1 : 0 };
         
     }
     

@@ -87,7 +87,7 @@ export default ({navigation}) => {
       }
     } catch(e){
       console.log(e);
-      hasPermission(false);
+      setHasPermission(false);
     }
   };
 

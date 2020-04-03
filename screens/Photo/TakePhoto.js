@@ -1,5 +1,5 @@
 import React ,{useState,useEffect, useRef}from "react";
-import {Image,ScrollView,TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import * as Permissions from 'expo-permissions';
 import {Ionicons} from '@expo/vector-icons';
 import styled from "styled-components";
@@ -26,10 +26,6 @@ const Button = styled.View`
   border: 10px solid ${mainPink};
 `;
 
-
-
-const Text = styled.Text``;
-
 export default ({ navigation }) => {
   const cameraRef = useRef();
   const [canTakePhoto, setCanTakePhoto] = useState(true);
@@ -42,13 +38,11 @@ export default ({ navigation }) => {
       return;
     }
     try{
-    //setCanTakePhoto(false);
     const {uri} = await cameraRef.current.takePictureAsync({
       quality:1
     });
     const asset = await MediaLibrary.createAssetAsync(uri);
     navigation.navigate("Map", {photo: [asset]});
-    //console.log(asset);
   }catch(e){
     console.log(e);
     setCanTakePhoto(true);

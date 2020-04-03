@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { View, Alert,AsyncStorage } from "react-native";
-import PropTypes from "prop-types";
 import { useQuery, useSubscription, useMutation } from "react-apollo-hooks";
 import gql from "graphql-tag";
 import MainNavigation from "../navigation/MainNavigation";
 import User from "../User";
-import { ALARM } from "../screens/Alarm/Alarms"
 
 const ME = gql`
     {
@@ -35,7 +33,6 @@ const Subscribe = () => {
   const [userId, setUserId] = useState("");
 
   const { data } = useQuery(ME);
-  const { data: data2, refetch} = useQuery(ALARM)
   
   
   const getUser = async()=>{
@@ -50,8 +47,6 @@ const Subscribe = () => {
     User.userId = await AsyncStorage.getItem('userId')
     User.username = await AsyncStorage.getItem('username')
     User.avatar = await AsyncStorage.getItem('avatar')
-
-    //console.log(User.avatar)
   }
 
   const {data: newAlarm} = useSubscription(NEW_ALARM, {

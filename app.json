@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "ellicious-app",
+    "name": "Ellicious",
     "slug": "ellicious-app",
     "privacy": "public",
     "sdkVersion": "35.0.0",
@@ -10,9 +10,9 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon_test.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/icon_test.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import { useQuery, useMutation } from "react-apollo-hooks";
+import {  useMutation } from "react-apollo-hooks";
 import { gql } from "apollo-boost";
-import Loader from "../components/Loader";
 import styled from "styled-components";
 import useInput from "../hooks/useInput";
-import { ScrollView, Text, TextInput, RefreshControl, KeyboardAvoidingView, Alert, TouchableOpacity, StyleSheet ,AsyncStorage} from "react-native";
-import { PointPink, CommentsBox, mainPink, TINT_COLOR, Grey, LightPink } from "../components/Color";
+import { ScrollView, Text, TextInput, Alert, TouchableOpacity, StyleSheet ,AsyncStorage, Modal, View, TouchableHighlight} from "react-native";
+import { PointPink, mainPink, TINT_COLOR, Grey } from "../components/Color";
 import { withNavigation } from "react-navigation";
 import constants from "../constants";
 import {FontAwesome } from '@expo/vector-icons';
-import Modal, { ModalTitle, ModalContent, ModalFooter, ModalButton } from 'react-native-modals';
 import { FEED_QUERY } from "../screens/Tabs/Home";
 import { ME } from '../screens/Tabs/Profile/Profile';
 import firebase from 'firebase';
@@ -22,22 +20,12 @@ export const EDIT_USER = gql`
     }
   }
 `;
-/*export const CREATE_CATEGORY= gql`
-  mutation createCategory($categoryName:String!){
-    createCategory(categoryName: $categoryName){
-      id
-    }
-  }
-`
-*/
+
 const Container = styled.View`
 flex : 1;
 padding : 15px;
 `;
 
-const View = styled.View`
-flex:1
-`;
 const EditImage = styled.View`
   height : 30%;
   alignItems: center;
@@ -56,9 +44,6 @@ const EditButton = styled.TouchableOpacity`
 alignItems: center;
 justifyContent: center;
 `;
-const EditId = styled.Text`
-margin-top : 5px;
-`;
 
 const EditInfo = styled.View`
   flex : 2.5;
@@ -68,15 +53,7 @@ const EditInfo = styled.View`
 `;
 const EditName = styled.View`
 `;
-const EditCage = styled.View`
-flex : 4
-`;
-const EditCageDetail = styled.View`
-flex-direction : row;
-margin-right : 10px;
-alignItems: center;
-justifyContent: center;
-`;
+
 const Button = styled.TouchableOpacity`
   right : 0px;
   bottom: 0px;
@@ -93,13 +70,9 @@ const EditProfile = ({
   const avatar = navigation.getParam("avatar");
   const firstName = navigation.getParam("firstName");
   const lastName = navigation.getParam("lastName");
-  //const category =  navigation.getParam("category");
-  //const categoryCount =  navigation.getParam("categoryCount");
   const bio = navigation.getParam("bio");
   const email = navigation.getParam("email");
-  //const [addCategory, setAddCategory] = useState(false);
   const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
-  const [isloading, setIsLoading] = useState(false);
   const bioInput = useInput();
   const usernameInput = useInput();
   const firstnameInput = useInput();
@@ -111,9 +84,6 @@ const EditProfile = ({
       items: 6
     }},{query: ME }]
   });
-  /*const [createCategoryMutation] = useMutation(CREATE_CATEGORY,{
-    refetchQueries: ()=>[{query: seeCategory}]
-  });*/
 
   const changePicture = async () => {
     try {
@@ -128,7 +98,6 @@ const EditProfile = ({
 
 
   const handleSubmit = async () => {
-    setIsLoading(true);
     let newbio = bio;
     let newusername = username;
     let newfirstname = firstName;
@@ -168,8 +137,6 @@ const EditProfile = ({
     } catch (e) {
       console.log(e)
       Alert.alert("같은 UserName이 존재합니다.")
-    } finally {
-      setIsLoading(false);
     }
   }
 
@@ -286,27 +253,61 @@ const EditProfile = ({
         </TouchableOpacity>
       </ScrollView>
 
-      <Modal.BottomModal
-        visible={bottomModalAndTitle}
-        onTouchOutside={() => setbottomModalAndTitle(false)}
-        height={0.1}
-        width={0.8}
-        onSwipeOut={() => setbottomModalAndTitle(false)}
-      >
-        <ModalFooter>
+      <Modal
+          visible={bottomModalAndTitle}
+          transparent={true}
+        >
+          <View
+                style={{
+                    flex: 1,
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: 'rgba(0,0,0,0.50)'
+                }}
+            >
+                <View style={{
+                    width: 300,
+                    height: 150,
+                    backgroundColor: 'white',
+                    borderRadius: 20,
+                    
+                }}>
 
-          <ModalButton
-            text="앨범에서 업로드"
-            onPress={() => changePicture()}
-          />
+                   
+                    <Text
+                        style={{ fontSize: 16, alignSelf: 'center', marginTop: 40, flex: 7, alignItems:'center', justifyContent: 'center'}}
+                    >
+                        {"프로필 사진을 업데이트 하시겠습니까?"}
+                    </Text>
+                    <View
+                        style={{
+                            alignSelf: 'baseline',
+                            backgroundColor: mainPink,
+                            width: 300,
+                            flex: 4,
+                            borderBottomLeftRadius: 20,
+                            borderBottomRightRadius: 20,
+                            flexDirection: 'row'
+                        }}
+                    >
+                        <TouchableHighlight
+                            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}
+                            onPress={() => {changePicture()}}>
+                                <Text style={{ color: 'white', fontSize: 15 }}>앨범에서 업로드</Text>
+                        </TouchableHighlight>
 
+                        <TouchableHighlight
+                            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                            onPress={() => setbottomModalAndTitle(false)}>
+                            <Text style={{ color: 'white', fontSize: 15 }}>취소</Text>
+                        </TouchableHighlight>
 
-          <ModalButton
-            text="CANCEL"
-            onPress={() => setbottomModalAndTitle(false)}
-          />
-        </ModalFooter>
-      </Modal.BottomModal>
+                    </View>
+                </View>
+
+            </View>
+        </Modal>
     </Container>
 
   );

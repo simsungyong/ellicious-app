@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-//import MapView,{Marker, PROVIDER_GOOGLE, Callout, Polygon} from 'react-native-maps';
-import { StyleSheet, Image, Alert, Text, View, Dimensions, TextBase, ScrollView, TextInput } from 'react-native';
+import { StyleSheet, Alert, Text, View, Modal, ScrollView, TouchableOpacity } from 'react-native';
 import { IconColor, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useQuery, useMutation } from "react-apollo-hooks";
 import { gql } from "apollo-boost";
@@ -9,8 +8,7 @@ import useInput from '../../../hooks/useInput';
 import { CATEGORYINFO_FRAGMENT, CATEGORY_FRAGMENT } from '../../../fragments';
 import ProfileMapPresenter from '../../Tabs/Profile/ProfileMapPresenter';
 import styled from "styled-components";
-import Modal, { ModalTitle, ModalContent, ModalFooter, ModalButton } from 'react-native-modals';
-import { PointPink, CommentsBox, mainPink, TINT_COLOR, Grey, LightPink } from "../../../components/Color";
+import { PointPink, mainBlue, mainPink, LightGrey, Blue, Grey } from "../../../components/Color";
 import User from "../../../User";
 
 const seeCategory = gql`
@@ -20,7 +18,7 @@ const seeCategory = gql`
     }
   }
   ${CATEGORY_FRAGMENT}`
-  ;
+    ;
 
 const Touchable = styled.TouchableOpacity`
     margin-bottom : 20px;
@@ -43,15 +41,16 @@ const styles = StyleSheet.create({
 
 const ModalContainer = styled.View`
   padding: 5px;
+  margin-top: 10px;
   flex-direction: row;
   align-items: center;  
   padding : 5px;
 `;
-const ModalNameContainer = styled.View`
+const ModalNameContainer = styled.TouchableOpacity`
     align-items: center;  
     flex:5
 `;
-const ModalDelContainer = styled.View`
+const ModalDelContainer = styled.TouchableOpacity`
     align-items: center;  
     flex:1;
 `;
@@ -97,9 +96,9 @@ const ProfileMapContainer = ({ navigation, userId }) => {
 
     const [mapIdx, setIndex] = useState(0);
     const [confirm, setConform] = useState(false);
-    const [modalAndTitle, setmodalAndTitle] = useState(false);
+    const [isModal, setModal] = useState(false);
+    const [delModal, setDelModal] = useState(false);
     const [newCategory, setNewCategory] = useState(false);
-    const [delCategory, setDelCategory] = useState(false);
     const [delIdx, setDelIdx] = useState(0);
 
     const [isloading, setIsLoading] = useState(false);
@@ -108,16 +107,16 @@ const ProfileMapContainer = ({ navigation, userId }) => {
         variables: { userId: userId }
     });
     const [createCategory] = useMutation(CREATE_CATEGORY, {
-        refetchQueries: () => [{ query: GET_CATEGORYINFO, variables: { userId: userId } }, {query: seeCategory}]
+        refetchQueries: () => [{ query: GET_CATEGORYINFO, variables: { userId: userId } }, { query: seeCategory }]
     });
 
     const [deleteCategory] = useMutation(DELETE_CATEGORY, {
-        refetchQueries: () => [{ query: GET_CATEGORYINFO, variables: { userId: userId } }, {query: seeCategory}]
+        refetchQueries: () => [{ query: GET_CATEGORYINFO, variables: { userId: userId } }, { query: seeCategory }]
     });
 
-
+    
     const handleIndex = async (index) => {
-        await setmodalAndTitle(false)
+        await setModal(false)
         await setConform(true)
         await setIndex(index)
         await setConform(false)
@@ -135,14 +134,15 @@ const ProfileMapContainer = ({ navigation, userId }) => {
             console.log(e);
         } finally {
             await setIsLoading(false);
-            await setDelCategory(false);
+            await setDelModal(false);
+            await setModal(true);
         }
     }
 
 
     const handleCreate = async () => {
         if (categoryInput.value === undefined) {
-            
+
             Alert.alert("한 글자는 쓰지?");
         } else {
             await setIsLoading(true);
@@ -162,6 +162,152 @@ const ProfileMapContainer = ({ navigation, userId }) => {
         }
     }
 
+    const modal = (
+        <Modal
+            visible={isModal}
+            transparent={true}
+        >
+            <View
+                style={{
+                    flex: 1,
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 20,
+                    backgroundColor: 'rgba(0,0,0,0.50)'
+                }}
+            >
+                <View style={{
+                    width: 300,
+                    height: 250,
+                    backgroundColor: 'white',
+                    borderRadius: 20,
+                }}>
+                    <View
+                        style={{
+                            alignSelf: 'baseline',
+                            backgroundColor: 'white',
+                            width: 300,
+                            borderBottomLeftRadius: 20,
+                            borderTopLeftRadius: 20,
+                            borderTopRightRadius: 20,
+                            borderBottomRightRadius: 20,
+                        }}
+                    >
+                        <ScrollView height={200}>
+                            {loading ? null : data.seeCategory.map((category, index) => (
+                                <ModalContainer key={index}>
+                                    <TouchableOpacity 
+                                        style={{ flex: 2, justifyContent: 'center', alignItems: 'center', }}
+                                        onPress={() => handleIndex(index)}>
+                                       <Text style={{ color: Blue, fontSize: 20 }}>{category.categoryName}</Text>
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity
+                                        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                                        onPress={() => {
+                                            setDelIdx(index)
+                                            setModal(false)
+                                            setDelModal(true)
+                                        }}>
+                                        <Text style={{ color: Grey, fontSize: 15 }}>삭제</Text>
+                                    </TouchableOpacity>
+                                </ModalContainer>
+                            ))}
+                        </ScrollView>
+                        <View
+                            style={{
+                                alignSelf: 'baseline',
+                                backgroundColor: mainPink,
+                                width: 300,
+                                height: 50,
+                                borderBottomLeftRadius: 20,
+                                borderBottomRightRadius: 20,
+                                flexDirection: 'row'
+                            }}
+                        >
+                            <TouchableOpacity
+                                style={{ flex: 2, justifyContent: 'center', alignItems: 'center', }}
+                            //onPress={handleSubmit}
+                            >
+                                {isloading ? <Loader /> : <Text style={{ color: 'white', fontSize: 15 }}>카테고리 추가</Text>}
+
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                                onPress={() => setModal(false)}
+                            >
+                                <Text style={{ color: 'white', fontSize: 15 }}>취소</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+
+            </View>
+        </Modal>
+    )
+
+    const modalEdit=(
+        <Modal
+              visible={delModal}
+              transparent={true}
+            >
+              <View
+                    style={{
+                        flex: 1,
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: 20,
+                        backgroundColor: 'rgba(0,0,0,0.50)'
+                    }}
+                >
+                    <View style={{
+                        width: 300,
+                        height: 150,
+                        backgroundColor: 'white',
+                        borderRadius: 20,
+                        
+                    }}>
+                        <Text
+                            style={{ fontSize: 13, alignSelf: 'center', marginTop: 40, flex: 7, alignItems:'center', justifyContent: 'center'}}
+                        >
+                            {"삭제하시면 카테고리에 포함 되어있던 포스트가 모두 사라집니다. 그래도 삭제하시겠습니까?"}
+                        </Text>
+                        <View
+                            style={{
+                                alignSelf: 'baseline',
+                                backgroundColor: mainPink,
+                                width: 300,
+                                flex: 4,
+                                borderBottomLeftRadius: 20,
+                                borderBottomRightRadius: 20,
+                                flexDirection: 'row'
+                            }}
+                        >
+                            <TouchableOpacity
+                                style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}
+                                onPress={() => 
+                                    handleDelete(data.seeCategory[delIdx].id)
+                                }>
+                                  {isloading ? <Loader/> : <Text style={{ color: 'white', fontSize: 15 }}>확인</Text>}
+                                    
+                            </TouchableOpacity>
+    
+                            <TouchableOpacity
+                                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                                onPress={() => setDelModal(false)}>
+                                <Text style={{ color: 'white', fontSize: 15 }}>취소</Text>
+                            </TouchableOpacity>
+    
+                        </View>
+                    </View>
+    
+                </View>
+            </Modal>
+        )
+
 
 
     return (
@@ -172,14 +318,27 @@ const ProfileMapContainer = ({ navigation, userId }) => {
                         <>
                             <ProfileMapPresenter marker={data.seeCategory[mapIdx] ? data.seeCategory[mapIdx] : null} region={region} navigation={navigation} />
                             <View style={styles.subContainer}>
-                                <Touchable onPress={() => setmodalAndTitle(true)}>
+                                <Touchable onPress={() => setModal(true)}>
                                     <MaterialCommunityIcons
                                         color={IconColor}
                                         size={25}
                                         name={"dots-horizontal"}
                                     />
                                 </Touchable>
-                                <Modal
+                                {modal}
+                                {modalEdit}
+                            </View>
+                        </>
+                    )}
+                </>
+            )}
+        </View>
+    )
+}
+export default ProfileMapContainer;
+
+
+{/* <Modal
                                     visible={modalAndTitle}
                                     onTouchOutside={() => setmodalAndTitle(false)}
                                     width={0.8}
@@ -278,14 +437,4 @@ const ProfileMapContainer = ({ navigation, userId }) => {
                                             onPress={() => setNewCategory(false)}
                                         />
                                     </ModalFooter>
-                                </Modal>
-
-                            </View>
-                        </>
-                    )}
-                </>
-            )}
-        </View>
-    )
-}
-export default ProfileMapContainer;
+                                </Modal> */}

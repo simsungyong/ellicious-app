@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {TouchableWithoutFeedback} from 'react-native'; //버튼
 import {withNavigation} from 'react-navigation'; 
-import { ScrollView, RefreshControl, Platform, View, Text,TouchableOpacity, TextBase} from "react-native";
+import { Text,TouchableOpacity, TextBase} from "react-native";
 
 const HContainer = styled.View`
     margin-bottom:20px;

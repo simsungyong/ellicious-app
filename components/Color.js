@@ -14,3 +14,4 @@ export const Line = "#b8b8b8";
 export const NewMsg = "#33b300";
 export const NoMsg = "##828282";
 export const Yellow = "#fdbb41";
+export const Blue = "#1A7FD9"

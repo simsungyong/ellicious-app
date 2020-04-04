@@ -365,7 +365,7 @@ const Post = ({
                 }}
             >
                 <View style={{
-                    width: 300,
+                    width: 250,
                     height: 150,
                     backgroundColor: 'white',
                     borderRadius: 20,
@@ -382,7 +382,7 @@ const Post = ({
                         style={{
                             alignSelf: 'baseline',
                             backgroundColor: mainPink,
-                            width: 300,
+                            width: 250,
                             flex: 4,
                             borderBottomLeftRadius: 20,
                             borderBottomRightRadius: 20,

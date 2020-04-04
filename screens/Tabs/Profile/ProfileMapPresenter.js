@@ -152,7 +152,6 @@ class ProfileMapPresenter extends React.Component {
                                 <Marker key={index}
                                     coordinate={{ latitude: p.storeLat, longitude: p.storeLong }}
                                     onPress={() => this.clickMarker(p, index)}
-                                //onPress={()=>{this.setState({isClick:true})}}
                                 >
                                     <View style={styles.ratingBox}>
                                         <Entypo

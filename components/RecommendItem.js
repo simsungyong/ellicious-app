@@ -36,7 +36,7 @@ const RecommendItem = ({
         <ImageCon>
         {avatar == null ?
             <Image
-              source={{ uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704" }}
+              source={require("../assets/defaultIcons.png")}
             />
             :
             <Image

@@ -1,10 +1,10 @@
 import React from 'react';
 import { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { AppLoading, Notifications } from "expo";
+import { AppLoading } from "expo";
 import * as Font from 'expo-font';
-import {Asset} from 'expo-asset';
-import { AsyncStorage } from "react-native";
+import { Asset } from 'expo-asset';
+import { AsyncStorage, Image } from "react-native";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { persistCache } from "apollo-cache-persist";
 import { ThemeProvider } from "styled-components";
@@ -20,8 +20,6 @@ import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 import firebase from 'firebase';
 import firebaseConfig from "./firebase.config";
-//AsyncStorage.clear();
-
 
 if(!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig)
@@ -41,7 +39,7 @@ export default function App() {
         ...Ionicons.font
       });
       
-      await Font.loadAsync({'elli':require('./assets/fonts/TmonMonsori.ttf'), 'korElli' :require('./assets/fonts/TmonMonsori.ttf')}); 
+      await Font.loadAsync({'elli':require('./assets/fonts/TmonMonsori.ttf'), 'korElli' :require('./assets/fonts/TmonMonsori.ttf')});
       const cache = new InMemoryCache();
       const httpLink = new HttpLink({
         //uri: 'http://192.168.0.135:4000/'

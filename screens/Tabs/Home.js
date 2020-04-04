@@ -81,9 +81,7 @@ font-size: 18px;
 const Home = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isEnd, setIsEnd] = useState(false);
-  const [lastLength, setLastLength] = useState();
   const [refreshing, setRefreshing] = useState(false);
-  // const [top10, setTop10] = useState(true);
 
 
   const [tokenMutation] = useMutation(EDIT_USER);
@@ -123,20 +121,7 @@ const Home = ({ navigation }) => {
     }
   };
 
-  // const recommendCheck= async()=>{
-  //   setCheck(true);
-  //   try{
-  //     if(!loading2){
-  //       console.log(data2)
-  //     }
-  //   }catch(e){
-  //     console.log(e)
-  //   }finally{
-  //     setCheck(false); 
-  //   }
-
-
-  // }
+  
 
   const refresh = async () => {
     await setRefreshing(true);

@@ -1,11 +1,8 @@
 import React from "react";
-import { TouchableOpacity, Image,Text } from "react-native";
-import { withNavigation } from "react-navigation";
+
 import styled from "styled-components";
-import PropTypes from "prop-types";
-import constants from "../constants";
-import { LightPink, TINT_COLOR, mainPink,PointPink, IconColor, Grey } from "./Color";
-import {MaterialCommunityIcons, Ionicons,EvilIcons, AntDesign, FontAwesome } from "@expo/vector-icons";
+import {PointPink} from "./Color";
+import {FontAwesome } from "@expo/vector-icons";
 import Stars from 'react-native-stars';
 
 const StarView = styled.View`

@@ -82,14 +82,3 @@ MapPresenter.propTypes = {
     onSubmitEditing: PropTypes.func
   };
 export default MapPresenter;
-/*                
-<View>
-                {loading ? <Loader/> : (
-                    <Text>complete</Text>/*
-                    storeData.map(store=>(<MapStore
-                                        key={store.place_id}
-                                        place_id={store.place_id}
-                                        name={store.name}
-                                        formatted_address={store.formatted_address}
-                                        />)))}
-                                        </View>*/

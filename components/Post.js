@@ -325,22 +325,22 @@ const Post = ({
                             borderBottomRightRadius: 20,
                         }}
                     >
-                        <TouchableHighlight
+                        <TouchableOpacity
                             style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}
                             onPress={() => handlePost(id, files, storeName, storeLocation, placeId)}>
                                 <Text style={{ color: 'black', fontSize: 15 }}>게시물 수정</Text>
-                        </TouchableHighlight>
+                        </TouchableOpacity>
 
-                        <TouchableHighlight
+                        <TouchableOpacity
                             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
                             onPress={handleModal}>
                             <Text style={{ color: 'black', fontSize: 15 }}>게시물 삭제</Text>
-                        </TouchableHighlight>
-                        <TouchableHighlight
+                        </TouchableOpacity>
+                        <TouchableOpacity
                             style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor:mainPink , borderBottomLeftRadius:20, borderBottomRightRadius:20}}
                             onPress={() => setModal(false)}>
                             <Text style={{ color: 'white', fontSize: 15 }}>Cancel</Text>
-                        </TouchableHighlight>
+                        </TouchableOpacity>
 
                     </View>
                 </View>
@@ -389,18 +389,18 @@ const Post = ({
                             flexDirection: 'row'
                         }}
                     >
-                        <TouchableHighlight
+                        <TouchableOpacity
                             style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}
                             onPress={handleSubmit}>
                               {isloading ? <Loader/> : <Text style={{ color: 'white', fontSize: 15 }}>확인</Text>}
                                 
-                        </TouchableHighlight>
+                        </TouchableOpacity>
 
-                        <TouchableHighlight
+                        <TouchableOpacity
                             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
                             onPress={() => setSubModal(false)}>
                             <Text style={{ color: 'white', fontSize: 15 }}>취소</Text>
-                        </TouchableHighlight>
+                        </TouchableOpacity>
 
                     </View>
                 </View>
@@ -423,7 +423,7 @@ const Post = ({
               {avatar==null ? 
               <Image
                 style={{height: 40, width: 40, borderRadius:15}}
-                source={{uri: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAInJR1.img?h=400&w=300&m=6&q=60&o=f&l=f&x=509&y=704"}}
+                source={require("../assets/defaultIcons.png")}
               />
             :
               <Image

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { TouchableWithoutFeedback, Keyboard, Alert, StyleSheet, TouchableOpacity } from "react-native";
+import { TouchableWithoutFeedback, Keyboard, Alert, StyleSheet, TouchableOpacity, Modal, TouchableHighlight, View } from "react-native";
 import AuthButton from "../../components/AuthConfirmButton";
 import PNButton from "../../components/PNConfirmButton";
 import AuthInput from "../../components/AuthInput";
@@ -8,8 +8,7 @@ import AuthInputPN from "../../components/AuthInputPN";
 import useInput from "../../hooks/useInput";
 import { useMutation, useQuery } from "react-apollo-hooks";
 import { CREATE_ACCOUNT, ID_CHECK, CHECK_USERNAME, CONFIRM_SECRET, REQUEST_SECRET } from "./AuthQueries";
-import { TINT_COLOR, PointPink, BG_COLOR, Grey } from '../../components/Color'
-import Modal, { ModalTitle, ModalContent, ModalFooter, ModalButton } from 'react-native-modals';
+import { TINT_COLOR, PointPink, BG_COLOR, Grey, mainPink } from '../../components/Color';
 
 const Container = styled.View`
   flex: 1;
@@ -30,7 +29,7 @@ justifyContent: center;
 alignItems: flex-start;
 margin-left : 5px;
 `;
-const View = styled.View`
+const ViewO = styled.View`
   justify-content: flex-end;
   align-items: center;
   flex : 2;
@@ -166,11 +165,69 @@ export default ({ navigation }) => {
 
         </InfoCon>
 
-        <View>
+        <ViewO>
           <AuthButton loading={loading} text="확 인" onPress={handleSubmit} />
-        </View>
+        </ViewO>
 
-        <Modal.BottomModal
+        <Modal
+          visible={bottomModalAndTitle}
+        >
+          <View
+                style={{
+                    flex: 1,
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 20,
+                    backgroundColor: 'rgba(0,0,0,0.50)'
+                }}
+            >
+                <View style={{
+                    width: 300,
+                    height: 150,
+                    backgroundColor: 'white',
+                    borderRadius: 20,
+                    
+                }}>
+
+                   
+                    <Text
+                        style={{ fontSize: 16, alignSelf: 'center', marginTop: 40, flex: 7, alignItems:'center', justifyContent: 'center'}}
+                    >
+                        {"비밀번호를 재설정 하시겠습니까?"}
+                    </Text>
+                    <View
+                        style={{
+                            alignSelf: 'baseline',
+                            backgroundColor: mainPink,
+                            width: 300,
+                            flex: 4,
+                            borderBottomLeftRadius: 20,
+                            borderBottomRightRadius: 20,
+                            flexDirection: 'row'
+                        }}
+                    >
+                        <TouchableHighlight
+                            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}
+                            onPress={() => {navigation.navigate("ResetPassword", {phoneNum: phoneNumInput.value}); setbottomModalAndTitle(false)}}>
+                                <Text style={{ color: 'white', fontSize: 15 }}>확인</Text>
+                        </TouchableHighlight>
+
+                        <TouchableHighlight
+                            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                            onPress={() => setbottomModalAndTitle(false)}>
+                            <Text style={{ color: 'white', fontSize: 15 }}>취소</Text>
+                        </TouchableHighlight>
+
+                    </View>
+                </View>
+
+            </View>
+        </Modal>
+
+
+
+        {/* <Modal.BottomModal
           visible={bottomModalAndTitle}
           onTouchOutside={() => setbottomModalAndTitle(false)}
           height={0.25}
@@ -190,7 +247,7 @@ export default ({ navigation }) => {
               onPress={() => setbottomModalAndTitle(false)}
             />
           </ModalFooter>
-        </Modal.BottomModal>
+        </Modal.BottomModal> */}
       </Container>
     </TouchableWithoutFeedback>
   );

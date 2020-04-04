@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { TouchableWithoutFeedback, Keyboard, Alert, StyleSheet, TouchableOpacity, Modal, TouchableHighlight, View } from "react-native";
+import { TouchableWithoutFeedback, Keyboard, Alert, Modal, TouchableHighlight, View } from "react-native";
 import AuthButton from "../../components/AuthConfirmButton";
 import PNButton from "../../components/PNConfirmButton";
 import AuthInput from "../../components/AuthInput";
 import AuthInputPN from "../../components/AuthInputPN";
 import useInput from "../../hooks/useInput";
 import { useMutation, useQuery } from "react-apollo-hooks";
-import { CREATE_ACCOUNT, ID_CHECK, CHECK_USERNAME, CONFIRM_SECRET, REQUEST_SECRET } from "./AuthQueries";
-import { TINT_COLOR, PointPink, BG_COLOR, Grey, mainPink } from '../../components/Color';
+import {ID_CHECK, REQUEST_SECRET } from "./AuthQueries";
+import { BG_COLOR, Grey, mainPink } from '../../components/Color';
 
 const Container = styled.View`
   flex: 1;
@@ -23,12 +23,7 @@ const Title = styled.Text`
 fontSize : 30px;
 `;
 
-const SubTitleCon = styled.View`
-flex : 1
-justifyContent: center;
-alignItems: flex-start;
-margin-left : 5px;
-`;
+
 const ViewO = styled.View`
   justify-content: flex-end;
   align-items: center;
@@ -47,10 +42,7 @@ font-Size : 20px;
 color: ${Grey};
 `;
 
-const PW = styled.View`
-align-items: center;
-justify-content: flex-end;
-`;
+
 
 const ConfirmPN = styled.View`
 flex-direction : row;
@@ -227,27 +219,7 @@ export default ({ navigation }) => {
 
 
 
-        {/* <Modal.BottomModal
-          visible={bottomModalAndTitle}
-          onTouchOutside={() => setbottomModalAndTitle(false)}
-          height={0.25}
-          width={0.8}
-          onSwipeOut={() => setbottomModalAndTitle(false)}
-        >
-          <ModalContent>
-            <Text>비밀번호를 재설정 하시겠습니까?</Text>
-          </ModalContent>
-          <ModalFooter>
-            <ModalButton
-              text="OK"
-              onPress={() => {navigation.navigate("ResetPassword", {phoneNum: phoneNumInput.value}); setbottomModalAndTitle(false) }}
-            />
-            <ModalButton
-              text="CANCEL"
-              onPress={() => setbottomModalAndTitle(false)}
-            />
-          </ModalFooter>
-        </Modal.BottomModal> */}
+        
       </Container>
     </TouchableWithoutFeedback>
   );

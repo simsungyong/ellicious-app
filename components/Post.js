@@ -1,5 +1,5 @@
 import React, { useState, memo } from "react";
-import { Image, Platform, TouchableOpacity } from "react-native";
+import { Image, Platform, TouchableOpacity,View, Modal, TouchableHighlight,StyleSheet } from "react-native";
 import styled from "styled-components";
 import { Ionicons, EvilIcons, FontAwesome, AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
@@ -8,11 +8,10 @@ import { gql } from "apollo-boost";
 import constants from "../constants";
 import { useMutation, useQuery } from "react-apollo-hooks";
 import moment from "moment";
-import { IconColor, StarColor, TINT_COLOR, Grey, PointPink, BG_COLOR, LightGrey, Line, LightPink, mainPink } from '../components/Color';
+import { IconColor, StarColor, TINT_COLOR, Grey, PointPink, BG_COLOR, LightGrey, Line, LightPink, mainPink, mainBlue } from '../components/Color';
 import {Card} from 'native-base'
 import { withNavigation } from "react-navigation";
 import Hr from "hr-native";
-import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
 import { POST_FRAGMENT } from "../fragments";
 import {ME} from '../screens/Tabs/Profile/Profile';
 import { UNFOLLOW } from "./UserProfile";
@@ -20,6 +19,7 @@ import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handl
 import {GET_PICK} from '../screens/Tabs/MyPick/MyPick'
 import Star from '../components/Star'
 import {FEED_QUERY} from '../screens/Auth/AuthQueries'
+import Loader from './Loader';
 export const POST_QUERY = gql`
   {
     seeFeed {
@@ -99,7 +99,7 @@ const Bold = styled.Text`
 const Text = styled.Text`
   margin-left : 5px;
 `;
-const View = styled.View`
+const View1 = styled.View`
   flex : 1;
   padding : 5px;
 `;
@@ -153,6 +153,7 @@ align-items: center;
 justifyContent: center;
 `;
 
+
 const Post = ({
     user, 
     storeLocation,
@@ -181,9 +182,9 @@ const Post = ({
       const [isPicked, setIsPicked] = useState(isPickedProp);
       const [pickCount, setPickCount] = useState(pickCountProp);
       const [isloading, setIsLoading] = useState(false);
-      const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
-      const [modalAndTitle, setmodalAndTitle] = useState(false);
-      const [modalUpdateAndTitle, setmodalUpdateAndTitle] = useState(false);
+      const [isModal, setModal] = useState(false);
+      const [subModal, setSubModal] = useState(false);
+      const [typeModal, setType] = useState();
       const [isDel, setDel] = useState(false);
       const [toggleLikeMutaton] = useMutation(TOGGLE_LIKE, {
         variables: {
@@ -228,7 +229,7 @@ const Post = ({
       }
       const handlePost = (id, files, storeName, storeLocation, placeId)=> {
         try {
-          setmodalUpdateAndTitle(false)
+          setModal(false);
           navigation.navigate("UpdatePost", { 
             postId: id,
             photo: files,
@@ -241,7 +242,6 @@ const Post = ({
         }
       }
     
-    //const time=moment(createdAt).startOf('hour').fromNow();
     const time = moment(createdAt).startOf('minute').fromNow();
 
     
@@ -287,6 +287,10 @@ const Post = ({
         console.log(e);
       }
     };
+    const handleModal = ()=>{
+      setModal(false);
+      setSubModal(true);
+    }
 
     const handleSubmit = async() => {
       try {
@@ -302,10 +306,11 @@ const Post = ({
       } catch (e) {
         console.log(e)
       } finally {
-        setmodalAndTitle(false);
         setIsLoading(false);
+        setSubModal(false);
       }
     }
+    
 
     const handleUnfollow = async() => {
       try {
@@ -323,6 +328,124 @@ const Post = ({
         setbottomModalAndTitle(false)
       }
     }
+
+    const modal = (
+      <Modal
+          visible={isModal}
+          transparent={true}
+        >
+          <View
+                style={{
+                    flex: 1,
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 20,
+                    backgroundColor: 'rgba(0,0,0,0.50)'
+                }}
+            >
+                <View style={{
+                    width: 250,
+                    height: 150,
+                    backgroundColor: 'white',
+                    borderRadius: 20,
+                }}>
+                    <View
+                        style={{
+                            alignSelf: 'baseline',
+                            backgroundColor: 'white',
+                            width: 250,
+                            flex: 4,
+                            borderBottomLeftRadius: 20,
+                            borderTopLeftRadius:20,
+                            borderTopRightRadius:20,
+                            borderBottomRightRadius: 20,
+                        }}
+                    >
+                        <TouchableHighlight
+                            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}
+                            onPress={() => handlePost(id, files, storeName, storeLocation, placeId)}>
+                                <Text style={{ color: 'black', fontSize: 15 }}>게시물 수정</Text>
+                        </TouchableHighlight>
+
+                        <TouchableHighlight
+                            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                            onPress={handleModal}>
+                            <Text style={{ color: 'black', fontSize: 15 }}>게시물 삭제</Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight
+                            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor:mainPink , borderBottomLeftRadius:20, borderBottomRightRadius:20}}
+                            onPress={() => setModal(false)}>
+                            <Text style={{ color: 'white', fontSize: 15 }}>Cancel</Text>
+                        </TouchableHighlight>
+
+                    </View>
+                </View>
+
+            </View>
+        </Modal>
+  )
+
+  const modalEdit=(
+    <Modal
+          visible={subModal}
+          transparent={true}
+        >
+          <View
+                style={{
+                    flex: 1,
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 20,
+                    backgroundColor: 'rgba(0,0,0,0.50)'
+                }}
+            >
+                <View style={{
+                    width: 300,
+                    height: 150,
+                    backgroundColor: 'white',
+                    borderRadius: 20,
+                    
+                }}>
+
+                   
+                    <Text
+                        style={{ fontSize: 16, alignSelf: 'center', marginTop: 40, flex: 7, alignItems:'center', justifyContent: 'center'}}
+                    >
+                        {"게시물을 삭제하시겠습니까?"}
+                    </Text>
+                    <View
+                        style={{
+                            alignSelf: 'baseline',
+                            backgroundColor: mainPink,
+                            width: 300,
+                            flex: 4,
+                            borderBottomLeftRadius: 20,
+                            borderBottomRightRadius: 20,
+                            flexDirection: 'row'
+                        }}
+                    >
+                        <TouchableHighlight
+                            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}
+                            onPress={handleSubmit}>
+                              {isloading ? <Loader/> : <Text style={{ color: 'white', fontSize: 15 }}>확인</Text>}
+                                
+                        </TouchableHighlight>
+
+                        <TouchableHighlight
+                            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                            onPress={() => setSubModal(false)}>
+                            <Text style={{ color: 'white', fontSize: 15 }}>취소</Text>
+                        </TouchableHighlight>
+
+                    </View>
+                </View>
+
+            </View>
+        </Modal>
+    )
+  
 
     return (
       
@@ -357,8 +480,8 @@ const Post = ({
               </TouchableOpacity>
               <CommentCount>{time}</CommentCount>
             </UserInfo>
-            <View/>
-            <TouchableOpacity onPress={()=>setbottomModalAndTitle(true)}>
+            <View1/>
+            {user.isSelf ? <TouchableOpacity onPress={()=>setModal(true)}>
               <IconCon>
                 <MaterialCommunityIcons
                   color={IconColor}
@@ -366,7 +489,8 @@ const Post = ({
                   name={"dots-horizontal"}
                 />
               </IconCon>
-            </TouchableOpacity>
+            </TouchableOpacity> : null}
+            
           </Header>
 
           <CaptionCon>
@@ -401,7 +525,7 @@ const Post = ({
                   <TagText>{k}</TagText>
                 </TagBox>
                 )) : null}
-                <View/>
+                <View1/>
               </ScrollView>
             </Tag>
           
@@ -471,89 +595,9 @@ const Post = ({
           </LikeCommentIcon>
         </Container>
         
-        <Modal.BottomModal
-            visible={bottomModalAndTitle}
-            onTouchOutside={() => setbottomModalAndTitle(false)}
-            
-            width={0.8}
-            onSwipeOut={() => setbottomModalAndTitle(false)}
-          >
-            <ModalContent>
-              {user.isSelf ? 
-              <> 
-              <ModalButtonTest onPress ={() => handleUpdate()}>
-                <Text style={{fontSize:19}}>
-                  수정
-                </Text>
-              </ModalButtonTest>
-              <ModalButtonTest onPress ={() => handleDelete()}>
-                <Text style={{fontSize:19, color : 'red'}}>
-                  삭제
-                </Text>
-              </ModalButtonTest>
-              </>
-              :
-              <>
-              <ModalButtonTest onPress ={() => handleUnfollow()}>
-                <Text style={{fontSize:17, color : 'red'}}>
-                  팔로우 취소
-                </Text>
-              </ModalButtonTest>
-              </>
-             } 
-            </ModalContent>
-            <ModalFooter>
-              <ModalButton
-                text="CANCEL"
-                onPress={() => setbottomModalAndTitle(false)}
-              />
-            </ModalFooter>
-          </Modal.BottomModal>
-          
-          <Modal
-            visible={modalAndTitle}
-            onTouchOutside={() => setmodalAndTitle(false)}
-            height={0.3}
-            width={0.8}
-            onSwipeOut={() => setmodalAndTitle(false)}
-          >
-            <ModalContent>
-              <Text>삭제하시겠습니까?</Text>
-            </ModalContent>
-            <ModalFooter>
-              <ModalButton
-                text="CANCEL"
-                onPress={() => setmodalAndTitle(false)}
-              />
-              <ModalButton
-                text="OK"
-                onPress={() => handleSubmit()}
-              />
-            </ModalFooter>
-          </Modal>
-          
-
-          <Modal
-            visible={modalUpdateAndTitle}
-            onTouchOutside={() => setmodalUpdateAndTitle(false)}
-            width={0.8}
-            onSwipeOut={() => setmodalUpdateAndTitle(false)}
-          >
-            <ModalContent>
-              <Text>수정하시겠습니까?</Text>
-            </ModalContent>
-            <ModalFooter>
-              <ModalButton
-                text="CANCEL"
-                onPress={() => setmodalUpdateAndTitle(false)}
-              />
-              <ModalButton
-                text="OK"
-                onPress={() => handlePost(id, files, storeName, storeLocation, placeId)}
-              />
-            </ModalFooter>
-          </Modal>
         
+        {modal}
+        {modalEdit}
       </Card>
   );
 };
@@ -590,3 +634,86 @@ Post.propTypes = {
   };
 
   export default React.memo(withNavigation(Post));
+
+  // <Modal.BottomModal
+  //           visible={bottomModalAndTitle}
+  //           onTouchOutside={() => setbottomModalAndTitle(false)}
+            
+  //           width={0.8}
+  //           onSwipeOut={() => setbottomModalAndTitle(false)}
+  //         >
+  //           <ModalContent>
+  //             {user.isSelf ? 
+  //             <> 
+  //             <ModalButtonTest onPress ={() => handleUpdate()}>
+  //               <Text style={{fontSize:19}}>
+  //                 수정
+  //               </Text>
+  //             </ModalButtonTest>
+  //             <ModalButtonTest onPress ={() => handleDelete()}>
+  //               <Text style={{fontSize:19, color : 'red'}}>
+  //                 삭제
+  //               </Text>
+  //             </ModalButtonTest>
+  //             </>
+  //             :
+  //             <>
+  //             <ModalButtonTest onPress ={() => handleUnfollow()}>
+  //               <Text style={{fontSize:17, color : 'red'}}>
+  //                 팔로우 취소
+  //               </Text>
+  //             </ModalButtonTest>
+  //             </>
+  //            } 
+  //           </ModalContent>
+  //           <ModalFooter>
+  //             <ModalButton
+  //               text="CANCEL"
+  //               onPress={() => setbottomModalAndTitle(false)}
+  //             />
+  //           </ModalFooter>
+  //         </Modal.BottomModal>
+          
+  //         <Modal
+  //           visible={modalAndTitle}
+  //           onTouchOutside={() => setmodalAndTitle(false)}
+  //           height={0.3}
+  //           width={0.8}
+  //           onSwipeOut={() => setmodalAndTitle(false)}
+  //         >
+  //           <ModalContent>
+  //             <Text>삭제하시겠습니까?</Text>
+  //           </ModalContent>
+  //           <ModalFooter>
+  //             <ModalButton
+  //               text="CANCEL"
+  //               onPress={() => setmodalAndTitle(false)}
+  //             />
+  //             <ModalButton
+  //               text="OK"
+  //               onPress={() => handleSubmit()}
+  //             />
+  //           </ModalFooter>
+  //         </Modal>
+          
+
+  //         <Modal
+  //           visible={modalUpdateAndTitle}
+  //           onTouchOutside={() => setmodalUpdateAndTitle(false)}
+  //           width={0.8}
+  //           onSwipeOut={() => setmodalUpdateAndTitle(false)}
+  //         >
+  //           <ModalContent>
+  //             <Text>수정하시겠습니까?</Text>
+  //           </ModalContent>
+  //           <ModalFooter>
+  //             <ModalButton
+  //               text="CANCEL"
+  //               onPress={() => setmodalUpdateAndTitle(false)}
+  //             />
+  //             <ModalButton
+  //               text="OK"
+  //               onPress={() => handlePost(id, files, storeName, storeLocation, placeId)}
+  //             />
+  //           </ModalFooter>
+  //         </Modal>

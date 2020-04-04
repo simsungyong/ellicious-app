@@ -1,9 +1,10 @@
 import React from "react";
 import { TouchableOpacity, Image, Text, View } from "react-native";
+import { Entypo } from "@expo/vector-icons";
 import { withNavigation } from "react-navigation";
 import PropTypes from "prop-types";
-import constants from "../../constants";
 import styled from "styled-components";
+import {mainPink} from "../Color";
 
 const Header = styled.View`
   padding: 5px;
@@ -23,9 +24,12 @@ const SearchStoreBox = ({ navigation, storeName, storeLocation, id, placeId }) =
   <TouchableOpacity onPress={() => navigation.navigate("StoreDetail", { storeName, placeId })}>
     <Header>
       <Profile>
-        <Image 
-          style={{height: 40, width: 40, borderRadius:20}}
-          source={{uri: "https://i.pinimg.com/originals/39/cd/e2/39cde2d77b272cfc6816ead14a47232c.png"}}/>
+        <Entypo
+        name={"location-pin"}
+        size={40}
+        color={mainPink} />
+
+        
         </Profile>
         <View>
           <Bold>{ storeName }</Bold>

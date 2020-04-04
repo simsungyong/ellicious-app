@@ -3,7 +3,7 @@ import {  useMutation } from "react-apollo-hooks";
 import { gql } from "apollo-boost";
 import styled from "styled-components";
 import useInput from "../hooks/useInput";
-import { ScrollView, Text, TextInput, Alert, TouchableOpacity, StyleSheet ,AsyncStorage, Modal, View, TouchableHighlight} from "react-native";
+import { ScrollView, Text, TextInput, Alert, TouchableOpacity, StyleSheet ,AsyncStorage, Modal, View} from "react-native";
 import { PointPink, mainPink, TINT_COLOR, Grey } from "../components/Color";
 import { withNavigation } from "react-navigation";
 import constants from "../constants";
@@ -291,17 +291,17 @@ const EditProfile = ({
                             flexDirection: 'row'
                         }}
                     >
-                        <TouchableHighlight
+                        <TouchableOpacity
                             style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}
                             onPress={() => {changePicture()}}>
                                 <Text style={{ color: 'white', fontSize: 15 }}>앨범에서 업로드</Text>
-                        </TouchableHighlight>
+                        </TouchableOpacity>
 
-                        <TouchableHighlight
+                        <TouchableOpacity
                             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
                             onPress={() => setbottomModalAndTitle(false)}>
                             <Text style={{ color: 'white', fontSize: 15 }}>취소</Text>
-                        </TouchableHighlight>
+                        </TouchableOpacity>
 
                     </View>
                 </View>

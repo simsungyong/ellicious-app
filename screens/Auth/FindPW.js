@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { TouchableWithoutFeedback, Keyboard, Alert, Modal, TouchableHighlight, View } from "react-native";
+import { TouchableWithoutFeedback, Keyboard, Alert, Modal, TouchableOpacity, View } from "react-native";
 import AuthButton from "../../components/AuthConfirmButton";
 import PNButton from "../../components/PNConfirmButton";
 import AuthInput from "../../components/AuthInput";
@@ -70,11 +70,8 @@ export default ({ navigation }) => {
 
   const handleSecret = async () => {
     setLoading(true);
-    // const { value: email } = emailInput;
-    // const { value: password } = passwordInput;
     const { value: phoneNum } = phoneNumInput;
 
-    // const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (phoneNum === "" || phoneNum === undefined) {
       setLoading(false);
       return Alert.alert("전화번호를 입력해주세요");
@@ -199,17 +196,17 @@ export default ({ navigation }) => {
                             flexDirection: 'row'
                         }}
                     >
-                        <TouchableHighlight
+                        <TouchableOpacity
                             style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}
                             onPress={() => {navigation.navigate("ResetPassword", {phoneNum: phoneNumInput.value}); setbottomModalAndTitle(false)}}>
                                 <Text style={{ color: 'white', fontSize: 15 }}>확인</Text>
-                        </TouchableHighlight>
+                        </TouchableOpacity>
 
-                        <TouchableHighlight
+                        <TouchableOpacity
                             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
                             onPress={() => setbottomModalAndTitle(false)}>
                             <Text style={{ color: 'white', fontSize: 15 }}>취소</Text>
-                        </TouchableHighlight>
+                        </TouchableOpacity>
 
                     </View>
                 </View>

@@ -10,14 +10,14 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon_test.png",
+    "icon": "./assets/playstore.png",
     "splash": {
-      "image": "./assets/icon_test.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "notification": {
-      "icon": "./assets/icon_test.png",
+      "icon": "./assets/splash.png",
       "iosDisplayInForeground": true,
       "androidMode": "default"
     },
@@ -33,7 +33,7 @@
     "android": {
       "package": "com.prom.ellicious",
       "versionCode": 1,
-      "icon": "./assets/icon_test.png",
+      "icon": "./assets/splash.png",
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",

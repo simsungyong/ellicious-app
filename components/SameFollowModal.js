@@ -4,10 +4,9 @@ import { withNavigation } from "react-navigation";
 import PropTypes from "prop-types";
 import constants from "../constants";
 import styled from "styled-components";
-// import FollowButton from '../FollowButton';
 import { gql } from "apollo-boost";
 import { useQuery, useMutation } from "react-apollo-hooks";
-import { LightPink, Grey, TINT_COLOR, PointPink, mainPink, LightGrey, Line } from "./Color";
+import { mainPink, LightGrey, Line } from "./Color";
 
 const SEE_USER = gql`
   query seeUser($id: String!) {

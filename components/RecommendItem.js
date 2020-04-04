@@ -11,9 +11,9 @@ const ImageCon = styled.View`
 `;
 
 const Image = styled.Image`
-  width: 90;
-  height: 90;
-  borderRadius:30;
+  width: 75;
+  height: 75;
+  borderRadius:25;
   position : relative;
   borderColor:${mainPink};
     borderWidth:2.5;
@@ -44,7 +44,7 @@ const RecommendItem = ({
             />
           }
         </ImageCon>
-        <Text style={{fontWeight:"500"}}>{username}</Text>
+        <Text style={{fontWeight:"500", fontSize:12}}>{username}</Text>
     </Container>
     )
 }

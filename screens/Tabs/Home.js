@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Image, ScrollView, FlatList, TouchableOpacity, RefreshControl, Platform, Touchable, Alert, Button, Keyboard, TouchableWithoutFeedback, } from 'react-native';
-//scrollview는 요소가 많은 경우 최적화 잘안된다~-> flatList가 좋다
+import { Image, ScrollView, FlatList, TouchableOpacity, RefreshControl} from 'react-native';
 import styled from "styled-components";
 import { gql } from "apollo-boost";
 import Loader from "../../components/Loader";
@@ -10,7 +9,7 @@ import * as Permissions from 'expo-permissions';
 import { POST_FRAGMENT } from "../../fragments";
 import HomePresenter from './HomePresenter';
 import { withNavigation } from "react-navigation";
-import { TINT_COLOR, BG_POST_COLOR, Grey,LightGrey } from '../../components/Color';
+import {LightGrey } from '../../components/Color';
 import Section from '../../components/Section';
 import RecommendItem from '../../components/RecommendItem';
 
@@ -82,9 +81,7 @@ font-size: 18px;
 const Home = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isEnd, setIsEnd] = useState(false);
-  const [lastLength, setLastLength] = useState();
   const [refreshing, setRefreshing] = useState(false);
-  // const [top10, setTop10] = useState(true);
 
 
   const [tokenMutation] = useMutation(EDIT_USER);
@@ -124,20 +121,7 @@ const Home = ({ navigation }) => {
     }
   };
 
-  // const recommendCheck= async()=>{
-  //   setCheck(true);
-  //   try{
-  //     if(!loading2){
-  //       console.log(data2)
-  //     }
-  //   }catch(e){
-  //     console.log(e)
-  //   }finally{
-  //     setCheck(false); 
-  //   }
-
-
-  // }
+  
 
   const refresh = async () => {
     await setRefreshing(true);

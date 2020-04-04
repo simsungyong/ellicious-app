@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import PropTypes from 'prop-types';
 import {TouchableOpacity} from 'react-native';
 import styled from 'styled-components'; //View, scrollview import안하고 styled만 임포트하면 쓸수잇다
-import RecommendItem from './RecommendItem';
-import {AntDesign, FontAwesome } from "@expo/vector-icons";
-import { mainPink} from './Color';
+import {AntDesign } from "@expo/vector-icons";
 
 const Container = styled.View`
     margin-vertical: 5px;
@@ -25,11 +23,7 @@ const BoxHide = styled.View`
 const Iconbox = styled.View`
     margin-left:10px;
 `
-const Refreshbox = styled.View`
-    align-items: flex-end;
-    margin-right: 15px;
-    flex:1;
-`
+
     
     const Section =({title, children, horizontal=true})=>{
         const [top10, setTop10] = useState(true);
@@ -51,7 +45,7 @@ const Refreshbox = styled.View`
     };
 
     Section.propTypes = {
-        children: PropTypes.oneOfType([ //children proptype검사하는 거 !! 복사해서쓰기
+        children: PropTypes.oneOfType([ 
             PropTypes.arrayOf(PropTypes.node),
             PropTypes.node
         ]),
@@ -61,9 +55,3 @@ const Refreshbox = styled.View`
     
     export default Section;
     
-
-    // <Refreshbox>
-    //             <TouchableOpacity>
-    //                 <FontAwesome name={"refresh"} color={mainPink} size={20}/>
-    //             </TouchableOpacity>
-    //             </Refreshbox>

@@ -5,8 +5,7 @@ import {
     Text,
     View,
     Image,
-    Alert,
-    Dimensions,
+    
     TouchableOpacity,
     Button,
     Platform,
@@ -86,7 +85,6 @@ class MyPickPresenter extends React.Component {
     locationCurrentPosition = () => {
         this.state._isMounted = true;
         navigator.geolocation.getCurrentPosition(position => {
-            //this.setState({coordinate:position.coords})
             if(this.state._isMounted === true){
                 this.setState({
                     region: {
@@ -104,7 +102,6 @@ class MyPickPresenter extends React.Component {
     }
 
     animate(coordinate) {
-        //console.log("로그"+this.mapView.state)
         let newRegion = {
             latitude: coordinate.storeLat,
             longitude: coordinate.storeLong,
@@ -136,7 +133,6 @@ class MyPickPresenter extends React.Component {
                     initialRegion={{
                         latitude: 35.911368, longitude: 127.961908,
                         latitudeDelta: 4, longitudeDelta: 4
-                         
                     }}
                     style={{ flex: 1 }}
                     showsUserLocation={true}>

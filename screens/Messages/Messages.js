@@ -156,7 +156,7 @@ export default class Messages extends React.Component {
             <ImgCon>
             {item.avatar ==null ? 
               <Image
-                source={{ uri: "https://img.insight.co.kr/static/2019/02/12/700/5k2hz1lne71377ta76gs.jpg" }}
+              source={require("../../assets/defaultIcons.png")}
                 style={{ width: 40, height:40, borderRadius:20 }}
               /> : <Image source={{uri: item.avatar}} style={{ width: 40, height:40, borderRadius:20 }} />
             }

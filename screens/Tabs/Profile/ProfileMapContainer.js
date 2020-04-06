@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Alert, Text, View, Modal, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Alert, Text, View, Modal, ScrollView, TouchableOpacity,TextInput } from 'react-native';
 import { IconColor, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useQuery, useMutation } from "react-apollo-hooks";
 import { gql } from "apollo-boost";
@@ -8,7 +8,7 @@ import useInput from '../../../hooks/useInput';
 import { CATEGORYINFO_FRAGMENT, CATEGORY_FRAGMENT } from '../../../fragments';
 import ProfileMapPresenter from '../../Tabs/Profile/ProfileMapPresenter';
 import styled from "styled-components";
-import { PointPink, mainBlue, mainPink, LightGrey, Blue, Grey } from "../../../components/Color";
+import { PointPink, mainBlue, mainPink,TINT_COLOR, LightGrey, Blue, Grey } from "../../../components/Color";
 import User from "../../../User";
 
 const seeCategory = gql`
@@ -100,7 +100,7 @@ const ProfileMapContainer = ({ navigation, userId }) => {
     const [delModal, setDelModal] = useState(false);
     const [newCategory, setNewCategory] = useState(false);
     const [delIdx, setDelIdx] = useState(0);
-
+    const [addMoadl, setAddModal] = useState(false);
     const [isloading, setIsLoading] = useState(false);
     const categoryInput = useInput();
     const { loading, data, refetch } = useQuery(GET_CATEGORYINFO, {
@@ -114,7 +114,7 @@ const ProfileMapContainer = ({ navigation, userId }) => {
         refetchQueries: () => [{ query: GET_CATEGORYINFO, variables: { userId: userId } }, { query: seeCategory }]
     });
 
-    
+
     const handleIndex = async (index) => {
         await setModal(false)
         await setConform(true)
@@ -141,6 +141,7 @@ const ProfileMapContainer = ({ navigation, userId }) => {
 
 
     const handleCreate = async () => {
+        console.log(categoryInput.value)
         if (categoryInput.value === undefined) {
 
             Alert.alert("한 글자는 쓰지?");
@@ -156,7 +157,8 @@ const ProfileMapContainer = ({ navigation, userId }) => {
                 console.log(e)
             } finally {
                 await setIsLoading(false);
-                await setNewCategory(false);
+                await setAddModal(false);
+                await setModal(true)
                 categoryInput.setValue("")
             }
         }
@@ -197,10 +199,10 @@ const ProfileMapContainer = ({ navigation, userId }) => {
                         <ScrollView height={200}>
                             {loading ? null : data.seeCategory.map((category, index) => (
                                 <ModalContainer key={index}>
-                                    <TouchableOpacity 
+                                    <TouchableOpacity
                                         style={{ flex: 2, justifyContent: 'center', alignItems: 'center', }}
                                         onPress={() => handleIndex(index)}>
-                                       <Text style={{ color: Blue, fontSize: 20 }}>{category.categoryName}</Text>
+                                        <Text style={{ color: Blue, fontSize: 20 }}>{category.categoryName}</Text>
                                     </TouchableOpacity>
 
                                     <TouchableOpacity
@@ -228,9 +230,12 @@ const ProfileMapContainer = ({ navigation, userId }) => {
                         >
                             <TouchableOpacity
                                 style={{ flex: 2, justifyContent: 'center', alignItems: 'center', }}
-                            //onPress={handleSubmit}
+                                onPress={()=>{
+                                    setModal(false)
+                                    setAddModal(true);
+                                            }}
                             >
-                                {isloading ? <Loader /> : <Text style={{ color: 'white', fontSize: 15 }}>카테고리 추가</Text>}
+                            <Text style={{ color: 'white', fontSize: 15 }}>카테고리 추가</Text>
 
                             </TouchableOpacity>
 
@@ -248,65 +253,133 @@ const ProfileMapContainer = ({ navigation, userId }) => {
         </Modal>
     )
 
-    const modalEdit=(
+    const modalEdit = (
         <Modal
-              visible={delModal}
-              transparent={true}
+            visible={delModal}
+            transparent={true}
+        >
+            <View
+                style={{
+                    flex: 1,
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 20,
+                    backgroundColor: 'rgba(0,0,0,0.50)'
+                }}
             >
-              <View
-                    style={{
-                        flex: 1,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: 20,
-                        backgroundColor: 'rgba(0,0,0,0.50)'
-                    }}
-                >
-                    <View style={{
-                        width: 300,
-                        height: 150,
-                        backgroundColor: 'white',
-                        borderRadius: 20,
-                        
-                    }}>
-                        <Text
-                            style={{ fontSize: 13, alignSelf: 'center', marginTop: 40, flex: 7, alignItems:'center', justifyContent: 'center'}}
-                        >
-                            {"삭제하시면 카테고리에 포함 되어있던 포스트가 모두 사라집니다. 그래도 삭제하시겠습니까?"}
-                        </Text>
-                        <View
-                            style={{
-                                alignSelf: 'baseline',
-                                backgroundColor: mainPink,
-                                width: 300,
-                                flex: 4,
-                                borderBottomLeftRadius: 20,
-                                borderBottomRightRadius: 20,
-                                flexDirection: 'row'
-                            }}
-                        >
-                            <TouchableOpacity
-                                style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}
-                                onPress={() => 
-                                    handleDelete(data.seeCategory[delIdx].id)
-                                }>
-                                  {isloading ? <Loader/> : <Text style={{ color: 'white', fontSize: 15 }}>확인</Text>}
-                                    
-                            </TouchableOpacity>
-    
-                            <TouchableOpacity
-                                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-                                onPress={() => setDelModal(false)}>
-                                <Text style={{ color: 'white', fontSize: 15 }}>취소</Text>
-                            </TouchableOpacity>
-    
-                        </View>
+                <View style={{
+                    width: 300,
+                    height: 150,
+                    backgroundColor: 'white',
+                    borderRadius: 20,
+
+                }}>
+                    <Text
+                        style={{ fontSize: 13, alignSelf: 'center', marginTop: 40, flex: 7, alignItems: 'center', justifyContent: 'center' }}
+                    >
+                        {"삭제하시면 카테고리에 포함 되어있던 포스트가 모두 사라집니다. 그래도 삭제하시겠습니까?"}
+                    </Text>
+                    <View
+                        style={{
+                            alignSelf: 'baseline',
+                            backgroundColor: mainPink,
+                            width: 300,
+                            flex: 4,
+                            borderBottomLeftRadius: 20,
+                            borderBottomRightRadius: 20,
+                            flexDirection: 'row'
+                        }}
+                    >
+                        <TouchableOpacity
+                            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}
+                            onPress={() =>
+                                handleDelete(data.seeCategory[delIdx].id)
+                            }>
+                            {isloading ? <Loader /> : <Text style={{ color: 'white', fontSize: 15 }}>확인</Text>}
+
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                            onPress={() => {
+                                setDelModal(false)
+                                setModal(true)
+                            }}>
+                            <Text style={{ color: 'white', fontSize: 15 }}>취소</Text>
+                        </TouchableOpacity>
+
                     </View>
-    
                 </View>
-            </Modal>
-        )
+
+            </View>
+        </Modal>
+    )
+
+    const modalAdd = (
+        <Modal
+            visible={addMoadl}
+            transparent={true}
+        >
+            <View
+                style={{
+                    flex: 1,
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 20,
+                    backgroundColor: 'rgba(0,0,0,0.50)'
+                }}
+            >
+                <View style={{
+                    width: 300,
+                    height: 100,
+                    backgroundColor: 'white',
+                    borderRadius: 20,
+
+                }}>
+
+                    <TextInput
+                        style={{ fontSize: 15, alignSelf: 'center', flex: 2, alignItems: 'center', justifyContent: 'center', width:200 }}
+                        onChangeText={categoryInput.onChange}
+                        placeholder={"새 카테고리 이름"}
+                        placeholderTextColor={TINT_COLOR}
+                    />
+
+                    <View
+                        style={{
+                            alignSelf: 'baseline',
+                            backgroundColor: mainPink,
+                            width: 300,
+                            flex:1,
+                            borderBottomLeftRadius: 20,
+                            borderBottomRightRadius: 20,
+                            flexDirection: 'row'
+                        }}
+                    >
+                        <TouchableOpacity
+                            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}
+                            onPress={handleCreate}>
+                            {isloading ? <Loader /> : <Text style={{ color: 'white', fontSize: 15 }}>확인</Text>}
+
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                            onPress={() => {
+                                setAddModal(false)
+                                setModal(true)}}>
+                            <Text style={{ color: 'white', fontSize: 15 }}>취소</Text>
+                        </TouchableOpacity>
+
+                    </View>
+                </View>
+
+            </View>
+        </Modal>
+    )
+
+
 
 
 
@@ -327,6 +400,7 @@ const ProfileMapContainer = ({ navigation, userId }) => {
                                 </Touchable>
                                 {modal}
                                 {modalEdit}
+                                {modalAdd}
                             </View>
                         </>
                     )}

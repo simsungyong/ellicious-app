@@ -91,7 +91,7 @@ const Home = ({ navigation }) => {
       items: 15
     },
   });
-  ;
+  
   const {loading:loading2, data:data2, refetch:refetch2} = useQuery(RECOMMEND,{
     variables: {
       pageNumber: 0,

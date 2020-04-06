@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Alert, Text, View, Modal, ScrollView, TouchableOpacity,TextInput } from 'react-native';
+import { StyleSheet, Alert, Text, View, Modal, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import { IconColor, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useQuery, useMutation } from "react-apollo-hooks";
 import { gql } from "apollo-boost";
@@ -8,7 +8,7 @@ import useInput from '../../../hooks/useInput';
 import { CATEGORYINFO_FRAGMENT, CATEGORY_FRAGMENT } from '../../../fragments';
 import ProfileMapPresenter from '../../Tabs/Profile/ProfileMapPresenter';
 import styled from "styled-components";
-import { PointPink, mainBlue, mainPink,TINT_COLOR, LightGrey, Blue, Grey } from "../../../components/Color";
+import { PointPink, mainBlue, mainPink, TINT_COLOR, LightGrey, Blue, Grey } from "../../../components/Color";
 import User from "../../../User";
 
 const seeCategory = gql`
@@ -43,22 +43,11 @@ const ModalContainer = styled.View`
   padding: 5px;
   margin-top: 10px;
   flex-direction: row;
-  align-items: center;  
+  align-items: center;
+    
   padding : 5px;
 `;
-const ModalNameContainer = styled.TouchableOpacity`
-    align-items: center;  
-    flex:5
-`;
-const ModalDelContainer = styled.TouchableOpacity`
-    align-items: center;  
-    flex:1;
-`;
-const Delete = styled.Text`
-  font-size: 15px;
-  font-weight: 400;
-  color : ${PointPink};
-`;
+
 
 const region = {
     latitude: 37.6247855,
@@ -92,7 +81,7 @@ export const CREATE_CATEGORY = gql`
   }
 `
 
-const ProfileMapContainer = ({ navigation, userId }) => {
+const ProfileMapContainer = ({ navigation, userId, isSelf }) => {
 
     const [mapIdx, setIndex] = useState(0);
     const [confirm, setConform] = useState(false);
@@ -166,7 +155,7 @@ const ProfileMapContainer = ({ navigation, userId }) => {
 
     const modal = (
         <Modal
-            
+
             visible={isModal}
             transparent={true}
         >
@@ -197,27 +186,37 @@ const ProfileMapContainer = ({ navigation, userId }) => {
                             borderBottomRightRadius: 20,
                         }}
                     >
-                        <ScrollView height={200}>
-                            {loading ? null : data.seeCategory.map((category, index) => (
-                                <ModalContainer key={index}>
-                                    <TouchableOpacity
-                                        style={{ flex: 2, justifyContent: 'center', alignItems: 'center', }}
-                                        onPress={() => handleIndex(index)}>
-                                        <Text style={{ color: Blue, fontSize: 20 }}>{category.categoryName}</Text>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity
-                                        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-                                        onPress={() => {
-                                            setDelIdx(index)
-                                            setModal(false)
-                                            setDelModal(true)
-                                        }}>
-                                        <Text style={{ color: Grey, fontSize: 15 }}>삭제</Text>
-                                    </TouchableOpacity>
+                        {
+                            loading ? null : data.seeCategory.length > 0 ? (
+                                <ScrollView height={200}>
+                                    {data.seeCategory.map((category, index) => (
+                                        <ModalContainer key={index}>
+                                            <TouchableOpacity
+                                                style={{ flex: 2, justifyContent: 'center', alignItems: 'center', }}
+                                                onPress={() => handleIndex(index)}>
+                                                <Text style={{ color: Blue, fontSize: 20 }}>{category.categoryName}</Text>
+                                            </TouchableOpacity>
+                                            {isSelf ? (<TouchableOpacity
+                                                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                                                onPress={() => {
+                                                    setDelIdx(index)
+                                                    setModal(false)
+                                                    setDelModal(true)
+                                                }}>
+                                                <Text style={{ color: Grey, fontSize: 15 }}>삭제</Text>
+                                            </TouchableOpacity>) : null}
+                                            
+                                        </ModalContainer>
+                                    ))}
+                                </ScrollView>
+                            ) : <ModalContainer justifyContent={'center'} height={200}>
+                                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                        <Text>등록된 맛지도가 없어요!</Text>
+                                    </View>
                                 </ModalContainer>
-                            ))}
-                        </ScrollView>
+
+                        }
+               
                         <View
                             style={{
                                 alignSelf: 'baseline',
@@ -228,17 +227,19 @@ const ProfileMapContainer = ({ navigation, userId }) => {
                                 borderBottomRightRadius: 20,
                                 flexDirection: 'row'
                             }}
+                        >   
+                        {isSelf ? (<TouchableOpacity
+                            style={{ flex: 2, justifyContent: 'center', alignItems: 'center', }}
+                            onPress={() => {
+                                setModal(false)
+                                setAddModal(true);
+                            }}
                         >
-                            <TouchableOpacity
-                                style={{ flex: 2, justifyContent: 'center', alignItems: 'center', }}
-                                onPress={()=>{
-                                    setModal(false)
-                                    setAddModal(true);
-                                            }}
-                            >
                             <Text style={{ color: 'white', fontSize: 15 }}>카테고리 추가</Text>
 
-                            </TouchableOpacity>
+                        </TouchableOpacity>) : null
+                        }
+                            
 
                             <TouchableOpacity
                                 style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
@@ -277,7 +278,7 @@ const ProfileMapContainer = ({ navigation, userId }) => {
 
                 }}>
                     <Text
-                        style={{ fontSize: 13, alignSelf: 'center', marginTop: 40, flex: 7, alignItems: 'center', justifyContent: 'center' }}
+                        style={{ fontSize: 13, marginLeft: 7, marginRight: 7,alignSelf: 'center', marginTop: 40, flex: 7, alignItems: 'center', justifyContent: 'center' }}
                     >
                         {"삭제하시면 카테고리에 포함 되어있던 포스트가 모두 사라집니다. 그래도 삭제하시겠습니까?"}
                     </Text>
@@ -341,7 +342,7 @@ const ProfileMapContainer = ({ navigation, userId }) => {
                 }}>
 
                     <TextInput
-                        style={{ fontSize: 15, alignSelf: 'center', flex: 2, alignItems: 'center', justifyContent: 'center', width:200 }}
+                        style={{ fontSize: 15, alignSelf: 'center', flex: 2, alignItems: 'center', justifyContent: 'center', width: 200 }}
                         onChangeText={categoryInput.onChange}
                         placeholder={"새 카테고리 이름"}
                         placeholderTextColor={TINT_COLOR}
@@ -352,7 +353,7 @@ const ProfileMapContainer = ({ navigation, userId }) => {
                             alignSelf: 'baseline',
                             backgroundColor: mainPink,
                             width: 300,
-                            flex:1,
+                            flex: 1,
                             borderBottomLeftRadius: 20,
                             borderBottomRightRadius: 20,
                             flexDirection: 'row'
@@ -369,7 +370,8 @@ const ProfileMapContainer = ({ navigation, userId }) => {
                             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
                             onPress={() => {
                                 setAddModal(false)
-                                setModal(true)}}>
+                                setModal(true)
+                            }}>
                             <Text style={{ color: 'white', fontSize: 15 }}>취소</Text>
                         </TouchableOpacity>
 

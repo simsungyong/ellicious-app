@@ -170,12 +170,12 @@ justifyContent: center;
 alignItems: center;
 `;
 
-const Scene = ({ index, posts, userId }) => (
+const Scene = ({ index, posts, userId, isSelf }) => (
   
     <>
       {(index == 1) ? (
         <View style={{flex : 1, height: constants.height-200}} >
-        <ProfileMapContainer userId={userId}/>
+        <ProfileMapContainer userId={userId} isSelf={isSelf}/>
         </View>
       ) : (   
       
@@ -302,10 +302,10 @@ const handleFollow = async () =>{
               <EditCon>
             {
               isSelf ?
-              <TouchableOpacity onPress={()=>navigation.navigate("EditProfile", { id, avatar, lastName, firstName, bio, username, email })}>
+              <TouchableOpacity style={{marginRight:5, marginLeft:8}} onPress={()=>navigation.navigate("EditProfile", { id, avatar, lastName, firstName, bio, username, email })}>
               <Foundation
                   color={Grey}
-                  size={17}
+                  size={20}
                   name={"pencil"}
                   />
                   </TouchableOpacity> : <FollowButton onPress={handleFollow} backgroundColor={followingConfirm ? LightGrey :mainPink }>
@@ -358,7 +358,7 @@ const handleFollow = async () =>{
           routeStack={ROUTESTACK}
           renderScene={(route, i) => {
             let Component = ROUTES[route.title];
-            return <Component index={i} posts={posts} userId={id} style={{justifyContent: 'flex-start'}}/>;
+            return <Component index={i} posts={posts} userId={id} isSelf={isSelf} style={{justifyContent: 'flex-start'}}/>;
           }}
           headerStyle={{ paddingTop: 20 }}
           inactiveOpacity={1}

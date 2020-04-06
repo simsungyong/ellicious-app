@@ -16,16 +16,12 @@ import { Entypo } from "@expo/vector-icons";
 import {  StarColor, Yellow, mainPink, LightGrey } from '../../../components/Color';
 import { PROVIDER_GOOGLE, Marker, Callout, Circle } from "react-native-maps";
 import MapView from 'react-native-map-clustering';
-import Modal, { ModalTitle, ModalFooter, ModalButton } from 'react-native-modals';
+import Modal from 'react-native-modalbox';
 import { withNavigation, ScrollView } from "react-navigation";
 import Star from '../../../components/Star';
 
 
-const Container = styled.View`
-padding : 10px;
-background-color : 'rgba(0,0,0,0.6)'
-border-radius : 24;
-`;
+
 const ModalContainer = styled.View`
   padding: 10px;
   flex-direction: row;
@@ -172,13 +168,15 @@ class ProfileMapPresenter extends React.Component {
                 </MapView>
 
                 {this.state.indexNum > -1 ? (
-                    <Modal.BottomModal
-                        visible={this.state.isClick}
-                        onTouchOutside={() => this.setState({ isClick: false })}
-                        width={0.1}
-                        height={170}
-                        onSwipeOut={() => this.setState({ isClick: false })}
-                    >
+                <Modal
+                    onClosed={() => this.setState({isClick:false})}
+                    isOpen={this.state.isClick}
+                    position='bottom'
+                    coverScreen={true}
+                    style={{ borderTop: 10, height: 170, borderTopLeftRadius:20, borderTopRightRadius:20}}
+                    backdrop={true}
+                    swipeToClose={false}
+                >
                         <ModalContent>
                             <ModalContainer>
                                 <TouchableOpacity onPress={() => {
@@ -220,7 +218,7 @@ class ProfileMapPresenter extends React.Component {
                                 </SubContainer>
                             </ModalContainer>
                         </ModalContent>
-                    </Modal.BottomModal>
+                </Modal>
                 ) : null}
 
             </View>

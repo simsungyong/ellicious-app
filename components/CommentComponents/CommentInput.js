@@ -1,14 +1,10 @@
 import React, { useState } from "react";
-import { Image, TextInput, Alert } from "react-native";
+import { Image} from "react-native";
 import PropTypes from "prop-types";
-import { withNavigation } from "react-navigation";
 import styled from "styled-components";
 import moment from "moment";
 import { EvilIcons } from "@expo/vector-icons";
-import { gql } from "apollo-boost";
-import { useMutation } from "react-apollo-hooks";
-import { FEED_QUERY } from "../Post";
-import { CHILD_COMMENT } from "../../fragments";
+
 import PopUpModal from '../../components/PopUpModal';
 
 const Touchable = styled.TouchableOpacity``;

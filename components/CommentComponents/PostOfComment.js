@@ -7,9 +7,8 @@ import PropTypes from "prop-types";
 import useInput from "../../hooks/useInput";
 import { gql } from "apollo-boost";
 import { useMutation } from "react-apollo-hooks";
-import styles from "../../styles";
 import moment from "moment";
-import { LightPink, Grey, mainPink, LightGrey, CommentsBox, PointPink } from '../Color';
+import { LightPink, Grey, mainPink, LightGrey, CommentsBox } from '../Color';
 import Loader from '../Loader'
 import { POST_COMMENT } from "../../fragments";
 import { withNavigation } from "react-navigation";

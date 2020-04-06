@@ -236,9 +236,6 @@ const PostOfComment = ({
           id: id
         }
       });
-      // if (editComment.id) {
-      //   navigation.navigate("CommentDetail")
-      // }
     } catch (e) {
       console.log(e);
       Alert.alert("삭제 에러!");
@@ -256,9 +253,6 @@ const PostOfComment = ({
           id: childId
         }
       });
-      // if (editComment.id) {
-      //   navigation.navigate("CommentDetail")
-      // }
     } catch (e) {
       console.log(e);
       Alert.alert("삭제 에러!");
@@ -300,10 +294,17 @@ const PostOfComment = ({
     <Container>
       <CaptionsCon>
         <Profile>
-          <Image
-            style={{ height: 30, width: 30, borderRadius: 15 }}
-            source={{ uri: user.avatar }}
-          />
+          {user.avatar==null ? 
+            <Image
+            style={{height: 25, width: 25, borderRadius:15}}
+              source={require("../../assets/defaultIcons.png")}
+            />
+          :
+            <Image
+              style={{height: 25, width: 25, borderRadius:15}}
+              source={{uri: user.avatar}}
+            />
+          }
         </Profile>
 
         <CommentCon>

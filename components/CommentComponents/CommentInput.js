@@ -81,10 +81,17 @@ const CommentInput = ({
     <Container>
       <CaptionCon>
         <Touchable>
-          <Image
-            style={{ height: 25, width: 25, borderRadius: 15 }}
-            source={{ uri: user.avatar }}
-          />
+          {user.avatar==null ? 
+            <Image
+            style={{height: 25, width: 25, borderRadius:15}}
+              source={require("../../assets/defaultIcons.png")}
+            />
+          :
+            <Image
+              style={{height: 25, width: 25, borderRadius:15}}
+              source={{uri: user.avatar}}
+            />
+          }
         </Touchable>
         <Touchable>
           <Bold>{user.username}</Bold>

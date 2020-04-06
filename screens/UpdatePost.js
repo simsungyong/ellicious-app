@@ -1,20 +1,27 @@
-import React,{useState, useEffect, Component} from "react";
+import React,{useState} from "react";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
-import {Text,Image,ScrollView,TouchableOpacity, TextInput, Platform, TouchableHighlight, Alert, ActivityIndicator, Keyboard, TouchableWithoutFeedback, } from 'react-native';
+import {Text,Image,ScrollView,TouchableOpacity, TextInput, View, Alert, ActivityIndicator, Keyboard, TouchableWithoutFeedback, Modal} from 'react-native';
 import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line, LightPink } from '../components/Color';
-import {FontAwesome, EvilIcons, AntDesign} from "@expo/vector-icons";
+import {FontAwesome} from "@expo/vector-icons";
 import Stars from 'react-native-stars';
 import Hr from "hr-native";
 import { useQuery, useMutation } from "react-apollo-hooks";
-import { CATEGORY_FRAGMENT } from "../fragments";
-import Loader from "../components/Loader";
-import axios from 'axios';
+import { CATEGORY_FRAGMENT, CATEGORYINFO_FRAGMENT } from "../fragments";
 import constants from "../constants";
 import useInput from '../hooks/useInput';
 import { FEED_QUERY } from "./Tabs/Home";
 import {ME} from './Tabs/Profile/Profile';
-import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
+import User from '../User';
+
+const GET_CATEGORYINFO = gql`
+  query seeCategory($userId: String){
+    seeCategory(userId: $userId) {
+      ...CategoryInfo
+      }
+    }
+    ${CATEGORYINFO_FRAGMENT}
+`;
 
 const UPDATE = gql`
   mutation editPost($id: String!, $caption: String, $rating: Float!, $category: String!, $details:[String!]){
@@ -84,10 +91,6 @@ const Rating = styled.View`
 
 `;
 
-const View = styled.View`
- flex : 1
-`;
-
 const SubTitleConMI = styled.View`
   padding : 5px;
   justifyContent: center;
@@ -99,10 +102,6 @@ const MoreInfoCon = styled.View`
   margin-bottom : 7px;
 `;
 
-const UploadCon = styled.TouchableOpacity`
-  alignItems: center;
-  justifyContent: center;
-`;
 const UploadButton = styled.TouchableOpacity`
   margin-vertical : 5px;
   height: 40;
@@ -113,25 +112,6 @@ const UploadButton = styled.TouchableOpacity`
   alignItems: center;
 `;
 
-const ViewModal = styled.View`
-backgroundColor: white;
-bottom:1;
-height : ${constants.height / 2.5};
-left:2px;
-right:2px;
-alignItems: center
-position: absolute
-border-top-left-radius : 30px;
-border-top-right-radius : 30px;
-border-color : ${Grey};
-border-width : 1px;
-`;
-const ViewText = styled.Text`
-fontWeight : 300;
-font-size : 25;
-margin-bottom : 10;
-color : ${PointPink}
-`;
 const CategoryName = styled.Text`
 fontWeight : 200;
 font-size : 20;
@@ -151,14 +131,6 @@ flex-direction : row;
 alignItems: center;
 justifyContent: center;
 `;
-
-const PhotoNum = styled.View`
-  alignItems: center;
-  justifyContent: center;
-  padding : 5px;
-  margin : 4px;
-  position: absolute;
-  `;
 
 const Button = styled.TouchableOpacity`
   alignItems: center;
@@ -195,7 +167,6 @@ const seeCategory = gql`
 export default ({navigation}) => {
   const [keys, setKey] = useState([false,false,false,false,false,false,false,false,false,false,false,false]);
   const keyword = ['주차가능', '가성비', '서비스 좋음', '24시간', '자리넓음', '혼밥가능', '애견동반가능', '또 오고싶어', '단체석 구비','예약가능','연인과 함께','가족과 함께'];
-  //const [details, setDetails] = useState([]);
   const details=[];
   const captionInput = useInput();
   const photo = navigation.getParam("photo");
@@ -210,27 +181,30 @@ export default ({navigation}) => {
   const [selectCate, setSelectCate] = useState();
   const [pickedName, setPickedName] = useState();
   const [newCategory, setNewCategory] = useState(false);
-  //const [fileUrl, setFileUrl] = useState([]);
   const categoryInput = useInput();
-
   const [createCategory] = useMutation(CREATE_CATEGORY, {
-    refetchQueries: ()=>[{query: seeCategory}]
+    refetchQueries: () => [{ query: seeCategory }, { query: GET_CATEGORYINFO, variables: { userId: User.userId } }]
   });
   const [updateMutation] = useMutation(UPDATE, {
-    refetchQueries: ()=>[{query: FEED_QUERY},{query: ME }]
+    refetchQueries: () => [{
+      query: FEED_QUERY, variables: {
+        pageNumber: 0,
+        items: 15
+      }
+    }, { query: ME }]
   });
 
   const handleSubmit=async()=>{
-    if(captionInput.value===undefined || captionInput.value ===''){
-      Alert.alert("한글자 이상의 설명을 해주세요")
+    if (captionInput.value === undefined || captionInput.value === '') {
+      Alert.alert("게시글을 입력해주세요")
     }
-    else if(starValue===undefined){
-      Alert.alert("별점을 입력해주세요")
-    }else if(selectCate===undefined){
+    else if (starValue === undefined) {
+      Alert.alert("점수를 입력해주세요")
+    } else if (selectCate === undefined) {
       Alert.alert('카테고리를 지정 해주세요')
-    }else{
-      for(let i =0; i<12; i++){
-        if(keys[i]){
+    } else {
+      for (let i = 0; i < 12; i++) {
+        if (keys[i]) {
           details.push(keyword[i])
         }
       }
@@ -249,7 +223,7 @@ export default ({navigation}) => {
           }
         });
         if(editPost.id){
-          navigation.navigate("TabNavigation");
+          navigation.goBack();
         }
   
       } catch (e) {
@@ -283,28 +257,29 @@ export default ({navigation}) => {
     togglePicker(isModalPick);
   }
 
-  const handleCreate = async ()=>{
-    if(categoryInput.value === undefined){
-        Alert.alert("한 글자는 쓰지?");
+  const handleCreate = async () => {
+    if (categoryInput.value === undefined) {
+      Alert.alert("한 글자는 쓰지?");
     }
-    else{
-        await setIsLoading(true);
-        try {
-            
-            await createCategory({
-            variables: {
-                categoryName: categoryInput.value
-            }
-            });
-        } catch (e) {
-            console.log(e)
-        } finally{
-            await setIsLoading(false);
-            await setNewCategory(false);
-            categoryInput.setValue("")
-        }
+    else {
+      await setIsLoading(true);
+      try {
+
+        await createCategory({
+          variables: {
+            categoryName: categoryInput.value
+          }
+        });
+      } catch (e) {
+        console.log(e)
+      } finally {
+        await setIsLoading(false);
+        await setNewCategory(false);
+        await togglePicker(isModalPick);
+        categoryInput.setValue("")
+      }
     }
-}
+  }
   return(
     <DismissKeyboard>
     <Container>
@@ -426,7 +401,132 @@ export default ({navigation}) => {
           </UploadBt>
       </MoreInfoCon>
       
-      <Modal 
+      <Modal
+          visible={isModalPick}
+          transparent={true}
+        >
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 20,
+              backgroundColor: 'rgba(0,0,0,0.50)'
+            }}
+          >
+            <View style={{
+              width: 300,
+              height: 250,
+              backgroundColor: 'white',
+              borderRadius: 20,
+
+            }}>
+              <View
+                style={{
+                  alignSelf: 'baseline',
+                  backgroundColor: 'white',
+                  width: 300,
+                  borderBottomLeftRadius: 20,
+                  borderTopLeftRadius: 20,
+                  borderTopRightRadius: 20,
+                  borderBottomRightRadius: 20,
+                }}
+              >
+                <ScrollView height={200}>
+                  {data && data.seeCategory.map((value, index) => {
+                    return <TouchableOpacity 
+                    style={{ flex: 2, justifyContent: 'center', alignItems: 'center', paddingTop:4 }}
+                    key={index} onPress={() => pickValue(value.id, value.categoryName)}>
+                      <CategoryName>{value.categoryName}</CategoryName>
+                    </TouchableOpacity>
+                  })}
+                </ScrollView>
+                <View
+                  style={{
+                    alignSelf: 'baseline',
+                    backgroundColor: mainPink,
+                    width: 300,
+                    height: 50,
+                    borderBottomLeftRadius: 20,
+                    borderBottomRightRadius: 20,
+                    flexDirection: 'row'
+                  }}
+                >
+                  <TouchableOpacity
+                    style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}
+                    onPress={() => {
+                      togglePicker(isModalPick)
+                      setNewCategory(true)
+                    }}>
+                    <Text style={{ color: 'white', fontSize: 15 }}>카테고리 추가하기</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                    onPress={() => togglePicker(isModalPick)}>
+                    <Text style={{ color: 'white', fontSize: 15 }}>취소</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </View>
+        </Modal>
+
+        <Modal
+          visible={newCategory}
+          transparent={true}
+        >
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'rgba(0,0,0,0.50)'
+            }}
+          >
+            <View style={{
+              width: 300,
+              height: 150,
+              backgroundColor: 'white',
+              borderRadius: 20,
+
+            }}>
+              <TextInput
+                style={{ fontSize: 15, alignSelf: 'center', flex: 2, alignItems: 'center', justifyContent: 'center', width: 200 }}
+                onChangeText={categoryInput.onChange}
+                placeholder={"새 카테고리 이름"}
+                placeholderTextColor={TINT_COLOR}
+              />
+              <View
+                style={{
+                  alignSelf: 'baseline',
+                  backgroundColor: mainPink,
+                  width: 300,
+                  flex: 1,
+                  borderBottomLeftRadius: 20,
+                  borderBottomRightRadius: 20,
+                  flexDirection: 'row'
+                }}
+              >
+                <TouchableOpacity
+                  style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}
+                  onPress={() => handleCreate()}>
+                  <Text style={{ color: 'white', fontSize: 15 }}>확인</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                  onPress={() => { setNewCategory(false); togglePicker(isModalPick); }}>
+                  <Text style={{ color: 'white', fontSize: 15 }}>취소</Text>
+                </TouchableOpacity>
+
+              </View>
+            </View>
+          </View>
+        </Modal>
+      {/* <Modal 
       visible={isModalPick}
       onTouchOutside={() => togglePicker(isModalPick)}
       width={0.8}
@@ -477,7 +577,7 @@ export default ({navigation}) => {
               onPress={()=>setNewCategory(false)}
               />
           </ModalFooter>
-      </Modal>
+      </Modal> */}
     </Container>
     </DismissKeyboard>
   );

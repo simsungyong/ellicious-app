@@ -258,7 +258,7 @@ const UserProfile = ({
       id: id
     }, refetchQueries: ()=>[{query: FEED_QUERY, variables: {
       pageNumber: 0,
-      items: 8
+      items: 15
     }}]
   });
 const handleFollow = async () =>{
@@ -323,7 +323,7 @@ const handleFollow = async () =>{
               <SameCon> 
                 <Blank/>
                 <TouchableOpacity onPress={()=>setModalstate(true)}>
-                    <Text>{sametimeFollow[0].username+`님 등 ${sametimeFollow.length-1} 명이 팔로우 해요!`}</Text>
+                    <Text>{sametimeFollow[0].username+`님 외 ${sametimeFollow.length-1} 명이 팔로우 해요!`}</Text>
                     </TouchableOpacity>
                 </SameCon>
             : null

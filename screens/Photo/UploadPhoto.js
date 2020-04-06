@@ -1,7 +1,7 @@
 import React,{useState, useEffect, Component} from "react";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
-import {Text,Image,ScrollView,TouchableOpacity, TextInput, Platform, TouchableHighlight, Alert, ActivityIndicator, Keyboard, TouchableWithoutFeedback, } from 'react-native';
+import {Text,Image,ScrollView,TouchableOpacity, TextInput, Platform, View, Alert, ActivityIndicator, Keyboard, TouchableWithoutFeedback, Modal} from 'react-native';
 import { TINT_COLOR,IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line, LightPink } from '../../components/Color';
 import {FontAwesome, EvilIcons, AntDesign} from "@expo/vector-icons";
 import Stars from 'react-native-stars';
@@ -14,7 +14,7 @@ import constants from "../../constants";
 import useInput from '../../hooks/useInput';
 import { FEED_QUERY } from "../Tabs/Home";
 import {ME} from '../Tabs/Profile/Profile';
-import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
+// import Modal, {ModalTitle, ModalContent, ModalFooter, ModalButton} from 'react-native-modals';
 import User from '../../User';
 
 const GET_CATEGORYINFO = gql`
@@ -99,10 +99,6 @@ const Rating = styled.View`
   justifyContent: center;
   flex : 1
 
-`;
-
-const View = styled.View`
- flex : 1
 `;
 
 const SubTitleConMI = styled.View`
@@ -193,6 +189,7 @@ export const CREATE_CATEGORY= gql`
     }
   }
 `
+
 const seeCategory = gql`
   query seeCategory($userId: String){
     seeCategory(userId: $userId){
@@ -234,10 +231,10 @@ export default ({navigation}) => {
     refetchQueries: ()=>[{query: seeCategory}, {query: GET_CATEGORYINFO, variables: {userId: User.userId}}]
   });
   const [uploadMutation] = useMutation(UPLOAD, {
-    refetchQueries: ()=>[{query: FEED_QUERY, variables : {
+    refetchQueries: ()=>[{query: FEED_QUERY, variables: {
       pageNumber: 0,
-      items: 6
-    }},{query: ME }]
+      items: 15
+    }}, {query: ME}]
   });
 
 
@@ -345,6 +342,7 @@ export default ({navigation}) => {
         } finally{
             await setIsLoading(false);
             await setNewCategory(false);
+            await togglePicker(isModalPick);
             categoryInput.setValue("")
         }
     }
@@ -470,7 +468,80 @@ export default ({navigation}) => {
           </UploadBt>
       </MoreInfoCon>
       
-      <Modal 
+
+      <Modal
+          visible={isModalPick}
+          transparent={true}
+        >
+        <View
+              style={{
+                flex: 1,
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 20,
+                backgroundColor: 'rgba(0,0,0,0.50)'
+              }}
+          >
+          <View style={{
+              width: 300,
+              height: 250,
+              backgroundColor: 'white',
+              borderRadius: 20,
+              
+          }}>
+            <View
+                style={{
+                    alignSelf: 'baseline',
+                    backgroundColor: 'white',
+                    width: 300,
+                    borderBottomLeftRadius: 20,
+                    borderTopLeftRadius: 20,
+                    borderTopRightRadius: 20,
+                    borderBottomRightRadius: 20,
+                }}
+            >
+            <ScrollView height={200}>
+            {data && data.seeCategory.map((value, index)=>{
+              return <TouchableOpacity key={index } onPress={()=>pickValue(value.id, value.categoryName)} style={{paddingTop:4, paddingBottom:4}}>
+                <CategoryName>{value.categoryName}</CategoryName>
+              </TouchableOpacity>
+            })}
+            </ScrollView>
+            <View
+                style={{
+                  alignSelf: 'baseline',
+                  backgroundColor: mainPink,
+                  width: 300,
+                  height: 50,
+                  borderBottomLeftRadius: 20,
+                  borderBottomRightRadius: 20,
+                  flexDirection: 'row'
+                }}
+            >
+              <TouchableOpacity
+                  style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}
+                  onPress={() => {
+                    togglePicker(isModalPick)
+                    setNewCategory(true)
+                    }}>
+                      <Text style={{ color: 'white', fontSize: 15 }}>카테고리 추가하기</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                  style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                  onPress={() => togglePicker(isModalPick)}>
+                  <Text style={{ color: 'white', fontSize: 15 }}>취소</Text>
+              </TouchableOpacity>
+            </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+
+
+      {/* <Modal 
       visible={isModalPick}
       onTouchOutside={() => togglePicker(isModalPick)}
       width={0.8}
@@ -495,32 +566,59 @@ export default ({navigation}) => {
             <ModalButton onPress={()=>togglePicker(isModalPick)} text="취소" />
 
           </ModalFooter>
-      </Modal>
+      </Modal> */}
+
       <Modal
           visible={newCategory}
-          onTouchOutside={() => setNewCategory(false)}
-          width={0.8}
-          onSwipeOut={() => setNewCategory(false)}
-      >
-          <ModalContent>
-          <TextInput 
+          transparent={true}
+        >
+        <View
+              style={{
+                  flex: 1,
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: 'rgba(0,0,0,0.50)'
+              }}
+          >
+          <View style={{
+              width: 300,
+              height: 150,
+              backgroundColor: 'white',
+              borderRadius: 20,
+              
+          }}>
+            <TextInput 
+              style={{ alignSelf: 'center', marginTop: 40, flex: 7}}
               onChangeText={categoryInput.onChange}
-              placeholder={"새 카테고리 이름"}
+              placeholder={"새 카테고리 이름을 입력하세요"}
               placeholderTextColor={TINT_COLOR}/>
-          
-          </ModalContent>
-          
-          <ModalFooter>
-          {!isloading ? (
-          <ModalButton
-              text="확인"
-              onPress={()=>handleCreate()}
-          />) : <Loader/> }
-          <ModalButton
-              text= "취소"
-              onPress={()=>setNewCategory(false)}
-              />
-          </ModalFooter>
+            <View
+                style={{
+                    alignSelf: 'baseline',
+                    backgroundColor: mainPink,
+                    width: 300,
+                    flex: 4,
+                    borderBottomLeftRadius: 20,
+                    borderBottomRightRadius: 20,
+                    flexDirection: 'row'
+                }}
+            >
+              <TouchableOpacity
+                  style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}
+                  onPress={() => handleCreate()}>
+                      <Text style={{ color: 'white', fontSize: 15 }}>확인</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                  style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                  onPress={() => {setNewCategory(false); togglePicker(isModalPick);}}>
+                  <Text style={{ color: 'white', fontSize: 15 }}>취소</Text>
+              </TouchableOpacity>
+
+            </View>
+          </View>
+        </View>
       </Modal>
     </Container>
     </DismissKeyboard>

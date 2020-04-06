@@ -88,7 +88,7 @@ const Home = ({ navigation }) => {
   const { loading, data, refetch, fetchMore } = useQuery(FEED_QUERY, {
     variables: {
       pageNumber: 0,
-      items: 8
+      items: 15
     },
   });
   ;
@@ -187,7 +187,7 @@ const Home = ({ navigation }) => {
         <Loader />
       }
 
-      {data ? data.seeFeed.length > 0 ?
+      {!loading ? data && data.seeFeed.length > 0 ?
         <HomePresenter
           feedData={data.seeFeed}
           // feedData={feedData}

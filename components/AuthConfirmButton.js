@@ -3,7 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import constants from "../constants";
 import { ActivityIndicator } from "react-native";
-import { BG_COLOR, mainPink, mainBlue, TINT_COLOR } from './Color'
+import { BG_COLOR, mainPink } from './Color'
 
 const Touchable = styled.TouchableOpacity``;
 

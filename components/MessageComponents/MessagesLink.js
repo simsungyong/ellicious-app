@@ -2,8 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { withNavigation } from "react-navigation";
 import {AntDesign} from "@expo/vector-icons"
-import { PointPink, mainPink, TINT_COLOR, LightGrey } from "../Color";
-import User from '../../User';
+import { TINT_COLOR, LightGrey } from "../Color";
 import firebase from 'firebase';
 import { AsyncStorage, StyleSheet } from "react-native";
 
@@ -26,7 +25,6 @@ class MessagesLink extends React.Component {
     this.state = {
       newMs : 0
     }
-    //console.log(this.state.meName)
   }
 
 

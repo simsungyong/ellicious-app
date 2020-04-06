@@ -5,7 +5,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import constants from "../constants";
 import { LightPink, TINT_COLOR, mainPink, IconColor, Grey } from "./Color";
-import {MaterialCommunityIcons, Ionicons,EvilIcons, AntDesign } from "@expo/vector-icons";
+import {MaterialCommunityIcons,EvilIcons, AntDesign } from "@expo/vector-icons";
 
 const Post = styled.View`
 background-color : ${LightPink}

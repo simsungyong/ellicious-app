@@ -5,7 +5,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import constants from "../constants";
 import SquarePhoto from "./SquarePhoto";
-import { LightPink, Grey, TINT_COLOR, PointPink, mainPink, LightGrey, Line } from "./Color";
+import { Grey, TINT_COLOR, mainPink, LightGrey } from "./Color";
 import {Foundation } from "@expo/vector-icons";
 import TopBarNav from 'top-bar-nav';
 import ProfileMapContainer from "../screens/Tabs/Profile/ProfileMapContainer";

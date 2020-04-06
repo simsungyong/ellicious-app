@@ -137,7 +137,6 @@ export default ({ navigation }) => {
           <ConfirmPN>
             <AuthInputPN
               {...phoneNumInput}
-              /*placeholder="First name"*/
               autoCapitalize="words"
               label="전화번호"
 
@@ -147,7 +146,6 @@ export default ({ navigation }) => {
 
           <AuthInput
             {...confirmSecretInput}
-            /*placeholder="First name"*/
             autoCapitalize="words"
             label="인증번호 입력"
           />

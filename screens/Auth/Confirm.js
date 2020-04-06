@@ -6,7 +6,7 @@ import AuthInput from "../../components/AuthInput";
 import useInput from "../../hooks/useInput";
 import { Alert } from "react-native";
 import { useMutation } from "react-apollo-hooks";
-import { LOG_IN, CONFIRM_SECRET } from "./AuthQueries";
+import { CONFIRM_SECRET } from "./AuthQueries";
 import { useLogIn } from "../../AuthContext";
 
 
@@ -21,9 +21,6 @@ const View= styled.View`
 const InfoCon = styled.View`
   justify-content: center;
   flex : 2;
-`;
-const Middle = styled.View`
-  flex:5;
 `;
 
 export default ({ navigation }) => {
@@ -65,7 +62,6 @@ export default ({ navigation }) => {
       <InfoCon>
         <AuthInput
           {...confirmInput}
-          //placeholder="Secret"
           returnKeyType="send"
           onSubmitEditing={handleConfirm}
           autoCorrect={false}

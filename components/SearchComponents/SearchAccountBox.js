@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import { TouchableOpacity, Image, Text } from "react-native";
 import { withNavigation } from "react-navigation";
 import PropTypes from "prop-types";
-import constants from "../../constants";
 import styled from "styled-components";
-// import FollowButton from '../FollowButton';
 import { gql } from "apollo-boost";
-import { useQuery, useMutation } from "react-apollo-hooks";
-import { LightPink, Grey, TINT_COLOR, PointPink, mainPink, LightGrey, Line } from "../Color";
+import { useMutation } from "react-apollo-hooks";
+import { mainPink, LightGrey } from "../Color";
 import { FEED_QUERY } from '../../screens/Tabs/Home';
 import { GET_USER } from '../../screens/UserDetail';
 

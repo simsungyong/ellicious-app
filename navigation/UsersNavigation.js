@@ -1,12 +1,9 @@
-import React from 'react';
-import {Text, View} from 'react-native';
 import { createStackNavigator } from "react-navigation-stack";
 import { createMaterialTopTabNavigator} from "react-navigation-tabs"
 import Followers from "../screens/ViewUserLIst/Followers";
 import Following from "../screens/ViewUserLIst/Following";
 import { UserstackStyles } from "./config";
-import { PointPink, TINT_COLOR, mainPink } from "../components/Color";
-import styled from 'styled-components';
+import { PointPink, TINT_COLOR } from "../components/Color";
 
 const UsersTabs = createMaterialTopTabNavigator(
     {
@@ -47,15 +44,6 @@ export default createStackNavigator({
         screen: UsersTabs,
         navigationOptions: ({navigation})=>({
             title: navigation.getParam("username"),
-            /*headerBackTitle: true ,
-            
-            headerTitle : (
-                <View style = {{ justifyContent : 'center',alignItems : "center", flex : 1, padding : 5,  marginLeft : 5}}>
-                <Text style = {{ fontSize : 25 , color : TINT_COLOR, fontWeight : "200"}}>
-                    사 진
-                </Text>
-                </View>
-            )*/
         }) 
         }
     },

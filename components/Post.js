@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, Platform, TouchableOpacity,View, Modal, TouchableHighlight } from "react-native";
+import { Image, Platform, TouchableOpacity,View, Modal } from "react-native";
 import styled from "styled-components";
 import { Ionicons, EvilIcons, AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
@@ -197,14 +197,6 @@ const Post = ({
           items: 8
         }},{query: ME}]
       });
-
-      const [unFollowMutation] = useMutation(UNFOLLOW, {
-        refetchQueries: ()=>[{query: FEED_QUERY, variables:{
-          pageNumber: 0,
-          items: 8
-        }},{query: ME}]
-      });
-
       
       const handlePost = (id, files, storeName, storeLocation, placeId)=> {
         try {

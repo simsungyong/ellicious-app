@@ -1,13 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import AuthButton from "../../components/AuthButton";
-import { useMutation } from "react-apollo-hooks";
-import { CONFIRM_SECRET } from "./AuthQueries";
-import { Alert, TouchableWithoutFeedback, Keyboard } from "react-native";
-import {mainPink, TINT_COLOR, BG_COLOR, Grey } from "../../components/Color";
-import useInput from "../../hooks/useInput";
-import { useLogIn } from "../../AuthContext";
-import axios from 'axios';
+import { TouchableWithoutFeedback, Keyboard } from "react-native";
+import {mainPink, BG_COLOR } from "../../components/Color";
 
 const Container = styled.View`
   justify-content: center;
@@ -46,7 +41,6 @@ const ButtonContainer = styled.View`
   flex: 2;
   background-color : ${mainPink}
 `;
-//배경 디자인 넣기
 
 const Text = styled.Text`
   color: ${BG_COLOR}};
@@ -69,22 +63,10 @@ const LoginLinkText = styled.Text`
   margin-top: 20px;
   font-weight: 800;
 `;
-//글자색 바구기
 
 export default ({ navigation }) => {
-  const passwordInput = useInput("");
-  const cellPhoneInput = useInput("");
-  const logIn = useLogIn();
   
   const [loading, setLoading] = useState(false);
-
-  const [confirmSecretMutation] = useMutation(CONFIRM_SECRET, {
-    variables: {
-      password: passwordInput.value,
-      // email: emailInput.value
-      cellPhone: cellPhoneInput.value
-    }
-  });
 
 
   return (

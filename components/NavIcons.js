@@ -1,7 +1,6 @@
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
-import styles from "../styles";
 import { PointPink, Grey } from "./Color";
 
 const NavIcon = ({

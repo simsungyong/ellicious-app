@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { withNavigation } from "react-navigation";
 import { useQuery } from "react-apollo-hooks";
 import {MaterialCommunityIcons} from "@expo/vector-icons"
-import { PointPink, mainPink, TINT_COLOR, LightGrey } from "./Color";
+import { TINT_COLOR, LightGrey } from "./Color";
 import {ALARM} from "../screens/Alarm/Alarms";
 
 const Container = styled.TouchableOpacity``;

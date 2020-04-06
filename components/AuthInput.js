@@ -3,13 +3,12 @@ import { View, StatusBar, TextInput, Animated } from 'react-native';
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import constants from "../constants";
-import {PointPink, TINT_COLOR, mainPink} from './Color'
+import { TINT_COLOR, mainPink} from './Color'
 
 const FloatingLabelInput = ({label, onChangeText,value, keyboardType,secureTextEntry, editable})=>{
   
   const [focus, setFocus] = useState(false);
   const [animation, setAnimation] = useState(new Animated.Value(0));
-  //console.log(label);
   const handleFocus = () => setFocus(true);
   const handleBlur = () => setFocus( false );
 
@@ -77,14 +76,12 @@ const AuthInputClass =({value,label,onChangeText, keyboardType, secureTextEntry,
       </View>
     );
   }
-//padding으로 입력창 사이 간격 조절
  
 const Container = styled.View`
 `;
 
 const AuthInput = ({
     value,
-    //placeholder,
     keyboardType = "default",
     autoCapitalize = "none",
     returnKeyType = "done",
@@ -102,7 +99,6 @@ const AuthInput = ({
         keyboardType={keyboardType}
         returnKeyType={returnKeyType}
         autoCapitalize={autoCapitalize}
-       // placeholder={placeholder}
         onSubmitEditing={onSubmitEditing}
         secureTextEntry={secureTextEntry}
         autoCorrect={autoCorrect}

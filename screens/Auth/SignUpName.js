@@ -1,13 +1,10 @@
 import React, { useState }  from "react";
 import styled from "styled-components";
-import { TouchableWithoutFeedback, Keyboard, Alert,StyleSheet, TouchableOpacity } from "react-native";
+import { TouchableWithoutFeedback, Keyboard, Alert } from "react-native";
 import AuthButton from "../../components/AuthConfirmButton";
 import AuthInput from "../../components/AuthInput";
 import useInput from "../../hooks/useInput";
-import { useMutation, useQuery } from "react-apollo-hooks";
-import { CREATE_ACCOUNT, ID_CHECK, CHECK_USERNAME,CONFIRM_SECRET} from "./AuthQueries";
-import { TINT_COLOR, PointPink, BG_COLOR } from '../../components/Color'
-import { useLogIn } from "../../AuthContext";
+import { TINT_COLOR, BG_COLOR } from '../../components/Color'
 
 
 const Container = styled.View`
@@ -53,17 +50,9 @@ const InfoCon = styled.View`
 export default ({ navigation }) => {
   const fNameInput = useInput("");
   const lNameInput = useInput("");
-  const logIn = useLogIn();
   
 
   const [loading, setLoading] = useState(false);
-  const [confirmSecretMutation] = useMutation(CONFIRM_SECRET, {
-    variables: {
-      password: fNameInput.value,
-      // email: emailInput.value
-      cellPhone: lNameInput.value
-    }
-  });
 
   const handleSubmit=()=>{
     if (fNameInput.value === "" || fNameInput.value===undefined) {
@@ -91,7 +80,6 @@ export default ({ navigation }) => {
           
           <AuthInput
             {...fNameInput}
-            /*placeholder="First name"*/
             autoCapitalize="words"
             label = "First Name (ex 길동)"
           />

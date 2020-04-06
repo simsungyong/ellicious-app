@@ -1,14 +1,13 @@
 import React, { useState }  from "react";
 import styled from "styled-components";
-import { TouchableWithoutFeedback, Keyboard, StyleSheet, TouchableOpacity } from "react-native";
+import { TouchableWithoutFeedback, Keyboard } from "react-native";
 import AuthButton from "../../components/AuthConfirmButton";
 import AuthInput from "../../components/AuthInput";
 import useInput from "../../hooks/useInput";
 import { Alert } from "react-native";
-import { useMutation, useQuery } from "react-apollo-hooks";
-import { CREATE_ACCOUNT, ID_CHECK, CHECK_USERNAME } from "./AuthQueries";
-import { TINT_COLOR, PointPink, BG_COLOR, Grey } from '../../components/Color'
-import firebase from 'firebase';
+import { useQuery } from "react-apollo-hooks";
+import { CHECK_USERNAME } from "./AuthQueries";
+import { TINT_COLOR, BG_COLOR, Grey } from '../../components/Color'
 
 const Container = styled.View`
   flex: 1;

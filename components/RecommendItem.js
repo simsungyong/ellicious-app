@@ -21,7 +21,7 @@ const Image = styled.Image`
 const Container = styled.TouchableOpacity`
     align-items: center;
     margin-horizontal:15px;
-    `;  //View flex 디폴트는 column
+    `;
 const RecommendItem = ({
     id,
     avatar,

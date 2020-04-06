@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, Image, Text, View } from "react-native";
+import { TouchableOpacity, Text, View } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { withNavigation } from "react-navigation";
 import PropTypes from "prop-types";

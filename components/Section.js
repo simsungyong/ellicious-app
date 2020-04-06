@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from 'prop-types';
 import {TouchableOpacity} from 'react-native';
-import styled from 'styled-components'; //View, scrollview import안하고 styled만 임포트하면 쓸수잇다
+import styled from 'styled-components';
 import {AntDesign } from "@expo/vector-icons";
 
 const Container = styled.View`

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { View, Alert,AsyncStorage } from "react-native";
-import { useQuery, useSubscription, useMutation } from "react-apollo-hooks";
+import { AsyncStorage } from "react-native";
+import { useQuery, useSubscription } from "react-apollo-hooks";
 import gql from "graphql-tag";
 import MainNavigation from "../navigation/MainNavigation";
 import User from "../User";

@@ -4,8 +4,7 @@ import Messages from "../screens/Messages/Messages";
 import MessageRoom from "../screens/Messages/MessageRoom";
 import MessageDetail from "../screens/Messages/MessageDetail";
 import { View, Text, TouchableOpacity } from 'react-native'
-import { PointPink, TINT_COLOR } from "../components/Color";
-import { Icon } from "native-base";
+import { TINT_COLOR } from "../components/Color";
 
 export default createStackNavigator({
   Messages: {

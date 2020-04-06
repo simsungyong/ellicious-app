@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform, Text, View, StyleSheet ,TouchableWithoutFeedback} from "react-native";
+import { Platform, Text, View } from "react-native";
 import styled from 'styled-components';
 import { createBottomTabNavigator } from "react-navigation-tabs"
 import { createStackNavigator } from 'react-navigation-stack';
@@ -10,7 +10,6 @@ import Profile from "../screens/Tabs/Profile/Profile";
 import Detail from "../screens/Detail";
 import MessagesLink from "../components/MessageComponents/MessagesLink";
 import SettingLink from "../components/SettingLink";
-import NavIcon from "../components/NavIcons";
 import AlarmsLink from "../components/AlarmsLink";
 import { stackStyles, HomestackStyles, SearchstackStyles } from "./config";
 import CommentDetail from "../screens/CommentDetail";
@@ -21,9 +20,7 @@ import UpdatePost from '../screens/UpdatePost';
 import styles from "../styles";
 import UserDetail from "../screens/UserDetail";
 import StoreDetail from "../screens/StoreDetail";
-import { PointPink, TINT_COLOR, Grey, mainPink } from "../components/Color";
-import MapContainer from '../screens/Map/MapContainer';
-import { white } from "ansi-colors";
+import { TINT_COLOR, Grey, mainPink } from "../components/Color";
 import { AntDesign } from "@expo/vector-icons";
 
 const stackFactory = (initialRoute, customConfig) =>
@@ -97,7 +94,6 @@ const stackFactory = (initialRoute, customConfig) =>
       defaultNavigationOptions: {
         headerBackTitle: null,
         headerTintColor: styles.blackColor,
-        //headerStyle: { ...stackStyles }
       }
     });
 
@@ -118,7 +114,6 @@ fontSize : 40 ;
 color : ${mainPink};
 `;
 
-/* 탭 내비게이션 메뉴 설정 */
 export default createBottomTabNavigator({
 
   Home: {
@@ -140,7 +135,6 @@ export default createBottomTabNavigator({
     }),
     navigationOptions: {
       
-      //tabBarOnPress: ({ navigation }) => navigation.navigate("Home"),
 
       tabBarIcon: ({ focused }) => (
         <AntDesign
@@ -252,8 +246,6 @@ export default createBottomTabNavigator({
       showLabel: false,
       style: {
         height: 50,
-        //backgroundColor : mainPink
-        //height : 50
         height: 50
       }
     }

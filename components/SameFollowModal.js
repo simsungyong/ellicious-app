@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { TouchableOpacity, Image, Text } from "react-native";
 import { withNavigation } from "react-navigation";
 import PropTypes from "prop-types";
-import constants from "../constants";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
-import { useQuery, useMutation } from "react-apollo-hooks";
-import { mainPink, LightGrey, Line } from "./Color";
+import { useMutation } from "react-apollo-hooks";
+import { mainPink, LightGrey } from "./Color";
 
 const SEE_USER = gql`
   query seeUser($id: String!) {

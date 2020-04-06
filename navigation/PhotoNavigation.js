@@ -7,8 +7,7 @@ import TakePhoto from "../screens/Photo/TakePhoto";
 import MapContainer from '../screens/Map/MapContainer';
 import UploadPhoto from "../screens/Photo/UploadPhoto";
 import { PhotostackStyles } from "./config";
-import { PointPink, TINT_COLOR, mainPink } from "../components/Color";
-import styled from 'styled-components';
+import { TINT_COLOR, mainPink } from "../components/Color";
 
 
 

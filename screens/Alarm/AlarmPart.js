@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import { Image, Platform, TextInput, Alert, TouchableOpacity, Text } from "react-native";
+import { Image, TouchableOpacity, Text } from "react-native";
 import styled from "styled-components";
-import { Ionicons, EvilIcons, FontAwesome, AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
-import Swiper from "react-native-swiper";
 import { gql } from "apollo-boost";
-import { useMutation, useQuery } from "react-apollo-hooks";
-import { IconColor, TINT_COLOR, Grey, PointPink, BG_COLOR, LightGrey, Line, LightPink, mainPink } from '../../components/Color';
+import { useMutation } from "react-apollo-hooks";
+import { LightGrey, mainPink } from '../../components/Color';
 import { withNavigation } from "react-navigation";
 import { ALARM_FRAGEMENT } from '../../fragments';
-// import FollowButton from '../../components/FollowButton';
 
 
 export const FOLLOW = gql`

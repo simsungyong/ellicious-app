@@ -1,14 +1,9 @@
-import React, { useState }  from "react";
+import React from "react";
 import styled from "styled-components";
-import { TouchableWithoutFeedback, Keyboard, StyleSheet, TouchableOpacity } from "react-native";
+import { TouchableWithoutFeedback, Keyboard } from "react-native";
 import AuthButton from "../../components/AuthConfirmButton";
 import AuthInput from "../../components/AuthInput";
-import useInput from "../../hooks/useInput";
-import { Alert } from "react-native";
-import { useMutation, useQuery } from "react-apollo-hooks";
-import { CREATE_ACCOUNT, ID_CHECK, CHECK_USERNAME } from "./AuthQueries";
-import { TINT_COLOR, PointPink, BG_COLOR, Grey } from '../../components/Color'
-import firebase from 'firebase';
+import { TINT_COLOR, BG_COLOR, Grey } from '../../components/Color'
 
 const Container = styled.View`
   flex: 1;
@@ -68,27 +63,6 @@ export default ({ navigation }) => {
     
   }
   
-  // const confirmID = async () => {
-  //   if(idInput.value=="") {
-  //     return Alert.alert("아이디를 입력하세요");
-  //   } else {
-  //     try {
-  //       setCheck(true);
-  //       if(userAccount) {
-  //         if(!userAccount.checkAccount) {
-  //           setConfirmAccount(true)
-  //         } else {
-  //           return Alert.alert("이미 존재하는 아이디입니다.");
-  //         }
-  //       }
-  //     } catch (e) {
-  //       console.log(e);
-  //     } finally {
-  //       setCheck(false)
-  //     }
-  //   }
-  // }
-  
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}> 
@@ -101,27 +75,9 @@ export default ({ navigation }) => {
         </SubTitleCon>
         
         <InfoCon>
-          {/* <View flexDirection="row">
-            <AuthInput
-              {...idInput}
-              placeholder="ID"
-              keyboardType="email-address"
-              returnKeyType="send"
-              autoCorrect={false}
-              label = "ID"
-            />
-            {confirmAccount ? null : 
-            (
-              <TouchableOpacity onPress={() => confirmID()}>
-              <Text>확인</Text>
-              </TouchableOpacity>
-            )}
-            
-          </View> */}
           
           <AuthInput
             value={fName}
-            /*placeholder="First name"*/
             autoCapitalize="words"
             label = "First Name (ex 길동)"
             editable={false}
@@ -143,7 +99,6 @@ export default ({ navigation }) => {
                           />
             <AuthInput
             value={username}
-            /*placeholder="First name"*/
             autoCapitalize="words"
             label = "UserName (ex GD_HONG)"
             editable={false}

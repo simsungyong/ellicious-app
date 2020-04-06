@@ -1,15 +1,12 @@
 import React, { useState }  from "react";
 import styled from "styled-components";
 import constants from "../../constants";
-import { TouchableWithoutFeedback, Keyboard, StyleSheet, TouchableOpacity } from "react-native";
+import { TouchableWithoutFeedback, Keyboard, TouchableOpacity } from "react-native";
 import AuthButton from "../../components/AuthConfirmButton";
-import AuthInput from "../../components/AuthInput";
 import useInput from "../../hooks/useInput";
 import { Alert, TextInput } from "react-native";
-import { useMutation, useQuery } from "react-apollo-hooks";
-import { TINT_COLOR, PointPink, BG_COLOR, Grey, LightGrey } from '../../components/Color'
-import firebase from 'firebase';
-import Hr from "hr-native";
+import { useMutation } from "react-apollo-hooks";
+import { BG_COLOR, Grey } from '../../components/Color';
 import { useLogIn } from "../../AuthContext";
 import {CONFIRM_SECRET} from "./AuthQueries";
 
@@ -24,22 +21,6 @@ alignItems: center;
 `;
 const Title = styled.Text`
 fontSize : 30px; 
-`;
-const Bold = styled.Text`
-font-weight : 900;
-`;
-
-const SubTitleCon = styled.View`
-flex : 1
-justifyContent: center;
-alignItems: flex-start;
-margin-left : 5px;
-`;
-const SubTitle = styled.Text`
-margin-left : 10px;
-font-Size : 28px;
-color: ${TINT_COLOR};
-font-weight : 800;
 `;
 const Text = styled.Text`
 margin-left : 10px;
@@ -67,7 +48,6 @@ alignItems: center;
 padding-bottom : 10px;
 flex-direction : row;
 `;
-const SocialLogin = styled.View``;
 
 const ID = styled.View`
 alignItems: flex-start;
@@ -90,7 +70,6 @@ export default ({ navigation }) => {
   const [confirmSecretMutation] = useMutation(CONFIRM_SECRET, {
     variables: {
       cellPhone: phoneNum.value,
-      // email: emailInput.value
       password: password.value
     }
   });
@@ -172,8 +151,3 @@ export default ({ navigation }) => {
     </TouchableWithoutFeedback>
   );
 };
-
-/* 
-          
-
-*/

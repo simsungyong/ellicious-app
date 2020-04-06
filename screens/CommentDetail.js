@@ -4,13 +4,11 @@ import { gql } from "apollo-boost";
 import Loader from "../components/Loader";
 import styled from "styled-components";
 import useInput from "../hooks/useInput";
-import {Evilcons} from '@expo/vector-icons';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
-import { ScrollView,Alert, Text,Image,TextInput,RefreshControl, KeyboardAvoidingView,ActivityIndicator } from "react-native";
+import { ScrollView,Alert, Text,Image,TextInput,RefreshControl } from "react-native";
 import { POST_COMMENT } from "../fragments";
 import PostOfComment from '../components/CommentComponents/PostOfComment';
-import { LightGrey, CommentsBox, mainPink } from "../components/Color";
-import User from '../User';
+import { CommentsBox } from "../components/Color";
 import { POST_QUERY } from "../components/Post";
 
 const InfoCon=styled.View`
@@ -115,7 +113,6 @@ export default ({navigation})=>{
           });
           if(addComment.id){
             commentInput.setValue("")
-            //navigation.navigate("CommentDetail");
           }
       }catch (e) {
         console.log(e);

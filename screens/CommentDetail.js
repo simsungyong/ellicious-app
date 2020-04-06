@@ -37,6 +37,10 @@ const Bold = styled.Text`
   font-size : 15px;
   margin-right : 5px;
 `;
+
+const ProfileImage = styled.View`
+  margin-left : 10px;
+`;
 const TextBox = styled.View`
   background-color : ${CommentsBox};
   border-radius: 4px;
@@ -132,9 +136,19 @@ export default ({navigation})=>{
             <RefreshControl refreshing={refreshing} onRefresh={refresh}/>
         }>
           <CaptionCon>
-            <Image 
-              style={{height: 30, width: 30, borderRadius:15}}
-              source={{uri: avatar}}/>
+            <ProfileImage>
+              {avatar==null ? 
+                <Image
+                style={{height: 30, width: 30, borderRadius:15}}
+                  source={require("../assets/defaultIcons.png")}
+                />
+              :
+                <Image
+                  style={{height: 30, width: 30, borderRadius:15}}
+                  source={{uri: avatar}}
+                />
+              }
+          </ProfileImage>
             <Bold>{username}</Bold>
             <Text>{caption}</Text>
           </CaptionCon>

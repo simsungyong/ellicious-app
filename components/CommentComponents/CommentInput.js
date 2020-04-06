@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, ScrollView, StyleSheet, View, TextInput, Alert } from "react-native";
+import { Image, TextInput, Alert } from "react-native";
 import PropTypes from "prop-types";
 import { withNavigation } from "react-navigation";
 import styled from "styled-components";
@@ -14,7 +14,7 @@ import PopUpModal from '../../components/PopUpModal';
 const Touchable = styled.TouchableOpacity``;
 
 const Container = styled.View`
-
+  margin-bottom: 10px;
 `;
 
 const CaptionCon = styled.View`
@@ -32,31 +32,26 @@ const Bold = styled.Text`
   font-weight: 600;
   margin-bottom : 5px;
   font-size : 15px;
+  margin-left: 5px;
+  justifyContent : flex-end;
   margin-right : 5px;
 `;
-
+const TimeView = styled.View`
+  justifyContent : flex-end;
+  flex-direction: row; 
+  flex:1
+`
 const Timebox = styled.Text`
   opacity: 0.5;
-  font-size: 10px;
-  justifyContent : flex-end;
+  margin-right: 10px;
+  font-size: 11px;
 `;
 
-const DELETE_CHILD_COMMENT = gql`
-  mutation editChildComment($id: String!) {
-    editChildComment(id: $id, action: DELETE){
-      id
-    }
-  }
-`;
+const DelBot = styled.View`
+  margin-right:10px;
+  `
 
-const GET_CHILD_COMMENTS = gql`
-    query seeChildComment($headComment: String!){
-      seeChildComment(headComment: $headComment){
-            ...ChildCommentParts
-        }
-    }
-    ${CHILD_COMMENT}
-`;
+
 
 const CommentInput = ({
   id,
@@ -71,7 +66,7 @@ const CommentInput = ({
   createdAt,
   navigation
 }) => {
-  const time = moment(createdAt).startOf('hour').fromNow();
+  const time = moment(createdAt).startOf('minute').fromNow();
   const [popup, setPopup] = useState(false);
 
   const handleModal = async()=>{
@@ -95,14 +90,15 @@ const CommentInput = ({
           <Bold>{user.username}</Bold>
         </Touchable>
         <Caption>{text}</Caption>
-
-        <Timebox>{time}</Timebox>
-
-        {user.isSelf ?
+        <TimeView>
+          <Timebox>{time}</Timebox>
+          {user.isSelf ?
+          <DelBot>
           <Touchable onPress={handleModal}>
-            <EvilIcons name={"trash"} size={20} />
-          </Touchable> : null}
-
+            <EvilIcons name={"trash"} size={20}/>
+          </Touchable>
+          </DelBot> : null}
+        </TimeView>
       </CaptionCon>
       <PopUpModal display={popup} setModal={handleModal} handleDelete={handleDeleteChild} child={id}/>
     </Container>

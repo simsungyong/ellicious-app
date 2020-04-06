@@ -5,20 +5,19 @@ import {
     Text,
     View,
     Image,
-    
+
     TouchableOpacity,
-    Button,
-    Platform,
 } from "react-native";
 import styled from "styled-components";
 import { ScrollView } from "react-native-gesture-handler";
 import { Entypo } from "@expo/vector-icons";
-import { PointPink, StarColor, BG_COLOR, LightGrey, mainPink, Grey,} from '../../../components/Color';
+import { PointPink, StarColor, BG_COLOR, Blue, LightGrey, mainPink, Grey, } from '../../../components/Color';
 import { PROVIDER_GOOGLE, Marker, Callout, Circle } from "react-native-maps";
 import MapView from 'react-native-map-clustering';
-import Modal, { ModalTitle, ModalFooter, ModalButton } from 'react-native-modals';
 import { withNavigation } from "react-navigation";
 import Star from '../../../components/Star';
+import Modal from 'react-native-modalbox';
+
 
 
 const ModalContainer = styled.View`
@@ -40,6 +39,8 @@ margin-top : 2px;
 
 const ModalContent = styled.View`
 flex:1;
+borderRadius: 15;
+
 justifyContent: center;
 alignItems: center;
 `;
@@ -66,6 +67,8 @@ alignItems: center;
   background-color: ${LightGrey};
 `;
 
+
+
 class MyPickPresenter extends React.Component {
     _isMounted = false;
     constructor(props) {
@@ -75,7 +78,7 @@ class MyPickPresenter extends React.Component {
         this.state = { marker, region, navigation, isClick: false, indexNum: -1 };
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.state._isMounted = false;
     }
     componentDidMount() {
@@ -85,7 +88,7 @@ class MyPickPresenter extends React.Component {
     locationCurrentPosition = () => {
         this.state._isMounted = true;
         navigator.geolocation.getCurrentPosition(position => {
-            if(this.state._isMounted === true){
+            if (this.state._isMounted === true) {
                 this.setState({
                     region: {
                         latitude: position.coords.latitude,
@@ -161,9 +164,72 @@ class MyPickPresenter extends React.Component {
                     ) : null
                     }
                 </MapView>
-                
-
                 {this.state.indexNum > -1 ? (
+                <Modal
+                    onClosed={() => this.setState({isClick:false})}
+                    isOpen={this.state.isClick}
+                    position='bottom'
+                    coverScreen={true}
+                    style={{ borderTop: 10, height: 170, borderTopLeftRadius:20, borderTopRightRadius:20}}
+                    backdrop={true}
+                    swipeToClose={false}
+                >
+                    
+                    <ModalContent>
+                            <ModalContainer>
+                                <TouchableOpacity onPress={() => {
+                                    this.setState({ isClick: false })
+                                    this.state.navigation.navigate("StoreDetail", {
+                                        storeName: this.state.marker[this.state.indexNum].post.storeName,
+                                        placeId: this.state.marker[this.state.indexNum].post.placeId
+                                    })
+                                }}>
+                                    <Image
+                                        source={{ uri: this.state.marker[this.state.indexNum].post.files[0].url }}
+                                        style={styles.cardImage, { width: 120, height: 120, borderRadius: 10 }}
+                                    />
+                                </TouchableOpacity>
+                                <SubContainer>
+                                    <Title>
+                                        <TouchableOpacity onPress={() => {
+                                            this.setState({ isClick: false })
+                                            this.props.navigation.navigate("StoreDetail", {
+                                                storeName: this.state.marker[this.state.indexNum].post.storeName,
+                                                placeId: this.state.marker[this.state.indexNum].post.placeId
+                                            })
+                                        }}>
+                                            <Bold>{this.state.marker[this.state.indexNum].post.storeName}</Bold>
+                                        </TouchableOpacity>
+                                        <Star rating={this.state.marker[this.state.indexNum].post.rating} size={25} color={StarColor} />
+                                    </Title>
+                                    <Info>
+                                        <Text style={{ fontSize: 13 }}>
+                                            {this.state.marker[this.state.indexNum].post.storeLocation.length > 33
+                                                ? `${this.state.marker[this.state.indexNum].post.storeLocation.substring(0, 31)}...`
+                                                : this.state.marker[this.state.indexNum].post.storeLocation}
+                                        </Text>
+                                        <ScrollView>
+                                            <View flexDirection="row">
+
+                                                {this.state.marker[this.state.indexNum].post.details.map((detail) => (
+                                                    <DetailView key={detail}>
+                                                        <Text >{detail}</Text>
+                                                    </DetailView>
+                                                ))}
+
+                                            </View>
+                                        </ScrollView>
+                                    </Info>
+                                </SubContainer>
+                            </ModalContainer>
+                        </ModalContent>
+                    
+                </Modal>):null}
+
+
+
+
+                {/* {this.state.indexNum > -1 ? (
                     <Modal.BottomModal
                         visible={this.state.isClick}
                         onTouchOutside={() => this.setState({ isClick: false })}
@@ -175,40 +241,44 @@ class MyPickPresenter extends React.Component {
                             <ModalContainer>
                                 <TouchableOpacity onPress={() => {
                                     this.setState({ isClick: false })
-                                    this.state.navigation.navigate("StoreDetail", { 
-                                    storeName: this.state.marker[this.state.indexNum].post.storeName, 
-                                    placeId: this.state.marker[this.state.indexNum].post.placeId })}}>
+                                    this.state.navigation.navigate("StoreDetail", {
+                                        storeName: this.state.marker[this.state.indexNum].post.storeName,
+                                        placeId: this.state.marker[this.state.indexNum].post.placeId
+                                    })
+                                }}>
                                     <Image
                                         source={{ uri: this.state.marker[this.state.indexNum].post.files[0].url }}
-                                        style={styles.cardImage, {width: 120, height:120, borderRadius:10}}
+                                        style={styles.cardImage, { width: 120, height: 120, borderRadius: 10 }}
                                     />
                                 </TouchableOpacity>
                                 <SubContainer>
                                     <Title>
                                         <TouchableOpacity onPress={() => {
                                             this.setState({ isClick: false })
-                                            this.props.navigation.navigate("StoreDetail", { 
-                                            storeName: this.state.marker[this.state.indexNum].post.storeName, 
-                                            placeId: this.state.marker[this.state.indexNum].post.placeId })}}>
+                                            this.props.navigation.navigate("StoreDetail", {
+                                                storeName: this.state.marker[this.state.indexNum].post.storeName,
+                                                placeId: this.state.marker[this.state.indexNum].post.placeId
+                                            })
+                                        }}>
                                             <Bold>{this.state.marker[this.state.indexNum].post.storeName}</Bold>
                                         </TouchableOpacity>
                                         <Star rating={this.state.marker[this.state.indexNum].post.rating} size={25} color={StarColor} />
                                     </Title>
                                     <Info>
-                                        <Text style={{fontSize:13}}>
+                                        <Text style={{ fontSize: 13 }}>
                                             {this.state.marker[this.state.indexNum].post.storeLocation.length > 33
                                                 ? `${this.state.marker[this.state.indexNum].post.storeLocation.substring(0, 31)}...`
                                                 : this.state.marker[this.state.indexNum].post.storeLocation}
                                         </Text>
-                                       <ScrollView>
+                                        <ScrollView>
                                             <View flexDirection="row">
-                                           
+
                                                 {this.state.marker[this.state.indexNum].post.details.map((detail) => (
                                                     <DetailView key={detail}>
                                                         <Text >{detail}</Text>
                                                     </DetailView>
                                                 ))}
-                                           
+
                                             </View>
                                         </ScrollView>
                                     </Info>
@@ -216,7 +286,7 @@ class MyPickPresenter extends React.Component {
                             </ModalContainer>
                         </ModalContent>
                     </Modal.BottomModal>
-                ) : null}
+                ) : null} */}
 
             </View>
         )
@@ -224,9 +294,9 @@ class MyPickPresenter extends React.Component {
 }
 const styles = StyleSheet.create({
     container: {
-        flex:1
+        flex: 1
     },
-    
+
     carousel: {
         position: 'absolute',
         bottom: 0,

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, ScrollView, Alert, TextInput, Text } from "react-native";
+import { Image, ScrollView, Alert, TextInput, Text,View } from "react-native";
 import { useQuery } from "react-apollo-hooks";
 import styled from "styled-components";
 import { EvilIcons } from "@expo/vector-icons";
@@ -9,17 +9,18 @@ import { gql } from "apollo-boost";
 import { useMutation } from "react-apollo-hooks";
 import styles from "../../styles";
 import moment from "moment";
-import { LightPink, Grey, mainPink, LightGrey, CommentsBox } from '../Color';
+import { LightPink, Grey, mainPink, LightGrey, CommentsBox, PointPink } from '../Color';
 import Loader from '../Loader'
 import { POST_COMMENT } from "../../fragments";
 import { withNavigation } from "react-navigation";
 import KeyboardSpacer from 'react-native-keyboard-spacer';
-import Modal, { ModalTitle, ModalContent, ModalFooter, ModalButton } from 'react-native-modals';
+import Modal from 'react-native-modalbox';
 import CommentInput from './CommentInput';
 import { POST_QUERY } from "../Post";
 import { CHILD_COMMENT } from "../../fragments";
 import PopUpModal from '../../components/PopUpModal';
 import User from '../../User';
+import constants from "../../constants";
 
 const Touchable = styled.TouchableOpacity`
   margin-bottom:3px;
@@ -56,6 +57,13 @@ const Comment = styled.View`
 `;
 const Caption = styled.Text``;
 
+const ModalHeader=styled.View`
+background-color : ${mainPink}
+height : 40px;
+justifyContent: center;
+alignItems: center;
+`;
+
 const ReplyCon = styled.View`
   flex-direction: row;
   justifyContent: space-between;
@@ -90,8 +98,10 @@ const CommentBox = styled.View`
   margin-bottom: 10px;
   alignItems: center;
   margin-left : 5px;
+
   margin-right : 2px;
-  margin-top : 7px;
+
+
 `;
 const Bold = styled.Text`
   font-weight: 600;
@@ -106,7 +116,6 @@ const TextBox = styled.View`
   flex : 1;
   margin-right : 5px;
   margin-left : 5px;
-  height : 30;
 `;
 
 const GET_CHILD_COMMENTS = gql`
@@ -163,7 +172,7 @@ const PostOfComment = ({
   createdAt,
 }) => {
   const time = moment(createdAt).startOf('minute').fromNow();
-  
+
   const { loading, data, refetch } = useQuery(GET_CHILD_COMMENTS, {
     variables: { headComment: id }
   });
@@ -215,7 +224,7 @@ const PostOfComment = ({
     setbottomModalAndTitle(false);
     navigation.navigate("UserDetail", { id: user.id, username: user.username });
   }
-  const handleModal = async ()=>{
+  const handleModal = async () => {
     setPopup(!popup);
   }
 
@@ -289,107 +298,107 @@ const PostOfComment = ({
 
   return (
     <Container>
-        <CaptionsCon>
-          <Profile>
-            <Image
-              style={{ height: 30, width: 30, borderRadius: 15 }}
-              source={{ uri: user.avatar }}
-            />
-          </Profile>
-
-          <CommentCon>
-            <CommentBig>
-              <Touchable onPress={navi}>
-                <Bold>{user.username}</Bold>
-              </Touchable>
-              {(user.isSelf || postUser==User.username) ?
-                <Touchable onPress={handleModal}>
-                  <EvilIcons name={"trash"} size={20}/>
-                </Touchable> : null}
-                <PopUpModal display={popup} setModal={handleModal} handleDelete={handleDelete}/>
-            </CommentBig>
-            <Comment>
-              <Caption>{text}</Caption>
-            </Comment>
-            <ReplyCon>
-              <Timebox>{time}</Timebox>
-                {childCount > 0 ? (
-                  <Timebox>{"+" + childCount + "개"}</Timebox>
-                ) : null}
-                
-              <Touchable onPress={() => setbottomModalAndTitle(true)}>
-                <Reply>Reply </Reply>
-              </Touchable>
-            </ReplyCon>
-          </CommentCon>
-        </CaptionsCon>
-      <Modal.BottomModal
-        visible={bottomModalAndTitle}
-        onTouchOutside={() => setbottomModalAndTitle(false)}
-        height={0.7}
-        width={1}
-        onSwipeOut={() => setbottomModalAndTitle(false)}
-        modalTitle={
-          <ModalTitle
-            title="댓글"
-            hasTitleBar
+      <CaptionsCon>
+        <Profile>
+          <Image
+            style={{ height: 30, width: 30, borderRadius: 15 }}
+            source={{ uri: user.avatar }}
           />
-        }
-      >
-        <ModalContent>
-          <CaptionsCon>
-            <Profile>
-              <Image
-                style={{ height: 40, width: 40, borderRadius: 20 }}
-                source={{ uri: user.avatar }}
-              />
-            </Profile>
+        </Profile>
 
-            <CommentCon>
-              <Touchable onPress={navi}>
-                <Bold>{user.username}</Bold>
-              </Touchable>
-
-              <Comment>
-                <Caption>{text}</Caption>
-              </Comment>
-
-              <ReplyCon>
-                <Timebox>{time}</Timebox>
-              </ReplyCon>
-              
-            </CommentCon>
-          </CaptionsCon>
-          <ScrollView>
-          {
-            loading ? <Loader/> : data && data.seeChildComment && data.seeChildComment.map(comment =>
-              <CommentInput
-                key={comment.id}{...comment}
-                //setModal={handleModal}
-                handleDelete={handleDeleteChild}
-                />)
-          }
-          
-          </ScrollView>
-          <CommentBox>
-            <TextBox>
-              <TextInput
-                onChangeText={commentInput.onChange}
-                returnKeyType="send"
-                value={commentInput.value}
-                onSubmitEditing={handleComment}
-                placeholder="Comment"
-              />
-            </TextBox>
-            <Touchable onPress={handleComment}>
-              {isLoading ? <Loader /> :
-                <Bold>Reply</Bold>}
+        <CommentCon>
+          <CommentBig>
+            <Touchable onPress={navi}>
+              <Bold>{user.username}</Bold>
             </Touchable>
-          </CommentBox>
+            {(user.isSelf || postUser == User.username) ?
+              <Touchable onPress={handleModal}>
+                <EvilIcons name={"trash"} size={20} />
+              </Touchable> : null}
+            <PopUpModal display={popup} setModal={handleModal} handleDelete={handleDelete} />
+          </CommentBig>
+          <Comment>
+            <Caption>{text}</Caption>
+          </Comment>
+          <ReplyCon>
+            <Timebox>{time}</Timebox>
+            {childCount > 0 ? (
+              <Timebox>{"+" + childCount + "개"}</Timebox>
+            ) : null}
 
-          <KeyboardSpacer />
-        </ModalContent>
-      </Modal.BottomModal> 
+            <Touchable onPress={() => setbottomModalAndTitle(true)}>
+              <Reply>Reply </Reply>
+            </Touchable>
+          </ReplyCon>
+        </CommentCon>
+      </CaptionsCon>
+
+      <Modal
+        onClosed={() => setbottomModalAndTitle(false)}
+        isOpen={bottomModalAndTitle}
+        position='bottom'
+        coverScreen={true}
+        style={{ borderTop: 10, height: 2*constants.height/3, borderTopLeftRadius: 20, borderTopRightRadius: 20 }}
+        backdrop={true}
+        swipeToClose={false}
+      >
+
+      
+          <ModalHeader style={{borderTopLeftRadius: 20, borderTopRightRadius: 20 }}>
+            <Text style={{fontSize : 19, color:'white'}}>댓 글</Text>
+          </ModalHeader>
+
+            <CaptionsCon >
+              <Profile>
+                <Image
+                  style={{ height: 40, width: 40, borderRadius: 20 }}
+                  source={{ uri: user.avatar }}
+                />
+              </Profile>
+
+              <CommentCon>
+                <Touchable onPress={navi}>
+                  <Bold>{user.username}</Bold>
+                </Touchable>
+
+                <Comment>
+                  <Caption>{text}</Caption>
+                </Comment>
+
+                <ReplyCon>
+                  <Timebox>{time}</Timebox>
+                </ReplyCon>
+
+              </CommentCon>
+            </CaptionsCon>
+            <ScrollView>
+              {
+                loading ? <Loader /> : data && data.seeChildComment && data.seeChildComment.map(comment =>
+                  <CommentInput
+                    key={comment.id}{...comment}
+                    //setModal={handleModal}
+                    handleDelete={handleDeleteChild}
+                  />)
+              }
+            </ScrollView>
+            <CommentBox>
+              <TextBox>
+                <TextInput
+                  onChangeText={commentInput.onChange}
+                  returnKeyType="send"
+                  value={commentInput.value}
+                  onSubmitEditing={handleComment}
+                  placeholder="Comment"
+                />
+              </TextBox>
+              <Touchable onPress={handleComment}>
+                {isLoading ? <Loader /> :
+                  <Bold>Reply</Bold>}
+              </Touchable>
+            </CommentBox>
+            <KeyboardSpacer/>
+        </Modal>
+        
     </Container>
   )
 }
@@ -397,14 +406,14 @@ const PostOfComment = ({
 
 
 PostOfComment.propTypes = {
-  postUser: PropTypes.string,
+        postUser: PropTypes.string,
   id: PropTypes.string.isRequired,
   childCount: PropTypes.number.isRequired,
   post: PropTypes.shape({
-    id: PropTypes.string.isRequired
+        id: PropTypes.string.isRequired
   }).isRequired,
   user: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+        id: PropTypes.string.isRequired,
     isSelf: PropTypes.bool,
     avatar: PropTypes.string,
     username: PropTypes.string.isRequired

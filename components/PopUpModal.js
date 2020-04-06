@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Modal, View, Image, Text, StyleSheet, TouchableHighlight } from 'react-native';
+import { Modal, View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Loader from './Loader';
 import { mainPink } from './Color';
 
@@ -71,7 +71,7 @@ const PopUpModal = (props) => {
                             flexDirection: 'row'
                         }}
                     >
-                        <TouchableHighlight
+                        <TouchableOpacity
                             style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}
                             onPress={handleDelete}>
                             {
@@ -79,13 +79,13 @@ const PopUpModal = (props) => {
                             }
 
 
-                        </TouchableHighlight>
+                        </TouchableOpacity>
 
-                        <TouchableHighlight
+                        <TouchableOpacity
                             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
                             onPress={handleModal}>
                             <Text style={{ color: 'white', fontSize: 15 }}>취소</Text>
-                        </TouchableHighlight>
+                        </TouchableOpacity>
 
                     </View>
                 </View>

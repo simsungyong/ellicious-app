@@ -10,7 +10,6 @@ import { POST_COMMENT } from "../../fragments";
 import { PointPink, CommentsBox, mainPink, TINT_COLOR, Grey, LightPink } from "../../components/Color";
 import { withNavigation } from "react-navigation";
 import constants from "../../constants";
-import { FormLabel, FormInput } from 'react-native-elements'
 import {AntDesign, FontAwesome} from '@expo/vector-icons'
 import { FEED_QUERY } from "../Tabs/Home";
 import {ME} from '../Tabs/Profile/Profile';

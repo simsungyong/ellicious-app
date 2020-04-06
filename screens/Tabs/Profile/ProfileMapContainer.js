@@ -166,6 +166,7 @@ const ProfileMapContainer = ({ navigation, userId }) => {
 
     const modal = (
         <Modal
+            
             visible={isModal}
             transparent={true}
         >

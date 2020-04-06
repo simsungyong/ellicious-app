@@ -12,7 +12,7 @@
     "orientation": "portrait",
     "icon": "./assets/ellicious_icon.png",
     "splash": {
-      "image": "./assets/ellicious_icon.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

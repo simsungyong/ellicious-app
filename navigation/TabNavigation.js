@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform, Text, View } from "react-native";
+import { Platform, Text, View, Alert } from "react-native";
 import styled from 'styled-components';
 import { createBottomTabNavigator } from "react-navigation-tabs"
 import { createStackNavigator } from 'react-navigation-stack';
@@ -22,7 +22,47 @@ import UserDetail from "../screens/UserDetail";
 import StoreDetail from "../screens/StoreDetail";
 import { TINT_COLOR, Grey, mainPink } from "../components/Color";
 import { AntDesign } from "@expo/vector-icons";
+import * as Permissions from 'expo-permissions';
 
+const askPermissions = (navigation) => {
+  confirmPermissions(navigation)
+}
+
+const confirmPermissions = async(navigation) => {
+  try{
+    const {status: cameraStatus} = await Permissions.askAsync(Permissions.CAMERA);
+    let finalStatus = cameraStatus;
+
+    if(cameraStatus !== "granted"){
+      const {status} = await Permissions.askAsync(Permissions.CAMERA);
+      finalStatus = status
+    }
+
+    if(finalStatus !== "granted") {
+      Alert.alert(finalStatus);
+      return;
+    }
+
+    Alert.alert("OK");
+    // const {status: existStatus} = await Permissions.askAsync(Permissions.CAMERA, ermissions.CAMERA_ROLL);
+    // let finalStatus = existStatus;
+
+    // if(existStatus !== "granted"){
+    //   const {status} = await Permissions.askAsync(Permissions.CAMERA, Permissions.CAMERA_ROLL);
+    //   finalStatus = status
+    // }
+
+    // if(finalStatus !== "granted") {
+    //   Alert.alert("noGranted!");
+    //   return;
+    // }
+
+    // navigation.navigate("PhotoNavigation")
+  } catch(e){
+    Alert.alert("error")
+    console.log(e);
+  }
+}
 const stackFactory = (initialRoute, customConfig) =>
   createStackNavigator({
     InitialRoute: {
@@ -168,7 +208,7 @@ export default createBottomTabNavigator({
     screen: View,
     headerStyle: stackStyles,
     navigationOptions: {
-      tabBarOnPress: ({ navigation }) => navigation.navigate("PhotoNavigation"),
+      tabBarOnPress: ({ navigation }) => askPermissions(navigation),
       tabBarIcon: ({ focused }) => (
         <AntDesign
           color={focused ? mainPink : Grey}

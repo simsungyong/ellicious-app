@@ -51,7 +51,7 @@ export default ({ navigation }) => {
 
   const askPermission = async()=>{
     try{
-      const {status} = await Permissions.askAsync(Permissions.CAMERA);
+      const {status} = await Permissions.getAsync(Permissions.CAMERA);
 
       if(status === "granted"){
         setHasPermission(true);

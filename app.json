@@ -38,6 +38,7 @@
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",
         "CAMERA",
+        "CAMERA_ROLL",
         "READ_EXTERNAL_STORAGE",
         "READ_PHONE_STATE",
         "USE_FINGERPRINT",

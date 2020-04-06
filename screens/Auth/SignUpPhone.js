@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { TouchableWithoutFeedback, Keyboard, StyleSheet, TouchableOpacity } from "react-native";
+import { TouchableWithoutFeedback, Keyboard, TouchableOpacity, Modal, View } from "react-native";
 import AuthButton from "../../components/AuthConfirmButton";
 import AuthInput from "../../components/AuthInput";
 import useInput from "../../hooks/useInput";
@@ -8,9 +8,8 @@ import { Alert } from "react-native";
 import PNButton from "../../components/PNConfirmButton";
 import AuthInputPN from "../../components/AuthInputPN";
 import { useMutation, useQuery } from "react-apollo-hooks";
-import { CREATE_ACCOUNT, ID_CHECK, CHECK_USERNAME, REQUEST_SECRET } from "./AuthQueries";
-import { TINT_COLOR, PointPink, BG_COLOR, Grey } from '../../components/Color'
-import Modal, { ModalTitle, ModalContent, ModalFooter, ModalButton } from 'react-native-modals';
+import { ID_CHECK, REQUEST_SECRET } from "./AuthQueries";
+import { TINT_COLOR, BG_COLOR, Grey, mainPink } from '../../components/Color'
 
 const Container = styled.View`
   flex: 1;
@@ -44,7 +43,7 @@ color: ${Grey};
 
 `;
 
-const View = styled.View`
+const ViewO = styled.View`
   justify-content: flex-end;
   align-items: center;
   flex : 2;
@@ -160,37 +159,70 @@ export default ({ navigation }) => {
 
           <AuthInput
             {...confirmSecretInput}
-            /*placeholder="First name"*/
             autoCapitalize="words"
             label="인증번호 입력"
           />
         </InfoCon>
-        <View>
+        <ViewO>
           <AuthButton onPress={handleSubmit} text="확 인" />
-        </View>
+        </ViewO>
 
-        <Modal.BottomModal
+        <Modal
           visible={bottomModalAndTitle}
-          onTouchOutside={() => setbottomModalAndTitle(false)}
-          height={0.25}
-          width={0.8}
-          onSwipeOut={() => setbottomModalAndTitle(false)}
         >
-          <ModalContent>
-            <Text>이미 존재하는 핸드폰 번호입니다.</Text>
-            <Text>비밀번호를 찾으러 이동하시겠습니까?</Text>
-          </ModalContent>
-          <ModalFooter>
-            <ModalButton
-              text="OK"
-              onPress={() => {navigation.navigate("FindPW"); setbottomModalAndTitle(false) }}
-            />
-            <ModalButton
-              text="CANCEL"
-              onPress={() => setbottomModalAndTitle(false)}
-            />
-          </ModalFooter>
-        </Modal.BottomModal>
+          <View
+                style={{
+                    flex: 1,
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 20,
+                    backgroundColor: 'rgba(0,0,0,0.50)'
+                }}
+            >
+                <View style={{
+                    width: 300,
+                    height: 150,
+                    backgroundColor: 'white',
+                    borderRadius: 20,
+                    
+                }}>
+
+                   
+                    <Text
+                        style={{ fontSize: 16, alignSelf: 'center', marginTop: 40, flex: 7, alignItems:'center', justifyContent: 'center'}}
+                    >
+                        {"이미 존재하는 핸드폰 번호입니다. "}
+                        {"비밀번호를 찾으러 이동하시겠습니까?"}
+                    </Text>
+                    <View
+                        style={{
+                            alignSelf: 'baseline',
+                            backgroundColor: mainPink,
+                            width: 300,
+                            flex: 4,
+                            borderBottomLeftRadius: 20,
+                            borderBottomRightRadius: 20,
+                            flexDirection: 'row'
+                        }}
+                    >
+                        <TouchableOpacity
+                            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}
+                            onPress={() => {navigation.navigate("FindPW"); setbottomModalAndTitle(false)}}>
+                                <Text style={{ color: 'white', fontSize: 15 }}>확인</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                            onPress={() => setbottomModalAndTitle(false)}>
+                            <Text style={{ color: 'white', fontSize: 15 }}>취소</Text>
+                        </TouchableOpacity>
+
+                    </View>
+                </View>
+
+            </View>
+        </Modal>
 
       </Container>
     </TouchableWithoutFeedback>

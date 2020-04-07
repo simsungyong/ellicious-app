@@ -30,36 +30,21 @@ const askPermissions = (navigation) => {
 
 const confirmPermissions = async(navigation) => {
   try{
-    const {status: cameraStatus} = await Permissions.askAsync(Permissions.CAMERA);
+    const {status: cameraStatus} = await Permissions.getAsync(Permissions.CAMERA, Permissions.CAMERA_ROLL);
     let finalStatus = cameraStatus;
 
     if(cameraStatus !== "granted"){
-      const {status} = await Permissions.askAsync(Permissions.CAMERA);
+      const {status} = await Permissions.askAsync(Permissions.CAMERA, Permissions.CAMERA_ROLL);
       finalStatus = status
     }
 
     if(finalStatus !== "granted") {
-      Alert.alert(finalStatus);
       return;
     }
+    navigation.navigate("PhotoNavigation")
 
-    Alert.alert("OK");
-    // const {status: existStatus} = await Permissions.askAsync(Permissions.CAMERA, ermissions.CAMERA_ROLL);
-    // let finalStatus = existStatus;
-
-    // if(existStatus !== "granted"){
-    //   const {status} = await Permissions.askAsync(Permissions.CAMERA, Permissions.CAMERA_ROLL);
-    //   finalStatus = status
-    // }
-
-    // if(finalStatus !== "granted") {
-    //   Alert.alert("noGranted!");
-    //   return;
-    // }
-
-    // navigation.navigate("PhotoNavigation")
+    
   } catch(e){
-    Alert.alert("error")
     console.log(e);
   }
 }

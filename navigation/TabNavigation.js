@@ -39,6 +39,7 @@ const confirmPermissions = async(navigation) => {
     }
 
     if(finalStatus !== "granted") {
+      
       return;
     }
     navigation.navigate("PhotoNavigation")

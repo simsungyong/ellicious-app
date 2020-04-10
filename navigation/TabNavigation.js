@@ -39,7 +39,7 @@ const confirmPermissions = async(navigation) => {
     }
 
     if(finalStatus !== "granted") {
-      
+      Alert.alert("카메라 및 앨범에 대한 접근 권한이 필요합니다. 설정에서 앱에 관련된 접근권한을 변경해주세요");
       return;
     }
     navigation.navigate("PhotoNavigation")

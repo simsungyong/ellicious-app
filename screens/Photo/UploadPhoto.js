@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { gql } from "apollo-boost";
 import { Text, Image, ScrollView, TouchableOpacity, TextInput, View, Alert, ActivityIndicator, Keyboard, TouchableWithoutFeedback, Modal } from 'react-native';
 import { TINT_COLOR, IconColor, PointPink, BG_COLOR, StarColor, LightGrey, mainPink, Grey, Line, LightPink } from '../../components/Color';
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, Entypo } from "@expo/vector-icons";
 import Stars from 'react-native-stars';
 import Hr from "hr-native";
 import { useQuery, useMutation } from "react-apollo-hooks";
@@ -14,6 +14,7 @@ import useInput from '../../hooks/useInput';
 import { FEED_QUERY } from "../Tabs/Home";
 import { ME } from '../Tabs/Profile/Profile';
 import User from '../../User';
+import * as ImagePicker from 'expo-image-picker';
 
 const GET_CATEGORYINFO = gql`
   query seeCategory($userId: String){
@@ -48,8 +49,10 @@ const Top = styled.View`
   margin-bottom : 10px;
 `;
 
-const ImageBox = styled.View`
+const ImageBox = styled.TouchableOpacity`
 margin-left : 3px;
+flex-direction: row;
+
 `;
 const TextCon = styled.View`
 flex:1;
@@ -81,10 +84,15 @@ const Restaurant = styled.View`
   flex : 1
 `;
 
+const ImagePlus = styled.View`
+alignItems: center;
+justifyContent: center;
+`;
+
 const StoreName = styled.Text`
   font-weight: 400;
   margin-bottom : 5px;
-  font-size : 20px;
+  font-size : 18px;
 `;
 const StoreAddress = styled.Text`
   font-weight: 300;
@@ -177,7 +185,9 @@ export default ({ navigation }) => {
   const keyword = ['주차가능', '가성비', '서비스 좋음', '24시간', '자리넓음', '혼밥가능', '애견동반가능', '또 오고싶어', '단체석 구비', '예약가능', '연인과 함께', '가족과 함께'];
   const details = [];
   const captionInput = useInput();
-  const photo = navigation.getParam("photo");
+  //const photo = navigation.getParam("photo");
+  const [photo, setPhoto] = useState([]);
+  const [isPhoto, setFeed] = useState();
   const storeName = navigation.getParam("name");
   const storeAdr = navigation.getParam("formatted_address");
   const placeId = navigation.getParam("place_id");
@@ -201,71 +211,101 @@ export default ({ navigation }) => {
         pageNumber: 0,
         items: 15
       }
-    }, { query: ME }]
+    }, { query: ME }, { query: GET_CATEGORYINFO, variables: { userId: User.userId } }]
   });
+
+  const addPhoto = async () => {
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        allowsMultipleSelection: true,
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      if (!result.cancelled) {
+        console.log(result.uri);
+        setPhoto([...photo, result.uri])
+      }
+
+    } catch (E) {
+      console.log(E);
+    } finally {
+    }
+
+  }
+
 
 
   const handleSubmit = async () => {
     if (captionInput.value === undefined || captionInput.value === '') {
       Alert.alert("게시글을 입력해주세요")
+      return;
     }
-    else if (starValue === undefined) {
+    if (starValue === undefined) {
       Alert.alert("점수를 입력해주세요")
-    } else if (selectCate === undefined) {
+      return;
+    } 
+    if (selectCate === undefined) {
       Alert.alert('카테고리를 지정 해주세요')
-    } else {
-      for (let i = 0; i < 12; i++) {
-        if (keys[i]) {
-          details.push(keyword[i])
-        }
-      }
+      return;
+    }
+    if(!photo[0]){
+      Alert.alert('사진이 필요해요!')
+      return;
+    }
 
-      const formData = new FormData();
-      photo.forEach((element, i) => {
-        formData.append("file", {
-          name: element.filename || `filename${i}.jpg`,
-          type: "image/jpeg",
-          uri: element.uri
-        });
+    for (let i = 0; i < 12; i++) {
+      if (keys[i]) {
+        details.push(keyword[i])
+      }
+    }
+
+    const formData = new FormData();
+    photo.forEach((element) => {
+      formData.append("file", {
+        name: "feedPhoto",//element.filename || `filename${i}.jpg`,
+        type: "image/jpeg",
+        uri: element
+      });
+    });
+
+    try {
+      setIsLoading(true);
+      const {
+        data: { temp }
+      } = await axios.post("http://13.125.147.101:4000/api/upload", formData, {
+        headers: {
+          "content-type": "multipart/form-data"
+        }
       });
 
-      try {
-        setIsLoading(true);
-        const {
-          data: { temp }
-        } = await axios.post("http://13.125.147.101:4000/api/upload", formData, {
-          headers: {
-            "content-type": "multipart/form-data"
-          }
-        });
 
-
-        const {
-          data: { upload }
-        } = await uploadMutation({
-          variables: {
-            caption: captionInput.value,
-            files: temp,
-            storeName,
-            placeId,
-            storeLat,
-            storeLong,
-            rating: starValue,
-            category: selectCate,
-            storeLocation: storeAdr,
-            details
-          }
-        });
-        if (upload.id) {
-          navigation.navigate("TabNavigation");
+      const {
+        data: { upload }
+      } = await uploadMutation({
+        variables: {
+          caption: captionInput.value,
+          files: temp,
+          storeName,
+          placeId,
+          storeLat,
+          storeLong,
+          rating: starValue,
+          category: selectCate,
+          storeLocation: storeAdr,
+          details
         }
-
-      } catch (e) {
-        console.log(e)
-        Alert.alert("can't upload ", "Try later");
-      } finally {
-        setIsLoading(false);
+      });
+      if (upload.id) {
+        navigation.navigate("TabNavigation");
       }
+
+    } catch (e) {
+      console.log(e)
+      Alert.alert("can't upload ", "Try later");
+    } finally {
+      setIsLoading(false);
     }
 
 
@@ -318,16 +358,26 @@ export default ({ navigation }) => {
     <DismissKeyboard>
       <Container>
         <Top>
-          <ImageBox>
-            <Image
-              source={{ uri: photo[0].uri }}
+          <ImageBox onPress={addPhoto}>
+            {photo[0] ? <Image
+              source={{ uri: photo[photo.length - 1] }}
               style={{
-                height: 100,
-                width: 100,
-                marginRight: 20,
-                borderRadius: 20
+                height: constants.width / 5,
+                width: constants.width / 5,
+                marginRight: 15,
+                borderRadius: 15
               }}
-            />
+            /> : <ImagePlus
+
+              style={{
+                height: constants.width / 5,
+                width: constants.width / 5,
+                borderWidth: 3,
+                marginRight: 15,
+                borderRadius: 15
+              }}
+            ><Entypo name={'plus'} size={35} /></ImagePlus>}
+
           </ImageBox>
 
           <TextCon>
@@ -351,7 +401,7 @@ export default ({ navigation }) => {
             <SubTitle> 음식점 </SubTitle>
           </SubTitleCon>
           <Restaurant>
-            <StoreName>{storeName}</StoreName>
+            <StoreName>{storeName.length > 15 ? `${storeName.substring(0, 14)}...` : storeName}</StoreName>
             <StoreAddress>{storeAdr}</StoreAddress>
           </Restaurant>
         </InfoCon>
@@ -470,9 +520,9 @@ export default ({ navigation }) => {
               >
                 <ScrollView height={200}>
                   {data && data.seeCategory.map((value, index) => {
-                    return <TouchableOpacity 
-                    style={{ flex: 2, justifyContent: 'center', alignItems: 'center', paddingTop:4 }}
-                    key={index} onPress={() => pickValue(value.id, value.categoryName)}>
+                    return <TouchableOpacity
+                      style={{ flex: 2, justifyContent: 'center', alignItems: 'center', paddingTop: 4 }}
+                      key={index} onPress={() => pickValue(value.id, value.categoryName)}>
                       <CategoryName>{value.categoryName}</CategoryName>
                     </TouchableOpacity>
                   })}

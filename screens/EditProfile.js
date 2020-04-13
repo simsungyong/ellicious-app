@@ -1,17 +1,21 @@
 import React, { useState } from "react";
-import {  useMutation } from "react-apollo-hooks";
+import { useMutation } from "react-apollo-hooks";
 import { gql } from "apollo-boost";
+import axios from 'axios';
 import styled from "styled-components";
 import useInput from "../hooks/useInput";
-import { ScrollView, Text, TextInput, Alert, TouchableOpacity, StyleSheet ,AsyncStorage, Modal, View} from "react-native";
+import { ScrollView, Text, TextInput, Alert, TouchableOpacity, StyleSheet, AsyncStorage, Modal, View } from "react-native";
 import { PointPink, mainPink, TINT_COLOR, Grey } from "../components/Color";
 import { withNavigation } from "react-navigation";
 import constants from "../constants";
-import {FontAwesome } from '@expo/vector-icons';
-import { FEED_QUERY } from "../screens/Tabs/Home";
+import { FontAwesome } from '@expo/vector-icons';
 import { ME } from '../screens/Tabs/Profile/Profile';
 import firebase from 'firebase';
 import User from '../User';
+import * as Permissions from 'expo-permissions';
+import * as ImagePicker from 'expo-image-picker';
+import Loader from "../components/Loader";
+
 
 export const EDIT_USER = gql`
   mutation editUser($newAvatar: String, $bio: String, $username: String, $lastName: String, $firstName: String) {
@@ -65,6 +69,7 @@ const Button = styled.TouchableOpacity`
 const EditProfile = ({
   navigation
 }) => {
+  const [loading, setLoading] = useState(false);
   const id = navigation.getParam("id");
   const username = navigation.getParam("username");
   const avatar = navigation.getParam("avatar");
@@ -73,31 +78,77 @@ const EditProfile = ({
   const bio = navigation.getParam("bio");
   const email = navigation.getParam("email");
   const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
+  const [isavatar, setavatar] = useState(avatar);
   const bioInput = useInput();
   const usernameInput = useInput();
   const firstnameInput = useInput();
   const lastnameInput = useInput();
   const emailInput = useInput();
   const [editProfilePictureMutation] = useMutation(EDIT_USER, {
-    refetchQueries: ()=>[{query: FEED_QUERY, variables : {
-      pageNumber: 0,
-      items: 6
-    }},{query: ME }]
+    refetchQueries: () => [{ query: ME }]
   });
+
+
 
   const changePicture = async () => {
     try {
-      navigation.navigate("ProfilePicture", { id, username, avatar, bio, email });
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      if (status !== "granted") {
+        Alert.alert("갤러리 접근 허용을 하지 않으시면 사용할 수 없습니다")
+        return;
+      }
     } catch (e) {
-      console.log(e)
-    } finally {
-      setbottomModalAndTitle(false);
+      console.log(e);
+    };
+
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      console.log(result)
+
+      if (!result.cancelled) {
+       setavatar(result.uri);
+       setbottomModalAndTitle(false); 
+      }
+ 
+    } catch (E) {
+      console.log(E);
     }
+
   }
 
 
-
   const handleSubmit = async () => {
+    setLoading(true);
+    let finalAvatarUri = isavatar;
+
+    if(avatar !== isavatar){
+      const formData = new FormData();
+      formData.append("file", {
+      name: "profileIamge",
+      type: "image/jpeg",
+      uri: isavatar
+    });
+    try {
+      const {
+        data: {temp}
+      } = await axios.post("http://13.125.147.101:4000/api/upload", formData, {
+        headers:{
+          "content-type" : "multipart/form-data"
+        }
+      });
+      finalAvatarUri = temp[0];
+    } catch (e) {
+      console.log(e)
+    } 
+};    
+
+    
+
     let newbio = bio;
     let newusername = username;
     let newfirstname = firstName;
@@ -116,10 +167,11 @@ const EditProfile = ({
       newlastname = lastnameInput.value;
     }
 
+
     try {
       await editProfilePictureMutation({
         variables: {
-          newAvatar: avatar,
+          newAvatar: finalAvatarUri,
           bio: newbio,
           username: newusername,
           firstName: newfirstname,
@@ -128,15 +180,18 @@ const EditProfile = ({
       });
       firebase.database().ref('users').child(id).update({ ID: newusername })
       await AsyncStorage.setItem('username', newusername);
-      if(avatar !== null){
-        await AsyncStorage.setItem('avatar', avatar);
+      if (isavatar !== null) {
+        await AsyncStorage.setItem('avatar', finalAvatarUri);
       }
       User.username = await AsyncStorage.getItem('username');
-      User.avatar = await AsyncStorage.getItem('avatar') ;
-      navigation.goBack();
+      User.avatar = await AsyncStorage.getItem('avatar');
+      
     } catch (e) {
       console.log(e)
       Alert.alert("같은 UserName이 존재합니다.")
+    } finally{
+      setLoading(false);
+      navigation.goBack();
     }
   }
 
@@ -146,11 +201,11 @@ const EditProfile = ({
         <ImageCon>
           {avatar == null ?
             <Image
-            source={require("../assets/defaultIcons.png")}
+              source={require("../assets/defaultIcons.png")}
             />
             :
             <Image
-              source={{ uri: avatar }}
+              source={{ uri: isavatar }}
             />
           }
 
@@ -249,65 +304,67 @@ const EditProfile = ({
         </EditInfo>
 
         <TouchableOpacity onPress={() => handleSubmit()}>
+          { loading ? <Loader/> : 
           <Text style={{ fontSize: 17, color: PointPink, marginTop: 13 }}>완 료</Text>
+}
         </TouchableOpacity>
       </ScrollView>
 
       <Modal
-          visible={bottomModalAndTitle}
-          transparent={true}
+        visible={bottomModalAndTitle}
+        transparent={true}
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0,0,0,0.50)'
+          }}
         >
-          <View
-                style={{
-                    flex: 1,
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: 'rgba(0,0,0,0.50)'
-                }}
+          <View style={{
+            width: 300,
+            height: 150,
+            backgroundColor: 'white',
+            borderRadius: 20,
+
+          }}>
+
+
+            <Text
+              style={{ fontSize: 16, alignSelf: 'center', marginTop: 40, flex: 7, alignItems: 'center', justifyContent: 'center' }}
             >
-                <View style={{
-                    width: 300,
-                    height: 150,
-                    backgroundColor: 'white',
-                    borderRadius: 20,
-                    
-                }}>
+              {"프로필 사진을 업데이트 하시겠습니까?"}
+            </Text>
+            <View
+              style={{
+                alignSelf: 'baseline',
+                backgroundColor: mainPink,
+                width: 300,
+                flex: 4,
+                borderBottomLeftRadius: 20,
+                borderBottomRightRadius: 20,
+                flexDirection: 'row'
+              }}
+            >
+              <TouchableOpacity
+                style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}
+                onPress={changePicture}>
+                <Text style={{ color: 'white', fontSize: 15 }}>앨범에서 업로드</Text>
+              </TouchableOpacity>
 
-                   
-                    <Text
-                        style={{ fontSize: 16, alignSelf: 'center', marginTop: 40, flex: 7, alignItems:'center', justifyContent: 'center'}}
-                    >
-                        {"프로필 사진을 업데이트 하시겠습니까?"}
-                    </Text>
-                    <View
-                        style={{
-                            alignSelf: 'baseline',
-                            backgroundColor: mainPink,
-                            width: 300,
-                            flex: 4,
-                            borderBottomLeftRadius: 20,
-                            borderBottomRightRadius: 20,
-                            flexDirection: 'row'
-                        }}
-                    >
-                        <TouchableOpacity
-                            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}
-                            onPress={() => {changePicture()}}>
-                                <Text style={{ color: 'white', fontSize: 15 }}>앨범에서 업로드</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-                            onPress={() => setbottomModalAndTitle(false)}>
-                            <Text style={{ color: 'white', fontSize: 15 }}>취소</Text>
-                        </TouchableOpacity>
-
-                    </View>
-                </View>
+              <TouchableOpacity
+                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                onPress={() => setbottomModalAndTitle(false)}>
+                <Text style={{ color: 'white', fontSize: 15 }}>취소</Text>
+              </TouchableOpacity>
 
             </View>
-        </Modal>
+          </View>
+
+        </View>
+      </Modal>
     </Container>
 
   );

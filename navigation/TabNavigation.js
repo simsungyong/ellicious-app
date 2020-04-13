@@ -15,7 +15,6 @@ import { stackStyles, HomestackStyles, SearchstackStyles } from "./config";
 import CommentDetail from "../screens/CommentDetail";
 import EditProfile from '../screens/EditProfile';
 import Users from '../screens/ViewUserLIst/Users';
-import ProfilePicture from '../screens/ProfilePicture';
 import UpdatePost from '../screens/UpdatePost';
 import styles from "../styles";
 import UserDetail from "../screens/UserDetail";
@@ -87,12 +86,6 @@ const stackFactory = (initialRoute, customConfig) =>
       screen: Users,
       navigationOptions: ({ navigation }) => ({
         title: navigation.getParam("username")
-      })
-    },
-    ProfilePicture: {
-      screen: ProfilePicture,
-      navigationOptions: ({ navigation }) => ({
-        title: "프로필 사진 변경"
       })
     },
     UpdatePost: {

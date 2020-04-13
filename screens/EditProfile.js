@@ -76,19 +76,15 @@ const EditProfile = ({
   const firstName = navigation.getParam("firstName");
   const lastName = navigation.getParam("lastName");
   const bio = navigation.getParam("bio");
-  const email = navigation.getParam("email");
   const [bottomModalAndTitle, setbottomModalAndTitle] = useState(false);
   const [isavatar, setavatar] = useState(avatar);
   const bioInput = useInput();
   const usernameInput = useInput();
   const firstnameInput = useInput();
   const lastnameInput = useInput();
-  const emailInput = useInput();
   const [editProfilePictureMutation] = useMutation(EDIT_USER, {
     refetchQueries: () => [{ query: ME }]
   });
-
-
 
   const changePicture = async () => {
     try {
@@ -264,23 +260,6 @@ const EditProfile = ({
               placeholderTextColor={Grey}
             >
               {firstName}
-            </TextInput>
-          </EditName>
-          <EditName>
-            <Text style={{ fontSize: 17, color: PointPink, marginTop: 13 }}>이메일</Text>
-            <TextInput
-              style={{
-                height: 26,
-                width: constants.width - 30,
-                fontSize: 20,
-                color: TINT_COLOR,
-                borderBottomWidth: 1,
-                borderBottomColor: mainPink,
-              }}
-              onChangeText={emailInput.onChange}
-              placeholderTextColor={Grey}
-            >
-              {email}
             </TextInput>
           </EditName>
           <EditName>

@@ -4,6 +4,7 @@ import { useQuery, useSubscription } from "react-apollo-hooks";
 import gql from "graphql-tag";
 import MainNavigation from "../navigation/MainNavigation";
 import User from "../User";
+import {ALARM} from "../screens/Alarm/Alarms";
 
 const ME = gql`
     {
@@ -34,7 +35,7 @@ const Subscribe = () => {
 
   const { data } = useQuery(ME);
   
-  
+  const {data: data2, refetch} = useQuery(ALARM)
   const getUser = async()=>{
     await setUserId(data.me.id);
     await setIsSkip(true);

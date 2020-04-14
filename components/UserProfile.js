@@ -187,7 +187,7 @@ const Scene = ({ index, posts, userId, isSelf }) => (
           ) : (
           
           <ViewCon>  
-            <View flexDirection= "row" flexWrap= "wrap">
+            <View flexDirection= "row" flexWrap= "wrap" >
               {posts && posts.map(p =>
                 <SquarePhoto key={p.id} {...p} />)
               }

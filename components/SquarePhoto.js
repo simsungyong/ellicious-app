@@ -9,13 +9,11 @@ import {MaterialCommunityIcons,EvilIcons, AntDesign } from "@expo/vector-icons";
 
 const Post = styled.View`
 background-color : ${LightPink}
-margin-right : 2px;
-margin-left : 2px;
+margin-left:0.75;
 margin-bottom : 2px;
 margin-top : 2px;
-width: ${constants.width / 3.1};
-height : ${constants.height/4.6}
-justifyContent: flex-start;
+width: ${(constants.width / 3)-1};
+height : ${constants.height/5}
 `;
 
 const Bold = styled.Text`
@@ -26,12 +24,16 @@ const Bold = styled.Text`
 const Imagecon = styled.View`
   alignItems: center;
   justifyContent: space-around;
-  margin-top : 5px;
+  margin-top : 2px;
 `;
 
 const Icons = styled.View`
 flex-direction: row;
 margin-left : 5px
+alignItems: center;
+justifyContent:center;
+
+
 `;
 const Icon = styled.View`
 flex-direction: row;
@@ -54,10 +56,9 @@ const SquarePhoto = ({
     <TouchableOpacity onPress={() => navigation.navigate("Detail", { id })}>
       <Image
         source={{ uri: files[0].url }}
-        style={{ width: constants.width / 3.1, height: constants.height / 6 }}
+        style={{ width: (constants.width /3)-1, height: constants.height / 6 }}
       />
       <Imagecon>
-        <Bold>{storeName}</Bold>
         <Icons>
           <Icon>
             <MaterialCommunityIcons 

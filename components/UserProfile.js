@@ -71,6 +71,7 @@ const ProfileImage = styled.View`
 const FollowButton =styled.TouchableOpacity`
   width: 70px;
   height: 27px;
+  margin-left : 5px;
   background-color: ${props=>props.backgroundColor};
   border-radius: 7px;
   alignItems: center;

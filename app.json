@@ -28,7 +28,13 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.prom.ellicious",
+      "buildNumber": "1.0.0",
+      "icon": "./assets/ellicious_icon.png",
+      "supportsTablet": false,
+      "config": {
+        "googleMapsApiKey": "AIzaSyDI0c6fpWeaxC1d82jjF5Q0gsjA3I6q4ac"
+      }
     },
     "android": {
       "package": "com.prom.ellicious",

@@ -138,7 +138,6 @@ const Home = ({ navigation }) => {
 
 
   const onLoadMore = async () => {
-    console.log("reload");
     setIsLoading(true)
     try {
       await fetchMore({

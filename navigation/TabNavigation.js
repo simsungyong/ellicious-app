@@ -187,7 +187,7 @@ export default createBottomTabNavigator({
     screen: View,
     headerStyle: stackStyles,
     navigationOptions: {
-      tabBarOnPress: ({ navigation }) => askPermissions(navigation),
+      tabBarOnPress: ({ navigation }) => navigation.navigate("PhotoNavigation"),
       tabBarIcon: ({ focused }) => (
         <AntDesign
           color={focused ? mainPink : Grey}

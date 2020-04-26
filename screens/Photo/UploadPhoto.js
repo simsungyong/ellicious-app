@@ -15,6 +15,7 @@ import { FEED_QUERY } from "../Tabs/Home";
 import { ME } from '../Tabs/Profile/Profile';
 import User from '../../User';
 import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 
 const GET_CATEGORYINFO = gql`
   query seeCategory($userId: String){
@@ -214,6 +215,29 @@ export default ({ navigation }) => {
     }, { query: ME }, { query: GET_CATEGORYINFO, variables: { userId: User.userId } }]
   });
 
+
+  const confirmPermissions = async() => {
+    try{
+      const {status: cameraStatus} = await Permissions.getAsync(Permissions.CAMERA_ROLL);
+      let finalStatus = cameraStatus;
+  
+      if(cameraStatus !== "granted"){
+        const {status} = await Permissions.askAsync( Permissions.CAMERA_ROLL);
+        finalStatus = status
+      }
+  
+      if(finalStatus !== "granted") {
+        Alert.alert("앨범에 대한 접근 권한이 필요합니다. 설정에서 앱에 관련된 접근권한을 변경해주세요");
+        return;
+      }
+      addPhoto();
+  
+      
+    } catch(e){
+      console.log(e);
+    }
+  }
+
   const addPhoto = async () => {
     try {
       let result = await ImagePicker.launchImageLibraryAsync({
@@ -358,7 +382,7 @@ export default ({ navigation }) => {
     <DismissKeyboard>
       <Container>
         <Top>
-          <ImageBox onPress={addPhoto}>
+          <ImageBox onPress={confirmPermissions}>
             {photo[0] ? <Image
               source={{ uri: photo[photo.length - 1] }}
               style={{
